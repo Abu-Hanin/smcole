@@ -845,11 +845,15 @@
                 });
                 
                 const buyBtn = document.createElement('button'); buyBtn.className = 'buy-btn'; buyBtn.innerHTML = '<i class="fab fa-whatsapp"></i> شراء الآن';
-                buyBtn.addEventListener('click', () => {
+                buyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
                     const link = urlInput.value.trim();
                     if (link === "") { alert("⚠️ الرابط مطلوب! يرجى إدخال رابط الحساب أو المنشور أو الفيديو."); return; }
                     const res = updateTotal();
                     if (!res) { alert(`⚠️ يرجى إدخال كمية صحيحة. الحد الأدنى ${minLimit} ${service.unit}`); return; }
+                    
                     let totalToDisplay = res.totalInEGP;
                     let currencyName = 'جنيه مصري';
                     if (currentCurrency === 'USD') {
@@ -857,8 +861,10 @@
                         currencyName = 'دولار أمريكي';
                     }
                     let formattedTotal = (currentCurrency === 'USD') ? totalToDisplay.toFixed(2) : Math.round(totalToDisplay).toLocaleString('en-US');
-                    // الرسالة النهائية مع إضافة رابط الموقع بشكل أنيق
+                    
+                    // بناء الرسالة للخدمة الحالية فقط (تأكد من عدم وجود أي تداخل)
                     let message = `📋 طلب شراء خدمة : ${service.name}\n📊 الكمية المطلوبة : ${res.quantity.toLocaleString()} ${service.unit}\n💰 السعر الإجمالي : ${formattedTotal} ${currencyName}\n🔗 رابط الهدف : ${link}\n\n🌐 *لطلب خدمات أخرى، يمكنك العودة إلى موقعنا:*\nhttps://smcole.com\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.`;
+                    
                     if (window.registerNewOrder) window.registerNewOrder();
                     window.open(BASE_WA_URL + encodeMsg(message), '_blank');
                 });

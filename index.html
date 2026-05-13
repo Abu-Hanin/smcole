@@ -379,7 +379,7 @@
     <a href="#" id="termsLink"><i class="fas fa-file-alt"></i> شروط الخدمة</a>
 </div>
 
-<!-- صفحات الشروط وطرق الدفع (مختصرة للطول لكنها كاملة في الكود النهائي) -->
+<!-- صفحات الشروط وطرق الدفع -->
 <div id="termsPage" class="overlay-page">
     <div class="overlay-container">
         <h1>شروط الخدمة</h1>
@@ -518,7 +518,7 @@
         }
     });
     
-    // ======================= باقي الكود الأصلي =======================
+    // ======================= باقي الكود الأصلي مع التعديل المطلوب =======================
     setTimeout(() => {
         const overlay = document.getElementById('welcomeOverlay');
         if (overlay) {
@@ -660,6 +660,63 @@
             const BASE_WA_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=`;
             function encodeMsg(msg) { return encodeURIComponent(msg); }
             
+            // ========== الدالة الجديدة المعدلة لإرسال الطلب ==========
+            function sendOrder(button) {
+                // 1. الوصول إلى البطاقة التي تحتوي على الزر
+                const card = button.closest('.service-card');
+                if (!card) {
+                    alert('حدث خطأ: لم يتم العثور على بيانات الخدمة');
+                    return;
+                }
+                
+                // 2. قراءة البيانات من داخل البطاقة فقط
+                const serviceName = card.querySelector('.service-name')?.innerText || 'غير معروف';
+                const quantityInput = card.querySelector('.quantity-input');
+                const urlInput = card.querySelector('.url-input');
+                const link = urlInput ? urlInput.value.trim() : '';
+                let quantity = quantityInput ? parseInt(quantityInput.value.trim()) : NaN;
+                
+                // 3. التحقق من الرابط
+                if (!link) {
+                    alert("⚠️ الرابط مطلوب! يرجى إدخال رابط الحساب أو المنشور أو الفيديو.");
+                    return;
+                }
+                
+                // 4. الحصول على الحد الأدنى وسعر الخدمة من attributes المضافة
+                const minLimit = parseInt(card.getAttribute('data-min-limit')) || 1000;
+                if (isNaN(quantity) || quantity < minLimit) {
+                    alert(`⚠️ يرجى إدخال كمية صحيحة. الحد الأدنى ${minLimit}`);
+                    return;
+                }
+                
+                const pricePerThousand = parseFloat(card.getAttribute('data-price-per-thousand'));
+                if (isNaN(pricePerThousand)) {
+                    alert('خطأ في سعر الخدمة');
+                    return;
+                }
+                
+                const unit = card.getAttribute('data-unit') || '';
+                
+                // 5. حساب السعر الإجمالي (نفس منطق الكود الأصلي)
+                const totalInEGP = (quantity / 1000) * pricePerThousand;
+                let totalToDisplay = totalInEGP;
+                let currencyName = 'جنيه مصري';
+                if (currentCurrency === 'USD') {
+                    totalToDisplay = totalInEGP / exchangeRate;
+                    currencyName = 'دولار أمريكي';
+                }
+                const formattedTotal = (currentCurrency === 'USD') 
+                    ? totalToDisplay.toFixed(2) 
+                    : Math.round(totalToDisplay).toLocaleString('en-US');
+                
+                // 6. بناء الرسالة (تحتوي فقط على بيانات هذا الطلب)
+                const message = `📋 طلب شراء خدمة : ${serviceName}\n📊 الكمية المطلوبة : ${quantity.toLocaleString()} ${unit}\n💰 السعر الإجمالي : ${formattedTotal} ${currencyName}\n🔗 رابط الهدف : ${link}\n\n🌐 *لطلب خدمات أخرى، يمكنك العودة إلى موقعنا:*\nhttps://smcole.com\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.`;
+                
+                // 7. زيادة عداد الطلبات وفتح واتساب
+                if (window.registerNewOrder) window.registerNewOrder();
+                window.open(BASE_WA_URL + encodeURIComponent(message), '_blank');
+            }
+            
             function sortFollowers(services) {
                 const followers = services.filter(s => (s.name.includes("متابع") || s.name.includes("مشترك")) && !s.name.includes("مشاهدات") && !s.name.includes("لايك") && !s.name.includes("تعليق") && !s.name.includes("اعضاء"));
                 const others = services.filter(s => !followers.includes(s));
@@ -767,9 +824,17 @@
                 }
             };
             
-            // ======================= الدالة المعدلة (مع الحماية الكاملة) =======================
             function createServiceCard(service) {
                 const card = document.createElement('div'); card.className = 'service-card';
+                
+                // إضافة بيانات تعريفية للبطاقة (بدون أي تأثير على الشكل)
+                let minLimit = 1000, stepValue = 500;
+                if (service.isComment === true) { minLimit = 50; stepValue = 10; }
+                else if (service.name.includes("لايك") || service.unit === "لايك") { minLimit = 250; stepValue = 50; }
+                card.setAttribute('data-unit', service.unit);
+                card.setAttribute('data-price-per-thousand', service.pricePerThousand);
+                card.setAttribute('data-min-limit', minLimit);
+                
                 const iconDiv = document.createElement('div'); iconDiv.className = 'card-icon'; iconDiv.innerHTML = `<i class="${service.icon}"></i>`;
                 const nameEl = document.createElement('h3'); nameEl.className = 'service-name'; nameEl.innerText = service.name;
                 card.append(iconDiv, nameEl);
@@ -795,10 +860,6 @@
                 priceContainer.appendChild(smallUnitSpan);
                 card.appendChild(priceContainer);
                 
-                let minLimit = 1000, stepValue = 500;
-                if (service.isComment === true) { minLimit = 50; stepValue = 10; }
-                else if (service.name.includes("لايك") || service.unit === "لايك") { minLimit = 250; stepValue = 50; }
-                
                 const calcDiv = document.createElement('div'); calcDiv.className = 'quantity-calc';
                 const label = document.createElement('span'); label.className = 'quantity-label'; 
                 label.innerText = `📦 الكمية المطلوبة (الحد الأدنى ${minLimit} ${service.unit})`;
@@ -817,7 +878,6 @@
                 const errorSpan = document.createElement('div'); errorSpan.className = 'error-msg'; errorSpan.style.display = 'none';
                 calcDiv.append(label, input, urlLabel, urlInput, totalRow, errorSpan);
                 
-                // دالة التحديث تستخدم المتغيرات المحلية + العملة الحالية
                 function updateTotal() {
                     let raw = input.value.trim();
                     if (raw === "") { totalAmountSpan.innerText = '---'; errorSpan.style.display = 'none'; return null; }
@@ -846,39 +906,12 @@
                     if (!isNaN(v) && v < minLimit && v !== "") { input.value = ''; updateTotal(); }
                 });
                 
-                const buyBtn = document.createElement('button'); buyBtn.className = 'buy-btn'; buyBtn.innerHTML = '<i class="fab fa-whatsapp"></i> شراء الآن';
-                buyBtn.addEventListener('click', (e) => {
-                    // منع تسرب الحدث وتكرار الضغط
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (buyBtn.disabled) return;
-                    buyBtn.disabled = true;
-                    setTimeout(() => { buyBtn.disabled = false; }, 3000);
-                    
-                    const link = urlInput.value.trim();
-                    if (link === "") {
-                        alert("⚠️ الرابط مطلوب! يرجى إدخال رابط الحساب أو المنشور أو الفيديو.");
-                        buyBtn.disabled = false;
-                        return;
-                    }
-                    const res = updateTotal();
-                    if (!res) {
-                        alert(`⚠️ يرجى إدخال كمية صحيحة. الحد الأدنى ${minLimit} ${service.unit}`);
-                        buyBtn.disabled = false;
-                        return;
-                    }
-                    
-                    let totalToDisplay = res.totalInEGP;
-                    let currencyName = 'جنيه مصري';
-                    if (currentCurrency === 'USD') {
-                        totalToDisplay = totalToDisplay / exchangeRate;
-                        currencyName = 'دولار أمريكي';
-                    }
-                    let formattedTotal = (currentCurrency === 'USD') ? totalToDisplay.toFixed(2) : Math.round(totalToDisplay).toLocaleString('en-US');
-                    // الرسالة مبنية من بيانات الخدمة الحالية فقط
-                    let message = `📋 طلب شراء خدمة : ${service.name}\n📊 الكمية المطلوبة : ${res.quantity.toLocaleString()} ${service.unit}\n💰 السعر الإجمالي : ${formattedTotal} ${currencyName}\n🔗 رابط الهدف : ${link}\n\n🌐 *لطلب خدمات أخرى، يمكنك العودة إلى موقعنا:*\nhttps://smcole.com\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.`;
-                    if (window.registerNewOrder) window.registerNewOrder();
-                    window.open(BASE_WA_URL + encodeMsg(message), '_blank');
+                // زر الشراء المعدل: يستدعي sendOrder ويمرر الزر نفسه
+                const buyBtn = document.createElement('button');
+                buyBtn.className = 'buy-btn';
+                buyBtn.innerHTML = '<i class="fab fa-whatsapp"></i> شراء الآن';
+                buyBtn.addEventListener('click', function() {
+                    sendOrder(this);
                 });
                 card.appendChild(calcDiv);
                 card.appendChild(buyBtn);

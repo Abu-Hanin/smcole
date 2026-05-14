@@ -28,7 +28,6 @@
     <meta name="twitter:title" content="smcole | تزويد متابعين ومشاهدات حقيقية">
     <meta name="twitter:description" content="أفضل موقع لزيادة متابعين ومشاهدات فيسبوك، تيك توك، انستقرام ويوتيوب. نمو حقيقي بأسعار مميزة.">
     <meta name="twitter:image" content="https://smcole.com/og-image.jpg">
-    <!-- ======================= نهاية الإضافات ======================= -->
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -36,6 +35,7 @@
         /* جميع الأنماط الأصلية - بدون تغيير جوهري */
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         body { background-color: #0B0E11; font-family: 'Cairo', sans-serif; color: #EAECEF; line-height: 1.5; overflow-x: hidden; position: relative; }
+        
         ::-webkit-scrollbar { width: 6px; height: 4px; }
         ::-webkit-scrollbar-track { background: #1E2329; }
         ::-webkit-scrollbar-thumb { background: #F0B90B; border-radius: 10px; }
@@ -58,11 +58,8 @@
             font-size: 1.5rem;
             color: #F0B90B;
         }
-        .menu-button:hover {
-            background: #2EBD85;
-            color: #0B0E11;
-            transform: scale(1.05);
-        }
+        .menu-button:hover { background: #2EBD85; color: #0B0E11; transform: scale(1.05); }
+        
         .currency-circle {
             position: absolute;
             top: 25px;
@@ -81,11 +78,8 @@
             font-size: 1.5rem;
             color: #F0B90B;
         }
-        .currency-circle:hover {
-            background: #2EBD85;
-            color: #0B0E11;
-            transform: scale(1.05);
-        }
+        .currency-circle:hover { background: #2EBD85; color: #0B0E11; transform: scale(1.05); }
+        
         .currency-dropdown {
             position: absolute;
             top: 80px;
@@ -111,17 +105,9 @@
             font-size: 0.95rem;
             cursor: pointer;
         }
-        .currency-dropdown a i {
-            width: 24px;
-            color: #F0B90B;
-        }
-        .currency-dropdown a:hover {
-            background: rgba(46, 189, 133, 0.2);
-            color: #2EBD85;
-        }
-        .show-currency-dropdown {
-            display: flex;
-        }
+        .currency-dropdown a i { width: 24px; color: #F0B90B; }
+        .currency-dropdown a:hover { background: rgba(46, 189, 133, 0.2); color: #2EBD85; }
+        .show-currency-dropdown { display: flex; }
         
         .dropdown-menu {
             position: absolute;
@@ -138,26 +124,19 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.5);
         }
         .dropdown-menu a {
-            padding: 10px 20px;
+            padding: 12px 20px;
             color: #EAECEF;
             text-decoration: none;
             transition: 0.2s;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-size: 0.95rem;
+            cursor: pointer;
         }
-        .dropdown-menu a i {
-            width: 24px;
-            color: #F0B90B;
-        }
-        .dropdown-menu a:hover {
-            background: rgba(46, 189, 133, 0.2);
-            color: #2EBD85;
-        }
-        .show-dropdown {
-            display: flex;
-        }
+        .dropdown-menu a i { width: 24px; color: #F0B90B; font-size: 1.1rem; }
+        .dropdown-menu a:hover { background: rgba(46, 189, 133, 0.2); color: #2EBD85; }
+        .show-dropdown { display: flex; }
         
         .payment-method-btn {
             background: #2EBD85;
@@ -173,10 +152,7 @@
             transition: 0.2s;
             margin-top: 0.5rem;
         }
-        .payment-method-btn:hover {
-            background: #22a06f;
-            transform: scale(0.98);
-        }
+        .payment-method-btn:hover { background: #22a06f; transform: scale(0.98); }
         
         .overlay-page {
             position: fixed;
@@ -198,11 +174,30 @@
             padding: 2rem;
             border: 1px solid rgba(240, 185, 11, 0.2);
         }
-        .overlay-container h1 {
-            color: #F0B90B;
-            margin-bottom: 1rem;
-            font-size: 2rem;
+        /* تنسيق خاص لصفحة المفضلة بدون حاوية كبيرة */
+        #favoritesPage {
+            background: #0B0E11;
+            padding: 2rem;
         }
+        .favorites-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .favorites-grid .service-card {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .favorites-grid .service-card {
+                max-width: 600px;
+            }
+        }
+        
+        .overlay-container h1 { color: #F0B90B; margin-bottom: 1rem; font-size: 2rem; }
         .overlay-container h2 {
             color: #2EBD85;
             margin: 1.5rem 0 0.8rem;
@@ -210,32 +205,15 @@
             border-right: 4px solid #F0B90B;
             padding-right: 15px;
         }
-        .overlay-container p, .overlay-container li {
-            line-height: 1.8;
-            color: #ddd;
-            margin-bottom: 0.8rem;
-        }
-        .overlay-container ul {
-            list-style: none;
-            padding-right: 1rem;
-        }
-        .overlay-container ul li {
-            margin-bottom: 0.5rem;
-            position: relative;
-            padding-right: 1.5rem;
-        }
-        .overlay-container ul li::before {
-            content: "•";
-            color: #F0B90B;
-            font-weight: bold;
-            position: absolute;
-            right: 0;
-        }
+        .overlay-container p, .overlay-container li { line-height: 1.8; color: #ddd; margin-bottom: 0.8rem; }
+        .overlay-container ul { list-style: none; padding-right: 1rem; }
+        .overlay-container ul li { margin-bottom: 0.5rem; position: relative; padding-right: 1.5rem; }
+        .overlay-container ul li::before { content: "•"; color: #F0B90B; font-weight: bold; position: absolute; right: 0; }
         
         .payment-categories { display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; }
-        .payment-category { background: #0B0E11; border-radius: 28px; padding: 1.2rem; border: 1px solid rgba(240, 185, 11, 0.2); transition: 0.2s; }
+        .payment-category { background: #0B0E11; border-radius: 28px; padding: 1.2rem; border: 1px solid rgba(240, 185, 11, 0.2); }
         .payment-category h3 { color: #F0B90B; font-size: 1.3rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(240, 185, 11, 0.3); padding-bottom: 0.5rem; }
-        .payment-methods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 0.5rem; }
+        .payment-methods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; }
         .payment-card { background: #1E2329; border: 1px solid rgba(46, 189, 133, 0.3); border-radius: 50px; padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 600; transition: 0.2s; color: #EAECEF; }
         .payment-card i { color: #2EBD85; font-size: 1.1rem; }
         .payment-card:hover { background: #2EBD85; color: #0B0E11; border-color: #2EBD85; transform: translateY(-2px); }
@@ -339,11 +317,102 @@
         .footer span { color: #F0B90B; }
         button { background: none; border: none; font-family: inherit; cursor: pointer; }
         
+        /* شريط البحث */
+        .search-container {
+            margin: 1rem 0 2rem 0;
+            display: flex;
+            justify-content: center;
+        }
+        .search-container input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            border-radius: 60px;
+            border: 1px solid rgba(240, 185, 11, 0.4);
+            background: #1E2329;
+            color: #EAECEF;
+            font-size: 0.95rem;
+            text-align: right;
+            outline: none;
+            transition: 0.2s;
+            font-family: 'Cairo', sans-serif;
+        }
+        .search-container input:focus {
+            border-color: #F0B90B;
+            box-shadow: 0 0 0 2px rgba(240,185,11,0.2);
+        }
+        .search-container input::placeholder { color: #9aa2b5; }
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #F0B90B;
+            font-size: 1.1rem;
+            display: none;
+        }
+        
+        /* رقم الخدمة */
+        .service-number {
+            display: inline-block;
+            background: rgba(46, 189, 133, 0.2);
+            color: #2EBD85;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            margin-left: 10px;
+        }
+        
+        /* زر القلب (المفضلة) */
+        .favorite-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #aaa;
+            transition: 0.2s;
+            margin-right: auto;
+            padding: 0 5px;
+        }
+        .favorite-btn.active { color: #ff4444; }
+        .favorite-btn:hover { transform: scale(1.1); }
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* زر العودة للأعلى */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+            background: #2EBD85;
+            color: #0B0E11;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: 0.2s;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.2s;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .back-to-top.show { opacity: 1; visibility: visible; }
+        .back-to-top:hover { background: #22a06f; transform: scale(1.05); }
+        
         @media (max-width: 768px) {
             .menu-button { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 1.2rem; }
             .currency-circle { top: 15px; left: 15px; width: 40px; height: 40px; font-size: 1.2rem; }
             .currency-dropdown { top: 65px; left: 15px; }
-            .dropdown-menu { top: 65px; right: 15px; }
+            .dropdown-menu { top: 65px; right: 15px; width: 180px; }
             .payment-methods-grid { grid-template-columns: 1fr; }
             .logo-text { font-size: 2.2rem; }
             .main-title { font-size: 1.3rem; }
@@ -374,8 +443,11 @@
     <a data-currency="EGP"><i class="fas fa-pound-sign"></i> EGP</a>
 </div>
 
+<!-- القائمة المنسدلة (الثلاث شرطات) مع أيقونة الواتساب للدعم الفني -->
 <div class="dropdown-menu" id="dropdownMenu">
+    <a href="#" id="favoritesLink"><i class="fas fa-heart"></i> المفضلة</a>
     <a href="#" id="paymentLink"><i class="fas fa-credit-card"></i> طرق الدفع</a>
+    <a href="#" id="supportDropdownLink"><i class="fab fa-whatsapp"></i> الدعم الفني</a>
     <a href="#" id="termsLink"><i class="fas fa-file-alt"></i> شروط الخدمة</a>
 </div>
 
@@ -413,6 +485,17 @@
     </div>
 </div>
 
+<!-- صفحة المفضلة (بدون overlay-container) -->
+<div id="favoritesPage" class="overlay-page">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        <h1 style="color: #F0B90B; margin-bottom: 1.5rem; font-size: 2rem; text-align: center;"><i class="fas fa-heart"></i> خدماتي المفضلة</h1>
+        <div id="favoritesContainer" class="favorites-grid">
+            <!-- سيتم ملؤها بالخدمات المفضلة ديناميكياً -->
+        </div>
+        <div id="noFavoritesMsg" style="text-align: center; padding: 2rem; color: #aaa;">لا توجد خدمات مفضلة بعد. أضف خدماتك المفضلة بالضغط على القلب في البطاقة.</div>
+    </div>
+</div>
+
 <!-- المحتوى الرئيسي -->
 <div class="container" id="mainContent">
     <div class="header">
@@ -442,17 +525,104 @@
             <div class="icon-circle" data-target="twitch"><i class="fab fa-twitch"></i></div>
         </div>
     </div>
+    
+    <!-- شريط البحث -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 ابحث برقم الخدمة أو باسم الخدمة ...">
+    </div>
+    <div id="noResultsMsg" class="no-results">❌ لا توجد خدمات مطابقة للبحث</div>
+    
     <div id="sectionsContainer"></div>
     <div class="support-section"><button class="support-btn" id="directSupportBtn"><i class="fab fa-whatsapp"></i> تواصل مع الدعم الفني</button></div>
     <div class="footer">© حقوق الطبع والنشر. كل الحقوق محفوظة موقع <span>smcole</span></div>
 </div>
 
+<!-- زر العودة للأعلى -->
+<div id="backToTop" class="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    // ======================= نظام تحويل العملات =======================
+    // ======================= نظام تحويل العملات مع التثبيت في localStorage =======================
     let currentCurrency = 'EGP';
     let exchangeRate = 48.5;
     
+    // تحميل العملة المخزنة عند بدء التشغيل
+    try {
+        const savedCurrency = localStorage.getItem('smcole_currency');
+        if (savedCurrency === 'USD' || savedCurrency === 'EGP') {
+            currentCurrency = savedCurrency;
+        } else {
+            currentCurrency = 'EGP';
+        }
+    } catch(e) { currentCurrency = 'EGP'; }
+    
+    // نظام المفضلة (localStorage)
+    let favorites = [];
+    try {
+        const stored = localStorage.getItem('smcole_favorites');
+        if (stored) favorites = JSON.parse(stored);
+        if (!Array.isArray(favorites)) favorites = [];
+    } catch(e) { favorites = []; }
+    
+    let globalServicesList = []; // لتخزين جميع الخدمات مع معرفاتها
+    
+    function saveFavorites() {
+        localStorage.setItem('smcole_favorites', JSON.stringify(favorites));
+    }
+    
+    function isFavorite(serviceId) {
+        return favorites.includes(serviceId);
+    }
+    
+    function addFavorite(serviceId) {
+        if (!favorites.includes(serviceId)) {
+            favorites.push(serviceId);
+            saveFavorites();
+        }
+    }
+    
+    function removeFavorite(serviceId) {
+        favorites = favorites.filter(id => id !== serviceId);
+        saveFavorites();
+    }
+    
+    function toggleFavorite(serviceId, btnElement) {
+        if (isFavorite(serviceId)) {
+            removeFavorite(serviceId);
+            if (btnElement) {
+                btnElement.classList.remove('active');
+                btnElement.innerHTML = '<i class="far fa-heart"></i>';
+            }
+        } else {
+            addFavorite(serviceId);
+            if (btnElement) {
+                btnElement.classList.add('active');
+                btnElement.innerHTML = '<i class="fas fa-heart"></i>';
+            }
+        }
+        renderFavoritesPage(); // تحديث صفحة المفضلة
+        updateFavoriteButtonsInAllCards(); // تحديث حالة الأزرار في البطاقات
+    }
+    
+    function updateFavoriteButtonsInAllCards() {
+        document.querySelectorAll('.service-card').forEach(card => {
+            const serviceId = card.getAttribute('data-service-id');
+            const favBtn = card.querySelector('.favorite-btn');
+            if (serviceId && favBtn) {
+                if (isFavorite(serviceId)) {
+                    favBtn.classList.add('active');
+                    favBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                } else {
+                    favBtn.classList.remove('active');
+                    favBtn.innerHTML = '<i class="far fa-heart"></i>';
+                }
+            }
+        });
+    }
+    
+    // تحديث الأسعار
     async function fetchExchangeRate() {
         try {
             const response = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/egp.json');
@@ -461,13 +631,17 @@
             const usdRate = data.egp?.usd;
             if (usdRate && typeof usdRate === 'number' && usdRate > 0) {
                 exchangeRate = 1 / usdRate;
-                console.log(`سعر الصرف: 1 USD = ${exchangeRate.toFixed(4)} EGP`);
             } else throw new Error();
         } catch(e) {
-            console.warn("فشل جلب السعر، استخدام القيمة الاحتياطية 48.5");
             exchangeRate = 48.5;
         }
         updateAllPrices();
+    }
+    
+    function formatNumberNoCommas(value, isUSD = false) {
+        if (isUSD) return value.toFixed(2);
+        if (Number.isInteger(value)) return value.toString();
+        return value.toFixed(2);
     }
     
     function updateAllPrices() {
@@ -487,7 +661,7 @@
                 if (currentCurrency === 'USD') {
                     priceSpan.innerText = displayPrice.toFixed(2);
                 } else {
-                    priceSpan.innerText = Math.round(displayPrice).toLocaleString('en-US');
+                    priceSpan.innerText = formatNumberNoCommas(displayPrice, false);
                 }
             }
         });
@@ -497,28 +671,63 @@
         });
     }
     
-    const currencyCircle = document.getElementById('currencyCircle');
-    const currencyDropdown = document.getElementById('currencyDropdown');
-    currencyCircle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        currencyDropdown.classList.toggle('show-currency-dropdown');
-    });
-    document.querySelectorAll('.currency-dropdown a').forEach(option => {
-        option.addEventListener('click', (e) => {
-            e.preventDefault();
-            const newCurrency = option.getAttribute('data-currency');
-            currentCurrency = (newCurrency === 'USD') ? 'USD' : 'EGP';
-            currencyDropdown.classList.remove('show-currency-dropdown');
-            updateAllPrices();
-        });
-    });
-    document.addEventListener('click', (event) => {
-        if (!currencyCircle.contains(event.target) && !currencyDropdown.contains(event.target)) {
-            currencyDropdown.classList.remove('show-currency-dropdown');
-        }
-    });
+    // حفظ العملة عند التغيير
+    function setCurrency(currency) {
+        currentCurrency = currency;
+        localStorage.setItem('smcole_currency', currency);
+        updateAllPrices();
+    }
     
-    // ======================= باقي الكود الأصلي مع التعديل المطلوب =======================
+    // ========== الدالة المعدلة لإرسال الطلب (مع إضافة رقم الخدمة) ==========
+    function sendOrder(button) {
+        const card = button.closest('.service-card');
+        if (!card) {
+            alert('حدث خطأ: لم يتم العثور على بيانات الخدمة');
+            return;
+        }
+        const serviceNumber = card.getAttribute('data-service-number') || '?';
+        const serviceName = card.querySelector('.service-name')?.innerText || 'غير معروف';
+        const quantityInput = card.querySelector('.quantity-input');
+        const urlInput = card.querySelector('.url-input');
+        const link = urlInput ? urlInput.value.trim() : '';
+        let quantity = quantityInput ? parseInt(quantityInput.value.trim()) : NaN;
+        
+        if (!link) {
+            alert("⚠️ الرابط مطلوب! يرجى إدخال رابط الحساب أو المنشور أو الفيديو.");
+            return;
+        }
+        const minLimit = parseInt(card.getAttribute('data-min-limit')) || 1000;
+        if (isNaN(quantity) || quantity < minLimit) {
+            alert(`⚠️ يرجى إدخال كمية صحيحة. الحد الأدنى ${minLimit}`);
+            return;
+        }
+        const pricePerThousand = parseFloat(card.getAttribute('data-price-per-thousand'));
+        if (isNaN(pricePerThousand)) {
+            alert('خطأ في سعر الخدمة');
+            return;
+        }
+        const unit = card.getAttribute('data-unit') || '';
+        const totalInEGP = (quantity / 1000) * pricePerThousand;
+        let totalToDisplay = totalInEGP;
+        let currencyName = 'جنيه مصري';
+        let formattedTotal;
+        if (currentCurrency === 'USD') {
+            totalToDisplay = totalInEGP / exchangeRate;
+            currencyName = 'دولار أمريكي';
+            formattedTotal = totalToDisplay.toFixed(2);
+        } else {
+            if (Number.isInteger(totalToDisplay)) {
+                formattedTotal = totalToDisplay.toString();
+            } else {
+                formattedTotal = totalToDisplay.toFixed(2);
+            }
+        }
+        const message = `📋 طلب شراء خدمة : ${serviceName}\n🔢 رقم الخدمة : ${serviceNumber}\n📊 الكمية المطلوبة : ${quantity} ${unit}\n💰 السعر الإجمالي : ${formattedTotal} ${currencyName}\n🔗 رابط الهدف : ${link}\n\n🌐 *لطلب خدمات أخرى، يمكنك العودة إلى موقعنا:*\nhttps://smcole.com\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.`;
+        if (window.registerNewOrder) window.registerNewOrder();
+        window.open(`https://wa.me/201154846407?text=${encodeURIComponent(message)}`, '_blank');
+    }
+    
+    // ========== باقي الكود الأصلي ==========
     setTimeout(() => {
         const overlay = document.getElementById('welcomeOverlay');
         if (overlay) {
@@ -590,13 +799,17 @@
                 } catch(err) { console.warn(err); }
             });
             
+            // عناصر القائمة
             const menuBtn = document.getElementById('menuButton');
             const dropdown = document.getElementById('dropdownMenu');
             const termsPage = document.getElementById('termsPage');
             const paymentPage = document.getElementById('paymentPage');
+            const favoritesPage = document.getElementById('favoritesPage');
             const mainContent = document.getElementById('mainContent');
             const termsLink = document.getElementById('termsLink');
             const paymentLink = document.getElementById('paymentLink');
+            const favoritesLink = document.getElementById('favoritesLink');
+            const supportDropdownLink = document.getElementById('supportDropdownLink');
             const paymentMethodBtn = document.getElementById('paymentMethodBtn');
             let currentState = 'home';
             
@@ -604,6 +817,7 @@
                 mainContent.style.display = 'none';
                 termsPage.style.display = 'none';
                 paymentPage.style.display = 'none';
+                favoritesPage.style.display = 'none';
                 pageToShow.style.display = 'block';
                 dropdown.classList.remove('show-dropdown');
                 if (pageToShow === termsPage) {
@@ -612,6 +826,10 @@
                 } else if (pageToShow === paymentPage) {
                     history.pushState({ page: 'payment' }, 'طرق الدفع', '#payment');
                     currentState = 'payment';
+                } else if (pageToShow === favoritesPage) {
+                    history.pushState({ page: 'favorites' }, 'المفضلة', '#favorites');
+                    currentState = 'favorites';
+                    renderFavoritesPage();
                 } else {
                     if (window.location.hash !== '') history.pushState({ page: 'home' }, 'الرئيسية', ' ');
                     currentState = 'home';
@@ -623,6 +841,7 @@
                 mainContent.style.display = 'block';
                 termsPage.style.display = 'none';
                 paymentPage.style.display = 'none';
+                favoritesPage.style.display = 'none';
                 if (window.location.hash !== '') history.pushState({ page: 'home' }, 'الرئيسية', ' ');
                 currentState = 'home';
             }
@@ -630,6 +849,7 @@
             window.addEventListener('popstate', function(event) {
                 if (event.state && event.state.page === 'terms') showPage(termsPage);
                 else if (event.state && event.state.page === 'payment') showPage(paymentPage);
+                else if (event.state && event.state.page === 'favorites') showPage(favoritesPage);
                 else showHomePage();
             });
             
@@ -638,8 +858,17 @@
             
             paymentLink.addEventListener('click', (e) => { e.preventDefault(); showPage(paymentPage); });
             termsLink.addEventListener('click', (e) => { e.preventDefault(); showPage(termsPage); });
+            favoritesLink.addEventListener('click', (e) => { e.preventDefault(); showPage(favoritesPage); renderFavoritesPage(); });
             paymentMethodBtn.addEventListener('click', () => { showPage(paymentPage); });
             
+            // دعم واتساب من القائمة (مع أيقونة الواتساب)
+            supportDropdownLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open('https://wa.me/201154846407?text=مرحباً، أحتاج مساعدة ودعم فني بخصوص خدمات smcole. يرجى مساعدتي.', '_blank');
+                dropdown.classList.remove('show-dropdown');
+            });
+            
+            // أيقونات المنصات
             const iconCircles = document.querySelectorAll('.icon-circle');
             iconCircles.forEach(icon => {
                 icon.addEventListener('click', function(e) {
@@ -656,66 +885,57 @@
                 });
             });
             
-            const WHATSAPP_NUMBER = "201154846407";
-            const BASE_WA_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=`;
-            function encodeMsg(msg) { return encodeURIComponent(msg); }
+            // زر الدعم الموجود أصلاً في الأسفل
+            document.getElementById('directSupportBtn').addEventListener('click', () => {
+                window.open('https://wa.me/201154846407?text=مرحباً، أحتاج مساعدة ودعم بخصوص خدمات smcole.', '_blank');
+            });
             
-            // ========== الدالة الجديدة المعدلة لإرسال الطلب ==========
-            function sendOrder(button) {
-                // 1. الوصول إلى البطاقة التي تحتوي على الزر
-                const card = button.closest('.service-card');
-                if (!card) {
-                    alert('حدث خطأ: لم يتم العثور على بيانات الخدمة');
-                    return;
+            // زر العودة للأعلى
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
                 }
-                
-                // 2. قراءة البيانات من داخل البطاقة فقط
-                const serviceName = card.querySelector('.service-name')?.innerText || 'غير معروف';
-                const quantityInput = card.querySelector('.quantity-input');
-                const urlInput = card.querySelector('.url-input');
-                const link = urlInput ? urlInput.value.trim() : '';
-                let quantity = quantityInput ? parseInt(quantityInput.value.trim()) : NaN;
-                
-                // 3. التحقق من الرابط
-                if (!link) {
-                    alert("⚠️ الرابط مطلوب! يرجى إدخال رابط الحساب أو المنشور أو الفيديو.");
-                    return;
-                }
-                
-                // 4. الحصول على الحد الأدنى وسعر الخدمة من attributes المضافة
-                const minLimit = parseInt(card.getAttribute('data-min-limit')) || 1000;
-                if (isNaN(quantity) || quantity < minLimit) {
-                    alert(`⚠️ يرجى إدخال كمية صحيحة. الحد الأدنى ${minLimit}`);
-                    return;
-                }
-                
-                const pricePerThousand = parseFloat(card.getAttribute('data-price-per-thousand'));
-                if (isNaN(pricePerThousand)) {
-                    alert('خطأ في سعر الخدمة');
-                    return;
-                }
-                
-                const unit = card.getAttribute('data-unit') || '';
-                
-                // 5. حساب السعر الإجمالي (نفس منطق الكود الأصلي)
-                const totalInEGP = (quantity / 1000) * pricePerThousand;
-                let totalToDisplay = totalInEGP;
-                let currencyName = 'جنيه مصري';
-                if (currentCurrency === 'USD') {
-                    totalToDisplay = totalInEGP / exchangeRate;
-                    currencyName = 'دولار أمريكي';
-                }
-                const formattedTotal = (currentCurrency === 'USD') 
-                    ? totalToDisplay.toFixed(2) 
-                    : Math.round(totalToDisplay).toLocaleString('en-US');
-                
-                // 6. بناء الرسالة (تحتوي فقط على بيانات هذا الطلب)
-                const message = `📋 طلب شراء خدمة : ${serviceName}\n📊 الكمية المطلوبة : ${quantity.toLocaleString()} ${unit}\n💰 السعر الإجمالي : ${formattedTotal} ${currencyName}\n🔗 رابط الهدف : ${link}\n\n🌐 *لطلب خدمات أخرى، يمكنك العودة إلى موقعنا:*\nhttps://smcole.com\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.`;
-                
-                // 7. زيادة عداد الطلبات وفتح واتساب
-                if (window.registerNewOrder) window.registerNewOrder();
-                window.open(BASE_WA_URL + encodeURIComponent(message), '_blank');
-            }
+            });
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // دالة البحث (تخفي الأقسام بالكامل)
+            let searchTimeout;
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = e.target.value.trim().toLowerCase();
+                    const sections = document.querySelectorAll('.platform-section');
+                    let anyVisible = false;
+                    
+                    sections.forEach(section => {
+                        const cards = section.querySelectorAll('.service-card');
+                        let sectionHasMatch = false;
+                        cards.forEach(card => {
+                            const serviceNumber = card.getAttribute('data-service-number') || '';
+                            const serviceName = card.querySelector('.service-name')?.innerText.toLowerCase() || '';
+                            const matches = searchTerm === '' || serviceNumber.includes(searchTerm) || serviceName.includes(searchTerm);
+                            if (matches) {
+                                card.style.display = '';
+                                sectionHasMatch = true;
+                                anyVisible = true;
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                        section.style.display = sectionHasMatch || searchTerm === '' ? '' : 'none';
+                    });
+                    
+                    const noResultsMsg = document.getElementById('noResultsMsg');
+                    if (noResultsMsg) {
+                        noResultsMsg.style.display = anyVisible ? 'none' : 'block';
+                    }
+                }, 300);
+            });
             
             function sortFollowers(services) {
                 const followers = services.filter(s => (s.name.includes("متابع") || s.name.includes("مشترك")) && !s.name.includes("مشاهدات") && !s.name.includes("لايك") && !s.name.includes("تعليق") && !s.name.includes("اعضاء"));
@@ -824,16 +1044,33 @@
                 }
             };
             
-            function createServiceCard(service) {
+            let serviceCounter = 1;
+            
+            function createServiceCard(service, serviceNumber) {
                 const card = document.createElement('div'); card.className = 'service-card';
-                
-                // إضافة بيانات تعريفية للبطاقة (بدون أي تأثير على الشكل)
                 let minLimit = 1000, stepValue = 500;
                 if (service.isComment === true) { minLimit = 50; stepValue = 10; }
                 else if (service.name.includes("لايك") || service.unit === "لايك") { minLimit = 250; stepValue = 50; }
                 card.setAttribute('data-unit', service.unit);
                 card.setAttribute('data-price-per-thousand', service.pricePerThousand);
                 card.setAttribute('data-min-limit', minLimit);
+                card.setAttribute('data-service-number', serviceNumber);
+                const serviceId = `service_${serviceNumber}`;
+                card.setAttribute('data-service-id', serviceId);
+                globalServicesList.push({ id: serviceId, name: service.name, number: serviceNumber, card: card, serviceData: service });
+                
+                const headerRow = document.createElement('div'); headerRow.className = 'card-header-row';
+                const numberSpan = document.createElement('span'); numberSpan.className = 'service-number'; numberSpan.innerText = `#${serviceNumber}`;
+                const favBtn = document.createElement('button'); favBtn.className = 'favorite-btn';
+                favBtn.innerHTML = isFavorite(serviceId) ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
+                if (isFavorite(serviceId)) favBtn.classList.add('active');
+                favBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleFavorite(serviceId, favBtn);
+                });
+                headerRow.appendChild(numberSpan);
+                headerRow.appendChild(favBtn);
+                card.appendChild(headerRow);
                 
                 const iconDiv = document.createElement('div'); iconDiv.className = 'card-icon'; iconDiv.innerHTML = `<i class="${service.icon}"></i>`;
                 const nameEl = document.createElement('h3'); nameEl.className = 'service-name'; nameEl.innerText = service.name;
@@ -892,11 +1129,18 @@
                     let totalInEGP = (qty / 1000) * service.pricePerThousand;
                     let totalToShow = totalInEGP;
                     let currencySymbol = 'جنيه';
+                    let formatted;
                     if (currentCurrency === 'USD') {
                         totalToShow = totalInEGP / exchangeRate;
                         currencySymbol = '$';
+                        formatted = totalToShow.toFixed(2);
+                    } else {
+                        if (Number.isInteger(totalToShow)) {
+                            formatted = totalToShow.toString();
+                        } else {
+                            formatted = totalToShow.toFixed(2);
+                        }
                     }
-                    let formatted = (currentCurrency === 'USD') ? totalToShow.toFixed(2) : Math.round(totalToShow).toLocaleString('en-US');
                     totalAmountSpan.innerText = `${formatted} ${currencySymbol}`;
                     return { quantity: qty, totalInEGP: totalInEGP };
                 }
@@ -906,7 +1150,6 @@
                     if (!isNaN(v) && v < minLimit && v !== "") { input.value = ''; updateTotal(); }
                 });
                 
-                // زر الشراء المعدل: يستدعي sendOrder ويمرر الزر نفسه
                 const buyBtn = document.createElement('button');
                 buyBtn.className = 'buy-btn';
                 buyBtn.innerHTML = '<i class="fab fa-whatsapp"></i> شراء الآن';
@@ -918,9 +1161,44 @@
                 return card;
             }
             
+            function renderFavoritesPage() {
+                const container = document.getElementById('favoritesContainer');
+                const noMsg = document.getElementById('noFavoritesMsg');
+                if (!container) return;
+                container.innerHTML = '';
+                const uniqueFavServices = [];
+                const addedIds = new Set();
+                for (const svc of globalServicesList) {
+                    if (favorites.includes(svc.id) && !addedIds.has(svc.id)) {
+                        addedIds.add(svc.id);
+                        uniqueFavServices.push(svc);
+                    }
+                }
+                if (uniqueFavServices.length === 0) {
+                    if (noMsg) noMsg.style.display = 'block';
+                    return;
+                }
+                if (noMsg) noMsg.style.display = 'none';
+                uniqueFavServices.forEach(svc => {
+                    const favCard = createServiceCard(svc.serviceData, svc.number);
+                    const oldFavBtn = favCard.querySelector('.favorite-btn');
+                    if (oldFavBtn) {
+                        const newFavBtn = oldFavBtn.cloneNode(true);
+                        oldFavBtn.parentNode.replaceChild(newFavBtn, oldFavBtn);
+                        newFavBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            toggleFavorite(svc.id, newFavBtn);
+                        });
+                    }
+                    container.appendChild(favCard);
+                });
+            }
+            
             const sectionsContainer = document.getElementById('sectionsContainer');
             function buildAllSections() {
                 sectionsContainer.innerHTML = '';
+                serviceCounter = 1;
+                globalServicesList = [];
                 for (const [key, data] of Object.entries(platformData)) {
                     const section = document.createElement('div'); section.className = 'platform-section'; section.id = `section-${data.id}`;
                     const headerDiv = document.createElement('div'); headerDiv.className = 'platform-header';
@@ -932,7 +1210,9 @@
                     headerDiv.appendChild(titleSpan); headerDiv.appendChild(navDiv);
                     section.appendChild(headerDiv);
                     const sliderDiv = document.createElement('div'); sliderDiv.className = 'cards-slider';
-                    data.services.forEach(service => { sliderDiv.appendChild(createServiceCard(service)); });
+                    data.services.forEach(service => {
+                        sliderDiv.appendChild(createServiceCard(service, serviceCounter++));
+                    });
                     section.appendChild(sliderDiv);
                     let isDragging = false, startX, scrollLeft;
                     sliderDiv.addEventListener('mousedown', (e) => { isDragging = true; startX = e.pageX - sliderDiv.offsetLeft; scrollLeft = sliderDiv.scrollLeft; sliderDiv.style.cursor = 'grabbing'; e.preventDefault(); });
@@ -950,17 +1230,35 @@
             }
             buildAllSections();
             
-            document.getElementById('directSupportBtn').addEventListener('click', () => {
-                window.open(BASE_WA_URL + encodeMsg("مرحباً، أحتاج مساعدة ودعم بخصوص خدمات smcole."), '_blank');
-            });
-            
             fetchExchangeRate();
+            
         } catch(err) {
             console.error("Unexpected error:", err);
             const overlay = document.getElementById('welcomeOverlay');
             if (overlay) overlay.style.display = 'none';
         }
     })();
+    
+    // دوال العملة والقوائم (مع تثبيت العملة)
+    const currencyCircle = document.getElementById('currencyCircle');
+    const currencyDropdown = document.getElementById('currencyDropdown');
+    currencyCircle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currencyDropdown.classList.toggle('show-currency-dropdown');
+    });
+    document.querySelectorAll('.currency-dropdown a').forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.preventDefault();
+            const newCurrency = option.getAttribute('data-currency');
+            setCurrency(newCurrency);
+            currencyDropdown.classList.remove('show-currency-dropdown');
+        });
+    });
+    document.addEventListener('click', (event) => {
+        if (!currencyCircle.contains(event.target) && !currencyDropdown.contains(event.target)) {
+            currencyDropdown.classList.remove('show-currency-dropdown');
+        }
+    });
 </script>
 </body>
 </html>

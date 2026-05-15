@@ -29,6 +29,15 @@
     <meta name="twitter:description" content="أفضل موقع لزيادة متابعين ومشاهدات فيسبوك، تيك توك، انستقرام ويوتيوب. نمو حقيقي بأسعار مميزة.">
     <meta name="twitter:image" content="https://smcole.com/og-image.jpg">
     
+    <!-- ========== إضافات PWA ========== -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0B0E11">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="smcole">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <!-- =============================== -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -508,7 +517,11 @@
             <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><div class="stat-label">مستخدمين نشطين</div><div class="stat-number" id="usersCount">---</div></div></div>
             <div class="stat-card"><div class="stat-icon"><i class="fas fa-shopping-cart"></i></div><div class="stat-info"><div class="stat-label">طلبات مكتملة</div><div class="stat-number" id="ordersCount">---</div></div></div>
         </div>
-        <button class="payment-method-btn" id="paymentMethodBtn"><i class="fas fa-credit-card"></i> طرق الدفع</button>
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
+            <button class="payment-method-btn" id="paymentMethodBtn"><i class="fas fa-credit-card"></i> طرق الدفع</button>
+            <!-- زر تثبيت التطبيق - PWA Install Button -->
+            <button class="payment-method-btn" id="installPwaBtn" style="background: #F0B90B; color: #0B0E11;"><i class="fas fa-mobile-alt"></i> تثبيت التطبيق</button>
+        </div>
     </div>
     
     <div class="promo-section">
@@ -1259,6 +1272,30 @@
             currencyDropdown.classList.remove('show-currency-dropdown');
         }
     });
+    
+    // ========== PWA Installation Code ==========
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('installPwaBtn');
+        if (installBtn) installBtn.style.display = 'inline-flex';
+    });
+    
+    document.getElementById('installPwaBtn')?.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') deferredPrompt = null;
+        }
+    });
+    
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registered:', reg))
+            .catch(err => console.log('Service Worker error:', err));
+    }
+    // ===========================================
 </script>
 </body>
 </html>

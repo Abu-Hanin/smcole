@@ -1,0 +1,36 @@
+{
+  "name": "smcole",
+  "short_name": "smcole",
+  "description": "أفضل موقع لزيادة متابعين ومشاهدات في مصر والوطن العربي",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#0B0E11",
+  "background_color": "#0B0E11",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["social", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "المفضلة",
+      "url": "/#favorites",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

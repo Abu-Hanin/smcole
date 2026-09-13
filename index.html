@@ -473,12 +473,12 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-field">
 <label>الحد الأدنى للكمية</label>
 <input type="number" id="adminSvcMinLimit" value="1000" min="1">
-<div class="admin-hint">التعليقات: 50 | اللايكات: 250 | المتابعين/المشاهدات: 1000 | لكل 1: 1</div>
+<div class="admin-hint">التعليقات: 50 | اللايكات: 250 | المتابعين/المشاهدات: 1000</div>
 </div>
 <div class="admin-field">
 <label>مقدار الزيادة (Step)</label>
 <input type="number" id="adminSvcStep" value="500" min="1">
-<div class="admin-hint">التعليقات: 10 | اللايكات: 50 | المتابعين/المشاهدات: 500 | لكل 1: 1</div>
+<div class="admin-hint">التعليقات: 10 | اللايكات: 50 | المتابعين/المشاهدات: 500</div>
 </div>
 </div>
 <div class="admin-field">
@@ -781,7 +781,7 @@ const others = services.filter(s => !followers.includes(s));
 followers.sort((a,b) => a.pricePerThousand - b.pricePerThousand);
 return [...followers, ...others];
 }
-// ✅ دالة مركزية لتحديد الحد الأدنى والزيادة حسب نوع الخدمة
+// ✅ دالة مركزية: تحدد الحد الأدنى والزيادة حسب نوع الخدمة
 function getMinLimitAndStep(service) {
 const priceBase = parseInt(service.priceBase) || 1000;
 if (priceBase <= 10) return { min: 1, step: 1 };
@@ -790,22 +790,6 @@ const isLike = service.unit === "لايك" || (service.name && service.name.inde
 if (isComment) return { min: 50, step: 10 };
 if (isLike) return { min: 250, step: 50 };
 return { min: 1000, step: 500 };
-}
-// ✅ دالة تتحقق: لو الحد الأدنى في الداتابيس 1 (قيمة قديمة خاطئة)، تستخدم القيمة الصح
-function fixMinLimitFromDB(s) {
-const priceBase = parseInt(s.price_base) || 1000;
-let minLimit = parseInt(s.min_limit);
-let stepValue = parseInt(s.step_value);
-if (priceBase > 10 && (!minLimit || minLimit <= 1)) {
-const defaults = getMinLimitAndStep({ unit: s.unit, name: s.name, isComment: s.is_comment === true, priceBase: priceBase });
-minLimit = defaults.min;
-stepValue = defaults.step;
-}
-if (!stepValue || stepValue <= 1) {
-const defaults = getMinLimitAndStep({ unit: s.unit, name: s.name, isComment: s.is_comment === true, priceBase: priceBase });
-stepValue = defaults.step;
-}
-return { minLimit: minLimit, stepValue: stepValue };
 }
 const platformData = {
 facebook: { id: 'facebook', title: '<i class="fab fa-facebook-f"></i> فيسبوك - خدمات الزيادة', services: sortFollowers([
@@ -904,14 +888,9 @@ let serviceCounter = 1;
 function createServiceCard(service, serviceNumber) {
 const card = document.createElement('div'); card.className = 'service-card';
 const priceBase = parseInt(service.priceBase) || 1000;
-// ✅ هنا نستخدم القيمة اللي جاية من الداتابيس، ولو غلط (1) نصلحها
 const defaults = getMinLimitAndStep(service);
-let minLimit = service.minLimit !== undefined && service.minLimit !== null && parseInt(service.minLimit) > 1
-? parseInt(service.minLimit)
-: defaults.min;
-let stepValue = service.stepValue !== undefined && service.stepValue !== null && parseInt(service.stepValue) > 1
-? parseInt(service.stepValue)
-: defaults.step;
+let minLimit = service.minLimit !== undefined && service.minLimit !== null && parseInt(service.minLimit) > 1 ? parseInt(service.minLimit) : defaults.min;
+let stepValue = service.stepValue !== undefined && service.stepValue !== null && parseInt(service.stepValue) > 1 ? parseInt(service.stepValue) : defaults.step;
 if (priceBase <= 10) { minLimit = 1; stepValue = 1; }
 card.setAttribute('data-unit', service.unit);
 card.setAttribute('data-price-per-thousand', service.pricePerThousand);
@@ -1089,18 +1068,19 @@ return SEED;
 window.autoSeedIfEmpty = async function() {
 try {
 const { data: checkData, error: checkError } = await supabase.from('services').select('id').limit(1);
-if (checkError) return false;
+if (checkError) { console.error('Seed check error:', checkError); return false; }
 if (checkData && checkData.length > 0) return false;
 const SEED = window.buildPlatformSeedData();
 let success = 0;
 for (let i = 0; i < SEED.length; i += 10) {
 const batch = SEED.slice(i, i + 10);
 const { error } = await supabase.from('services').insert(batch);
-if (error) return false;
+if (error) { console.error('Seed error:', error); return false; }
 success += batch.length;
 }
+console.log('Auto-seeded ' + success + ' services');
 return true;
-} catch(e) { return false; }
+} catch(e) { console.error('Auto seed failed:', e); return false; }
 };
 window.loadServicesFromDB = async function() {
 try {
@@ -1114,8 +1094,11 @@ for (const key of Object.keys(platformData)) grouped[key] = [];
 for (const s of data) {
 if (s.is_hidden === true) continue;
 if (grouped[s.platform]) {
-// ✅ هنا التصليح: نصلح الحد الأدنى لو كان غلط (1)
-const fixed = fixMinLimitFromDB(s);
+const defaults = getMinLimitAndStep({ unit: s.unit, name: s.name, isComment: s.is_comment === true, priceBase: parseInt(s.price_base) || 1000 });
+let minLimit = parseInt(s.min_limit);
+let stepValue = parseInt(s.step_value);
+if (parseInt(s.price_base) > 10 && (!minLimit || minLimit <= 1)) minLimit = defaults.min;
+if (!stepValue || stepValue <= 1) stepValue = defaults.step;
 grouped[s.platform].push({
 name: s.name,
 unit: s.unit,
@@ -1124,8 +1107,8 @@ priceBase: parseInt(s.price_base) || 1000,
 guarantee: s.guarantee,
 icon: s.icon,
 isComment: s.is_comment === true,
-minLimit: fixed.minLimit,
-stepValue: fixed.stepValue
+minLimit: minLimit,
+stepValue: stepValue
 });
 }
 }
@@ -1142,6 +1125,7 @@ await window.loadServicesFromDB();
 buildAllSections();
 fetchExchangeRate();
 } catch(e) {
+console.error('Init error:', e);
 try { buildAllSections(); fetchExchangeRate(); } catch(err) {}
 }
 })();
@@ -1264,6 +1248,12 @@ loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحمي
 table.style.display = 'none';
 empty.style.display = 'none';
 try {
+// ✅ أولاً: نتأكد إن فيه خدمات، ولو مفيش نعمل seed
+const { data: checkData } = await supabase.from('services').select('id').limit(1);
+if (!checkData || checkData.length === 0) {
+loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تجهيز الخدمات لأول مرة...';
+if (window.autoSeedIfEmpty) await window.autoSeedIfEmpty();
+}
 const { data, error } = await supabase.from('services').select('*')
 .order('platform').order('sort_order').order('price_per_thousand');
 loader.style.display = 'none';
@@ -1281,13 +1271,16 @@ allServices.forEach((s, i) => {
 const tr = document.createElement('tr');
 const priceBase = parseInt(s.price_base) || 1000;
 const baseLabel = priceBase === 1 ? 'لكل 1' : 'لكل ' + priceBase;
-const fixed = fixMinLimitFromDB(s);
+const defaults = getMinLimitAndStep({ unit: s.unit, name: s.name, isComment: s.is_comment === true, priceBase: priceBase });
+let displayMinLimit = parseInt(s.min_limit);
+if (priceBase > 10 && (!displayMinLimit || displayMinLimit <= 1)) displayMinLimit = defaults.min;
+if (!displayMinLimit) displayMinLimit = defaults.min;
 const isHidden = s.is_hidden === true;
 const statusBadge = isHidden ? '<span class="admin-badge hidden">👁️‍🗨️ مخفية</span>' : '<span class="admin-badge green">✅ ظاهرة</span>';
 const hideBtn = isHidden
 ? '<button class="admin-show-btn" onclick="__adminToggleHide(' + s.id + ', true)"><i class="fas fa-eye"></i> إظهار</button>'
 : '<button class="admin-hide-btn" onclick="__adminToggleHide(' + s.id + ', false)"><i class="fas fa-eye-slash"></i> إخفاء</button>';
-tr.innerHTML = '<td>' + (i + 1) + '</td><td><span class="admin-badge gold">' + (PLATFORM_AR[s.platform] || s.platform) + '</span></td><td>' + s.name + '</td><td>' + (TYPE_AR[s.type] || s.type || '-') + '</td><td>' + s.unit + '</td><td style="color:#2EBD85; font-weight:700;">' + s.price_per_thousand + ' <span style="font-size:0.7rem; color:#aaa;">(' + baseLabel + ')</span></td><td>' + (s.guarantee || '-') + '</td><td style="color:#F0B90B; font-weight:700;">' + fixed.minLimit + '</td><td>' + statusBadge + '</td><td class="admin-actions-cell"><button class="admin-edit-btn" onclick="__adminEdit(' + s.id + ')"><i class="fas fa-pen"></i> تعديل</button>' + hideBtn + '<button class="admin-del-btn" onclick="__adminDelete(' + s.id + ')"><i class="fas fa-trash"></i> حذف</button></td>';
+tr.innerHTML = '<td>' + (i + 1) + '</td><td><span class="admin-badge gold">' + (PLATFORM_AR[s.platform] || s.platform) + '</span></td><td>' + s.name + '</td><td>' + (TYPE_AR[s.type] || s.type || '-') + '</td><td>' + s.unit + '</td><td style="color:#2EBD85; font-weight:700;">' + s.price_per_thousand + ' <span style="font-size:0.7rem; color:#aaa;">(' + baseLabel + ')</span></td><td>' + (s.guarantee || '-') + '</td><td style="color:#F0B90B; font-weight:700;">' + displayMinLimit + '</td><td>' + statusBadge + '</td><td class="admin-actions-cell"><button class="admin-edit-btn" onclick="__adminEdit(' + s.id + ')"><i class="fas fa-pen"></i> تعديل</button>' + hideBtn + '<button class="admin-del-btn" onclick="__adminDelete(' + s.id + ')"><i class="fas fa-trash"></i> حذف</button></td>';
 tbody.appendChild(tr);
 });
 } catch(e) {
@@ -1319,13 +1312,19 @@ document.getElementById('adminSvcType').value = s.type || 'followers';
 document.getElementById('adminSvcName').value = s.name;
 document.getElementById('adminSvcUnit').value = s.unit;
 document.getElementById('adminSvcPrice').value = s.price_per_thousand;
-document.getElementById('adminSvcPriceBase').value = String(parseInt(s.price_base) || 1000);
+const priceBase = parseInt(s.price_base) || 1000;
+document.getElementById('adminSvcPriceBase').value = String(priceBase);
 document.getElementById('adminSvcGuarantee').value = s.guarantee || 'بدون ضمان';
 document.getElementById('adminSvcIcon').value = s.icon || 'fas fa-star';
 if (iconPreview) iconPreview.innerHTML = '<i class="' + (s.icon || 'fas fa-star') + '"></i>';
-const fixed = fixMinLimitFromDB(s);
-document.getElementById('adminSvcMinLimit').value = fixed.minLimit;
-document.getElementById('adminSvcStep').value = fixed.stepValue;
+const defaults = getMinLimitAndStep({ unit: s.unit, name: s.name, isComment: s.is_comment === true, priceBase: priceBase });
+let displayMinLimit = parseInt(s.min_limit);
+let displayStepValue = parseInt(s.step_value);
+if (priceBase > 10 && (!displayMinLimit || displayMinLimit <= 1)) displayMinLimit = defaults.min;
+if (!displayStepValue || displayStepValue <= 1) displayStepValue = defaults.step;
+if (!displayMinLimit) displayMinLimit = defaults.min;
+document.getElementById('adminSvcMinLimit').value = displayMinLimit;
+document.getElementById('adminSvcStep').value = displayStepValue;
 document.getElementById('adminSvcIsComment').checked = s.is_comment === true;
 document.getElementById('adminModalTitle').innerHTML = '<i class="fas fa-pen"></i> تعديل الخدمة';
 modalBg.classList.add('show');

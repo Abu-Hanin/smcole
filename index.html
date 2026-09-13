@@ -206,126 +206,33 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
   #termsPage .overlay-container h1, #paymentPage .overlay-container h1 { font-size: 1.5rem; }
   #termsPage .overlay-container h2, #paymentPage .overlay-container h2 { font-size: 1.1rem; }
 }
-
-/* ============ PLATFORM TABS ============ */
-.admin-platform-tabs {
-display: flex;
-gap: 10px;
-overflow-x: auto;
-padding: 0.9rem 0.8rem 1rem;
-margin-bottom: 1.2rem;
-background: #1E2329;
-border-radius: 20px;
-border: 1px solid rgba(240,185,11,0.2);
-scrollbar-width: thin;
-}
+.admin-platform-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 0.9rem 0.8rem 1rem; margin-bottom: 1.2rem; background: #1E2329; border-radius: 20px; border: 1px solid rgba(240,185,11,0.2); scrollbar-width: thin; }
 .admin-platform-tabs::-webkit-scrollbar { height: 5px; }
 .admin-platform-tabs::-webkit-scrollbar-thumb { background: #F0B90B; border-radius: 10px; }
-.platform-tab {
-flex: 0 0 auto;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
-padding: 0.7rem 1rem;
-background: #0B0E11;
-border: 1px solid rgba(240,185,11,0.25);
-border-radius: 16px;
-cursor: pointer;
-transition: 0.2s;
-min-width: 82px;
-color: #EAECEF;
-font-family: 'Cairo', sans-serif;
-}
+.platform-tab { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0.7rem 1rem; background: #0B0E11; border: 1px solid rgba(240,185,11,0.25); border-radius: 16px; cursor: pointer; transition: 0.2s; min-width: 82px; color: #EAECEF; font-family: 'Cairo', sans-serif; }
 .platform-tab:hover { border-color: #F0B90B; transform: translateY(-2px); }
-.platform-tab.active {
-background: linear-gradient(135deg, #2EBD85, #22a06f);
-border-color: #2EBD85;
-color: #0B0E11;
-font-weight: 700;
-box-shadow: 0 6px 14px rgba(46,189,133,0.3);
-}
+.platform-tab.active { background: linear-gradient(135deg, #2EBD85, #22a06f); border-color: #2EBD85; color: #0B0E11; font-weight: 700; box-shadow: 0 6px 14px rgba(46,189,133,0.3); }
 .platform-tab i { font-size: 1.6rem; color: #F0B90B; transition: 0.2s; }
 .platform-tab.active i { color: #0B0E11; }
 .platform-tab .tab-name { font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
-.platform-tab .tab-count {
-font-size: 0.65rem;
-background: rgba(240,185,11,0.15);
-color: #F0B90B;
-padding: 1px 8px;
-border-radius: 20px;
-font-weight: 700;
-min-width: 24px;
-text-align: center;
-}
-.platform-tab.active .tab-count {
-background: rgba(11,14,17,0.25);
-color: #0B0E11;
-}
+.platform-tab .tab-count { font-size: 0.65rem; background: rgba(240,185,11,0.15); color: #F0B90B; padding: 1px 8px; border-radius: 20px; font-weight: 700; min-width: 24px; text-align: center; }
+.platform-tab.active .tab-count { background: rgba(11,14,17,0.25); color: #0B0E11; }
 .admin-sort-cell { display: inline-flex; gap: 3px; margin-left: 4px; }
-.admin-sort-btn {
-background: rgba(46,189,133,0.15) !important;
-color: #2EBD85 !important;
-border: none !important;
-width: 26px !important;
-height: 26px !important;
-padding: 0 !important;
-border-radius: 8px !important;
-cursor: pointer !important;
-font-size: 0.7rem !important;
-display: inline-flex !important;
-align-items: center !important;
-justify-content: center !important;
-transition: 0.15s !important;
-font-weight: 700 !important;
-}
+.admin-sort-btn { background: rgba(46,189,133,0.15) !important; color: #2EBD85 !important; border: none !important; width: 26px !important; height: 26px !important; padding: 0 !important; border-radius: 8px !important; cursor: pointer !important; font-size: 0.7rem !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; transition: 0.15s !important; font-weight: 700 !important; }
 .admin-sort-btn:hover:not(:disabled) { background: #2EBD85 !important; color: #0B0E11 !important; }
 .admin-sort-btn:disabled { opacity: 0.25 !important; cursor: not-allowed !important; }
 .admin-sort-placeholder { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; color: #444; font-size: 0.7rem; }
-.platform-tab:first-child {
-background: linear-gradient(135deg, #F0B90B, #d9a509);
-border-color: #F0B90B;
-color: #0B0E11;
-font-weight: 700;
-}
+.platform-tab:first-child { background: linear-gradient(135deg, #F0B90B, #d9a509); border-color: #F0B90B; color: #0B0E11; font-weight: 700; }
 .platform-tab:first-child i { color: #0B0E11; }
 .platform-tab:first-child .tab-count { background: rgba(11,14,17,0.2); color: #0B0E11; }
 .platform-tab:first-child.active { background: linear-gradient(135deg, #F0B90B, #FFD966); box-shadow: 0 6px 14px rgba(240,185,11,0.35); }
-
-/* ============ 🆕 SETTINGS MODAL ============ */
 .settings-modal { max-width: 700px; }
-.settings-section {
-background: #0B0E11;
-border-radius: 16px;
-padding: 1rem 1.2rem;
-border: 1px solid rgba(240,185,11,0.15);
-margin-bottom: 1rem;
-}
-.settings-section h3 {
-color: #F0B90B;
-font-size: 0.95rem;
-margin-bottom: 0.8rem;
-display: flex;
-align-items: center;
-gap: 8px;
-padding-bottom: 0.5rem;
-border-bottom: 1px dashed rgba(240,185,11,0.2);
-}
+.settings-section { background: #0B0E11; border-radius: 16px; padding: 1rem 1.2rem; border: 1px solid rgba(240,185,11,0.15); margin-bottom: 1rem; }
+.settings-section h3 { color: #F0B90B; font-size: 0.95rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px; padding-bottom: 0.5rem; border-bottom: 1px dashed rgba(240,185,11,0.2); }
 .settings-section h3 i { color: #2EBD85; }
 .settings-section .admin-field:last-child { margin-bottom: 0; }
 .settings-section textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-.settings-save-bar {
-position: sticky;
-bottom: -1.8rem;
-background: #1E2329;
-padding: 1rem 0 0;
-border-top: 1px solid rgba(240,185,11,0.2);
-margin-top: 1rem;
-display: flex;
-gap: 10px;
-justify-content: flex-end;
-z-index: 10;
-}
+.settings-save-bar { position: sticky; bottom: -1.8rem; background: #1E2329; padding: 1rem 0 0; border-top: 1px solid rgba(240,185,11,0.2); margin-top: 1rem; display: flex; gap: 10px; justify-content: flex-end; z-index: 10; }
 </style>
 </head>
 <body>
@@ -615,13 +522,10 @@ z-index: 10;
 </form>
 </div>
 </div>
-
-<!-- ============ 🆕 SETTINGS MODAL ============ -->
 <div class="admin-modal-bg" id="adminSettingsModalBg">
 <div class="admin-modal settings-modal">
 <h2><i class="fas fa-cog"></i> إعدادات الموقع</h2>
 <form id="adminSettingsForm">
-
 <div class="settings-section">
 <h3><i class="fas fa-globe"></i> معلومات الموقع الأساسية</h3>
 <div class="admin-field">
@@ -640,7 +544,6 @@ z-index: 10;
 <div class="admin-hint">النص اللي في البطاقة الترويجية (تقدر تكتب سطرين بالسطر الجديد)</div>
 </div>
 </div>
-
 <div class="settings-section">
 <h3><i class="fab fa-whatsapp"></i> أرقام التواصل</h3>
 <div class="admin-grid-2">
@@ -656,7 +559,6 @@ z-index: 10;
 </div>
 </div>
 </div>
-
 <div class="settings-section">
 <h3><i class="fas fa-chart-line"></i> الإحصائيات (الأرقام المعروضة)</h3>
 <div class="admin-grid-2">
@@ -672,16 +574,13 @@ z-index: 10;
 </div>
 </div>
 </div>
-
 <div class="settings-save-bar">
 <button type="button" class="admin-btn ghost" id="adminSettingsCancel"><i class="fas fa-times"></i> إلغاء</button>
 <button type="submit" class="admin-btn gold" id="adminSettingsSaveBtn"><i class="fas fa-save"></i> حفظ الإعدادات</button>
 </div>
-
 </form>
 </div>
 </div>
-
 <div class="admin-toast" id="adminToast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -722,8 +621,8 @@ if (!Array.isArray(favorites)) favorites = [];
 } catch(e) { favorites = []; }
 let globalServicesList = [];
 
-// 🆕 إعدادات الموقع الافتراضية (هيتم تحديثها من DB)
-let siteSettings = {
+// 🆕 إعدادات الموقع (متاحة عالمياً عشان الأدمن يقدر يوصلها)
+window.siteSettings = {
 site_name: 'SMCOLE',
 site_description: 'افضل وارخص موقع تزويد متابعين ومشاهدات',
 support_phone: '201154846407',
@@ -732,6 +631,7 @@ promo_text: 'عايز تكبر على السوشيال ميديا وتوصل ل�
 active_users_override: null,
 completed_orders_override: null
 };
+let siteSettings = window.siteSettings;
 
 function saveFavorites() { localStorage.setItem('smcole_favorites', JSON.stringify(favorites)); }
 function isFavorite(id) { return favorites.includes(id); }
@@ -798,8 +698,8 @@ localStorage.setItem('smcole_currency', currency);
 updateAllPrices();
 }
 
-// 🆕 تطبيق الإعدادات على الصفحة
-function applySiteSettings() {
+// 🆕 تطبيق الإعدادات (متاحة عالمياً)
+window.applySiteSettings = function() {
 const nameEl = document.getElementById('siteNameDisplay');
 const descEl = document.getElementById('siteDescriptionDisplay');
 const promoEl = document.getElementById('promoTextDisplay');
@@ -815,16 +715,25 @@ promoEl.innerHTML = lines[0] + '<br><span>' + lines.slice(1).join('<br>') + '</s
 promoEl.innerHTML = '<span>' + lines[0] + '</span>';
 }
 }
-// نحدث عنوان الصفحة
 if (siteSettings.site_name) {
 document.title = siteSettings.site_name + ' | ' + (siteSettings.site_description || '');
 }
+// تطبيق الأرقام المخصصة
+const usersSpan = document.getElementById('usersCount');
+const ordersSpan = document.getElementById('ordersCount');
+if (siteSettings.active_users_override !== null && siteSettings.active_users_override !== undefined && usersSpan) {
+usersSpan.innerText = siteSettings.active_users_override.toLocaleString('en-US');
 }
+if (siteSettings.completed_orders_override !== null && siteSettings.completed_orders_override !== undefined && ordersSpan) {
+ordersSpan.innerText = siteSettings.completed_orders_override.toLocaleString('en-US');
+}
+};
 
-// 🆕 تحميل الإعدادات من DB
+// 🆕 تحميل الإعدادات من DB (متاحة عالمياً)
 window.loadSiteSettings = async function() {
 try {
-const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+const sb = getSupabase();
+const { data, error } = await sb.from('site_settings').select('*').eq('id', 1).single();
 if (error) { console.warn('Settings load error:', error.message); return false; }
 if (!data) return false;
 siteSettings.site_name = data.site_name || siteSettings.site_name;
@@ -837,6 +746,11 @@ siteSettings.completed_orders_override = (data.completed_orders_override !== nul
 return true;
 } catch(e) { console.warn('Settings load failed:', e); return false; }
 };
+
+// 🆕 تطبيق الإعدادات أول ما الصفحة تحمل (بدون انتظار)
+document.addEventListener('DOMContentLoaded', function() {
+window.loadSiteSettings().then(() => window.applySiteSettings());
+});
 
 function sendOrder(button) {
 const card = button.closest('.service-card');
@@ -861,7 +775,6 @@ if (currentCurrency === 'USD') { formattedTotal = (totalInEGP / exchangeRate).to
 else { formattedTotal = Number.isInteger(totalInEGP) ? totalInEGP.toString() : totalInEGP.toFixed(2); }
 const message = '📋 طلب شراء خدمة : ' + serviceName + '\n🔢 رقم الخدمة : ' + serviceNumber + '\n📊 الكمية المطلوبة : ' + quantity + ' ' + unit + '\n💰 السعر الإجمالي : ' + formattedTotal + ' ' + currencyName + '\n🔗 رابط الهدف : ' + link + '\n\n🌐 *لطلب خدمات أخرى:*\nhttps://smcole.com\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.';
 if (window.registerNewOrder) window.registerNewOrder();
-// 🆕 استخدام رقم الشراء من الإعدادات
 const purchasePhone = siteSettings.purchase_phone || '201154846407';
 window.open('https://wa.me/' + purchasePhone + '?text=' + encodeURIComponent(message), '_blank');
 }
@@ -881,15 +794,6 @@ const ordersSpan = document.getElementById('ordersCount');
 function updateUI(users, orders) {
 if (users !== undefined && usersSpan) usersSpan.innerText = users.toLocaleString('en-US');
 if (orders !== undefined && ordersSpan) ordersSpan.innerText = orders.toLocaleString('en-US');
-}
-// 🆕 تطبيق الأرقام المخصصة من الإعدادات (لو موجودة)
-function applyOverrideNumbers() {
-if (siteSettings.active_users_override !== null && siteSettings.active_users_override !== undefined && usersSpan) {
-usersSpan.innerText = siteSettings.active_users_override.toLocaleString('en-US');
-}
-if (siteSettings.completed_orders_override !== null && siteSettings.completed_orders_override !== undefined && ordersSpan) {
-ordersSpan.innerText = siteSettings.completed_orders_override.toLocaleString('en-US');
-}
 }
 async function incrementOrderCounter() {
 try { const { error } = await supabase.rpc('increment_orders'); if (error) throw error; }
@@ -915,14 +819,14 @@ try {
 const { data: usersData } = await supabase.from('active_users_counter').select('count').eq('id', 1).single();
 const { data: ordersData } = await supabase.from('orders_counter').select('count').eq('id', 1).single();
 updateUI(usersData?.count, ordersData?.count);
-applyOverrideNumbers();
+// 🆕 نعيد تطبيق الإعدادات (لو الـ override موجود، هياخد الأولوية)
+setTimeout(() => window.applySiteSettings(), 100);
 if (!sessionStorage.getItem('smcole_visited_real')) {
 await incrementUserCounter();
 sessionStorage.setItem('smcole_visited_real', 'true');
 }
 supabase.channel('realtime-counters')
 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'active_users_counter' }, (payload) => {
-// لو مفيش override، نحدث تلقائياً
 if (siteSettings.active_users_override === null || siteSettings.active_users_override === undefined) {
 if (payload.new) updateUI(payload.new.count, undefined);
 }
@@ -982,7 +886,6 @@ favoritesLink.addEventListener('click', (e) => { e.preventDefault(); showPage(fa
 paymentMethodBtn.addEventListener('click', () => { showPage(paymentPage); });
 supportDropdownLink.addEventListener('click', (e) => {
 e.preventDefault();
-// 🆕 استخدام رقم الدعم من الإعدادات
 const supportPhone = siteSettings.support_phone || '201154846407';
 window.open('https://wa.me/' + supportPhone + '?text=مرحباً، أحتاج مساعدة ودعم فني بخصوص خدمات smcole.', '_blank');
 dropdown.classList.remove('show-dropdown');
@@ -1003,7 +906,6 @@ showHomePage();
 });
 });
 document.getElementById('directSupportBtn').addEventListener('click', () => {
-// 🆕 استخدام رقم الدعم من الإعدادات
 const supportPhone = siteSettings.support_phone || '201154846407';
 window.open('https://wa.me/' + supportPhone + '?text=مرحباً، أحتاج مساعدة ودعم بخصوص خدمات smcole.', '_blank');
 });
@@ -1298,6 +1200,7 @@ btnNext.addEventListener('click', () => sliderDiv.scrollBy({ left: scrollStep, b
 sectionsContainer.appendChild(section);
 }
 }
+window.buildAllSections = buildAllSections;
 window.loadServicesFromDB = async function() {
 try {
 const { data, error } = await supabase.from('services').select('*')
@@ -1348,27 +1251,23 @@ return true;
 };
 (async () => {
 try {
-// 🆕 نحمّل الإعدادات أولاً ونطبقها
 await window.loadSiteSettings();
-applySiteSettings();
-// نبني الأقسام بالافتراضي
+window.applySiteSettings();
 buildAllSections();
 fetchExchangeRate();
-// بعدها نحاول نحدّث من DB
 const loaded = await window.loadServicesFromDB();
 if (loaded === true) {
 buildAllSections();
 }
-// نعيد تطبيق الإعدادات بعد البناء (في حالة اتعمل reset)
-applySiteSettings();
+window.applySiteSettings();
 } catch(e) {
-try { buildAllSections(); fetchExchangeRate(); applySiteSettings(); } catch(err) {}
+try { buildAllSections(); fetchExchangeRate(); window.applySiteSettings(); } catch(err) {}
 }
 })();
 } catch(err) {
 const overlay = document.getElementById('welcomeOverlay');
 if (overlay) overlay.style.display = 'none';
-try { buildAllSections(); fetchExchangeRate(); applySiteSettings(); } catch(e) {}
+try { buildAllSections(); fetchExchangeRate(); window.applySiteSettings(); } catch(e) {}
 }
 })();
 const currencyCircle = document.getElementById('currencyCircle');
@@ -1492,7 +1391,6 @@ document.getElementById('adminLoginPage').classList.remove('active');
 window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ============ PLATFORM TABS ============
 function renderPlatformTabs() {
 const container = document.getElementById('adminPlatformTabs');
 if (!container) return;
@@ -1514,7 +1412,6 @@ container.appendChild(tab);
 }
 }
 
-// ============ RENDER TABLE ============
 function renderAdminTable() {
 const table = document.getElementById('adminServicesTable');
 const empty = document.getElementById('adminEmpty');
@@ -1577,7 +1474,6 @@ tbody.appendChild(tr);
 });
 }
 
-// ============ LOAD ADMIN SERVICES ============
 window.loadAdminServices = async function() {
 const loader = document.getElementById('adminTableLoader');
 const table = document.getElementById('adminServicesTable');
@@ -1606,7 +1502,6 @@ if (loader) { loader.style.display = 'block'; loader.innerText = '❌ حدث خ�
 }
 };
 
-// ============ SORT ============
 window.__adminSort = async function(id, direction) {
 if (activePlatform === 'all') return;
 const platformServices = allServices.filter(s => s.platform === activePlatform).slice();
@@ -1632,7 +1527,6 @@ toast('خطأ في الترتيب: ' + e.message, true);
 }
 };
 
-// ============ MODAL & ACTIONS ============
 const modalBg = document.getElementById('adminModalBg');
 const form = document.getElementById('adminServiceForm');
 document.getElementById('adminAddBtn').addEventListener('click', () => {
@@ -1782,23 +1676,22 @@ btn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 toast('✅ تم حفظ الإعدادات بنجاح');
 settingsModalBg.classList.remove('show');
-// 🆕 نعيد تحميل الإعدادات وتطبيقها فوراً
-if (window.loadSiteSettings && window.applySiteSettings) {
-await window.loadSiteSettings();
+
+// 🆕 التصليح المهم: نحدّث siteSettings عالمياً + نطبقها فوراً على الصفحة
+if (window.siteSettings) {
+window.siteSettings.site_name = payload.site_name;
+window.siteSettings.site_description = payload.site_description;
+window.siteSettings.promo_text = payload.promo_text;
+window.siteSettings.support_phone = payload.support_phone;
+window.siteSettings.purchase_phone = payload.purchase_phone;
+window.siteSettings.active_users_override = payload.active_users_override;
+window.siteSettings.completed_orders_override = payload.completed_orders_override;
+if (window.applySiteSettings) {
 window.applySiteSettings();
-// تحديث الأرقام
-const usersSpan = document.getElementById('usersCount');
-const ordersSpan = document.getElementById('ordersCount');
-if (siteSettings.active_users_override !== null && siteSettings.active_users_override !== undefined && usersSpan) {
-usersSpan.innerText = siteSettings.active_users_override.toLocaleString('en-US');
-}
-if (siteSettings.completed_orders_override !== null && siteSettings.completed_orders_override !== undefined && ordersSpan) {
-ordersSpan.innerText = siteSettings.completed_orders_override.toLocaleString('en-US');
 }
 }
 });
 
-// ============ SESSION CHECK ============
 (async () => {
 try {
 const { data: { session } } = await supabase.auth.getSession();

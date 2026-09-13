@@ -12,7 +12,6 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0B0E11">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="smcole">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -514,6 +513,8 @@ document.getElementById('adminPanelPage').classList.remove('active');
 window.openAdminPanel = function(user) {
 document.getElementById('adminLoginPage').classList.remove('active');
 document.getElementById('adminPanelPage').classList.add('active');
+var ue = document.getElementById('adminUserEmail');
+if (ue) ue.innerText = user.email;
 if (window.loadAdminServices) window.loadAdminServices();
 };
 </script><script>
@@ -781,6 +782,7 @@ const others = services.filter(s => !followers.includes(s));
 followers.sort((a,b) => a.pricePerThousand - b.pricePerThousand);
 return [...followers, ...others];
 }
+// ✅ دالة تحسب الحد الأدنى والزيادة حسب نوع الخدمة
 function getMinLimitAndStep(service) {
 const priceBase = parseInt(service.priceBase) || 1000;
 if (priceBase <= 10) return { min: 1, step: 1 };
@@ -887,9 +889,15 @@ let serviceCounter = 1;
 function createServiceCard(service, serviceNumber) {
 const card = document.createElement('div'); card.className = 'service-card';
 const priceBase = parseInt(service.priceBase) || 1000;
+let minLimit = 1000, stepValue = 500;
+if (service.minLimit !== undefined && service.minLimit !== null && parseInt(service.minLimit) > 0) {
+minLimit = parseInt(service.minLimit);
+stepValue = parseInt(service.stepValue) || 1;
+} else {
 const defaults = getMinLimitAndStep(service);
-let minLimit = service.minLimit !== undefined && service.minLimit !== null && parseInt(service.minLimit) > 1 ? parseInt(service.minLimit) : defaults.min;
-let stepValue = service.stepValue !== undefined && service.stepValue !== null && parseInt(service.stepValue) > 1 ? parseInt(service.stepValue) : defaults.step;
+minLimit = defaults.min;
+stepValue = defaults.step;
+}
 if (priceBase <= 10) { minLimit = 1; stepValue = 1; }
 card.setAttribute('data-unit', service.unit);
 card.setAttribute('data-price-per-thousand', service.pricePerThousand);
@@ -1036,7 +1044,7 @@ btnNext.addEventListener('click', () => sliderDiv.scrollBy({ left: scrollStep, b
 sectionsContainer.appendChild(section);
 }
 }
-function buildSeedData() {
+window.buildPlatformSeedData = function() {
 const SEED = [];
 for (const key of Object.keys(platformData)) {
 for (const svc of platformData[key].services) {
@@ -1046,47 +1054,34 @@ else if (svc.name.indexOf('لايك') !== -1) svcType = 'likes';
 else if (svc.name.indexOf('مشاهد') !== -1) svcType = 'views';
 else if (svc.name.indexOf('اعضاء') !== -1) svcType = 'members';
 const defaults = getMinLimitAndStep(svc);
-SEED.push({
-platform: key,
-type: svcType,
-name: svc.name,
-unit: svc.unit,
-price_per_thousand: svc.pricePerThousand,
-price_base: svc.priceBase || 1000,
-guarantee: svc.guarantee || 'بدون ضمان',
-icon: svc.icon || 'fas fa-star',
-min_limit: defaults.min,
-step_value: defaults.step,
-is_comment: svc.isComment === true,
-is_hidden: false
-});
+SEED.push({ platform: key, type: svcType, name: svc.name, unit: svc.unit, price_per_thousand: svc.pricePerThousand, price_base: svc.priceBase || 1000, guarantee: svc.guarantee || 'بدون ضمان', icon: svc.icon || 'fas fa-star', min_limit: defaults.min, step_value: defaults.step, is_comment: svc.isComment === true, is_hidden: false });
 }
 }
 return SEED;
-}
-window.seedDatabaseIfEmpty = async function() {
+};
+window.autoSeedIfEmpty = async function() {
 try {
 const { data: checkData, error: checkError } = await supabase.from('services').select('id').limit(1);
-if (checkError) { console.error('Check error:', checkError); return false; }
+if (checkError) { console.error('Seed check error:', checkError); return false; }
 if (checkData && checkData.length > 0) return false;
-const SEED = buildSeedData();
+const SEED = window.buildPlatformSeedData();
 let success = 0;
 for (let i = 0; i < SEED.length; i += 10) {
 const batch = SEED.slice(i, i + 10);
 const { error } = await supabase.from('services').insert(batch);
-if (error) { console.error('Insert error:', error); return false; }
+if (error) { console.error('Seed error:', error); return false; }
 success += batch.length;
 }
-console.log('Seeded ' + success + ' services');
+console.log('Auto-seeded ' + success + ' services');
 return true;
-} catch(e) { console.error('Seed failed:', e); return false; }
+} catch(e) { console.error('Auto seed failed:', e); return false; }
 };
 window.loadServicesFromDB = async function() {
 try {
 const { data, error } = await supabase.from('services').select('*')
 .order('sort_order', { ascending: true })
 .order('price_per_thousand', { ascending: true });
-if (error) return false;
+if (error) { console.error('Load error:', error); return false; }
 if (!data || data.length === 0) return false;
 const grouped = {};
 for (const key of Object.keys(platformData)) grouped[key] = [];
@@ -1098,6 +1093,7 @@ let minLimit = parseInt(s.min_limit);
 let stepValue = parseInt(s.step_value);
 if (parseInt(s.price_base) > 10 && (!minLimit || minLimit <= 1)) minLimit = defaults.min;
 if (!stepValue || stepValue <= 1) stepValue = defaults.step;
+if (parseInt(s.price_base) <= 10) { minLimit = 1; stepValue = 1; }
 grouped[s.platform].push({
 name: s.name,
 unit: s.unit,
@@ -1115,16 +1111,16 @@ for (const key of Object.keys(platformData)) {
 platformData[key].services = sortFollowers(grouped[key] || []);
 }
 return true;
-} catch(e) { return false; }
+} catch(e) { console.error('Load failed:', e); return false; }
 };
 (async () => {
 try {
-// ✅ مش بنعمل seed من هنا (الصفحة الرئيسية) لأن المستخدم مش مسجل دخول، والـ RLS هيرفض
-// الـ seed هيحصل من لوحة الأدمن لما تسجل دخول
+await window.autoSeedIfEmpty();
 await window.loadServicesFromDB();
 buildAllSections();
 fetchExchangeRate();
 } catch(e) {
+console.error('Init error:', e);
 try { buildAllSections(); fetchExchangeRate(); } catch(err) {}
 }
 })();
@@ -1151,22 +1147,18 @@ currencyDropdown.classList.remove('show-currency-dropdown');
 document.addEventListener('click', (event) => {
 if (!currencyCircle.contains(event.target) && !currencyDropdown.contains(event.target)) currencyDropdown.classList.remove('show-currency-dropdown');
 });
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-window.addEventListener('appinstalled', () => { deferredPrompt = null; });
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+e.preventDefault();
+deferredPrompt = e;
+const installBtn = document.getElementById('installPwaBtn');
+if (installBtn) installBtn.style.display = 'inline-flex';
+});
 document.getElementById('installPwaBtn')?.addEventListener('click', async () => {
 if (deferredPrompt) {
 deferredPrompt.prompt();
-try { const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') deferredPrompt = null; } catch(e) {}
-} else {
-const ua = navigator.userAgent.toLowerCase();
-const isIOS = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-const isAndroid = /android/.test(ua);
-let msg = '';
-if (isIOS) msg = '📱 لتثبيت التطبيق على الآيفون:\n\n1. افتح الموقع في Safari\n2. اضغط زر المشاركة 📤\n3. اختار "إضافة إلى الشاشة الرئيسية" ➕\n4. اضغط "إضافة"';
-else if (isAndroid) msg = '📱 لتثبيت التطبيق على الأندرويد:\n\n1. افتح الموقع في Chrome\n2. اضغط النقاط الثلاث ⋮\n3. اختار "تثبيت التطبيق"\n4. اضغط "تثبيت"';
-else msg = '💻 لتثبيت التطبيق على الكمبيوتر:\n\n1. افتح الموقع في Chrome أو Edge\n2. اضغط أيقونة التثبيت ⊕ في شريط العنوان\n3. أو من قائمة ⋮ اختار "تثبيت smcole"';
-alert(msg);
+const { outcome } = await deferredPrompt.userChoice;
+if (outcome === 'accepted') deferredPrompt = null;
 }
 });
 if ('serviceWorker' in navigator) {
@@ -1193,11 +1185,13 @@ iconSelect.addEventListener('change', () => {
 iconPreview.innerHTML = '<i class="' + iconSelect.value + '"></i>';
 });
 }
+// ✅ نموذج الإضافة: يضبط الحد الأدنى والزيادة حسب النوع تلقائياً
 const typeSelect = document.getElementById('adminSvcType');
 const minLimitInput = document.getElementById('adminSvcMinLimit');
 const stepValueInput = document.getElementById('adminSvcStep');
 const priceBaseSelect = document.getElementById('adminSvcPriceBase');
 function applyDefaultsByType() {
+if (!typeSelect || !priceBaseSelect || !minLimitInput || !stepValueInput) return;
 const t = typeSelect.value;
 const pb = parseInt(priceBaseSelect.value) || 1000;
 if (pb <= 10) { minLimitInput.value = 1; stepValueInput.value = 1; return; }
@@ -1205,7 +1199,7 @@ if (t === 'comments') { minLimitInput.value = 50; stepValueInput.value = 10; }
 else if (t === 'likes') { minLimitInput.value = 250; stepValueInput.value = 50; }
 else { minLimitInput.value = 1000; stepValueInput.value = 500; }
 }
-if (typeSelect && minLimitInput && stepValueInput && priceBaseSelect) {
+if (typeSelect && priceBaseSelect) {
 typeSelect.addEventListener('change', applyDefaultsByType);
 priceBaseSelect.addEventListener('change', applyDefaultsByType);
 }
@@ -1247,11 +1241,11 @@ loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحمي
 table.style.display = 'none';
 empty.style.display = 'none';
 try {
-// ✅ أهم خطوة: لو الداتابيس فاضية، نعمل seed (هنا المستخدم مسجل دخول فالـ RLS هيسمح)
+// ✅ لو الداتابيس فاضية، نعمل seed (إنت دلوقتي مسجل دخول فالـ RLS هيسمح)
 const { data: checkData } = await supabase.from('services').select('id').limit(1);
 if (!checkData || checkData.length === 0) {
 loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تجهيز الخدمات لأول مرة...';
-if (window.seedDatabaseIfEmpty) await window.seedDatabaseIfEmpty();
+if (window.autoSeedIfEmpty) await window.autoSeedIfEmpty();
 }
 const { data, error } = await supabase.from('services').select('*')
 .order('platform').order('sort_order').order('price_per_thousand');
@@ -1274,6 +1268,7 @@ const defaults = getMinLimitAndStep({ unit: s.unit, name: s.name, isComment: s.i
 let displayMinLimit = parseInt(s.min_limit);
 if (priceBase > 10 && (!displayMinLimit || displayMinLimit <= 1)) displayMinLimit = defaults.min;
 if (!displayMinLimit) displayMinLimit = defaults.min;
+if (priceBase <= 10) displayMinLimit = 1;
 const isHidden = s.is_hidden === true;
 const statusBadge = isHidden ? '<span class="admin-badge hidden">👁️‍🗨️ مخفية</span>' : '<span class="admin-badge green">✅ ظاهرة</span>';
 const hideBtn = isHidden
@@ -1322,6 +1317,7 @@ let displayStepValue = parseInt(s.step_value);
 if (priceBase > 10 && (!displayMinLimit || displayMinLimit <= 1)) displayMinLimit = defaults.min;
 if (!displayStepValue || displayStepValue <= 1) displayStepValue = defaults.step;
 if (!displayMinLimit) displayMinLimit = defaults.min;
+if (priceBase <= 10) { displayMinLimit = 1; displayStepValue = 1; }
 document.getElementById('adminSvcMinLimit').value = displayMinLimit;
 document.getElementById('adminSvcStep').value = displayStepValue;
 document.getElementById('adminSvcIsComment').checked = s.is_comment === true;

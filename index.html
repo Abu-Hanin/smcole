@@ -12,6 +12,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0B0E11">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="smcole">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -471,11 +472,13 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-grid-2">
 <div class="admin-field">
 <label>الحد الأدنى للكمية</label>
-<input type="number" id="adminSvcMinLimit" value="1" min="1">
+<input type="number" id="adminSvcMinLimit" value="1000" min="1">
+<div class="admin-hint">افتراضي: التعليقات 50 / اللايكات 250 / الباقي 1000</div>
 </div>
 <div class="admin-field">
 <label>مقدار الزيادة (Step)</label>
-<input type="number" id="adminSvcStep" value="1" min="1">
+<input type="number" id="adminSvcStep" value="500" min="1">
+<div class="admin-hint">افتراضي: التعليقات 10 / اللايكات 50 / الباقي 500</div>
 </div>
 </div>
 <div class="admin-field">
@@ -604,7 +607,7 @@ const urlInput = card.querySelector('.url-input');
 const link = urlInput ? urlInput.value.trim() : '';
 let quantity = quantityInput ? parseInt(quantityInput.value.trim()) : NaN;
 if (!link) { alert("⚠️ الرابط مطلوب!"); return; }
-const minLimit = parseInt(card.getAttribute('data-min-limit')) || 1;
+const minLimit = parseInt(card.getAttribute('data-min-limit')) || 1000;
 if (isNaN(quantity) || quantity < minLimit) { alert('⚠️ الكمية غير صحيحة. الحد الأدنى ' + minLimit); return; }
 const pricePerBase = parseFloat(card.getAttribute('data-price-per-thousand'));
 const priceBase = parseInt(card.getAttribute('data-price-base')) || 1000;
@@ -780,6 +783,14 @@ const others = services.filter(s => !followers.includes(s));
 followers.sort((a,b) => a.pricePerThousand - b.pricePerThousand);
 return [...followers, ...others];
 }
+// دالة تحديد الحد الأدنى والزيادة حسب نوع الخدمة (زي الكود الأصلي)
+function getMinLimitAndStep(service) {
+const priceBase = parseInt(service.priceBase) || 1000;
+if (priceBase <= 10) return { min: 1, step: 1 };
+if (service.isComment === true || service.unit === "تعليق") return { min: 50, step: 10 };
+if (service.unit === "لايك" || (service.name && service.name.indexOf("لايك") !== -1)) return { min: 250, step: 50 };
+return { min: 1000, step: 500 };
+}
 const platformData = {
 facebook: { id: 'facebook', title: '<i class="fab fa-facebook-f"></i> فيسبوك - خدمات الزيادة', services: sortFollowers([
 { name: "تزويد متابعين فيسبوك بدون ضمان", unit: "متابع", pricePerThousand: 100, priceBase: 1000, guarantee: "بدون ضمان", icon: "fab fa-facebook-f" },
@@ -877,13 +888,15 @@ let serviceCounter = 1;
 function createServiceCard(service, serviceNumber) {
 const card = document.createElement('div'); card.className = 'service-card';
 const priceBase = parseInt(service.priceBase) || 1000;
-let minLimit = priceBase, stepValue = Math.max(1, Math.floor(priceBase / 10));
+let minLimit, stepValue;
 if (service.minLimit !== undefined && service.minLimit !== null && parseInt(service.minLimit) > 0) {
 minLimit = parseInt(service.minLimit);
 stepValue = parseInt(service.stepValue) || 1;
-} else if (service.isComment === true) { minLimit = 50; stepValue = 10; }
-else if (service.name.includes("لايك") || service.unit === "لايك") { minLimit = 250; stepValue = 50; }
-if (priceBase <= 10) { minLimit = 1; stepValue = 1; }
+} else {
+const defaults = getMinLimitAndStep(service);
+minLimit = defaults.min;
+stepValue = defaults.step;
+}
 card.setAttribute('data-unit', service.unit);
 card.setAttribute('data-price-per-thousand', service.pricePerThousand);
 card.setAttribute('data-price-base', priceBase);
@@ -1029,6 +1042,7 @@ btnNext.addEventListener('click', () => sliderDiv.scrollBy({ left: scrollStep, b
 sectionsContainer.appendChild(section);
 }
 }
+// دالة تجهيز البيانات الأساسية مع الحد الأدنى والزيادة الصح حسب نوع الخدمة
 window.buildPlatformSeedData = function() {
 const SEED = [];
 for (const key of Object.keys(platformData)) {
@@ -1038,7 +1052,22 @@ if (svc.isComment) svcType = 'comments';
 else if (svc.name.indexOf('لايك') !== -1) svcType = 'likes';
 else if (svc.name.indexOf('مشاهد') !== -1) svcType = 'views';
 else if (svc.name.indexOf('اعضاء') !== -1) svcType = 'members';
-SEED.push({ platform: key, type: svcType, name: svc.name, unit: svc.unit, price_per_thousand: svc.pricePerThousand, price_base: svc.priceBase || 1000, guarantee: svc.guarantee || 'بدون ضمان', icon: svc.icon || 'fas fa-star', min_limit: svc.minLimit || 1, step_value: svc.stepValue || 1, is_comment: svc.isComment === true, is_hidden: false });
+// ✅ هنا التصليح: تحديد الحد الأدنى والزيادة حسب نوع الخدمة زي الكود الأصلي
+const defaults = getMinLimitAndStep(svc);
+SEED.push({
+platform: key,
+type: svcType,
+name: svc.name,
+unit: svc.unit,
+price_per_thousand: svc.pricePerThousand,
+price_base: svc.priceBase || 1000,
+guarantee: svc.guarantee || 'بدون ضمان',
+icon: svc.icon || 'fas fa-star',
+min_limit: defaults.min,
+step_value: defaults.step,
+is_comment: svc.isComment === true,
+is_hidden: false
+});
 }
 }
 return SEED;
@@ -1125,18 +1154,32 @@ currencyDropdown.classList.remove('show-currency-dropdown');
 document.addEventListener('click', (event) => {
 if (!currencyCircle.contains(event.target) && !currencyDropdown.contains(event.target)) currencyDropdown.classList.remove('show-currency-dropdown');
 });
-let deferredPrompt;
+let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
 e.preventDefault();
 deferredPrompt = e;
-const installBtn = document.getElementById('installPwaBtn');
-if (installBtn) installBtn.style.display = 'inline-flex';
 });
+window.addEventListener('appinstalled', () => { deferredPrompt = null; });
 document.getElementById('installPwaBtn')?.addEventListener('click', async () => {
 if (deferredPrompt) {
 deferredPrompt.prompt();
+try {
 const { outcome } = await deferredPrompt.userChoice;
 if (outcome === 'accepted') deferredPrompt = null;
+} catch(e) {}
+} else {
+const ua = navigator.userAgent.toLowerCase();
+const isIOS = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isAndroid = /android/.test(ua);
+let msg = '';
+if (isIOS) {
+msg = '📱 لتثبيت التطبيق على الآيفون:\n\n1. افتح الموقع في متصفح Safari\n2. اضغط على زر المشاركة 📤\n3. انزل لتحت واختار "إضافة إلى الشاشة الرئيسية" ➕\n4. اضغط "إضافة"';
+} else if (isAndroid) {
+msg = '📱 لتثبيت التطبيق على الأندرويد:\n\n1. افتح الموقع في متصفح Chrome\n2. اضغط على النقاط الثلاث ⋮\n3. اختار "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية"\n4. اضغط "تثبيت"';
+} else {
+msg = '💻 لتثبيت التطبيق على الكمبيوتر:\n\n1. افتح الموقع في Chrome أو Edge\n2. اضغط على أيقونة التثبيت ⊕ في شريط العنوان\n3. أو من قائمة المتصفح ⋮ اختار "تثبيت smcole"\n\n💡 لو مش لاقي الأيقونة، اعمل تحديث للصفحة (F5)';
+}
+alert(msg);
 }
 });
 if ('serviceWorker' in navigator) {
@@ -1161,6 +1204,17 @@ const iconPreview = document.getElementById('adminIconPreview');
 if (iconSelect && iconPreview) {
 iconSelect.addEventListener('change', () => {
 iconPreview.innerHTML = '<i class="' + iconSelect.value + '"></i>';
+});
+}
+const typeSelect = document.getElementById('adminSvcType');
+const minLimitInput = document.getElementById('adminSvcMinLimit');
+const stepValueInput = document.getElementById('adminSvcStep');
+if (typeSelect && minLimitInput && stepValueInput) {
+typeSelect.addEventListener('change', () => {
+const t = typeSelect.value;
+if (t === 'comments') { minLimitInput.value = 50; stepValueInput.value = 10; }
+else if (t === 'likes') { minLimitInput.value = 250; stepValueInput.value = 50; }
+else { minLimitInput.value = 1000; stepValueInput.value = 500; }
 });
 }
 document.getElementById('adminBackHome').addEventListener('click', () => {
@@ -1223,7 +1277,7 @@ const statusBadge = isHidden ? '<span class="admin-badge hidden">👁️‍🗨�
 const hideBtn = isHidden
 ? '<button class="admin-show-btn" onclick="__adminToggleHide(' + s.id + ', true)"><i class="fas fa-eye"></i> إظهار</button>'
 : '<button class="admin-hide-btn" onclick="__adminToggleHide(' + s.id + ', false)"><i class="fas fa-eye-slash"></i> إخفاء</button>';
-tr.innerHTML = '<td>' + (i + 1) + '</td><td><span class="admin-badge gold">' + (PLATFORM_AR[s.platform] || s.platform) + '</span></td><td>' + s.name + '</td><td>' + (TYPE_AR[s.type] || s.type || '-') + '</td><td>' + s.unit + '</td><td style="color:#2EBD85; font-weight:700;">' + s.price_per_thousand + ' <span style="font-size:0.7rem; color:#aaa;">(' + baseLabel + ')</span></td><td>' + (s.guarantee || '-') + '</td><td>' + (s.min_limit || 1) + '</td><td>' + statusBadge + '</td><td class="admin-actions-cell"><button class="admin-edit-btn" onclick="__adminEdit(' + s.id + ')"><i class="fas fa-pen"></i> تعديل</button>' + hideBtn + '<button class="admin-del-btn" onclick="__adminDelete(' + s.id + ')"><i class="fas fa-trash"></i> حذف</button></td>';
+tr.innerHTML = '<td>' + (i + 1) + '</td><td><span class="admin-badge gold">' + (PLATFORM_AR[s.platform] || s.platform) + '</span></td><td>' + s.name + '</td><td>' + (TYPE_AR[s.type] || s.type || '-') + '</td><td>' + s.unit + '</td><td style="color:#2EBD85; font-weight:700;">' + s.price_per_thousand + ' <span style="font-size:0.7rem; color:#aaa;">(' + baseLabel + ')</span></td><td>' + (s.guarantee || '-') + '</td><td>' + (s.min_limit || 1000) + '</td><td>' + statusBadge + '</td><td class="admin-actions-cell"><button class="admin-edit-btn" onclick="__adminEdit(' + s.id + ')"><i class="fas fa-pen"></i> تعديل</button>' + hideBtn + '<button class="admin-del-btn" onclick="__adminDelete(' + s.id + ')"><i class="fas fa-trash"></i> حذف</button></td>';
 tbody.appendChild(tr);
 });
 } catch(e) {
@@ -1236,8 +1290,8 @@ const form = document.getElementById('adminServiceForm');
 document.getElementById('adminAddBtn').addEventListener('click', () => {
 form.reset();
 document.getElementById('adminSvcId').value = '';
-document.getElementById('adminSvcMinLimit').value = 1;
-document.getElementById('adminSvcStep').value = 1;
+document.getElementById('adminSvcMinLimit').value = 1000;
+document.getElementById('adminSvcStep').value = 500;
 document.getElementById('adminSvcIcon').value = 'fas fa-star';
 document.getElementById('adminSvcPriceBase').value = '1000';
 if (iconPreview) iconPreview.innerHTML = '<i class="fas fa-star"></i>';
@@ -1259,8 +1313,8 @@ document.getElementById('adminSvcPriceBase').value = String(parseInt(s.price_bas
 document.getElementById('adminSvcGuarantee').value = s.guarantee || 'بدون ضمان';
 document.getElementById('adminSvcIcon').value = s.icon || 'fas fa-star';
 if (iconPreview) iconPreview.innerHTML = '<i class="' + (s.icon || 'fas fa-star') + '"></i>';
-document.getElementById('adminSvcMinLimit').value = s.min_limit || 1;
-document.getElementById('adminSvcStep').value = s.step_value || 1;
+document.getElementById('adminSvcMinLimit').value = s.min_limit || 1000;
+document.getElementById('adminSvcStep').value = s.step_value || 500;
 document.getElementById('adminSvcIsComment').checked = s.is_comment === true;
 document.getElementById('adminModalTitle').innerHTML = '<i class="fas fa-pen"></i> تعديل الخدمة';
 modalBg.classList.add('show');
@@ -1277,8 +1331,8 @@ price_per_thousand: parseFloat(document.getElementById('adminSvcPrice').value),
 price_base: parseInt(document.getElementById('adminSvcPriceBase').value) || 1000,
 guarantee: document.getElementById('adminSvcGuarantee').value,
 icon: document.getElementById('adminSvcIcon').value.trim() || 'fas fa-star',
-min_limit: parseInt(document.getElementById('adminSvcMinLimit').value) || 1,
-step_value: parseInt(document.getElementById('adminSvcStep').value) || 1,
+min_limit: parseInt(document.getElementById('adminSvcMinLimit').value) || 1000,
+step_value: parseInt(document.getElementById('adminSvcStep').value) || 500,
 is_comment: document.getElementById('adminSvcIsComment').checked
 };
 const btn = document.getElementById('adminSaveBtn');

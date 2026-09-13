@@ -168,7 +168,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .admin-stat-box .lbl { color: #B7BDC6; font-size: 0.75rem; }
 .admin-stat-box .val { color: #2EBD85; font-size: 1.6rem; font-weight: 800; direction: ltr; }
 .admin-table-wrap { background: #1E2329; border-radius: 20px; border: 1px solid rgba(240,185,11,0.2); overflow-x: auto; }
-.admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 1050px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 1100px; }
 .admin-table th, .admin-table td { padding: 12px 14px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .admin-table th { background: #13171D; color: #F0B90B; font-weight: 700; font-size: 0.8rem; }
 .admin-table tr:hover td { background: rgba(46,189,133,0.05); }
@@ -176,7 +176,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .admin-badge.gold { background: rgba(240,185,11,0.15); color: #F0B90B; }
 .admin-badge.green { background: rgba(46,189,133,0.2); color: #2EBD85; }
 .admin-badge.hidden { background: rgba(232,62,92,0.15); color: #e83e5c; }
-.admin-actions-cell { display: flex; gap: 5px; flex-wrap: wrap; }
+.admin-actions-cell { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
 .admin-actions-cell button { padding: 6px 10px; border-radius: 10px; font-size: 0.72rem; border: none; cursor: pointer; font-family: inherit; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .admin-edit-btn { background: rgba(240,185,11,0.15); color: #F0B90B; }
 .admin-edit-btn:hover { background: #F0B90B; color: #0B0E11; }
@@ -205,6 +205,117 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 @media (max-width: 600px) {
   #termsPage .overlay-container h1, #paymentPage .overlay-container h1 { font-size: 1.5rem; }
   #termsPage .overlay-container h2, #paymentPage .overlay-container h2 { font-size: 1.1rem; }
+}
+
+/* ============ 🆕 PLATFORM TABS ============ */
+.admin-platform-tabs {
+display: flex;
+gap: 10px;
+overflow-x: auto;
+padding: 0.9rem 0.8rem 1rem;
+margin-bottom: 1.2rem;
+background: #1E2329;
+border-radius: 20px;
+border: 1px solid rgba(240,185,11,0.2);
+scrollbar-width: thin;
+}
+.admin-platform-tabs::-webkit-scrollbar { height: 5px; }
+.admin-platform-tabs::-webkit-scrollbar-thumb { background: #F0B90B; border-radius: 10px; }
+.platform-tab {
+flex: 0 0 auto;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+padding: 0.7rem 1rem;
+background: #0B0E11;
+border: 1px solid rgba(240,185,11,0.25);
+border-radius: 16px;
+cursor: pointer;
+transition: 0.2s;
+min-width: 82px;
+color: #EAECEF;
+font-family: 'Cairo', sans-serif;
+}
+.platform-tab:hover { border-color: #F0B90B; transform: translateY(-2px); }
+.platform-tab.active {
+background: linear-gradient(135deg, #2EBD85, #22a06f);
+border-color: #2EBD85;
+color: #0B0E11;
+font-weight: 700;
+box-shadow: 0 6px 14px rgba(46,189,133,0.3);
+}
+.platform-tab i { font-size: 1.6rem; color: #F0B90B; transition: 0.2s; }
+.platform-tab.active i { color: #0B0E11; }
+.platform-tab .tab-name { font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+.platform-tab .tab-count {
+font-size: 0.65rem;
+background: rgba(240,185,11,0.15);
+color: #F0B90B;
+padding: 1px 8px;
+border-radius: 20px;
+font-weight: 700;
+min-width: 24px;
+text-align: center;
+}
+.platform-tab.active .tab-count {
+background: rgba(11,14,17,0.25);
+color: #0B0E11;
+}
+
+/* ============ 🆕 SORT BUTTONS ============ */
+.admin-sort-cell {
+display: inline-flex;
+gap: 3px;
+margin-left: 4px;
+}
+.admin-sort-btn {
+background: rgba(46,189,133,0.15) !important;
+color: #2EBD85 !important;
+border: none !important;
+width: 26px !important;
+height: 26px !important;
+padding: 0 !important;
+border-radius: 8px !important;
+cursor: pointer !important;
+font-size: 0.7rem !important;
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+transition: 0.15s !important;
+font-weight: 700 !important;
+}
+.admin-sort-btn:hover:not(:disabled) {
+background: #2EBD85 !important;
+color: #0B0E11 !important;
+}
+.admin-sort-btn:disabled {
+opacity: 0.25 !important;
+cursor: not-allowed !important;
+}
+.admin-sort-placeholder {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 26px;
+height: 26px;
+color: #444;
+font-size: 0.7rem;
+}
+.platform-tab:first-child {
+background: linear-gradient(135deg, #F0B90B, #d9a509);
+border-color: #F0B90B;
+color: #0B0E11;
+font-weight: 700;
+}
+.platform-tab:first-child i { color: #0B0E11; }
+.platform-tab:first-child .tab-count {
+background: rgba(11,14,17,0.2);
+color: #0B0E11;
+}
+.platform-tab:first-child.active {
+background: linear-gradient(135deg, #F0B90B, #FFD966);
+box-shadow: 0 6px 14px rgba(240,185,11,0.35);
 }
 </style>
 </head>
@@ -343,6 +454,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-stat-box"><div class="lbl">خدمات مخفية</div><div class="val" id="adminHiddenServices">0</div></div>
 <div class="admin-stat-box"><div class="lbl">عدد المنصات</div><div class="val" id="adminTotalPlatforms">0</div></div>
 </div>
+<div class="admin-platform-tabs" id="adminPlatformTabs"></div>
 <div class="admin-table-wrap">
 <div id="adminTableLoader" class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
 <table class="admin-table" id="adminServicesTable" style="display:none;">
@@ -1151,8 +1263,12 @@ return { min: 1000, step: 500 };
 }
 
 const PLATFORM_AR = { facebook:'فيسبوك', instagram:'انستقرام', tiktok:'تيك توك', youtube:'يوتيوب', telegram:'تليجرام', twitter:'تويتر', snapchat:'سناب شات', whatsapp:'واتساب', twitch:'تويتش', other:'خدمات أخرى' };
+const PLATFORM_ICONS = { facebook:'fab fa-facebook-f', instagram:'fab fa-instagram', tiktok:'fab fa-tiktok', youtube:'fab fa-youtube', telegram:'fab fa-telegram', twitter:'fab fa-twitter', snapchat:'fab fa-snapchat', whatsapp:'fab fa-whatsapp', twitch:'fab fa-twitch', other:'fas fa-star' };
+const PLATFORM_ORDER = ['facebook','instagram','tiktok','youtube','telegram','twitter','snapchat','whatsapp','twitch','other'];
 const TYPE_AR = { followers:'متابعين', likes:'لايكات', views:'مشاهدات', comments:'تعليقات', members:'أعضاء', other:'أخرى' };
 let allServices = [];
+let activePlatform = 'all';
+
 function toast(msg, isErr) {
 const t = document.getElementById('adminToast');
 if (!t) return;
@@ -1213,29 +1329,56 @@ document.getElementById('adminPanelPage').classList.remove('active');
 document.getElementById('adminLoginPage').classList.remove('active');
 window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-window.loadAdminServices = async function() {
-const loader = document.getElementById('adminTableLoader');
+
+// ============ 🆕 PLATFORM TABS ============
+function renderPlatformTabs() {
+const container = document.getElementById('adminPlatformTabs');
+if (!container) return;
+container.innerHTML = '';
+// زر "الكل"
+const totalAll = allServices.length;
+const allBtn = document.createElement('div');
+allBtn.className = 'platform-tab' + (activePlatform === 'all' ? ' active' : '');
+allBtn.innerHTML = '<i class="fas fa-th-large"></i><span class="tab-name">الكل</span><span class="tab-count">' + totalAll + '</span>';
+allBtn.addEventListener('click', () => { activePlatform = 'all'; renderPlatformTabs(); renderAdminTable(); });
+container.appendChild(allBtn);
+// باقي المنصات
+for (const key of PLATFORM_ORDER) {
+const count = allServices.filter(s => s.platform === key).length;
+if (count === 0) continue;
+const tab = document.createElement('div');
+tab.className = 'platform-tab' + (activePlatform === key ? ' active' : '');
+tab.innerHTML = '<i class="' + PLATFORM_ICONS[key] + '"></i><span class="tab-name">' + PLATFORM_AR[key] + '</span><span class="tab-count">' + count + '</span>';
+tab.addEventListener('click', () => { activePlatform = key; renderPlatformTabs(); renderAdminTable(); });
+container.appendChild(tab);
+}
+}
+
+// ============ 🆕 RENDER TABLE (بتفلتر حسب المنصة النشطة) ============
+function renderAdminTable() {
 const table = document.getElementById('adminServicesTable');
 const empty = document.getElementById('adminEmpty');
-loader.style.display = 'block';
-loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
-table.style.display = 'none';
-empty.style.display = 'none';
-try {
-const { data, error } = await supabase.from('services').select('*')
-.order('platform').order('sort_order').order('price_per_thousand');
-loader.style.display = 'none';
-if (error) { toast('خطأ في التحميل: ' + error.message, true); loader.style.display = 'block'; loader.innerText = '❌ فشل التحميل'; return; }
-allServices = data || [];
-document.getElementById('adminTotalServices').innerText = allServices.length;
-document.getElementById('adminVisibleServices').innerText = allServices.filter(s => s.is_hidden !== true).length;
-document.getElementById('adminHiddenServices').innerText = allServices.filter(s => s.is_hidden === true).length;
-document.getElementById('adminTotalPlatforms').innerText = new Set(allServices.map(s => s.platform)).size;
-if (allServices.length === 0) { empty.style.display = 'block'; return; }
-table.style.display = 'table';
 const tbody = document.getElementById('adminTableBody');
+if (!tbody) return;
+const list = activePlatform === 'all' ? allServices : allServices.filter(s => s.platform === activePlatform);
+if (list.length === 0) {
+table.style.display = 'none';
+if (empty) {
+empty.style.display = 'block';
+empty.querySelector('p').innerText = activePlatform === 'all' ? 'لا توجد خدمات بعد. اضغط "إضافة خدمة" للبدء.' : 'لا توجد خدمات في هذه المنصة بعد.';
+}
+return;
+}
+table.style.display = 'table';
+if (empty) empty.style.display = 'none';
 tbody.innerHTML = '';
-allServices.forEach((s, i) => {
+
+// نجهّز ترتيب الخدمات الخاصة بالمنصة الواحدة للتحكم بأزرار الترتيب
+const platformServices = (activePlatform === 'all')
+? []
+: allServices.filter(s => s.platform === activePlatform).slice();
+
+list.forEach((s, i) => {
 const tr = document.createElement('tr');
 const priceBase = parseInt(s.price_base) || 1000;
 const baseLabel = priceBase === 1 ? 'لكل 1' : 'لكل ' + priceBase;
@@ -1249,14 +1392,98 @@ const statusBadge = isHidden ? '<span class="admin-badge hidden">👁️‍🗨�
 const hideBtn = isHidden
 ? '<button class="admin-show-btn" onclick="__adminToggleHide(' + s.id + ', true)"><i class="fas fa-eye"></i> إظهار</button>'
 : '<button class="admin-hide-btn" onclick="__adminToggleHide(' + s.id + ', false)"><i class="fas fa-eye-slash"></i> إخفاء</button>';
-tr.innerHTML = '<td>' + (i + 1) + '</td><td><span class="admin-badge gold">' + (PLATFORM_AR[s.platform] || s.platform) + '</span></td><td>' + s.name + '</td><td>' + (TYPE_AR[s.type] || s.type || '-') + '</td><td>' + s.unit + '</td><td style="color:#2EBD85; font-weight:700;">' + s.price_per_thousand + ' <span style="font-size:0.7rem; color:#aaa;">(' + baseLabel + ')</span></td><td>' + (s.guarantee || '-') + '</td><td style="color:#F0B90B; font-weight:700;">' + displayMinLimit + '</td><td>' + statusBadge + '</td><td class="admin-actions-cell"><button class="admin-edit-btn" onclick="__adminEdit(' + s.id + ')"><i class="fas fa-pen"></i> تعديل</button>' + hideBtn + '<button class="admin-del-btn" onclick="__adminDelete(' + s.id + ')"><i class="fas fa-trash"></i> حذف</button></td>';
+
+// 🆕 أزرار الترتيب (بتظهر بس لما نكون في منصة محددة)
+let sortCell = '<span class="admin-sort-placeholder">—</span>';
+if (activePlatform !== 'all') {
+const idxInPlatform = platformServices.findIndex(x => x.id === s.id);
+const isFirst = idxInPlatform <= 0;
+const isLast = idxInPlatform === platformServices.length - 1;
+const upDisabled = isFirst ? 'disabled' : '';
+const downDisabled = isLast ? 'disabled' : '';
+sortCell = '<span class="admin-sort-cell">'
++ '<button class="admin-sort-btn" ' + upDisabled + ' onclick="__adminSort(' + s.id + ', \'up\')" title="أعلى"><i class="fas fa-arrow-up"></i></button>'
++ '<button class="admin-sort-btn" ' + downDisabled + ' onclick="__adminSort(' + s.id + ', \'down\')" title="أسفل"><i class="fas fa-arrow-down"></i></button>'
++ '</span>';
+}
+
+tr.innerHTML = '<td>' + (i + 1) + '</td>'
++ '<td><span class="admin-badge gold">' + (PLATFORM_AR[s.platform] || s.platform) + '</span></td>'
++ '<td>' + s.name + '</td>'
++ '<td>' + (TYPE_AR[s.type] || s.type || '-') + '</td>'
++ '<td>' + s.unit + '</td>'
++ '<td style="color:#2EBD85; font-weight:700;">' + s.price_per_thousand + ' <span style="font-size:0.7rem; color:#aaa;">(' + baseLabel + ')</span></td>'
++ '<td>' + (s.guarantee || '-') + '</td>'
++ '<td style="color:#F0B90B; font-weight:700;">' + displayMinLimit + '</td>'
++ '<td>' + statusBadge + '</td>'
++ '<td class="admin-actions-cell">' + sortCell
++ '<button class="admin-edit-btn" onclick="__adminEdit(' + s.id + ')"><i class="fas fa-pen"></i> تعديل</button>'
++ hideBtn
++ '<button class="admin-del-btn" onclick="__adminDelete(' + s.id + ')"><i class="fas fa-trash"></i> حذف</button>'
++ '</td>';
 tbody.appendChild(tr);
 });
-} catch(e) {
+}
+
+// ============ LOAD ADMIN SERVICES ============
+window.loadAdminServices = async function() {
+const loader = document.getElementById('adminTableLoader');
+const table = document.getElementById('adminServicesTable');
+const empty = document.getElementById('adminEmpty');
+if (loader) {
 loader.style.display = 'block';
-loader.innerText = '❌ حدث خطأ: ' + e.message;
+loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+}
+if (table) table.style.display = 'none';
+if (empty) empty.style.display = 'none';
+try {
+const { data, error } = await supabase.from('services').select('*')
+.order('platform').order('sort_order', { ascending: true }).order('id', { ascending: true });
+if (loader) loader.style.display = 'none';
+if (error) { toast('خطأ في التحميل: ' + error.message, true); if (loader) { loader.style.display = 'block'; loader.innerText = '❌ فشل التحميل'; } return; }
+allServices = data || [];
+document.getElementById('adminTotalServices').innerText = allServices.length;
+document.getElementById('adminVisibleServices').innerText = allServices.filter(s => s.is_hidden !== true).length;
+document.getElementById('adminHiddenServices').innerText = allServices.filter(s => s.is_hidden === true).length;
+document.getElementById('adminTotalPlatforms').innerText = new Set(allServices.map(s => s.platform)).size;
+renderPlatformTabs();
+if (allServices.length === 0) { if (empty) empty.style.display = 'block'; return; }
+renderAdminTable();
+} catch(e) {
+if (loader) { loader.style.display = 'block'; loader.innerText = '❌ حدث خطأ: ' + e.message; }
 }
 };
+
+// ============ 🆕 SORT ============
+window.__adminSort = async function(id, direction) {
+if (activePlatform === 'all') return;
+const platformServices = allServices.filter(s => s.platform === activePlatform).slice();
+const idx = platformServices.findIndex(s => s.id === id);
+if (idx < 0) return;
+const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
+if (swapIdx < 0 || swapIdx >= platformServices.length) return;
+const currentSvc = platformServices[idx];
+const swapSvc = platformServices[swapIdx];
+
+// نضبط sort_order للاتنين: ناخد قيمهم الحالية ولو مش موجودة نستخدم ترتيبهم الحالي
+let currentOrder = currentSvc.sort_order !== undefined && currentSvc.sort_order !== null ? parseInt(currentSvc.sort_order) : idx;
+let swapOrder = swapSvc.sort_order !== undefined && swapSvc.sort_order !== null ? parseInt(swapSvc.sort_order) : swapIdx;
+if (currentOrder === swapOrder) { currentOrder = idx; swapOrder = swapIdx; }
+
+try {
+const r1 = await supabase.from('services').update({ sort_order: swapOrder }).eq('id', currentSvc.id);
+if (r1.error) throw r1.error;
+const r2 = await supabase.from('services').update({ sort_order: currentOrder }).eq('id', swapSvc.id);
+if (r2.error) throw r2.error;
+toast(direction === 'up' ? 'تم رفع الخدمة ⬆️' : 'تم إنزال الخدمة ⬇️');
+await window.loadAdminServices();
+if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.buildAllSections) window.buildAllSections(); }
+} catch(e) {
+toast('خطأ في الترتيب: ' + e.message, true);
+}
+};
+
+// ============ MODAL & ACTIONS ============
 const modalBg = document.getElementById('adminModalBg');
 const form = document.getElementById('adminServiceForm');
 document.getElementById('adminAddBtn').addEventListener('click', () => {
@@ -1267,6 +1494,7 @@ document.getElementById('adminSvcStep').value = 500;
 document.getElementById('adminSvcIcon').value = 'fas fa-star';
 document.getElementById('adminSvcPriceBase').value = '1000';
 if (iconPreview) iconPreview.innerHTML = '<i class="fas fa-star"></i>';
+if (activePlatform !== 'all') document.getElementById('adminSvcPlatform').value = activePlatform;
 document.getElementById('adminModalTitle').innerHTML = '<i class="fas fa-plus"></i> إضافة خدمة جديدة';
 modalBg.classList.add('show');
 });
@@ -1320,13 +1548,18 @@ btn.disabled = true;
 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
 let res;
 if (id) res = await supabase.from('services').update(payload).eq('id', id);
-else res = await supabase.from('services').insert([payload]);
+else {
+// نحدد sort_order عشان تيجي في الآخر
+const platformCount = allServices.filter(x => x.platform === payload.platform).length;
+payload.sort_order = platformCount;
+res = await supabase.from('services').insert([payload]);
+}
 btn.disabled = false;
 btn.innerHTML = '<i class="fas fa-save"></i> حفظ';
 if (res.error) { toast('خطأ: ' + res.error.message, true); return; }
 toast(id ? 'تم التعديل بنجاح ✅' : 'تمت الإضافة بنجاح ✅');
 modalBg.classList.remove('show');
-window.loadAdminServices();
+await window.loadAdminServices();
 if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.buildAllSections) window.buildAllSections(); }
 });
 window.__adminDelete = async function(id) {
@@ -1336,7 +1569,7 @@ if (!confirm('هل أنت متأكد من حذف الخدمة:\n"' + s.name + '"
 const { error } = await supabase.from('services').delete().eq('id', id);
 if (error) { toast('خطأ في الحذف: ' + error.message, true); return; }
 toast('تم الحذف بنجاح 🗑️');
-window.loadAdminServices();
+await window.loadAdminServices();
 if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.buildAllSections) window.buildAllSections(); }
 };
 window.__adminToggleHide = async function(id, isCurrentlyHidden) {
@@ -1344,9 +1577,11 @@ const newHidden = !isCurrentlyHidden;
 const { error } = await supabase.from('services').update({ is_hidden: newHidden }).eq('id', id);
 if (error) { toast('خطأ: ' + error.message, true); return; }
 toast(newHidden ? 'تم إخفاء الخدمة 👁️‍🗨️' : 'تم إظهار الخدمة 👁️');
-window.loadAdminServices();
+await window.loadAdminServices();
 if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.buildAllSections) window.buildAllSections(); }
 };
+
+// ============ SESSION CHECK ============
 (async () => {
 try {
 const { data: { session } } = await supabase.auth.getSession();

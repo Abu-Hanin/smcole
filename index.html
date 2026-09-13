@@ -782,16 +782,6 @@ const others = services.filter(s => !followers.includes(s));
 followers.sort((a,b) => a.pricePerThousand - b.pricePerThousand);
 return [...followers, ...others];
 }
-// ✅ دالة تحسب الحد الأدنى والزيادة حسب نوع الخدمة
-function getMinLimitAndStep(service) {
-const priceBase = parseInt(service.priceBase) || 1000;
-if (priceBase <= 10) return { min: 1, step: 1 };
-const isComment = service.isComment === true || service.unit === "تعليق" || (service.name && service.name.indexOf("تعليق") !== -1);
-const isLike = service.unit === "لايك" || (service.name && service.name.indexOf("لايك") !== -1);
-if (isComment) return { min: 50, step: 10 };
-if (isLike) return { min: 250, step: 50 };
-return { min: 1000, step: 500 };
-}
 const platformData = {
 facebook: { id: 'facebook', title: '<i class="fab fa-facebook-f"></i> فيسبوك - خدمات الزيادة', services: sortFollowers([
 { name: "تزويد متابعين فيسبوك بدون ضمان", unit: "متابع", pricePerThousand: 100, priceBase: 1000, guarantee: "بدون ضمان", icon: "fab fa-facebook-f" },
@@ -889,15 +879,9 @@ let serviceCounter = 1;
 function createServiceCard(service, serviceNumber) {
 const card = document.createElement('div'); card.className = 'service-card';
 const priceBase = parseInt(service.priceBase) || 1000;
-let minLimit = 1000, stepValue = 500;
-if (service.minLimit !== undefined && service.minLimit !== null && parseInt(service.minLimit) > 0) {
-minLimit = parseInt(service.minLimit);
-stepValue = parseInt(service.stepValue) || 1;
-} else {
 const defaults = getMinLimitAndStep(service);
-minLimit = defaults.min;
-stepValue = defaults.step;
-}
+let minLimit = service.minLimit !== undefined && service.minLimit !== null && parseInt(service.minLimit) > 0 ? parseInt(service.minLimit) : defaults.min;
+let stepValue = service.stepValue !== undefined && service.stepValue !== null && parseInt(service.stepValue) > 0 ? parseInt(service.stepValue) : defaults.step;
 if (priceBase <= 10) { minLimit = 1; stepValue = 1; }
 card.setAttribute('data-unit', service.unit);
 card.setAttribute('data-price-per-thousand', service.pricePerThousand);
@@ -1059,29 +1043,12 @@ SEED.push({ platform: key, type: svcType, name: svc.name, unit: svc.unit, price_
 }
 return SEED;
 };
-window.autoSeedIfEmpty = async function() {
-try {
-const { data: checkData, error: checkError } = await supabase.from('services').select('id').limit(1);
-if (checkError) { console.error('Seed check error:', checkError); return false; }
-if (checkData && checkData.length > 0) return false;
-const SEED = window.buildPlatformSeedData();
-let success = 0;
-for (let i = 0; i < SEED.length; i += 10) {
-const batch = SEED.slice(i, i + 10);
-const { error } = await supabase.from('services').insert(batch);
-if (error) { console.error('Seed error:', error); return false; }
-success += batch.length;
-}
-console.log('Auto-seeded ' + success + ' services');
-return true;
-} catch(e) { console.error('Auto seed failed:', e); return false; }
-};
 window.loadServicesFromDB = async function() {
 try {
 const { data, error } = await supabase.from('services').select('*')
 .order('sort_order', { ascending: true })
 .order('price_per_thousand', { ascending: true });
-if (error) { console.error('Load error:', error); return false; }
+if (error) return false;
 if (!data || data.length === 0) return false;
 const grouped = {};
 for (const key of Object.keys(platformData)) grouped[key] = [];
@@ -1111,16 +1078,14 @@ for (const key of Object.keys(platformData)) {
 platformData[key].services = sortFollowers(grouped[key] || []);
 }
 return true;
-} catch(e) { console.error('Load failed:', e); return false; }
+} catch(e) { return false; }
 };
 (async () => {
 try {
-await window.autoSeedIfEmpty();
 await window.loadServicesFromDB();
 buildAllSections();
 fetchExchangeRate();
 } catch(e) {
-console.error('Init error:', e);
 try { buildAllSections(); fetchExchangeRate(); } catch(err) {}
 }
 })();
@@ -1147,18 +1112,22 @@ currencyDropdown.classList.remove('show-currency-dropdown');
 document.addEventListener('click', (event) => {
 if (!currencyCircle.contains(event.target) && !currencyDropdown.contains(event.target)) currencyDropdown.classList.remove('show-currency-dropdown');
 });
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-e.preventDefault();
-deferredPrompt = e;
-const installBtn = document.getElementById('installPwaBtn');
-if (installBtn) installBtn.style.display = 'inline-flex';
-});
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+window.addEventListener('appinstalled', () => { deferredPrompt = null; });
 document.getElementById('installPwaBtn')?.addEventListener('click', async () => {
 if (deferredPrompt) {
 deferredPrompt.prompt();
-const { outcome } = await deferredPrompt.userChoice;
-if (outcome === 'accepted') deferredPrompt = null;
+try { const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') deferredPrompt = null; } catch(e) {}
+} else {
+const ua = navigator.userAgent.toLowerCase();
+const isIOS = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isAndroid = /android/.test(ua);
+let msg = '';
+if (isIOS) msg = '📱 لتثبيت التطبيق على الآيفون:\n\n1. افتح الموقع في Safari\n2. اضغط زر المشاركة 📤\n3. اختار "إضافة إلى الشاشة الرئيسية" ➕\n4. اضغط "إضافة"';
+else if (isAndroid) msg = '📱 لتثبيت التطبيق على الأندرويد:\n\n1. افتح الموقع في Chrome\n2. اضغط النقاط الثلاث ⋮\n3. اختار "تثبيت التطبيق"\n4. اضغط "تثبيت"';
+else msg = '💻 لتثبيت التطبيق على الكمبيوتر:\n\n1. افتح الموقع في Chrome أو Edge\n2. اضغط أيقونة التثبيت ⊕ في شريط العنوان\n3. أو من قائمة ⋮ اختار "تثبيت smcole"';
+alert(msg);
 }
 });
 if ('serviceWorker' in navigator) {
@@ -1168,6 +1137,18 @@ navigator.serviceWorker.register('/sw.js').then(reg => {}).catch(err => {});
 <script>
 (function(){
 const supabase = getSupabase();
+
+// ✅✅✅ الحل: تعريف دالة getMinLimitAndStep داخل نطاق سكريبت الأدمن
+function getMinLimitAndStep(service) {
+const priceBase = parseInt(service.priceBase) || 1000;
+if (priceBase <= 10) return { min: 1, step: 1 };
+const isComment = service.isComment === true || service.unit === "تعليق" || (service.name && service.name.indexOf("تعليق") !== -1);
+const isLike = service.unit === "لايك" || (service.name && service.name.indexOf("لايك") !== -1);
+if (isComment) return { min: 50, step: 10 };
+if (isLike) return { min: 250, step: 50 };
+return { min: 1000, step: 500 };
+}
+
 const PLATFORM_AR = { facebook:'فيسبوك', instagram:'انستقرام', tiktok:'تيك توك', youtube:'يوتيوب', telegram:'تليجرام', twitter:'تويتر', snapchat:'سناب شات', whatsapp:'واتساب', twitch:'تويتش', other:'خدمات أخرى' };
 const TYPE_AR = { followers:'متابعين', likes:'لايكات', views:'مشاهدات', comments:'تعليقات', members:'أعضاء', other:'أخرى' };
 let allServices = [];
@@ -1185,7 +1166,6 @@ iconSelect.addEventListener('change', () => {
 iconPreview.innerHTML = '<i class="' + iconSelect.value + '"></i>';
 });
 }
-// ✅ نموذج الإضافة: يضبط الحد الأدنى والزيادة حسب النوع تلقائياً
 const typeSelect = document.getElementById('adminSvcType');
 const minLimitInput = document.getElementById('adminSvcMinLimit');
 const stepValueInput = document.getElementById('adminSvcStep');
@@ -1241,12 +1221,6 @@ loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحمي
 table.style.display = 'none';
 empty.style.display = 'none';
 try {
-// ✅ لو الداتابيس فاضية، نعمل seed (إنت دلوقتي مسجل دخول فالـ RLS هيسمح)
-const { data: checkData } = await supabase.from('services').select('id').limit(1);
-if (!checkData || checkData.length === 0) {
-loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تجهيز الخدمات لأول مرة...';
-if (window.autoSeedIfEmpty) await window.autoSeedIfEmpty();
-}
 const { data, error } = await supabase.from('services').select('*')
 .order('platform').order('sort_order').order('price_per_thousand');
 loader.style.display = 'none';

@@ -539,6 +539,11 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-hint">النص اللي بيظهر تحت اللوجو</div>
 </div>
 <div class="admin-field">
+<label>رابط الموقع (يظهر في رسالة واتساب)</label>
+<input type="text" id="settingsSiteUrl" placeholder="https://smcole.com" dir="ltr">
+<div class="admin-hint">الرابط اللي بيظهر في رسالة الطلب على واتساب عند "لطلب خدمات أخرى"</div>
+</div>
+<div class="admin-field">
 <label>النص الترويجي</label>
 <textarea id="settingsPromoText" placeholder="عايز تكبر على السوشيال ميديا..." maxlength="500"></textarea>
 <div class="admin-hint">النص اللي في البطاقة الترويجية (تقدر تكتب سطرين بالسطر الجديد)</div>
@@ -572,6 +577,19 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <input type="number" id="settingsCompletedOrders" placeholder="مثال: 3200" min="0">
 <div class="admin-hint">اتركه فاضي لو عايز الرقم يتحسب تلقائياً من الطلبات</div>
 </div>
+</div>
+</div>
+<div class="settings-section">
+<h3><i class="fas fa-user-shield"></i> بيانات الدخول للوحة التحكم</h3>
+<div class="admin-field">
+<label>البريد الإلكتروني الحالي للأدمن</label>
+<input type="email" id="settingsAdminEmail" placeholder="admin@example.com" dir="ltr">
+<div class="admin-hint">⚠️ تغيير الإيميل محتاج تأكيد من Supabase — قولي وأنا أشرحلك الخطوات</div>
+</div>
+<div class="admin-field">
+<label>كلمة مرور جديدة</label>
+<input type="password" id="settingsAdminPassword" placeholder="اتركها فاضية لو مش عايز تغيرها" autocomplete="new-password">
+<div class="admin-hint">اتركها فاضية لو مش عايز تغير الباسورد. لو حطيت باسورد جديد، هيتطبق فوراً</div>
 </div>
 </div>
 <div class="settings-save-bar">
@@ -621,12 +639,12 @@ if (!Array.isArray(favorites)) favorites = [];
 } catch(e) { favorites = []; }
 let globalServicesList = [];
 
-// 🆕 إعدادات الموقع (متاحة عالمياً عشان الأدمن يقدر يوصلها)
 window.siteSettings = {
 site_name: 'SMCOLE',
 site_description: 'افضل وارخص موقع تزويد متابعين ومشاهدات',
 support_phone: '201154846407',
 purchase_phone: '201154846407',
+site_url: 'https://smcole.com',
 promo_text: 'عايز تكبر على السوشيال ميديا وتوصل للشهرة؟\nخدماتنا تساعدك على تحقيق نمو حقيقي وزيادة التفاعل بطريقة احترافية وآمنة!',
 active_users_override: null,
 completed_orders_override: null
@@ -698,7 +716,6 @@ localStorage.setItem('smcole_currency', currency);
 updateAllPrices();
 }
 
-// 🆕 تطبيق الإعدادات (متاحة عالمياً)
 window.applySiteSettings = function() {
 const nameEl = document.getElementById('siteNameDisplay');
 const descEl = document.getElementById('siteDescriptionDisplay');
@@ -718,7 +735,6 @@ promoEl.innerHTML = '<span>' + lines[0] + '</span>';
 if (siteSettings.site_name) {
 document.title = siteSettings.site_name + ' | ' + (siteSettings.site_description || '');
 }
-// تطبيق الأرقام المخصصة
 const usersSpan = document.getElementById('usersCount');
 const ordersSpan = document.getElementById('ordersCount');
 if (siteSettings.active_users_override !== null && siteSettings.active_users_override !== undefined && usersSpan) {
@@ -729,7 +745,6 @@ ordersSpan.innerText = siteSettings.completed_orders_override.toLocaleString('en
 }
 };
 
-// 🆕 تحميل الإعدادات من DB (متاحة عالمياً)
 window.loadSiteSettings = async function() {
 try {
 const sb = getSupabase();
@@ -740,6 +755,7 @@ siteSettings.site_name = data.site_name || siteSettings.site_name;
 siteSettings.site_description = data.site_description || siteSettings.site_description;
 siteSettings.support_phone = data.support_phone || siteSettings.support_phone;
 siteSettings.purchase_phone = data.purchase_phone || siteSettings.purchase_phone;
+siteSettings.site_url = data.site_url || siteSettings.site_url;
 siteSettings.promo_text = data.promo_text || siteSettings.promo_text;
 siteSettings.active_users_override = (data.active_users_override !== null && data.active_users_override !== undefined) ? parseInt(data.active_users_override) : null;
 siteSettings.completed_orders_override = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? parseInt(data.completed_orders_override) : null;
@@ -747,7 +763,6 @@ return true;
 } catch(e) { console.warn('Settings load failed:', e); return false; }
 };
 
-// 🆕 تطبيق الإعدادات أول ما الصفحة تحمل (بدون انتظار)
 document.addEventListener('DOMContentLoaded', function() {
 window.loadSiteSettings().then(() => window.applySiteSettings());
 });
@@ -773,7 +788,9 @@ let formattedTotal;
 let currencyName = 'جنيه مصري';
 if (currentCurrency === 'USD') { formattedTotal = (totalInEGP / exchangeRate).toFixed(2); currencyName = 'دولار أمريكي'; }
 else { formattedTotal = Number.isInteger(totalInEGP) ? totalInEGP.toString() : totalInEGP.toFixed(2); }
-const message = '📋 طلب شراء خدمة : ' + serviceName + '\n🔢 رقم الخدمة : ' + serviceNumber + '\n📊 الكمية المطلوبة : ' + quantity + ' ' + unit + '\n💰 السعر الإجمالي : ' + formattedTotal + ' ' + currencyName + '\n🔗 رابط الهدف : ' + link + '\n\n🌐 *لطلب خدمات أخرى:*\nhttps://smcole.com\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.';
+// 🆕 استخدام site_url من الإعدادات
+const siteUrl = siteSettings.site_url || 'https://smcole.com';
+const message = '📋 طلب شراء خدمة : ' + serviceName + '\n🔢 رقم الخدمة : ' + serviceNumber + '\n📊 الكمية المطلوبة : ' + quantity + ' ' + unit + '\n💰 السعر الإجمالي : ' + formattedTotal + ' ' + currencyName + '\n🔗 رابط الهدف : ' + link + '\n\n🌐 *لطلب خدمات أخرى:*\n' + siteUrl + '\n\n✅ يرجى تأكيد الطلب وإتمام الدفع.';
 if (window.registerNewOrder) window.registerNewOrder();
 const purchasePhone = siteSettings.purchase_phone || '201154846407';
 window.open('https://wa.me/' + purchasePhone + '?text=' + encodeURIComponent(message), '_blank');
@@ -819,7 +836,6 @@ try {
 const { data: usersData } = await supabase.from('active_users_counter').select('count').eq('id', 1).single();
 const { data: ordersData } = await supabase.from('orders_counter').select('count').eq('id', 1).single();
 updateUI(usersData?.count, ordersData?.count);
-// 🆕 نعيد تطبيق الإعدادات (لو الـ override موجود، هياخد الأولوية)
 setTimeout(() => window.applySiteSettings(), 100);
 if (!sessionStorage.getItem('smcole_visited_real')) {
 await incrementUserCounter();
@@ -1623,7 +1639,6 @@ await window.loadAdminServices();
 if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.buildAllSections) window.buildAllSections(); }
 };
 
-// ============ 🆕 SETTINGS ============
 const settingsModalBg = document.getElementById('adminSettingsModalBg');
 const settingsForm = document.getElementById('adminSettingsForm');
 
@@ -1634,12 +1649,21 @@ if (error) { console.warn(error); return; }
 if (!data) return;
 document.getElementById('settingsSiteName').value = data.site_name || '';
 document.getElementById('settingsSiteDescription').value = data.site_description || '';
+document.getElementById('settingsSiteUrl').value = data.site_url || '';
 document.getElementById('settingsPromoText').value = data.promo_text || '';
 document.getElementById('settingsSupportPhone').value = data.support_phone || '';
 document.getElementById('settingsPurchasePhone').value = data.purchase_phone || '';
 document.getElementById('settingsActiveUsers').value = (data.active_users_override !== null && data.active_users_override !== undefined) ? data.active_users_override : '';
 document.getElementById('settingsCompletedOrders').value = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? data.completed_orders_override : '';
 } catch(e) { console.warn(e); }
+// 🆕 نجيب الإيميل الحالي من الجلسة
+try {
+const { data: { session } } = await supabase.auth.getSession();
+if (session && session.user && session.user.email) {
+document.getElementById('settingsAdminEmail').value = session.user.email;
+}
+} catch(e) {}
+document.getElementById('settingsAdminPassword').value = '';
 }
 
 document.getElementById('adminSettingsBtn').addEventListener('click', async () => {
@@ -1662,6 +1686,7 @@ const payload = {
 id: 1,
 site_name: document.getElementById('settingsSiteName').value.trim() || 'SMCOLE',
 site_description: document.getElementById('settingsSiteDescription').value.trim() || 'افضل وارخص موقع تزويد متابعين ومشاهدات',
+site_url: document.getElementById('settingsSiteUrl').value.trim() || 'https://smcole.com',
 promo_text: document.getElementById('settingsPromoText').value.trim() || '',
 support_phone: document.getElementById('settingsSupportPhone').value.trim() || '201154846407',
 purchase_phone: document.getElementById('settingsPurchasePhone').value.trim() || '201154846407',
@@ -1671,16 +1696,34 @@ updated_at: new Date().toISOString()
 };
 
 const { error } = await supabase.from('site_settings').upsert(payload, { onConflict: 'id' });
+if (error) {
 btn.disabled = false;
 btn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
-if (error) { toast('خطأ: ' + error.message, true); return; }
-toast('✅ تم حفظ الإعدادات بنجاح');
+toast('خطأ: ' + error.message, true);
+return;
+}
+
+// 🆕 نغير الباسورد لو محطوط
+const newPassword = document.getElementById('settingsAdminPassword').value.trim();
+let passwordMsg = '';
+if (newPassword) {
+try {
+const { error: rpcErr } = await supabase.rpc('update_admin_password', { new_password: newPassword });
+if (rpcErr) { passwordMsg = ' (⚠️ فشل تغيير الباسورد: ' + rpcErr.message + ')'; }
+else { passwordMsg = ' (✅ تم تغيير الباسورد)'; }
+} catch(e) { passwordMsg = ' (⚠️ خطأ في تغيير الباسورد)'; }
+}
+
+btn.disabled = false;
+btn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
+toast('✅ تم حفظ الإعدادات بنجاح' + passwordMsg);
 settingsModalBg.classList.remove('show');
 
-// 🆕 التصليح المهم: نحدّث siteSettings عالمياً + نطبقها فوراً على الصفحة
+// نحدّث siteSettings عالمياً + نطبقها فوراً على الصفحة
 if (window.siteSettings) {
 window.siteSettings.site_name = payload.site_name;
 window.siteSettings.site_description = payload.site_description;
+window.siteSettings.site_url = payload.site_url;
 window.siteSettings.promo_text = payload.promo_text;
 window.siteSettings.support_phone = payload.support_phone;
 window.siteSettings.purchase_phone = payload.purchase_phone;

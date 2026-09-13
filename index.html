@@ -781,7 +781,6 @@ const others = services.filter(s => !followers.includes(s));
 followers.sort((a,b) => a.pricePerThousand - b.pricePerThousand);
 return [...followers, ...others];
 }
-// ✅ دالة مركزية: تحدد الحد الأدنى والزيادة حسب نوع الخدمة
 function getMinLimitAndStep(service) {
 const priceBase = parseInt(service.priceBase) || 1000;
 if (priceBase <= 10) return { min: 1, step: 1 };
@@ -1037,7 +1036,7 @@ btnNext.addEventListener('click', () => sliderDiv.scrollBy({ left: scrollStep, b
 sectionsContainer.appendChild(section);
 }
 }
-window.buildPlatformSeedData = function() {
+function buildSeedData() {
 const SEED = [];
 for (const key of Object.keys(platformData)) {
 for (const svc of platformData[key].services) {
@@ -1064,23 +1063,23 @@ is_hidden: false
 }
 }
 return SEED;
-};
-window.autoSeedIfEmpty = async function() {
+}
+window.seedDatabaseIfEmpty = async function() {
 try {
 const { data: checkData, error: checkError } = await supabase.from('services').select('id').limit(1);
-if (checkError) { console.error('Seed check error:', checkError); return false; }
+if (checkError) { console.error('Check error:', checkError); return false; }
 if (checkData && checkData.length > 0) return false;
-const SEED = window.buildPlatformSeedData();
+const SEED = buildSeedData();
 let success = 0;
 for (let i = 0; i < SEED.length; i += 10) {
 const batch = SEED.slice(i, i + 10);
 const { error } = await supabase.from('services').insert(batch);
-if (error) { console.error('Seed error:', error); return false; }
+if (error) { console.error('Insert error:', error); return false; }
 success += batch.length;
 }
-console.log('Auto-seeded ' + success + ' services');
+console.log('Seeded ' + success + ' services');
 return true;
-} catch(e) { console.error('Auto seed failed:', e); return false; }
+} catch(e) { console.error('Seed failed:', e); return false; }
 };
 window.loadServicesFromDB = async function() {
 try {
@@ -1120,12 +1119,12 @@ return true;
 };
 (async () => {
 try {
-await window.autoSeedIfEmpty();
+// ✅ مش بنعمل seed من هنا (الصفحة الرئيسية) لأن المستخدم مش مسجل دخول، والـ RLS هيرفض
+// الـ seed هيحصل من لوحة الأدمن لما تسجل دخول
 await window.loadServicesFromDB();
 buildAllSections();
 fetchExchangeRate();
 } catch(e) {
-console.error('Init error:', e);
 try { buildAllSections(); fetchExchangeRate(); } catch(err) {}
 }
 })();
@@ -1248,11 +1247,11 @@ loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحمي
 table.style.display = 'none';
 empty.style.display = 'none';
 try {
-// ✅ أولاً: نتأكد إن فيه خدمات، ولو مفيش نعمل seed
+// ✅ أهم خطوة: لو الداتابيس فاضية، نعمل seed (هنا المستخدم مسجل دخول فالـ RLS هيسمح)
 const { data: checkData } = await supabase.from('services').select('id').limit(1);
 if (!checkData || checkData.length === 0) {
 loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تجهيز الخدمات لأول مرة...';
-if (window.autoSeedIfEmpty) await window.autoSeedIfEmpty();
+if (window.seedDatabaseIfEmpty) await window.seedDatabaseIfEmpty();
 }
 const { data, error } = await supabase.from('services').select('*')
 .order('platform').order('sort_order').order('price_per_thousand');

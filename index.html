@@ -1462,8 +1462,6 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
 const ADMIN_EMAIL = 'swlyd3393@gmail.com';
-
-  
 let _supabaseClient = null;
 function getSupabase() {
 if (!_supabaseClient) {
@@ -3228,11 +3226,6 @@ window.currentProfile = null;
 let pendingBuyAfterAuth = null;
 
 // ============================================
-// TELEGRAM BOT CONSTANTS
-// ============================================
-
-
-// ============================================
 // USER TOAST
 // ============================================
 function userToast(msg, type) {
@@ -3284,10 +3277,9 @@ function hideAuthModal() { document.getElementById('authModalBg').classList.remo
 window.showAuthModal = showAuthModal;
 
 // ============================================
-// TELEGRAM SENDER
+// TELEGRAM SENDER (عبر Supabase Edge Function)
 // ============================================
-
-  async function sendToTelegram(text) {
+async function sendToTelegram(text) {
 try {
 const { data, error } = await sb.functions.invoke('send-to-telegram', {
 body: { text: text }
@@ -3307,8 +3299,6 @@ console.warn('Function call fail:', e);
 return false;
 }
 }
-
-  
 window.__sendToTelegram = sendToTelegram;
 
 // ============================================

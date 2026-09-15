@@ -1462,8 +1462,8 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
 const ADMIN_EMAIL = 'swlyd3393@gmail.com';
-const TELEGRAM_ORDER_BOT = '8987822236:AAGpcR3wQXe1Wyk3WFU1FSz4h3Ey0ya0nqU';
-const TELEGRAM_CHAT_ID = '6242313550';
+
+  
 let _supabaseClient = null;
 function getSupabase() {
 if (!_supabaseClient) {
@@ -3230,8 +3230,7 @@ let pendingBuyAfterAuth = null;
 // ============================================
 // TELEGRAM BOT CONSTANTS
 // ============================================
-const TG_BOT_TOKEN = '8987822236:AAGpcR3wQXe1Wyk3WFU1FSz4h3Ey0ya0nqU';
-const TG_CHAT_ID = '6242313550';
+
 
 // ============================================
 // USER TOAST
@@ -3287,26 +3286,29 @@ window.showAuthModal = showAuthModal;
 // ============================================
 // TELEGRAM SENDER
 // ============================================
-async function sendToTelegram(text) {
+
+  async function sendToTelegram(text) {
 try {
-const url = 'https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendMessage';
-const res = await fetch(url, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ chat_id: TG_CHAT_ID, text: text })
+const { data, error } = await sb.functions.invoke('send-to-telegram', {
+body: { text: text }
 });
-const data = await res.json();
+if (error) {
+console.warn('Function error:', error);
+return false;
+}
 if (data && data.ok) {
-console.log('✅ Telegram sent:', data.result?.message_id);
+console.log('✅ Sent to Telegram:', data.message_id);
 return true;
 }
-console.warn('Telegram error:', data);
+console.warn('Function failed:', data);
 return false;
 } catch(e) {
-console.warn('Telegram fetch fail:', e);
+console.warn('Function call fail:', e);
 return false;
 }
 }
+
+  
 window.__sendToTelegram = sendToTelegram;
 
 // ============================================

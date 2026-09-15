@@ -300,11 +300,9 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .profile-save-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(46,189,133,0.3); }
 .profile-msg { color:#2EBD85; font-size:0.85rem; margin-top:0.5rem; min-height:18px; }
 .profile-msg.err { color:#e83e5c; }
-/* Deposit page tabs (kept for backward compat but hidden) */
 .deposit-tabs { display:none !important; }
 .deposit-panel { display:none; }
 .deposit-panel.active { display:block; }
-/* Deposit Back Button */
 .deposit-back-btn { position: sticky; top: 0; z-index: 5; background: rgba(30,35,41,0.95); backdrop-filter: blur(10px); border:1px solid rgba(240,185,11,0.3); color:#F0B90B; padding:10px 20px; border-radius:40px; cursor:pointer; font-family:inherit; font-weight:700; display:inline-flex; align-items:center; gap:8px; font-size:0.9rem; transition:0.2s; margin-bottom: 1rem; }
 .deposit-back-btn:hover { background:#F0B90B; color:#0B0E11; }
 .deposit-page-subtitle { text-align:center; color:#B7BDC6; font-size:0.85rem; margin-bottom: 1.5rem; margin-top:-0.5rem; }
@@ -315,6 +313,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .deposit-brand-logo.vodafone { background: #E60000; color: #fff; font-family: Arial; }
 .deposit-brand-logo.binance { background: #F0B90B; color: #0B0E11; }
 .deposit-brand-logo.usdt { background: #26A17B; color: #fff; }
+.deposit-brand-logo.instapay { background: linear-gradient(135deg, #5B2D8C, #8E44AD); color: #fff; }
 .deposit-brand-title { flex: 1; }
 .deposit-brand-title h2 { color: #EAECEF; font-size: 1.15rem; font-weight: 800; margin-bottom: 2px; }
 .deposit-brand-title p { color: #848E9C; font-size: 0.78rem; }
@@ -494,6 +493,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .psc-logo.vodafone { background: #E60000; color: #fff; font-family: Arial; }
 .psc-logo.binance { background: #F0B90B; color: #0B0E11; }
 .psc-logo.usdt { background: #26A17B; color: #fff; }
+.psc-logo.instapay { background: linear-gradient(135deg, #5B2D8C, #8E44AD); color: #fff; }
 .psc-info { flex: 1; }
 .psc-info h3 { color: #EAECEF; font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
 .psc-info p { color: #848E9C; font-size: 0.78rem; margin: 0; }
@@ -583,6 +583,15 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="psc-info">
 <h3>العملات الرقمية</h3>
 <p>USDT عبر شبكة Tron (TRC20)</p>
+</div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
+<div class="payment-selector-card" data-method="instapay">
+<div class="psc-logo instapay">IP</div>
+<div class="psc-info">
+<h3>إنستا باي</h3>
+<p>الدفع عبر خدمة إنستا باي المصرية</p>
 </div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
@@ -919,6 +928,49 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <input type="file" id="usdtScreenshot" accept="image/*" style="display:none;">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-paper-plane"></i> تأكيد وإرسال للإدارة</button>
 <div class="profile-msg" id="usdtMsg"></div>
+</form>
+</div>
+
+<!-- ===== INSTAPAY PAGE ===== -->
+<div id="depositInstapayView" style="display:none;">
+<div class="deposit-info">
+<div class="deposit-brand-header">
+<div class="deposit-brand-logo instapay">IP</div>
+<div class="deposit-brand-title">
+<h2>إنستا باي (InstaPay)</h2>
+<p>الدفع عبر خدمة إنستا باي المصرية</p>
+</div>
+</div>
+<p>قم بالتحويل على رقم إنستا باي التالي:</p>
+<div class="deposit-number-row">
+<div class="deposit-number" id="instapayNumber">01001606298</div>
+<button class="deposit-copy-btn" type="button" id="instapayCopyBtn" data-copy="01001606298"><i class="fas fa-copy"></i> نسخ</button>
+</div>
+<div class="deposit-steps">
+<div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق البنك أو محفظتك الرقمية → اختر "إنستا باي"</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اختر "تحويل" واكتب الرقم: <b id="instapayNumberStep2">01001606298</b></span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب المبلغ الذي تريد إيداعه وأكد العملية</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">احتفظ بـ <b>لقطة شاشة للتحويل</b> كإثبات</span></div>
+<div class="step-item"><span class="step-num">5</span><span class="step-text">ارجع هنا واملأ البيانات وارفق اللقطة واضغط "تأكيد"</span></div>
+</div>
+<p style="color:#F0B90B; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: 50 جنيه</p>
+</div>
+<form class="deposit-form" id="instapayForm">
+<h3><i class="fas fa-check-circle"></i> تأكيد عملية إنستا باي</h3>
+<label>المبلغ (بالجنيه المصري)</label>
+<input type="number" id="instapayAmount" placeholder="مثال: 300" min="50" step="1" required>
+<label>رقم الهاتف الذي قمت بالتحويل منه</label>
+<input type="tel" id="instapaySenderPhone" placeholder="مثال: 01012345678" required>
+<label>لقطة شاشة للتحويل (إثبات)</label>
+<div class="deposit-upload-zone" id="instapayUploadZone" onclick="document.getElementById('instapayScreenshot').click();">
+<i class="fas fa-cloud-upload-alt u-icon"></i>
+<div class="u-title">اضغط لاختيار صورة التحويل</div>
+<div class="u-hint">JPG / PNG / WEBP — صورة واحدة</div>
+<img class="deposit-upload-preview" id="instapayPreview">
+</div>
+<input type="file" id="instapayScreenshot" accept="image/*" style="display:none;">
+<button type="submit" class="deposit-submit-btn"><i class="fas fa-paper-plane"></i> تأكيد وإرسال للإدارة</button>
+<div class="profile-msg" id="instapayMsg"></div>
 </form>
 </div>
 
@@ -1346,6 +1398,10 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <label>عنوان محفظة USDT (TRC20)</label>
 <input type="text" id="settingsUsdtAddress" placeholder="TKBAMK8gPsZnVnW8PU8XSteExbidVFPU4D" dir="ltr">
 </div>
+<div class="admin-field">
+<label>رقم إنستا باي (InstaPay)</label>
+<input type="text" id="settingsInstapayNumber" placeholder="01001606298" dir="ltr">
+</div>
 <div class="admin-hint">💡 كل هذه البيانات ستظهر تلقائياً في صفحات الإيداع للمستخدمين</div>
 </div>
 
@@ -1457,7 +1513,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 
 <div class="admin-toast" id="adminToast"></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -1508,6 +1564,7 @@ promo_text: 'عايز تكبر على السوشيال ميديا وتوصل ل�
 vodafone_number: '01001606298',
 binance_id: '746211155',
 usdt_address: 'TKBAMK8gPsZnVnW8PU8XSteExbidVFPU4D',
+instapay_number: '01001606298',
 active_users_override: null,
 completed_orders_override: null,
 exchange_rate: null
@@ -1640,6 +1697,14 @@ if (uAddrEl && siteSettings.usdt_address) {
 uAddrEl.innerText = siteSettings.usdt_address;
 if (uCopyBtn) uCopyBtn.setAttribute('data-copy', siteSettings.usdt_address);
 }
+const ipNumEl = document.getElementById('instapayNumber');
+const ipCopyBtn = document.getElementById('instapayCopyBtn');
+const ipStep2 = document.getElementById('instapayNumberStep2');
+if (siteSettings.instapay_number) {
+if (ipNumEl) ipNumEl.innerText = siteSettings.instapay_number;
+if (ipCopyBtn) ipCopyBtn.setAttribute('data-copy', siteSettings.instapay_number);
+if (ipStep2) ipStep2.innerText = siteSettings.instapay_number;
+}
 };
 
 window.loadSiteSettings = async function() {
@@ -1657,6 +1722,7 @@ siteSettings.promo_text = data.promo_text || siteSettings.promo_text;
 siteSettings.vodafone_number = data.vodafone_number || siteSettings.vodafone_number;
 siteSettings.binance_id = data.binance_id || siteSettings.binance_id;
 siteSettings.usdt_address = data.usdt_address || siteSettings.usdt_address;
+siteSettings.instapay_number = data.instapay_number || siteSettings.instapay_number;
 siteSettings.active_users_override = (data.active_users_override !== null && data.active_users_override !== undefined) ? parseInt(data.active_users_override) : null;
 siteSettings.completed_orders_override = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? parseInt(data.completed_orders_override) : null;
 siteSettings.exchange_rate = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? parseFloat(data.exchange_rate) : null;
@@ -1759,12 +1825,15 @@ window.__showDepositView = function(method) {
 const vView = document.getElementById('depositVodafoneView');
 const bView = document.getElementById('depositBinanceView');
 const uView = document.getElementById('depositUsdtView');
+const iView = document.getElementById('depositInstapayView');
 if (vView) vView.style.display = 'none';
 if (bView) bView.style.display = 'none';
 if (uView) uView.style.display = 'none';
+if (iView) iView.style.display = 'none';
 if (method === 'vodafone' && vView) vView.style.display = 'block';
 else if (method === 'binance' && bView) bView.style.display = 'block';
 else if (method === 'usdt' && uView) uView.style.display = 'block';
+else if (method === 'instapay' && iView) iView.style.display = 'block';
 window.__currentDepositMethod = method;
 };
 
@@ -1777,6 +1846,7 @@ else if (routeName === 'profile' && window.currentProfile) setPageVisibility(pro
 else if (routeName === 'deposit-vodafone' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('vodafone'); if (window.loadUserTransactions) window.loadUserTransactions(); }
 else if (routeName === 'deposit-binance' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('binance'); if (window.loadUserTransactions) window.loadUserTransactions(); }
 else if (routeName === 'deposit-usdt' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('usdt'); if (window.loadUserTransactions) window.loadUserTransactions(); }
+else if (routeName === 'deposit-instapay' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); }
 else if (routeName === 'orders' && window.currentProfile) { setPageVisibility(myOrdersPage); if (window.loadMyOrders) window.loadMyOrders(); }
 else setPageVisibility(null);
 window.__currentRoute = routeName;
@@ -1838,6 +1908,7 @@ else if (hash === 'profile' && window.currentProfile) window.__navigateTo('profi
 else if (hash === 'deposit-vodafone' && window.currentProfile) window.__navigateTo('deposit-vodafone', depositPage, true);
 else if (hash === 'deposit-binance' && window.currentProfile) window.__navigateTo('deposit-binance', depositPage, true);
 else if (hash === 'deposit-usdt' && window.currentProfile) window.__navigateTo('deposit-usdt', depositPage, true);
+else if (hash === 'deposit-instapay' && window.currentProfile) window.__navigateTo('deposit-instapay', depositPage, true);
 else if (hash === 'orders' && window.currentProfile) window.__navigateTo('orders', myOrdersPage, true);
 else routeToPage('home');
 }, 800);
@@ -2646,6 +2717,7 @@ document.getElementById('settingsPurchasePhone').value = data.purchase_phone || 
 document.getElementById('settingsVodafoneNumber').value = data.vodafone_number || '';
 document.getElementById('settingsBinanceId').value = data.binance_id || '';
 document.getElementById('settingsUsdtAddress').value = data.usdt_address || '';
+document.getElementById('settingsInstapayNumber').value = data.instapay_number || '';
 document.getElementById('settingsExchangeRate').value = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? data.exchange_rate : '';
 document.getElementById('settingsActiveUsers').value = (data.active_users_override !== null && data.active_users_override !== undefined) ? data.active_users_override : '';
 document.getElementById('settingsCompletedOrders').value = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? data.completed_orders_override : '';
@@ -2685,6 +2757,7 @@ purchase_phone: document.getElementById('settingsPurchasePhone').value.trim() ||
 vodafone_number: document.getElementById('settingsVodafoneNumber').value.trim() || '01001606298',
 binance_id: document.getElementById('settingsBinanceId').value.trim() || '746211155',
 usdt_address: document.getElementById('settingsUsdtAddress').value.trim() || 'TKBAMK8gPsZnVnW8PU8XSteExbidVFPU4D',
+instapay_number: document.getElementById('settingsInstapayNumber').value.trim() || '01001606298',
 exchange_rate: exchangeRateVal === '' ? null : parseFloat(exchangeRateVal),
 active_users_override: activeUsersVal === '' ? null : parseInt(activeUsersVal),
 completed_orders_override: completedOrdersVal === '' ? null : parseInt(completedOrdersVal),
@@ -2990,9 +3063,52 @@ ordersSearchTerm = e.target.value.trim();
 renderOrdersTable();
 });
 window.__adminSetOrder = async function(id, status) {
-if (status === 'cancelled' && !confirm('إلغاء هذا الطلب؟')) return;
+const orderData = allOrdersData.find(o => o.id === id);
+if (!orderData) { toast('لم يتم العثور على الطلب', true); return; }
+
+// لو الطلب ملغي أو مكتمل بالفعل — منع التعديل
+if (orderData.status === 'cancelled' || orderData.status === 'completed') {
+toast('لا يمكن تعديل طلب ملغي أو مكتمل', true);
+return;
+}
+
+// تأكيد الإلغاء
+if (status === 'cancelled' && !confirm('إلغاء هذا الطلب؟ سيتم إرجاع ' + parseFloat(orderData.total || 0).toFixed(2) + ' للعميل تلقائياً.')) return;
+
+// تحديث حالة الطلب
 const { error } = await supabase.from('orders').update({ status: status }).eq('id', id);
 if (error) { toast('خطأ: ' + error.message, true); return; }
+
+// لو الحالة الجديدة "ملغي" → استرجاع الرصيد للعميل
+if (status === 'cancelled') {
+try {
+const { data: userRec } = await supabase.from('users').select('*').eq('id', orderData.user_id).single();
+if (userRec) {
+const currency = orderData.currency === 'USD' ? 'balance_usd' : 'balance_egp';
+const currentBal = parseFloat(userRec[currency] || 0);
+const refundAmount = parseFloat(orderData.total || 0);
+const newBal = currentBal + refundAmount;
+const upd = {}; upd[currency] = newBal;
+const { error: uErr } = await supabase.from('users').update(upd).eq('id', orderData.user_id);
+if (uErr) {
+toast('⚠️ تم إلغاء الطلب لكن فشل استرجاع الرصيد: ' + uErr.message, true);
+} else {
+toast('✅ تم إلغاء الطلب وإرجاع ' + refundAmount.toFixed(2) + ' للعميل');
+// تسجيل المعاملة
+try {
+await logTransaction(orderData.user_id, 'admin_credit', 'order_refund', refundAmount, orderData.currency, 'completed', 'استرجاع رصيد - إلغاء طلب #' + id);
+} catch(e) {}
+}
+} else {
+toast('⚠️ تم إلغاء الطلب لكن لم يتم العثور على العميل', true);
+}
+} catch(e) {
+toast('⚠️ تم إلغاء الطلب لكن حدث خطأ في الاسترجاع', true);
+}
+} else {
+toast('تم تحديث حالة الطلب');
+}
+
 await loadAdminOrders();
 };
 
@@ -3063,6 +3179,7 @@ let methodLabel = d.method;
 if (d.method === 'vodafone') methodLabel = '📱 محافظ كاش';
 else if (d.method === 'binance') methodLabel = '🪙 باينانس باي';
 else if (d.method === 'usdt') methodLabel = '💎 عملات رقمية USDT';
+else if (d.method === 'instapay') methodLabel = '🏦 إنستا باي';
 const cur = d.currency === 'USD' ? 'دولار' : 'جنيه';
 const stMap = { pending: ['status-pending','⏳ قيد المراجعة'], approved: ['status-completed','✅ تم التأكيد'], rejected: ['status-cancelled','❌ مرفوض'] };
 const st = stMap[d.status] || ['status-pending','—'];
@@ -3389,7 +3506,7 @@ hideAuthModal();
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'profile') { setTimeout(() => openProfilePage(), 150); return; }
 if (hash === 'orders') { setTimeout(() => openMyOrdersPage(), 150); return; }
-if (hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'deposit-usdt') {
+if (hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'deposit-usdt' || hash === 'deposit-instapay') {
 setTimeout(() => { window.__navigateTo(hash, document.getElementById('depositPage'), true); }, 150);
 return;
 }
@@ -3724,6 +3841,7 @@ reader.readAsDataURL(file);
 attachImageUpload('vodafoneScreenshot', 'vodafoneUploadZone', 'vodafonePreview');
 attachImageUpload('binanceScreenshot', 'binanceUploadZone', 'binancePreview');
 attachImageUpload('usdtScreenshot', 'usdtUploadZone', 'usdtPreview');
+attachImageUpload('instapayScreenshot', 'instapayUploadZone', 'instapayPreview');
 
 function getScreenshotPreviewSrc(zoneId) {
 const zone = document.getElementById(zoneId);
@@ -4063,6 +4181,84 @@ loadUserTransactions();
 });
 
 // ============================================
+// INSTAPAY SUBMIT
+// ============================================
+document.getElementById('instapayForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+if (!currentProfile) { showAuthModal(); return; }
+
+const msg = document.getElementById('instapayMsg');
+const amount = parseFloat(document.getElementById('instapayAmount').value);
+const senderPhone = document.getElementById('instapaySenderPhone').value.trim();
+const screenshot = getScreenshotPreviewSrc('instapayUploadZone');
+msg.className = 'profile-msg'; msg.innerText = '';
+
+if (!amount || amount < 50) {
+msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى 50 جنيه'; return;
+}
+if (!senderPhone || senderPhone.length < 8) {
+msg.className = 'profile-msg err'; msg.innerText = 'رقم الهاتف غير صحيح'; return;
+}
+if (!screenshot) {
+msg.className = 'profile-msg err'; msg.innerText = '⚠️ من فضلك ارفق لقطة شاشة للتحويل'; return;
+}
+
+msg.innerText = '⏳ جاري ضغط الصورة...';
+const compressed = await compressImage(screenshot, 1200, 0.75);
+msg.innerText = '⏳ جاري رفع الصورة...';
+const publicUrl = await uploadScreenshot(compressed, 'instapay');
+
+msg.innerText = 'جاري حفظ الطلب...';
+const { error } = await sb.from('deposit_requests').insert({
+user_id: currentProfile.id,
+method: 'instapay',
+amount: amount,
+currency: 'EGP',
+transaction_id: senderPhone,
+sender_phone: senderPhone,
+screenshot: publicUrl || compressed,
+status: 'pending'
+});
+
+if (error) {
+msg.className = 'profile-msg err'; msg.innerText = 'خطأ: ' + error.message; return;
+}
+try {
+await sb.from('transactions').insert({
+user_id: currentProfile.id, type: 'deposit', method: 'instapay',
+amount: amount, currency: 'EGP', status: 'pending', description: 'طلب إيداع إنستا باي'
+});
+} catch(e) {}
+
+msg.className = 'profile-msg'; msg.innerText = '⏳ جاري الإرسال على التليجرام...';
+
+let tgMsg = '🏦 *طلب إيداع إنستا باي (InstaPay)*\n\n' +
+'👤 المستخدم: ' + currentProfile.username + '\n' +
+'📝 الاسم: ' + currentProfile.name + '\n' +
+'💰 المبلغ: ' + amount + ' جنيه\n' +
+'📱 رقم المُحوِّل: ' + senderPhone;
+if (publicUrl) tgMsg += '\n\n📸 صورة إثبات التحويل:\n' + publicUrl;
+else tgMsg += '\n\n⚠️ فشل رفع الصورة، راجع لوحة التحكم.';
+tgMsg += '\n\nيرجى مراجعة الطلب وإضافة الرصيد.';
+
+const sent = await sendToTelegram(tgMsg);
+if (sent) {
+msg.className = 'profile-msg'; msg.innerText = '✅ تم إرسال طلبك بنجاح للإدارة على التليجرام';
+userToast('✅ تم إرسال طلبك للإدارة', 'ok');
+} else {
+msg.className = 'profile-msg err'; msg.innerText = '⚠️ تم حفظ الطلب لكن فشل الإرسال على تليجرام';
+}
+
+setTimeout(() => {
+document.getElementById('instapayForm').reset();
+document.getElementById('instapayUploadZone').classList.remove('has-file');
+const p = document.getElementById('instapayPreview'); if (p) p.src = '';
+msg.innerText = '';
+loadUserTransactions();
+}, 2500);
+});
+
+// ============================================
 // USER TRANSACTIONS LOG
 // ============================================
 async function loadUserTransactions() {
@@ -4287,7 +4483,7 @@ setTimeout(() => {
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'profile' && currentProfile) openProfilePage();
 else if (hash === 'orders' && currentProfile) openMyOrdersPage();
-else if ((hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'deposit-usdt') && currentProfile) {
+else if ((hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'deposit-usdt' || hash === 'deposit-instapay') && currentProfile) {
 window.__navigateTo(hash, document.getElementById('depositPage'), true);
 }
 }, 1000);

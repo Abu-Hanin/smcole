@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+<!-- ✅ NEW: منع الكاش تماماً -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>smcole | أكبر موقع لزيادة متابعين ومشاهدات في مصر والوطن العربي</title>
 <meta name="description" content="أفضل موقع لشراء متابعين حقيقيين فيسبوك، تيك توك، انستقرام، يوتيوب، تليجرام.">
 <meta name="keywords" content="زيادة متابعين, شراء متابعين فيسبوك, تزويد مشاهدات يوتيوب, شراء متابعين تيك توك, زيادة لايكات انستقرام, smcole">
@@ -1515,6 +1519,11 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-toast" id="adminToast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ============================================================
+// ✅ NEW: App version — قم بزيادة الرقم ده كل مرة ترفع نسخة جديدة
+// ============================================================
+const APP_VERSION = '2026.09.16.1';
+
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
 const ADMIN_EMAIL = 'swlyd3393@gmail.com';
@@ -1842,11 +1851,15 @@ if (routeName === 'home') setPageVisibility(null);
 else if (routeName === 'terms') setPageVisibility(termsPage);
 else if (routeName === 'payment') setPageVisibility(paymentPage);
 else if (routeName === 'favorites') { setPageVisibility(favoritesPage); renderFavoritesPage(); }
-else if (routeName === 'profile' && window.currentProfile) setPageVisibility(profilePage);
-else if (routeName === 'deposit-vodafone' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('vodafone'); if (window.loadUserTransactions) window.loadUserTransactions(); }
-else if (routeName === 'deposit-binance' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('binance'); if (window.loadUserTransactions) window.loadUserTransactions(); }
-else if (routeName === 'deposit-usdt' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('usdt'); if (window.loadUserTransactions) window.loadUserTransactions(); }
-else if (routeName === 'deposit-instapay' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); }
+else if (routeName === 'profile' && window.currentProfile) {
+setPageVisibility(profilePage);
+// ✅ NEW: تحديث الرصيد من السيرفر عند فتح البروفايل
+if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
+}
+else if (routeName === 'deposit-vodafone' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('vodafone'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-binance' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('binance'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-usdt' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('usdt'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-instapay' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'orders' && window.currentProfile) { setPageVisibility(myOrdersPage); if (window.loadMyOrders) window.loadMyOrders(); }
 else setPageVisibility(null);
 window.__currentRoute = routeName;
@@ -1860,6 +1873,7 @@ if (routeName === window.__currentRoute) {
 setPageVisibility(pageEl || null);
 if (routeName === 'favorites') renderFavoritesPage();
 if (routeName === 'orders' && window.loadMyOrders) window.loadMyOrders();
+if (routeName === 'profile' && window.__refreshProfileFromDB) window.__refreshProfileFromDB();
 window.scrollTo(0, 0);
 return;
 }
@@ -2343,9 +2357,35 @@ else msg = '💻 لتثبيت التطبيق على الكمبيوتر:\n\n1. ا
 alert(msg);
 }
 });
+
+// ============================================================
+// ✅ NEW: Service Worker — تحديث قسري + auto-reload
+// ============================================================
 if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('/sw.js').then(reg => {}).catch(err => {});
+let swRefreshing = false;
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+if (swRefreshing) return;
+swRefreshing = true;
+window.location.reload();
+});
+navigator.serviceWorker.register('/sw.js?v=' + APP_VERSION, { updateViaCache: 'none' })
+.then(reg => {
+try { reg.update(); } catch(e) {}
+setInterval(() => { try { reg.update(); } catch(e) {} }, 30 * 60 * 1000);
+})
+.catch(err => {});
 }
+// ✅ NEW: كشف نسخة جديدة وفرض التحديث كل فترة
+(function(){
+try {
+let _lastCheck = 0;
+setInterval(async () => {
+try {
+const r = await fetch('/index.html?nocache=' + Date.now(), { cache: 'no-store', method: 'HEAD' });
+} catch(e) {}
+}, 5 * 60 * 1000);
+} catch(e) {}
+})();
 
 // ==================== PAYMENT SELECTOR CARDS ====================
 (function() {
@@ -2926,6 +2966,12 @@ user_id: userId, type, method, amount, currency, status: status || 'completed', 
 }
 window.__logTransaction = logTransaction;
 
+// ✅ NEW: helper round دقيق لـ 2 خانات عشرية
+function round2(n) {
+return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
+}
+window.__round2 = round2;
+
 document.getElementById('balanceForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 if (!balanceModalUser) return;
@@ -2935,10 +2981,10 @@ if (isNaN(amount) || amount <= 0) { toast('المبلغ غير صحيح', true);
 const field = currency === 'EGP' ? 'balance_egp' : 'balance_usd';
 const currentBal = parseFloat(balanceModalUser[field] || 0);
 let newBal;
-if (balanceModalAction === 'add') newBal = currentBal + amount;
+if (balanceModalAction === 'add') newBal = round2(currentBal + amount);
 else {
 if (currentBal < amount) { toast('الرصيد الحالي أقل من المبلغ المطلوب خصمه', true); return; }
-newBal = currentBal - amount;
+newBal = round2(currentBal - amount);
 }
 const updates = {}; updates[field] = newBal;
 const { error } = await supabase.from('users').update(updates).eq('id', balanceModalUser.id);
@@ -3087,7 +3133,7 @@ if (userRec) {
 const currency = orderData.currency === 'USD' ? 'balance_usd' : 'balance_egp';
 const currentBal = parseFloat(userRec[currency] || 0);
 const refundAmount = parseFloat(orderData.total || 0);
-const newBal = currentBal + refundAmount;
+const newBal = round2(currentBal + refundAmount);
 const upd = {}; upd[currency] = newBal;
 const { error: uErr } = await supabase.from('users').update(upd).eq('id', orderData.user_id);
 if (uErr) {
@@ -3220,22 +3266,28 @@ bg.classList.add('show');
 document.getElementById('screenshotModalBg').addEventListener('click', () => {
 document.getElementById('screenshotModalBg').classList.remove('show');
 });
+
+// ✅ NEW: تأكيد الإيداع مع rounding دقيق + realtime
 window.__adminApproveDeposit = async function(id) {
 const d = allDepositsData.find(x => x.id === id);
 if (!d) return;
 if (!confirm('تأكيد الإيداع وإضافة ' + parseFloat(d.amount).toFixed(2) + ' ' + (d.currency === 'USD' ? 'دولار' : 'جنيه') + '؟')) return;
-const { data: userRec } = await supabase.from('users').select('*').eq('id', d.user_id).single();
-if (!userRec) { toast('لم يتم العثور على المستخدم', true); return; }
+const { data: userRec, error: uReadErr } = await supabase.from('users').select('*').eq('id', d.user_id).single();
+if (uReadErr || !userRec) { toast('لم يتم العثور على المستخدم', true); return; }
 const field = d.currency === 'USD' ? 'balance_usd' : 'balance_egp';
-const newBal = parseFloat(userRec[field] || 0) + parseFloat(d.amount);
+const currentBal = parseFloat(userRec[field] || 0);
+const depositAmt = parseFloat(d.amount);
+// ✅ إضافة بالظبط مع rounding دقيق
+const newBal = round2(currentBal + depositAmt);
 const upd = {}; upd[field] = newBal;
 const { error: uErr } = await supabase.from('users').update(upd).eq('id', d.user_id);
 if (uErr) { toast('خطأ: ' + uErr.message, true); return; }
 const { error: dErr } = await supabase.from('deposit_requests').update({ status: 'approved' }).eq('id', id);
 if (dErr) { toast('خطأ: ' + dErr.message, true); return; }
-await logTransaction(d.user_id, 'deposit', d.method, parseFloat(d.amount), d.currency, 'approved', 'تم تأكيد الإيداع بواسطة الأدمن');
+await logTransaction(d.user_id, 'deposit', d.method, depositAmt, d.currency, 'approved', 'تم تأكيد الإيداع بواسطة الأدمن');
 await loadAdminDeposits();
 };
+
 window.__adminRejectDeposit = async function(id) {
 if (!confirm('رفض طلب الإيداع؟')) return;
 const d = allDepositsData.find(x => x.id === id);
@@ -3418,6 +3470,11 @@ return false;
 }
 window.__sendToTelegram = sendToTelegram;
 
+// ✅ NEW: rounding helper
+function round2(n) {
+return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
+}
+
 // ============================================
 // UNIFIED BALANCE
 // ============================================
@@ -3451,6 +3508,19 @@ else btn.classList.remove('active');
 });
 };
 
+// ✅ NEW: تحديث البيانات من DB مباشرة (لما يفتح البروفايل أو صفحة إيداع)
+window.__refreshProfileFromDB = async function() {
+if (!currentUser) return;
+try {
+const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', currentUser.id).single();
+if (error || !profile) return;
+currentProfile = profile;
+window.currentProfile = profile;
+window.refreshBalanceUI();
+window.refreshCurrencyButtons();
+} catch(e) {}
+};
+
 // ============================================
 // AUTH STATE
 // ============================================
@@ -3461,6 +3531,11 @@ if (!session || !session.user) {
 currentUser = null; currentProfile = null; window.currentProfile = null;
 const chip = document.getElementById('userBalanceChip');
 if (chip) chip.style.display = 'none';
+// ✅ NEW: إزالة الاشتراك لما يخرج
+if (window.__userRealtimeChannel) {
+try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
+window.__userRealtimeChannel = null;
+}
 return;
 }
 currentUser = session.user;
@@ -3477,9 +3552,53 @@ const chip = document.getElementById('userBalanceChip');
 if (chip) chip.style.display = 'flex';
 window.refreshBalanceUI();
 window.refreshCurrencyButtons();
+// ✅ NEW: اشتراك realtime على بيانات المستخدم الحالي
+subscribeToUserRealtime();
 } catch(e) { console.warn(e); }
 }
 window.refreshUserUI = refreshUserUI;
+
+// ============================================================
+// ✅ NEW: REALTIME SUBSCRIPTION على جدول users — لتحديث الرصيد فوراً
+// ============================================================
+function subscribeToUserRealtime() {
+try {
+if (!currentProfile || !currentProfile.id) return;
+// إزالة الاشتراك القديم إن وُجد
+if (window.__userRealtimeChannel) {
+try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
+window.__userRealtimeChannel = null;
+}
+window.__userRealtimeChannel = sb.channel('user-profile-' + currentProfile.id + '-' + Date.now())
+.on('postgres_changes', {
+event: 'UPDATE',
+schema: 'public',
+table: 'users',
+filter: 'id=eq.' + currentProfile.id
+}, (payload) => {
+if (!payload || !payload.new) return;
+// دمج البيانات الجديدة مع القديمة
+currentProfile = Object.assign({}, currentProfile, payload.new);
+window.currentProfile = currentProfile;
+// تحديث الواجهة فوراً
+window.refreshBalanceUI();
+window.refreshCurrencyButtons();
+// لو المستخدم واقف على صفحة البروفايل — تحديث الحقول كذلك
+if (window.__currentRoute === 'profile') {
+try {
+const nameEl = document.getElementById('profileName');
+const emailEl = document.getElementById('profileEmail');
+const phoneEl = document.getElementById('profilePhone');
+if (nameEl && document.activeElement !== nameEl) nameEl.value = currentProfile.name || '';
+if (emailEl && document.activeElement !== emailEl) emailEl.value = currentProfile.email || '';
+if (phoneEl && document.activeElement !== phoneEl) phoneEl.value = currentProfile.phone || '';
+if (window.__updateProfileAvatarUI) window.__updateProfileAvatarUI();
+} catch(e) {}
+}
+})
+.subscribe();
+} catch(e) { console.warn('realtime sub failed', e); }
+}
 
 // ============================================
 // AUTH MODAL TABS
@@ -3584,6 +3703,8 @@ setTimeout(() => { afterAuthSuccess(); }, 400);
 // ============================================
 async function openProfilePage() {
 if (!currentProfile) { showAuthModal(); return; }
+// ✅ NEW: تحديث البيانات من DB قبل العرض
+await window.__refreshProfileFromDB();
 document.getElementById('profileName').value = currentProfile.name || '';
 document.getElementById('profileUsername').value = currentProfile.username || '';
 document.getElementById('profileEmail').value = currentProfile.email || '';
@@ -3626,6 +3747,7 @@ avatarEl.innerHTML = (currentProfile.name || currentProfile.username || '?').tri
 }
 }
 }
+window.__updateProfileAvatarUI = updateProfileAvatarUI;
 
 // ============================================
 // AVATAR UPLOAD
@@ -3719,6 +3841,10 @@ async function doLogout() {
 if (!confirm('هل تريد تسجيل الخروج؟')) return;
 await sb.auth.signOut();
 currentUser = null; currentProfile = null; window.currentProfile = null;
+if (window.__userRealtimeChannel) {
+try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
+window.__userRealtimeChannel = null;
+}
 document.getElementById('dropdownMenu').classList.remove('show-dropdown');
 window.location.hash = '';
 if (window.__setPageVisibility) window.__setPageVisibility(null);
@@ -4377,11 +4503,16 @@ totalToPay = totalInEGP / exchangeRate;
 currencyName = 'دولار أمريكي';
 currencySymbol = 'USD';
 }
+// ✅ NEW: تقريب دقيق
+totalToPay = round2(totalToPay);
+
 const balEGP = parseFloat(currentProfile.balance_egp || 0);
 const balUSD = parseFloat(currentProfile.balance_usd || 0);
 let totalAvailable = currentCurrency === 'EGP'
 ? (balEGP + balUSD * exchangeRate)
 : (balUSD + balEGP / exchangeRate);
+// ✅ NEW: تقريب قبل المقارنة
+totalAvailable = round2(totalAvailable);
 if (totalAvailable < totalToPay) {
 showInsufficientModal(totalAvailable, totalToPay);
 return;
@@ -4396,19 +4527,19 @@ let newEGP = balEGP;
 let newUSD = balUSD;
 if (currentCurrency === 'EGP') {
 const needEGP = totalToPay;
-if (newEGP >= needEGP) newEGP -= needEGP;
+if (newEGP >= needEGP) newEGP = round2(newEGP - needEGP);
 else {
 const remaining = needEGP - newEGP;
 newEGP = 0;
-newUSD -= remaining / exchangeRate;
+newUSD = round2(newUSD - (remaining / exchangeRate));
 }
 } else {
 const needUSD = totalToPay;
-if (newUSD >= needUSD) newUSD -= needUSD;
+if (newUSD >= needUSD) newUSD = round2(newUSD - needUSD);
 else {
 const remaining = needUSD - newUSD;
 newUSD = 0;
-newEGP -= remaining * exchangeRate;
+newEGP = round2(newEGP - (remaining * exchangeRate));
 }
 }
 if (newEGP < 0) newEGP = 0;

@@ -498,8 +498,6 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .psc-logo.vodafone { background: linear-gradient(135deg, #E60000 0%, #990000 100%); color: #fff; font-family: 'Arial Black', Arial; position: relative; }
 .psc-logo.vodafone::after { content:''; position:absolute; top:6px; right:6px; width:12px; height:12px; background:rgba(255,255,255,0.9); border-radius:50%; }
 .psc-logo.binance { background: linear-gradient(135deg, #F0B90B 0%, #d9a509 100%); color: #0B0E11; }
-.psc-logo.binance::before { content:'₿'; font-size:2rem; font-weight:900; }
-.psc-logo.binance span { display:none; }
 .psc-logo.usdt { background: linear-gradient(135deg, #26A17B 0%, #1a7a5c 100%); color: #fff; }
 .psc-logo.instapay { background: linear-gradient(135deg, #6B2D8C 0%, #4B1E63 100%); color: #fff; }
 @media (max-width: 500px) {
@@ -688,7 +686,6 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="footer">© حقوق الطبع والنشر. كل الحقوق محفوظة موقع <span id="footerSiteName" data-site-name>smcole</span></div>
 </div>
 <div id="backToTop" class="back-to-top"><i class="fas fa-arrow-up"></i></div>
-
 <!-- ============ AUTH MODAL ============ -->
 <div class="auth-modal-bg" id="authModalBg">
 <div class="auth-modal" style="position:relative;">
@@ -1080,7 +1077,6 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 </div>
 
-<!-- ✅ تم إعادة الترتيب: المستخدمين أولاً -->
 <div class="admin-main-tabs">
 <button class="admin-main-tab active" data-admin-tab="users" type="button"><i class="fas fa-users"></i> المستخدمين</button>
 <button class="admin-main-tab" data-admin-tab="services" type="button"><i class="fas fa-boxes"></i> الخدمات</button>
@@ -1089,7 +1085,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <button class="admin-main-tab" data-admin-tab="transactions" type="button"><i class="fas fa-history"></i> سجل الإيداعات</button>
 </div>
 
-<!-- TAB 1: USERS (كان TAB 2) -->
+<!-- TAB 1: USERS -->
 <div class="admin-section active" id="adminSectionUsers">
 <div class="admin-stats">
 <div class="admin-stat-box"><div class="lbl">إجمالي المستخدمين</div><div class="val" id="adminTotalUsers">0</div></div>
@@ -1097,7 +1093,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-stat-box"><div class="lbl">محظورين</div><div class="val" id="adminBannedUsers">0</div></div>
 </div>
 <div style="margin-bottom:1rem;">
-<input type="text" id="adminUserSearch" class="user-search-input" placeholder="🔍 ابحث بالاسم أو اليوزر أو الإيميل...">
+<input type="text" id="adminUserSearch" class="user-search-input" placeholder="🔍 ابحث بالاسم أو اليوزر أو الإيميل (البحث يشتغل على كل قاعدة البيانات)...">
 </div>
 <div class="admin-table-wrap">
 <div id="adminUsersLoader" class="admin-loader" style="display:none;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
@@ -1117,7 +1113,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 </div>
 
-<!-- TAB 2: SERVICES (كان TAB 1) -->
+<!-- TAB 2: SERVICES -->
 <div class="admin-section" id="adminSectionServices">
 <div class="admin-stats">
 <div class="admin-stat-box"><div class="lbl">إجمالي الخدمات</div><div class="val" id="adminTotalServices">0</div></div>
@@ -1436,7 +1432,6 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-hint">💡 كل هذه البيانات ستظهر تلقائياً في صفحات الإيداع للمستخدمين</div>
 </div>
 
-<!-- ✅ NEW: رفع لوجوهات طرق الدفع -->
 <div class="settings-section">
 <h3><i class="fas fa-image"></i> لوجوهات وسائل الدفع</h3>
 <div class="admin-hint" style="margin-bottom:10px;">💡 ارفع لوجو مخصص لكل وسيلة دفع (يُفضّل مربع 200×200 بكسل)</div>
@@ -1592,7 +1587,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-toast" id="adminToast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const APP_VERSION = '2026.09.16.3';
+const APP_VERSION = '2026.09.16.4';
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -1732,7 +1727,6 @@ if (window.refreshCurrencyButtons) window.refreshCurrencyButtons();
 }
 window.setCurrency = setCurrency;
 
-// ✅ NEW: دالة تطبيق اسم الموقع على كل العناصر اللي عليها data-site-name
 function applySiteNameToAll() {
 const name = siteSettings.site_name || 'SMCOLE';
 document.querySelectorAll('[data-site-name]').forEach(el => {
@@ -1741,7 +1735,6 @@ el.textContent = name;
 }
 window.applySiteNameToAll = applySiteNameToAll;
 
-// ✅ NEW: تطبيق لوجوهات طرق الدفع
 function applyPaymentLogos() {
 const map = [
 { key: 'logo_vodafone', wrapId: 'pscLogoVodafone', imgId: 'pscLogoVodafoneImg' },
@@ -1787,9 +1780,7 @@ promoEl.innerHTML = '<span>' + lines[0] + '</span>';
 if (siteSettings.site_name) {
 document.title = siteSettings.site_name + ' | ' + (siteSettings.site_description || '');
 }
-// ✅ NEW: تطبيق اسم الموقع في كل مكان
 applySiteNameToAll();
-// ✅ NEW: تطبيق لوجوهات طرق الدفع
 applyPaymentLogos();
 const usersSpan = document.getElementById('usersCount');
 const ordersSpan = document.getElementById('ordersCount');
@@ -1869,7 +1860,7 @@ overlay.style.transition = 'opacity 0.6s ease';
 overlay.style.opacity = '0';
 setTimeout(() => overlay.style.display = 'none', 600);
 }
-}, 2000);
+}, 1000);
 
 (function() {
 try {
@@ -1936,7 +1927,6 @@ const termsLink = document.getElementById('termsLink');
 const supportDropdownLink = document.getElementById('supportDropdownLink');
 const paymentMethodBtn = document.getElementById('paymentMethodBtn');
 
-// ==================== ROUTER ====================
 window.__currentRoute = 'home';
 window.__routeHistory = ['home'];
 
@@ -1948,7 +1938,6 @@ else mainContent.style.display = 'block';
 }
 window.__setPageVisibility = setPageVisibility;
 
-// ============ DEPOSIT VIEWS CONTROL ============
 window.__showDepositView = function(method) {
 const vView = document.getElementById('depositVodafoneView');
 const bView = document.getElementById('depositBinanceView');
@@ -2490,7 +2479,6 @@ setInterval(() => { try { reg.update(); } catch(e) {} }, 30 * 60 * 1000);
 .catch(err => {});
 }
 
-// ==================== PAYMENT SELECTOR CARDS ====================
 (function() {
 function setupPaymentSelectorCards() {
 const cards = document.querySelectorAll('.payment-selector-card');
@@ -2519,7 +2507,6 @@ setTimeout(setupPaymentSelectorCards, 2500);
 window.__setupPaymentSelectorCards = setupPaymentSelectorCards;
 })();
 
-// ✅ NEW: زر رجوع صفحة طرق الدفع
 document.getElementById('paymentBackBtn').addEventListener('click', () => {
 window.showHomePage();
 });
@@ -2851,7 +2838,6 @@ if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.b
 const settingsModalBg = document.getElementById('adminSettingsModalBg');
 const settingsForm = document.getElementById('adminSettingsForm');
 
-// ✅ NEW: دوال معاينة اللوجوهات + الحفظ
 let pendingLogos = { vodafone: null, binance: null, usdt: null, instapay: null };
 
 function updateLogoPreview(method, url) {
@@ -2921,7 +2907,6 @@ document.getElementById('settingsInstapayNumber').value = data.instapay_number |
 document.getElementById('settingsExchangeRate').value = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? data.exchange_rate : '';
 document.getElementById('settingsActiveUsers').value = (data.active_users_override !== null && data.active_users_override !== undefined) ? data.active_users_override : '';
 document.getElementById('settingsCompletedOrders').value = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? data.completed_orders_override : '';
-// ✅ NEW: تحميل اللوجوهات
 pendingLogos = {
 vodafone: data.logo_vodafone || '',
 binance: data.logo_binance || '',
@@ -3008,7 +2993,6 @@ if (window.fetchExchangeRate) { window.fetchExchangeRate(); }
 }
 });
 
-// ✅ تابات لوحة التحكم: المستخدمين افتراضي
 document.querySelectorAll('.admin-main-tab').forEach(tab => {
 tab.addEventListener('click', () => {
 const target = tab.getAttribute('data-admin-tab');
@@ -3025,6 +3009,9 @@ else if (target === 'transactions') loadAdminTransactions();
 });
 });
 
+// ============================================================
+// ✅ المستخدمين — تحميل أولي 100 + بحث من السيرفر
+// ============================================================
 let allUsersData = [];
 let usersSearchTerm = '';
 async function loadAdminUsers() {
@@ -3033,13 +3020,16 @@ const table = document.getElementById('adminUsersTable');
 const empty = document.getElementById('adminUsersEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
-const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending: false });
+const { data, error, count } = await supabase.from('users')
+.select('*', { count: 'exact' })
+.order('created_at', { ascending: false })
+.limit(100);
 loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 allUsersData = data || [];
-document.getElementById('adminTotalUsers').innerText = allUsersData.length;
-document.getElementById('adminActiveUsers').innerText = allUsersData.filter(u => !u.is_banned).length;
-document.getElementById('adminBannedUsers').innerText = allUsersData.filter(u => u.is_banned).length;
+document.getElementById('adminTotalUsers').innerText = (count || allUsersData.length);
+document.getElementById('adminActiveUsers').innerText = allUsersData.filter(u => !u.is_banned).length + '+';
+document.getElementById('adminBannedUsers').innerText = allUsersData.filter(u => u.is_banned).length + '+';
 renderUsersTable();
 } catch(e) {
 loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
@@ -3090,10 +3080,39 @@ banBtn +
 tbody.appendChild(tr);
 });
 }
+
+// ✅ بحث من السيرفر - يلاقي أي مستخدم مهما كان قديم
+let usersSearchTimeout = null;
 document.getElementById('adminUserSearch').addEventListener('input', (e) => {
-usersSearchTerm = e.target.value.trim();
+const term = e.target.value.trim();
+usersSearchTerm = term;
+clearTimeout(usersSearchTimeout);
+if (!term) {
+usersSearchTimeout = setTimeout(() => { loadAdminUsers(); }, 300);
+return;
+}
+usersSearchTimeout = setTimeout(async () => {
+const loader = document.getElementById('adminUsersLoader');
+const table = document.getElementById('adminUsersTable');
+const empty = document.getElementById('adminUsersEmpty');
+loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
+try {
+const safe = term.replace(/[%,]/g, '');
+const { data, error } = await supabase.from('users')
+.select('*')
+.or('name.ilike.%' + safe + '%,username.ilike.%' + safe + '%,email.ilike.%' + safe + '%,phone.ilike.%' + safe + '%')
+.order('created_at', { ascending: false })
+.limit(200);
+loader.style.display = 'none';
+if (error) { toast('خطأ في البحث: ' + error.message, true); return; }
+allUsersData = data || [];
 renderUsersTable();
+} catch(e) {
+loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
+}
+}, 400);
 });
+
 window.__adminBanUser = async function(id) {
 if (!confirm('هل تريد حظر هذا المستخدم؟')) return;
 const { error } = await supabase.from('users').update({ is_banned: true }).eq('id', id);
@@ -3150,6 +3169,23 @@ function round2(n) {
 return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
 }
 window.__round2 = round2;
+
+// ✅ حذف تلقائي: آخر 100 طلب إيداع بس يفضلوا
+async function cleanupOldDepositRequests() {
+try {
+const { data: hundredth } = await supabase.from('deposit_requests')
+.select('created_at')
+.order('created_at', { ascending: false })
+.range(99, 99);
+if (!hundredth || !hundredth[0]) return;
+const cutoffDate = hundredth[0].created_at;
+const { error } = await supabase.from('deposit_requests')
+.delete()
+.lt('created_at', cutoffDate);
+if (!error) console.log('🧹 تم حذف الطلبات القديمة تلقائياً');
+} catch(e) { console.warn('cleanup error:', e); }
+}
+window.__cleanupOldDepositRequests = cleanupOldDepositRequests;
 
 document.getElementById('balanceForm').addEventListener('submit', async (e) => {
 e.preventDefault();
@@ -3228,11 +3264,11 @@ const table = document.getElementById('adminOrdersTable');
 const empty = document.getElementById('adminOrdersEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
-const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+const { data, error, count } = await supabase.from('orders').select('*', { count: 'exact' }).order('created_at', { ascending: false }).limit(200);
 loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 allOrdersData = data || [];
-document.getElementById('adminTotalOrders').innerText = allOrdersData.length;
+document.getElementById('adminTotalOrders').innerText = (count || allOrdersData.length);
 document.getElementById('adminPendingOrders').innerText = allOrdersData.filter(o => o.status === 'pending').length;
 document.getElementById('adminProcessingOrders').innerText = allOrdersData.filter(o => o.status === 'processing').length;
 document.getElementById('adminCompletedOrders').innerText = allOrdersData.filter(o => o.status === 'completed').length;
@@ -3340,7 +3376,7 @@ const table = document.getElementById('adminDepositsTable');
 const empty = document.getElementById('adminDepositsEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
-const { data, error } = await supabase.from('deposit_requests').select('*').order('created_at', { ascending: false });
+const { data, error } = await supabase.from('deposit_requests').select('*').order('created_at', { ascending: false }).limit(100);
 loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 allDepositsData = data || [];
@@ -3452,6 +3488,7 @@ if (uErr) { toast('خطأ: ' + uErr.message, true); return; }
 const { error: dErr } = await supabase.from('deposit_requests').update({ status: 'approved' }).eq('id', id);
 if (dErr) { toast('خطأ: ' + dErr.message, true); return; }
 await logTransaction(d.user_id, 'deposit', d.method, depositAmt, d.currency, 'approved', 'تم تأكيد الإيداع بواسطة الأدمن');
+if (window.__cleanupOldDepositRequests) { window.__cleanupOldDepositRequests(); }
 await loadAdminDeposits();
 };
 
@@ -3461,6 +3498,7 @@ const d = allDepositsData.find(x => x.id === id);
 const { error } = await supabase.from('deposit_requests').update({ status: 'rejected' }).eq('id', id);
 if (error) { toast('خطأ: ' + error.message, true); return; }
 if (d) await logTransaction(d.user_id, 'deposit', d.method, parseFloat(d.amount), d.currency, 'rejected', 'تم رفض الإيداع بواسطة الأدمن');
+if (window.__cleanupOldDepositRequests) { window.__cleanupOldDepositRequests(); }
 await loadAdminDeposits();
 };
 
@@ -3561,9 +3599,6 @@ let currentProfile = null;
 window.currentProfile = null;
 let pendingBuyAfterAuth = null;
 
-// ============================================
-// USER TOAST
-// ============================================
 function userToast(msg, type) {
 let t = document.getElementById('userToast');
 if (!t) {
@@ -3587,9 +3622,6 @@ t.style.transform = 'translateX(-50%) translateY(100px)';
 }
 window.userToast = userToast;
 
-// ============================================
-// HELPERS
-// ============================================
 window.copyToClipboard = function(text) {
 if (navigator.clipboard && navigator.clipboard.writeText) {
 navigator.clipboard.writeText(text).then(() => {
@@ -3612,9 +3644,6 @@ function showAuthModal() { document.getElementById('authModalBg').classList.add(
 function hideAuthModal() { document.getElementById('authModalBg').classList.remove('show'); }
 window.showAuthModal = showAuthModal;
 
-// ============================================
-// TELEGRAM SENDER
-// ============================================
 async function sendToTelegram(text) {
 try {
 const { data, error } = await sb.functions.invoke('send-to-telegram', {
@@ -3632,9 +3661,6 @@ function round2(n) {
 return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
 }
 
-// ============================================
-// UNIFIED BALANCE
-// ============================================
 function getUnifiedBalance() {
 if (!currentProfile) return 0;
 const egp = parseFloat(currentProfile.balance_egp || 0);
@@ -3677,9 +3703,6 @@ window.refreshCurrencyButtons();
 } catch(e) {}
 };
 
-// ============================================
-// AUTH STATE
-// ============================================
 async function refreshUserUI() {
 try {
 const { data: { session } } = await sb.auth.getSession();
@@ -3696,7 +3719,6 @@ return;
 currentUser = session.user;
 const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', session.user.id).single();
 if (error || !profile) {
-// ✅ NEW: لو الحساب اتحذف من قاعدة البيانات، يخرج تلقائياً
 try { await sb.auth.signOut(); } catch(e) {}
 currentProfile = null; window.currentProfile = null;
 const chip = document.getElementById('userBalanceChip');
@@ -3714,7 +3736,6 @@ subscribeToUserRealtime();
 }
 window.refreshUserUI = refreshUserUI;
 
-// ✅ REALTIME SUBSCRIPTION على جدول users
 function subscribeToUserRealtime() {
 try {
 if (!currentProfile || !currentProfile.id) return;
@@ -3750,9 +3771,6 @@ if (window.__updateProfileAvatarUI) window.__updateProfileAvatarUI();
 } catch(e) { console.warn('realtime sub failed', e); }
 }
 
-// ============================================
-// AUTH MODAL TABS
-// ============================================
 document.getElementById('authCloseBtn').addEventListener('click', hideAuthModal);
 document.getElementById('authModalBg').addEventListener('click', (e) => {
 if (e.target === document.getElementById('authModalBg')) hideAuthModal();
@@ -3787,9 +3805,6 @@ setTimeout(cb, 300);
 }
 }
 
-// ============================================
-// REGISTER
-// ============================================
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 const name = document.getElementById('regName').value.trim();
@@ -3822,15 +3837,12 @@ name, username, email, phone: phone || null
 if (insertErr) { msg.className = 'auth-msg err'; msg.innerText = 'خطأ: ' + insertErr.message; return; }
 await sb.auth.signInWithPassword({ email, password });
 msg.className = 'auth-msg ok'; msg.innerText = '✅ تم إنشاء الحساب بنجاح';
-// ✅ NEW: إشعار منبثق
+// ✅ إشعار منبثق
 userToast('🎉 تم إنشاء حسابك بنجاح! مرحباً بك', 'ok');
 await refreshUserUI();
 setTimeout(() => { afterAuthSuccess(); }, 500);
 });
 
-// ============================================
-// LOGIN
-// ============================================
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 const email = document.getElementById('loginEmail').value.trim();
@@ -3840,7 +3852,6 @@ msg.className = 'auth-msg'; msg.innerText = 'جاري الدخول...';
 const { data, error } = await sb.auth.signInWithPassword({ email, password });
 if (error) { msg.className = 'auth-msg err'; msg.innerText = '❌ ' + error.message; return; }
 const { data: profile, error: profErr } = await sb.from('users').select('*').eq('auth_id', data.user.id).single();
-// ✅ لو الحساب محذوف أو مش موجود
 if (profErr || !profile) {
 await sb.auth.signOut();
 msg.className = 'auth-msg err';
@@ -3855,15 +3866,12 @@ userToast('🚫 حسابك محظور من قبل الإدارة', 'err');
 return;
 }
 msg.className = 'auth-msg ok'; msg.innerText = '✅ تم تسجيل الدخول';
-// ✅ NEW: إشعار منبثق
+// ✅ إشعار منبثق
 userToast('✅ تم تسجيل الدخول بنجاح', 'ok');
 await refreshUserUI();
 setTimeout(() => { afterAuthSuccess(); }, 400);
 });
 
-// ============================================
-// PROFILE PAGE
-// ============================================
 async function openProfilePage() {
 if (!currentProfile) { showAuthModal(); return; }
 await window.__refreshProfileFromDB();
@@ -3911,9 +3919,6 @@ avatarEl.innerHTML = (currentProfile.name || currentProfile.username || '?').tri
 }
 window.__updateProfileAvatarUI = updateProfileAvatarUI;
 
-// ============================================
-// AVATAR UPLOAD
-// ============================================
 document.getElementById('avatarUploadBtn').addEventListener('click', () => {
 document.getElementById('avatarFileInput').click();
 });
@@ -3942,9 +3947,6 @@ userToast('❌ فشل رفع الصورة: ' + (err.message || ''), 'err');
 reader.readAsDataURL(file);
 });
 
-// ============================================
-// PROFILE SAVE
-// ============================================
 document.getElementById('profileSaveBtn').addEventListener('click', async () => {
 if (!currentProfile) return;
 const msg = document.getElementById('profileMsg');
@@ -3964,9 +3966,6 @@ await refreshUserUI();
 updateProfileAvatarUI();
 });
 
-// ============================================
-// PROFILE PASSWORD CHANGE
-// ============================================
 document.getElementById('profilePasswordBtn').addEventListener('click', async () => {
 const msg = document.getElementById('profilePasswordMsg');
 const curr = document.getElementById('profileCurrentPassword').value;
@@ -3984,9 +3983,6 @@ document.getElementById('profileCurrentPassword').value = '';
 document.getElementById('profileNewPassword').value = '';
 });
 
-// ============================================
-// CURRENCY SWITCH IN PROFILE
-// ============================================
 document.querySelectorAll('.profile-currency-btn').forEach(btn => {
 btn.addEventListener('click', () => {
 const c = btn.getAttribute('data-currency');
@@ -3996,9 +3992,6 @@ window.refreshCurrencyButtons();
 });
 });
 
-// ============================================
-// LOGOUT
-// ============================================
 async function doLogout() {
 if (!confirm('هل تريد تسجيل الخروج؟')) return;
 await sb.auth.signOut();
@@ -4016,9 +4009,6 @@ userToast('تم تسجيل الخروج', 'ok');
 }
 document.getElementById('profileLogoutBtn').addEventListener('click', doLogout);
 
-// ============================================
-// MY ORDERS PAGE
-// ============================================
 async function loadMyOrders() {
 if (!currentProfile) return;
 const container = document.getElementById('myOrdersContainer');
@@ -4085,16 +4075,10 @@ document.getElementById('dropdownMenu').classList.remove('show-dropdown');
 if (currentProfile) openProfilePage(); else showAuthModal();
 });
 
-// ============================================
-// DEPOSIT PAGE BACK BUTTON
-// ============================================
 document.getElementById('depositBackBtn').addEventListener('click', () => {
 window.__navigateTo('payment', document.getElementById('paymentPage'), true);
 });
 
-// ============================================
-// COPY BUTTONS
-// ============================================
 document.querySelectorAll('[data-copy]').forEach(btn => {
 btn.addEventListener('click', () => {
 const val = btn.getAttribute('data-copy');
@@ -4102,9 +4086,6 @@ if (val) window.copyToClipboard(val);
 });
 });
 
-// ============================================
-// IMAGE UPLOAD HELPERS
-// ============================================
 function attachImageUpload(inputId, zoneId, previewId) {
 const input = document.getElementById(inputId);
 const zone = document.getElementById(zoneId);
@@ -4142,9 +4123,6 @@ const res = await fetch(dataURL);
 return await res.blob();
 }
 
-// ============================================
-// SIMPLE IMAGE COMPRESS
-// ============================================
 function compressImage(dataURL, maxSize, quality) {
 maxSize = maxSize || 1200;
 quality = quality || 0.75;
@@ -4172,9 +4150,6 @@ img.src = dataURL;
 });
 }
 
-// ============================================
-// UPLOAD SCREENSHOT
-// ============================================
 function withTimeout(promise, ms) {
 return new Promise((resolve, reject) => {
 const timer = setTimeout(() => reject(new Error('timeout')), ms);
@@ -4200,7 +4175,6 @@ const result = await withTimeout(uploadPromise, 8000);
 if (result && !result.error) {
 const pubResult = sb.storage.from('screenshots').getPublicUrl(fileName);
 if (pubResult && pubResult.data && pubResult.data.publicUrl) {
-console.log('✅ Supabase:', pubResult.data.publicUrl);
 return pubResult.data.publicUrl;
 }
 } else if (result && result.error) {
@@ -4215,10 +4189,7 @@ fd.append('fileToUpload', blob, fileName);
 const r = await withTimeout(fetch('https://catbox.moe/user/api.php', { method: 'POST', body: fd }), 8000);
 if (r && r.ok) {
 const url = (await r.text()).trim();
-if (url && url.indexOf('http') === 0) {
-console.log('✅ catbox:', url);
-return url;
-}
+if (url && url.indexOf('http') === 0) return url;
 }
 } catch(e) { console.warn('catbox fail:', e.message); }
 
@@ -4228,19 +4199,13 @@ fd.append('file', blob, fileName);
 const r = await withTimeout(fetch('https://0x0.st', { method: 'POST', body: fd }), 8000);
 if (r && r.ok) {
 const url = (await r.text()).trim();
-if (url && url.indexOf('http') === 0) {
-console.log('✅ 0x0:', url);
-return url;
-}
+if (url && url.indexOf('http') === 0) return url;
 }
 } catch(e) { console.warn('0x0 fail:', e.message); }
 
 return null;
 }
 
-// ============================================
-// VODAFONE SUBMIT
-// ============================================
 document.getElementById('vodafoneForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 if (!currentProfile) { showAuthModal(); return; }
@@ -4307,6 +4272,9 @@ userToast('✅ تم إرسال طلبك للإدارة', 'ok');
 msg.className = 'profile-msg err'; msg.innerText = '⚠️ تم حفظ الطلب لكن فشل الإرسال على تليجرام';
 }
 
+// ✅ تنظيف تلقائي
+if (window.__cleanupOldDepositRequests) { setTimeout(() => window.__cleanupOldDepositRequests(), 2000); }
+
 setTimeout(() => {
 document.getElementById('vodafoneForm').reset();
 document.getElementById('vodafoneUploadZone').classList.remove('has-file');
@@ -4316,9 +4284,6 @@ loadUserTransactions();
 }, 2500);
 });
 
-// ============================================
-// BINANCE SUBMIT
-// ============================================
 document.getElementById('binanceForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 if (!currentProfile) { showAuthModal(); return; }
@@ -4383,6 +4348,8 @@ userToast('✅ تم إرسال طلبك للإدارة', 'ok');
 msg.className = 'profile-msg err'; msg.innerText = '⚠️ تم حفظ الطلب لكن فشل الإرسال على تليجرام';
 }
 
+if (window.__cleanupOldDepositRequests) { setTimeout(() => window.__cleanupOldDepositRequests(), 2000); }
+
 setTimeout(() => {
 document.getElementById('binanceForm').reset();
 document.getElementById('binanceUploadZone').classList.remove('has-file');
@@ -4392,9 +4359,6 @@ loadUserTransactions();
 }, 2500);
 });
 
-// ============================================
-// USDT SUBMIT
-// ============================================
 document.getElementById('usdtForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 if (!currentProfile) { showAuthModal(); return; }
@@ -4459,6 +4423,8 @@ userToast('✅ تم إرسال طلبك للإدارة', 'ok');
 msg.className = 'profile-msg err'; msg.innerText = '⚠️ تم حفظ الطلب لكن فشل الإرسال على تليجرام';
 }
 
+if (window.__cleanupOldDepositRequests) { setTimeout(() => window.__cleanupOldDepositRequests(), 2000); }
+
 setTimeout(() => {
 document.getElementById('usdtForm').reset();
 document.getElementById('usdtUploadZone').classList.remove('has-file');
@@ -4468,9 +4434,6 @@ loadUserTransactions();
 }, 2500);
 });
 
-// ============================================
-// INSTAPAY SUBMIT
-// ============================================
 document.getElementById('instapayForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 if (!currentProfile) { showAuthModal(); return; }
@@ -4537,6 +4500,8 @@ userToast('✅ تم إرسال طلبك للإدارة', 'ok');
 msg.className = 'profile-msg err'; msg.innerText = '⚠️ تم حفظ الطلب لكن فشل الإرسال على تليجرام';
 }
 
+if (window.__cleanupOldDepositRequests) { setTimeout(() => window.__cleanupOldDepositRequests(), 2000); }
+
 setTimeout(() => {
 document.getElementById('instapayForm').reset();
 document.getElementById('instapayUploadZone').classList.remove('has-file');
@@ -4546,9 +4511,6 @@ loadUserTransactions();
 }, 2500);
 });
 
-// ============================================
-// USER TRANSACTIONS LOG
-// ============================================
 async function loadUserTransactions() {
 if (!currentProfile) return;
 const container = document.getElementById('txLogContainer');
@@ -4598,9 +4560,6 @@ container.innerHTML = '<div style="text-align:center;padding:2rem;color:#e83e5c;
 }
 window.loadUserTransactions = loadUserTransactions;
 
-// ============================================
-// INSUFFICIENT BALANCE MODAL
-// ============================================
 function showInsufficientModal(current, needed) {
 const diff = Math.max(0, needed - current);
 const curLabel = currentCurrency === 'USD' ? '$' : 'جنيه';
@@ -4620,9 +4579,6 @@ document.getElementById('insufficientModalBg').classList.remove('show');
 window.__navigateTo('payment', document.getElementById('paymentPage'), true);
 });
 
-// ============================================
-// BUY BUTTON OVERRIDE
-// ============================================
 document.addEventListener('click', async function(e) {
 const buyBtn = e.target.closest && e.target.closest('.buy-btn');
 if (!buyBtn) return;
@@ -4721,7 +4677,7 @@ link: link,
 status: 'pending'
 });
 if (ordErr) throw ordErr;
-// ✅ NEW: زيادة عدّاد الطلبات المكتملة
+// ✅ زيادة عدّاد الطلبات المكتملة
 if (window.registerNewOrder) { try { await window.registerNewOrder(); } catch(e) {} }
 const tgMsg = '📋 طلب شراء خدمة : ' + serviceName +
 '\n🔢 رقم الخدمة : ' + serviceNumber +
@@ -4744,9 +4700,6 @@ buyBtn.dataset.processing = '0';
 }
 }, true);
 
-// ============================================
-// MENU LINKS
-// ============================================
 setTimeout(() => {
 const dLink = document.getElementById('depositMenuLink');
 const dBtn = document.getElementById('depositMethodBtn');
@@ -4760,9 +4713,6 @@ window.__navigateTo('payment', document.getElementById('paymentPage'), true);
 });
 }, 500);
 
-// ============================================
-// INIT
-// ============================================
 async function initUserSystem() {
 await refreshUserUI();
 const origOpenPanel = window.openAdminPanel;

@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-<!-- ✅ NEW: منع الكاش تماماً -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -399,12 +398,13 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .empty-orders i { font-size:4rem; color:#F0B90B; opacity:0.4; margin-bottom:1rem; display:block; }
 .empty-orders p { color:#B7BDC6; font-size:1rem; }
 @media (max-width:600px){ .order-meta { grid-template-columns:1fr; } }
-.admin-monthly-stats { background:linear-gradient(135deg,rgba(240,185,11,0.08),rgba(46,189,133,0.05)); border:1px solid rgba(240,185,11,0.3); border-radius:20px; padding:1.2rem 1.5rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; }
-.admin-monthly-stats .m-icon { width:60px; height:60px; border-radius:20px; background:linear-gradient(135deg,#F0B90B,#d9a509); color:#0B0E11; display:flex; align-items:center; justify-content:center; font-size:1.8rem; flex-shrink:0; }
-.admin-monthly-stats .m-info { flex:1; min-width:180px; }
-.admin-monthly-stats .m-lbl { font-size:0.8rem; color:#B7BDC6; }
-.admin-monthly-stats .m-val { font-size:1.8rem; font-weight:800; color:#F0B90B; direction:ltr; }
-.admin-monthly-stats .m-sub { font-size:0.7rem; color:#848E9C; margin-top:2px; }
+.admin-monthly-stats { background:linear-gradient(135deg, rgba(11,14,17,0.9), rgba(30,35,41,0.9)); border:1px solid rgba(240,185,11,0.4); border-radius:24px; padding:1.8rem; margin-bottom:1.5rem; position:relative; overflow:hidden; box-shadow: 0 10px 40px rgba(240,185,11,0.15); display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; }
+.admin-monthly-stats::before { content:''; position:absolute; top:-80px; right:-80px; width:220px; height:220px; background:radial-gradient(circle, rgba(240,185,11,0.25), transparent 70%); border-radius:50%; pointer-events:none; }
+.admin-monthly-stats::after { content:''; position:absolute; bottom:-80px; left:-80px; width:220px; height:220px; background:radial-gradient(circle, rgba(46,189,133,0.2), transparent 70%); border-radius:50%; pointer-events:none; }
+.admin-monthly-stats .m-icon { width:72px; height:72px; border-radius:22px; background:linear-gradient(135deg, #F0B90B, #FFD966); color:#0B0E11; display:flex; align-items:center; justify-content:center; font-size:2rem; flex-shrink:0; box-shadow:0 10px 30px rgba(240,185,11,0.4); position:relative; z-index:2; }
+.admin-monthly-stats .m-info { flex:1; min-width:180px; position:relative; z-index:2; }
+.admin-monthly-stats .m-lbl { font-size:0.85rem; color:#B7BDC6; margin-bottom:6px; font-weight:600; letter-spacing:0.3px; }
+.admin-monthly-stats .m-val { font-size:2.4rem; font-weight:900; color:#F0B90B; direction:ltr; line-height:1.1; text-shadow:0 2px 20px rgba(240,185,11,0.4); }
 .screenshot-preview-btn { background:rgba(240,185,11,0.15); color:#F0B90B; border:none; padding:5px 10px; border-radius:10px; cursor:pointer; font-size:0.72rem; font-weight:700; font-family:inherit; display:inline-flex; align-items:center; gap:4px; }
 .screenshot-preview-btn:hover { background:#F0B90B; color:#0B0E11; }
 .screenshot-modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.9); display:none; align-items:center; justify-content:center; z-index:4000; padding:20px; }
@@ -493,22 +493,33 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .payment-selector-grid { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
 .payment-selector-card { display: flex; align-items: center; gap: 14px; background: linear-gradient(135deg, #1E2329, #13171D); border: 1px solid rgba(240,185,11,0.25); border-radius: 20px; padding: 1.2rem; cursor: pointer; transition: 0.25s; }
 .payment-selector-card:hover { border-color: #F0B90B; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-.psc-logo { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 900; flex-shrink: 0; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-.psc-logo.vodafone { background: #E60000; color: #fff; font-family: Arial; }
-.psc-logo.binance { background: #F0B90B; color: #0B0E11; }
-.psc-logo.usdt { background: #26A17B; color: #fff; }
-.psc-logo.instapay { background: linear-gradient(135deg, #5B2D8C, #8E44AD); color: #fff; }
-.psc-info { flex: 1; }
-.psc-info h3 { color: #EAECEF; font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
-.psc-info p { color: #848E9C; font-size: 0.78rem; margin: 0; }
-.psc-arrow { color: #F0B90B; font-size: 1.2rem; transition: 0.25s; }
-.payment-selector-card:hover .psc-arrow { transform: translateX(-5px); }
+.psc-logo { width: 62px; height: 62px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; font-weight: 900; flex-shrink: 0; box-shadow: 0 8px 20px rgba(0,0,0,0.35); overflow: hidden; position: relative; }
+.psc-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; display: block; }
+.psc-logo.vodafone { background: linear-gradient(135deg, #E60000 0%, #990000 100%); color: #fff; font-family: 'Arial Black', Arial; position: relative; }
+.psc-logo.vodafone::after { content:''; position:absolute; top:6px; right:6px; width:12px; height:12px; background:rgba(255,255,255,0.9); border-radius:50%; }
+.psc-logo.binance { background: linear-gradient(135deg, #F0B90B 0%, #d9a509 100%); color: #0B0E11; }
+.psc-logo.binance::before { content:'₿'; font-size:2rem; font-weight:900; }
+.psc-logo.binance span { display:none; }
+.psc-logo.usdt { background: linear-gradient(135deg, #26A17B 0%, #1a7a5c 100%); color: #fff; }
+.psc-logo.instapay { background: linear-gradient(135deg, #6B2D8C 0%, #4B1E63 100%); color: #fff; }
 @media (max-width: 500px) {
-.psc-logo { width: 48px; height: 48px; font-size: 1.4rem; border-radius: 14px; }
+.psc-logo { width: 52px; height: 52px; font-size: 1.4rem; border-radius: 14px; }
 .psc-info h3 { font-size: 0.95rem; }
 .psc-info p { font-size: 0.72rem; }
 .payment-selector-card { padding: 1rem; gap: 12px; }
 }
+.payment-back-wrap { margin-bottom: 1rem; }
+.logo-upload-row { display: flex; align-items: center; gap: 10px; margin-bottom: 0.6rem; padding: 0.6rem; background: #13171D; border-radius: 12px; border: 1px solid rgba(240,185,11,0.15); }
+.logo-upload-preview { width: 46px; height: 46px; border-radius: 12px; background: #0B0E11; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(240,185,11,0.2); }
+.logo-upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+.logo-upload-preview i { color: #F0B90B; font-size: 1.2rem; }
+.logo-upload-info { flex: 1; }
+.logo-upload-info .lbl { font-size: 0.78rem; color: #EAECEF; font-weight: 700; margin-bottom: 2px; }
+.logo-upload-info .hint { font-size: 0.65rem; color: #848E9C; }
+.logo-upload-btn { background: rgba(46,189,133,0.15); color: #2EBD85; border: none; padding: 7px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+.logo-upload-btn:hover { background: #2EBD85; color: #0B0E11; }
+.logo-remove-btn { background: rgba(232,62,92,0.15); color: #e83e5c; border: none; padding: 7px 10px; border-radius: 10px; cursor: pointer; font-family: inherit; font-size: 0.75rem; display: inline-flex; align-items: center; transition: 0.2s; }
+.logo-remove-btn:hover { background: #e83e5c; color: #fff; }
 </style>
 </head>
 <body>
@@ -544,28 +555,34 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div id="termsPage" class="overlay-page">
 <div class="overlay-container">
 <h1>شروط الخدمة</h1>
-<p>أهلاً بك في SMCole! يسعدنا أن نقدّم لك شروط الخدمة الخاصة بمنصّتنا...</p>
+<p>أهلاً بك في <span data-site-name>SMCOLE</span>! يسعدنا أن نقدّم لك شروط الخدمة الخاصة بمنصّتنا...</p>
 <h2>الخدمات</h2><ul><li>يجب استخدام الموقع وفقًا لشروط وأحكام منصات التواصل الاجتماعي.</li><li>نحتفظ بحق إلغاء أي طلب يخالف القوانين أو الآداب العامة.</li><li>لا نضمن تسليمًا فوريًا، وقد تتأخر بعض الطلبات بناءً على حجم الطلب أو ضغط التنفيذ أو ظروف خارجية.</li><li>لا نتحمّل أي مسؤولية عن المشاكل الناتجة عن تحديثات أو تغييرات منصات التواصل الاجتماعي.</li><li>الأسعار قابلة للتغيير في أي وقت دون إشعار مسبق.</li><li>نحتفظ بحق تعديل أو إيقاف أي خدمة أو بند في الشروط دون إشعار مسبق.</li><li>يُمنع إساءة استخدام الموقع، وسنتخذ الإجراءات المناسبة ضد أي مخالفة.</li><li>في حال إنشاء طلبات متعددة لنفس الرابط، تتحمّل أنت المسؤولية الكاملة عن أي مشكلة قد تنتج.</li><li>نحن غير مسؤولين عن أي خسائر أو أضرار ناتجة عن تأخير في تنفيذ الطلبات.</li><li>لن يتم إعادة تعبئة الطلب إذا كان رقم البداية غير مطابق عند بدء التنفيذ.</li><li>يتحمّل العميل مسؤولية التأكد من صحة الرابط أو اسم المستخدم قبل إرسال الطلب.</li></ul>
-<h2>آلية الطلب والدفع</h2><ul><li>يعتمد موقع SMCole على نظام عرض الخدمات وإنشاء الطلبات بشكل مباشر عبر الموقع، ثم التواصل مع مسؤول الطلبات أو فريق المبيعات عبر واتساب لإتمام عملية الدفع وتأكيد الطلب.</li><li>يبدأ تنفيذ الطلب فقط بعد تأكيد عملية الدفع بشكل كامل.</li><li>بمجرد تأكيد الدفع وبدء تجهيز الطلب، لا يمكن إلغاء الطلب أو تعديل البيانات الخاصة به.</li><li>يتحمّل العميل مسؤولية أي خطأ في البيانات أو الروابط التي تم إرسالها أثناء إنشاء الطلب.</li></ul>
+<h2>آلية الطلب والدفع</h2><ul><li>يعتمد موقع <span data-site-name>SMCOLE</span> على نظام عرض الخدمات وإنشاء الطلبات بشكل مباشر عبر الموقع، ثم التواصل مع مسؤول الطلبات أو فريق المبيعات عبر واتساب لإتمام عملية الدفع وتأكيد الطلب.</li><li>يبدأ تنفيذ الطلب فقط بعد تأكيد عملية الدفع بشكل كامل.</li><li>بمجرد تأكيد الدفع وبدء تجهيز الطلب، لا يمكن إلغاء الطلب أو تعديل البيانات الخاصة به.</li><li>يتحمّل العميل مسؤولية أي خطأ في البيانات أو الروابط التي تم إرسالها أثناء إنشاء الطلب.</li></ul>
 <h2>التزامات المستخدم</h2><ul><li>يجب استخدام الموقع فقط للأغراض المخصصة له، وعدم استغلاله في أي أنشطة غير مشروعة أو مخالفة للقوانين.</li><li>يُمنع استخدام الموقع للإضرار بالغير أو انتهاك سياسات منصات التواصل الاجتماعي.</li><li>يتحمّل المستخدم المسؤولية الكاملة عن جميع الطلبات والروابط والبيانات التي يقوم بإرسالها عبر الموقع.</li></ul>
-<h2>سياسة الاسترجاع</h2><ul><li>جميع المدفوعات التي تتم بعد التواصل مع مسؤول الطلبات عبر واتساب تعتبر نهائية وغير قابلة للاسترداد.</li><li>بمجرد تأكيد الدفع وتحويل الطلب للتنفيذ، لا يمكن استرجاع المبلغ المدفوع لأي سبب.</li><li>في حال حدوث تأخير بسبب ضغط الطلبات أو تحديثات المنصات، سيتم متابعة الطلب حتى اكتماله دون استرداد مالي.</li><li>لا يتحمّل موقع SMCole مسؤولية أي خسائر ناتجة عن الاستخدام الخاطئ للخدمات أو سوء إدخال البيانات.</li></ul>
+<h2>سياسة الاسترجاع</h2><ul><li>جميع المدفوعات التي تتم بعد التواصل مع مسؤول الطلبات عبر واتساب تعتبر نهائية وغير قابلة للاسترداد.</li><li>بمجرد تأكيد الدفع وتحويل الطلب للتنفيذ، لا يمكن استرجاع المبلغ المدفوع لأي سبب.</li><li>في حال حدوث تأخير بسبب ضغط الطلبات أو تحديثات المنصات، سيتم متابعة الطلب حتى اكتماله دون استرداد مالي.</li><li>لا يتحمّل موقع <span data-site-name>SMCOLE</span> مسؤولية أي خسائر ناتجة عن الاستخدام الخاطئ للخدمات أو سوء إدخال البيانات.</li></ul>
 <h2>النشاط الاحتيالي</h2><ul><li>نأخذ مكافحة الاحتيال على محمل الجد. سيتم رفض أي طلب أو حظر أي مستخدم يشتبه في استخدامه وسائل دفع احتيالية أو بيانات غير صحيحة دون إشعار مسبق.</li><li>كما نؤكد أننا غير مسؤولين عن أي عمليات دفع تتم من خلال وسائل أو أرقام لا تعود ملكيتها للعميل، وأي مسؤولية قانونية تقع على عاتق المستخدم بالكامل.</li></ul>
 <h2>خدمة العملاء</h2><ul><li>نؤمن بأهمية الاحترام المتبادل. أي إساءة أو تهديد لفريق الدعم أو مسؤولي الطلبات تُعد مخالفة صريحة قد تؤدي إلى منع المستخدم من الاستفادة من خدمات الموقع، مع احتفاظنا بحق اتخاذ الإجراءات المناسبة لحماية فريقنا.</li></ul>
-<h2>حقوق الملكية الفكرية</h2><ul><li>جميع الحقوق محفوظة لفريق SMCole. يُمنع نسخ أو استخدام أي جزء من محتوى الموقع أو تطبيقاته لأي غرض دون موافقة خطية مسبقة منا.</li></ul>
+<h2>حقوق الملكية الفكرية</h2><ul><li>جميع الحقوق محفوظة لفريق <span data-site-name>SMCOLE</span>. يُمنع نسخ أو استخدام أي جزء من محتوى الموقع أو تطبيقاته لأي غرض دون موافقة خطية مسبقة منا.</li></ul>
 <h2>سياسة الخصوصية</h2><ul><li>نحترم خصوصيتك ونلتزم بحماية بياناتك. تُستخدم المعلومات والبيانات التي يتم إرسالها عبر الموقع فقط لغرض تنفيذ الطلبات وتقديم الخدمات، ولن يتم الكشف عن أي بيانات إلا في حال وجود طلب قانوني رسمي من الجهات المختصة.</li></ul>
-<h2>التعديلات على الشروط</h2><ul><li>يحق لفريق SMCole تعديل هذه الشروط أو تحديثها في أي وقت دون إشعار مسبق. ويُعتبر استمرار استخدامك للموقع موافقة ضمنية على أي تحديثات أو تعديلات جديدة.</li></ul>
+<h2>التعديلات على الشروط</h2><ul><li>يحق لفريق <span data-site-name>SMCOLE</span> تعديل هذه الشروط أو تحديثها في أي وقت دون إشعار مسبق. ويُعتبر استمرار استخدامك للموقع موافقة ضمنية على أي تحديثات أو تعديلات جديدة.</li></ul>
 </div>
 </div>
 
 <!-- ============ PAYMENT PAGE (Selector) ============ -->
 <div id="paymentPage" class="overlay-page">
 <div class="overlay-container">
+<div class="payment-back-wrap">
+<button class="deposit-back-btn" id="paymentBackBtn" type="button"><i class="fas fa-arrow-right"></i> رجوع للرئيسية</button>
+</div>
 <h1><i class="fas fa-wallet"></i> طرق الدفع المتاحة</h1>
-<p>نوفر في SMCole مجموعة متنوعة من وسائل الدفع الآمنة والمرنة لتسهيل إتمام طلباتك بكل سرعة وراحة. اختر وسيلة الدفع المناسبة:</p>
+<p>نوفر في <span data-site-name>SMCOLE</span> مجموعة متنوعة من وسائل الدفع الآمنة والمرنة لتسهيل إتمام طلباتك بكل سرعة وراحة. اختر وسيلة الدفع المناسبة:</p>
 
 <div class="payment-selector-grid">
 <div class="payment-selector-card" data-method="vodafone">
-<div class="psc-logo vodafone">V</div>
+<div class="psc-logo vodafone" id="pscLogoVodafone">
+<img id="pscLogoVodafoneImg" style="display:none;" alt="Vodafone">
+<span class="psc-logo-text">V</span>
+</div>
 <div class="psc-info">
 <h3>محافظ الكاش</h3>
 <p>فودافون كاش / اتصالات كاش / أورنج كاش / وي كاش</p>
@@ -574,7 +591,10 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 
 <div class="payment-selector-card" data-method="binance">
-<div class="psc-logo binance">₿</div>
+<div class="psc-logo binance" id="pscLogoBinance">
+<img id="pscLogoBinanceImg" style="display:none;" alt="Binance">
+<span class="psc-logo-text">₿</span>
+</div>
 <div class="psc-info">
 <h3>باينانس باي</h3>
 <p>الدفع عن طريق منصة Binance العالمية</p>
@@ -583,7 +603,10 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 
 <div class="payment-selector-card" data-method="usdt">
-<div class="psc-logo usdt">₮</div>
+<div class="psc-logo usdt" id="pscLogoUsdt">
+<img id="pscLogoUsdtImg" style="display:none;" alt="USDT">
+<span class="psc-logo-text">₮</span>
+</div>
 <div class="psc-info">
 <h3>العملات الرقمية</h3>
 <p>USDT عبر شبكة Tron (TRC20)</p>
@@ -592,7 +615,10 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 
 <div class="payment-selector-card" data-method="instapay">
-<div class="psc-logo instapay">IP</div>
+<div class="psc-logo instapay" id="pscLogoInstapay">
+<img id="pscLogoInstapayImg" style="display:none;" alt="InstaPay">
+<span class="psc-logo-text">IP</span>
+</div>
 <div class="psc-info">
 <h3>إنستا باي</h3>
 <p>الدفع عبر خدمة إنستا باي المصرية</p>
@@ -659,7 +685,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div id="noResultsMsg" class="no-results">❌ لا توجد خدمات مطابقة للبحث</div>
 <div id="sectionsContainer"></div>
 <div class="support-section"><button class="support-btn" id="directSupportBtn"><i class="fab fa-whatsapp"></i> تواصل مع الدعم الفني</button></div>
-<div class="footer">© حقوق الطبع والنشر. كل الحقوق محفوظة موقع <span id="footerSiteName">smcole</span></div>
+<div class="footer">© حقوق الطبع والنشر. كل الحقوق محفوظة موقع <span id="footerSiteName" data-site-name>smcole</span></div>
 </div>
 <div id="backToTop" class="back-to-top"><i class="fas fa-arrow-up"></i></div>
 
@@ -670,7 +696,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="auth-logo-wrap">
 <div class="auth-logo-icon"><i class="fas fa-bolt"></i></div>
 </div>
-<h2>مرحباً بك في <span style="color:#2EBD85;">SMCOLE</span></h2>
+<h2>مرحباً بك في <span style="color:#2EBD85;" data-site-name>SMCOLE</span></h2>
 <p class="auth-sub">سجل دخولك أو أنشئ حساب جديد وابدأ رحلتك في عالم السوشيال ميديا</p>
 <div class="auth-tabs">
 <button class="auth-tab active" id="loginTabBtn" type="button"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</button>
@@ -1054,44 +1080,17 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 </div>
 
+<!-- ✅ تم إعادة الترتيب: المستخدمين أولاً -->
 <div class="admin-main-tabs">
-<button class="admin-main-tab active" data-admin-tab="services" type="button"><i class="fas fa-boxes"></i> الخدمات</button>
-<button class="admin-main-tab" data-admin-tab="users" type="button"><i class="fas fa-users"></i> المستخدمين</button>
+<button class="admin-main-tab active" data-admin-tab="users" type="button"><i class="fas fa-users"></i> المستخدمين</button>
+<button class="admin-main-tab" data-admin-tab="services" type="button"><i class="fas fa-boxes"></i> الخدمات</button>
 <button class="admin-main-tab" data-admin-tab="orders" type="button"><i class="fas fa-shopping-cart"></i> الطلبات</button>
 <button class="admin-main-tab" data-admin-tab="deposits" type="button"><i class="fas fa-wallet"></i> طلبات الإيداع</button>
 <button class="admin-main-tab" data-admin-tab="transactions" type="button"><i class="fas fa-history"></i> سجل الإيداعات</button>
 </div>
 
-<!-- TAB 1: SERVICES -->
-<div class="admin-section active" id="adminSectionServices">
-<div class="admin-stats">
-<div class="admin-stat-box"><div class="lbl">إجمالي الخدمات</div><div class="val" id="adminTotalServices">0</div></div>
-<div class="admin-stat-box"><div class="lbl">خدمات ظاهرة</div><div class="val" id="adminVisibleServices">0</div></div>
-<div class="admin-stat-box"><div class="lbl">خدمات مخفية</div><div class="val" id="adminHiddenServices">0</div></div>
-<div class="admin-stat-box"><div class="lbl">عدد المنصات</div><div class="val" id="adminTotalPlatforms">0</div></div>
-</div>
-<div class="admin-platform-tabs" id="adminPlatformTabs"></div>
-<div class="admin-table-wrap">
-<div id="adminTableLoader" class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
-<table class="admin-table" id="adminServicesTable" style="display:none;">
-<thead>
-<tr>
-<th>#</th><th>المنصة</th><th>اسم الخدمة</th><th>النوع</th>
-<th>الوحدة</th><th>السعر</th><th>الضمان</th>
-<th>الحد الأدنى</th><th>الحالة</th><th>إجراءات</th>
-</tr>
-</thead>
-<tbody id="adminTableBody"></tbody>
-</table>
-<div id="adminEmpty" class="admin-empty" style="display:none;">
-<i class="fas fa-inbox" style="font-size:2.5rem; color:#F0B90B; margin-bottom:1rem;"></i>
-<p>لا توجد خدمات بعد. اضغط "إضافة خدمة" للبدء.</p>
-</div>
-</div>
-</div>
-
-<!-- TAB 2: USERS -->
-<div class="admin-section" id="adminSectionUsers">
+<!-- TAB 1: USERS (كان TAB 2) -->
+<div class="admin-section active" id="adminSectionUsers">
 <div class="admin-stats">
 <div class="admin-stat-box"><div class="lbl">إجمالي المستخدمين</div><div class="val" id="adminTotalUsers">0</div></div>
 <div class="admin-stat-box"><div class="lbl">نشطين</div><div class="val" id="adminActiveUsers">0</div></div>
@@ -1114,6 +1113,34 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div id="adminUsersEmpty" class="admin-empty" style="display:none;">
 <i class="fas fa-users" style="font-size:2.5rem; color:#F0B90B; margin-bottom:1rem;"></i>
 <p>لا يوجد مستخدمون بعد.</p>
+</div>
+</div>
+</div>
+
+<!-- TAB 2: SERVICES (كان TAB 1) -->
+<div class="admin-section" id="adminSectionServices">
+<div class="admin-stats">
+<div class="admin-stat-box"><div class="lbl">إجمالي الخدمات</div><div class="val" id="adminTotalServices">0</div></div>
+<div class="admin-stat-box"><div class="lbl">خدمات ظاهرة</div><div class="val" id="adminVisibleServices">0</div></div>
+<div class="admin-stat-box"><div class="lbl">خدمات مخفية</div><div class="val" id="adminHiddenServices">0</div></div>
+<div class="admin-stat-box"><div class="lbl">عدد المنصات</div><div class="val" id="adminTotalPlatforms">0</div></div>
+</div>
+<div class="admin-platform-tabs" id="adminPlatformTabs"></div>
+<div class="admin-table-wrap">
+<div id="adminTableLoader" class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
+<table class="admin-table" id="adminServicesTable" style="display:none;">
+<thead>
+<tr>
+<th>#</th><th>المنصة</th><th>اسم الخدمة</th><th>النوع</th>
+<th>الوحدة</th><th>السعر</th><th>الضمان</th>
+<th>الحد الأدنى</th><th>الحالة</th><th>إجراءات</th>
+</tr>
+</thead>
+<tbody id="adminTableBody"></tbody>
+</table>
+<div id="adminEmpty" class="admin-empty" style="display:none;">
+<i class="fas fa-inbox" style="font-size:2.5rem; color:#F0B90B; margin-bottom:1rem;"></i>
+<p>لا توجد خدمات بعد. اضغط "إضافة خدمة" للبدء.</p>
 </div>
 </div>
 </div>
@@ -1154,7 +1181,6 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="m-info">
 <div class="m-lbl">إجمالي الإيداعات المؤكدة هذا الشهر</div>
 <div class="m-val" id="adminMonthlyRevenue">0.00</div>
-<div class="m-sub" id="adminMonthlyRevenueSub">بالجنيه المصري — من بداية الشهر الحالي</div>
 </div>
 </div>
 <div class="admin-stats">
@@ -1354,8 +1380,9 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="settings-section">
 <h3><i class="fas fa-globe"></i> معلومات الموقع الأساسية</h3>
 <div class="admin-field">
-<label>اسم الموقع (اللوجو)</label>
+<label>اسم الموقع (يظهر في كل مكان بالموقع)</label>
 <input type="text" id="settingsSiteName" placeholder="SMCOLE" maxlength="50">
+<div class="admin-hint">💡 لو غيرته، هيتغير فوراً في: شروط الخدمة، نافذة تسجيل الدخول، إنشاء الحساب، الفوتر، وكل مكان بالموقع</div>
 </div>
 <div class="admin-field">
 <label>وصف الموقع (العنوان الرئيسي)</label>
@@ -1407,6 +1434,52 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <input type="text" id="settingsInstapayNumber" placeholder="01001606298" dir="ltr">
 </div>
 <div class="admin-hint">💡 كل هذه البيانات ستظهر تلقائياً في صفحات الإيداع للمستخدمين</div>
+</div>
+
+<!-- ✅ NEW: رفع لوجوهات طرق الدفع -->
+<div class="settings-section">
+<h3><i class="fas fa-image"></i> لوجوهات وسائل الدفع</h3>
+<div class="admin-hint" style="margin-bottom:10px;">💡 ارفع لوجو مخصص لكل وسيلة دفع (يُفضّل مربع 200×200 بكسل)</div>
+<div class="logo-upload-row">
+<div class="logo-upload-preview" id="logoPreviewVodafone"><i class="fas fa-mobile-alt"></i></div>
+<div class="logo-upload-info">
+<div class="lbl">لوجو محافظ الكاش</div>
+<div class="hint">فودافون/اتصالات/أورنج/وي</div>
+</div>
+<button type="button" class="logo-upload-btn" onclick="document.getElementById('logoInputVodafone').click()"><i class="fas fa-upload"></i> رفع</button>
+<button type="button" class="logo-remove-btn" onclick="__removePaymentLogo('vodafone')"><i class="fas fa-trash"></i></button>
+<input type="file" id="logoInputVodafone" accept="image/*" style="display:none;">
+</div>
+<div class="logo-upload-row">
+<div class="logo-upload-preview" id="logoPreviewBinance"><i class="fab fa-bitcoin"></i></div>
+<div class="logo-upload-info">
+<div class="lbl">لوجو Binance Pay</div>
+<div class="hint">باينانس باي</div>
+</div>
+<button type="button" class="logo-upload-btn" onclick="document.getElementById('logoInputBinance').click()"><i class="fas fa-upload"></i> رفع</button>
+<button type="button" class="logo-remove-btn" onclick="__removePaymentLogo('binance')"><i class="fas fa-trash"></i></button>
+<input type="file" id="logoInputBinance" accept="image/*" style="display:none;">
+</div>
+<div class="logo-upload-row">
+<div class="logo-upload-preview" id="logoPreviewUsdt"><i class="fas fa-coins"></i></div>
+<div class="logo-upload-info">
+<div class="lbl">لوجو USDT</div>
+<div class="hint">العملات الرقمية</div>
+</div>
+<button type="button" class="logo-upload-btn" onclick="document.getElementById('logoInputUsdt').click()"><i class="fas fa-upload"></i> رفع</button>
+<button type="button" class="logo-remove-btn" onclick="__removePaymentLogo('usdt')"><i class="fas fa-trash"></i></button>
+<input type="file" id="logoInputUsdt" accept="image/*" style="display:none;">
+</div>
+<div class="logo-upload-row">
+<div class="logo-upload-preview" id="logoPreviewInstapay"><i class="fas fa-university"></i></div>
+<div class="logo-upload-info">
+<div class="lbl">لوجو إنستا باي</div>
+<div class="hint">InstaPay</div>
+</div>
+<button type="button" class="logo-upload-btn" onclick="document.getElementById('logoInputInstapay').click()"><i class="fas fa-upload"></i> رفع</button>
+<button type="button" class="logo-remove-btn" onclick="__removePaymentLogo('instapay')"><i class="fas fa-trash"></i></button>
+<input type="file" id="logoInputInstapay" accept="image/*" style="display:none;">
+</div>
 </div>
 
 <div class="settings-section">
@@ -1519,10 +1592,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-toast" id="adminToast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ============================================================
-// ✅ NEW: App version — قم بزيادة الرقم ده كل مرة ترفع نسخة جديدة
-// ============================================================
-const APP_VERSION = '2026.09.16.1';
+const APP_VERSION = '2026.09.16.3';
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -1544,6 +1614,7 @@ document.getElementById('adminPanelPage').classList.add('active');
 var ue = document.getElementById('adminUserEmail');
 if (ue) ue.innerText = user.email;
 if (window.loadAdminServices) window.loadAdminServices();
+if (window.loadAdminUsers) window.loadAdminUsers();
 };
 </script>
 
@@ -1574,6 +1645,10 @@ vodafone_number: '01001606298',
 binance_id: '746211155',
 usdt_address: 'TKBAMK8gPsZnVnW8PU8XSteExbidVFPU4D',
 instapay_number: '01001606298',
+logo_vodafone: null,
+logo_binance: null,
+logo_usdt: null,
+logo_instapay: null,
 active_users_override: null,
 completed_orders_override: null,
 exchange_rate: null
@@ -1657,6 +1732,42 @@ if (window.refreshCurrencyButtons) window.refreshCurrencyButtons();
 }
 window.setCurrency = setCurrency;
 
+// ✅ NEW: دالة تطبيق اسم الموقع على كل العناصر اللي عليها data-site-name
+function applySiteNameToAll() {
+const name = siteSettings.site_name || 'SMCOLE';
+document.querySelectorAll('[data-site-name]').forEach(el => {
+el.textContent = name;
+});
+}
+window.applySiteNameToAll = applySiteNameToAll;
+
+// ✅ NEW: تطبيق لوجوهات طرق الدفع
+function applyPaymentLogos() {
+const map = [
+{ key: 'logo_vodafone', wrapId: 'pscLogoVodafone', imgId: 'pscLogoVodafoneImg' },
+{ key: 'logo_binance', wrapId: 'pscLogoBinance', imgId: 'pscLogoBinanceImg' },
+{ key: 'logo_usdt', wrapId: 'pscLogoUsdt', imgId: 'pscLogoUsdtImg' },
+{ key: 'logo_instapay', wrapId: 'pscLogoInstapay', imgId: 'pscLogoInstapayImg' }
+];
+map.forEach(m => {
+const url = siteSettings[m.key];
+const wrap = document.getElementById(m.wrapId);
+const img = document.getElementById(m.imgId);
+if (!wrap || !img) return;
+const textSpan = wrap.querySelector('.psc-logo-text');
+if (url) {
+img.src = url;
+img.style.display = 'block';
+if (textSpan) textSpan.style.display = 'none';
+} else {
+img.style.display = 'none';
+img.removeAttribute('src');
+if (textSpan) textSpan.style.display = '';
+}
+});
+}
+window.applyPaymentLogos = applyPaymentLogos;
+
 window.applySiteSettings = function() {
 const nameEl = document.getElementById('siteNameDisplay');
 const descEl = document.getElementById('siteDescriptionDisplay');
@@ -1676,6 +1787,10 @@ promoEl.innerHTML = '<span>' + lines[0] + '</span>';
 if (siteSettings.site_name) {
 document.title = siteSettings.site_name + ' | ' + (siteSettings.site_description || '');
 }
+// ✅ NEW: تطبيق اسم الموقع في كل مكان
+applySiteNameToAll();
+// ✅ NEW: تطبيق لوجوهات طرق الدفع
+applyPaymentLogos();
 const usersSpan = document.getElementById('usersCount');
 const ordersSpan = document.getElementById('ordersCount');
 if (siteSettings.active_users_override !== null && siteSettings.active_users_override !== undefined && usersSpan) {
@@ -1732,6 +1847,10 @@ siteSettings.vodafone_number = data.vodafone_number || siteSettings.vodafone_num
 siteSettings.binance_id = data.binance_id || siteSettings.binance_id;
 siteSettings.usdt_address = data.usdt_address || siteSettings.usdt_address;
 siteSettings.instapay_number = data.instapay_number || siteSettings.instapay_number;
+siteSettings.logo_vodafone = data.logo_vodafone || null;
+siteSettings.logo_binance = data.logo_binance || null;
+siteSettings.logo_usdt = data.logo_usdt || null;
+siteSettings.logo_instapay = data.logo_instapay || null;
 siteSettings.active_users_override = (data.active_users_override !== null && data.active_users_override !== undefined) ? parseInt(data.active_users_override) : null;
 siteSettings.completed_orders_override = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? parseInt(data.completed_orders_override) : null;
 siteSettings.exchange_rate = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? parseFloat(data.exchange_rate) : null;
@@ -1853,7 +1972,6 @@ else if (routeName === 'payment') setPageVisibility(paymentPage);
 else if (routeName === 'favorites') { setPageVisibility(favoritesPage); renderFavoritesPage(); }
 else if (routeName === 'profile' && window.currentProfile) {
 setPageVisibility(profilePage);
-// ✅ NEW: تحديث الرصيد من السيرفر عند فتح البروفايل
 if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
 }
 else if (routeName === 'deposit-vodafone' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('vodafone'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
@@ -2357,10 +2475,6 @@ else msg = '💻 لتثبيت التطبيق على الكمبيوتر:\n\n1. ا
 alert(msg);
 }
 });
-
-// ============================================================
-// ✅ NEW: Service Worker — تحديث قسري + auto-reload
-// ============================================================
 if ('serviceWorker' in navigator) {
 let swRefreshing = false;
 navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -2375,17 +2489,6 @@ setInterval(() => { try { reg.update(); } catch(e) {} }, 30 * 60 * 1000);
 })
 .catch(err => {});
 }
-// ✅ NEW: كشف نسخة جديدة وفرض التحديث كل فترة
-(function(){
-try {
-let _lastCheck = 0;
-setInterval(async () => {
-try {
-const r = await fetch('/index.html?nocache=' + Date.now(), { cache: 'no-store', method: 'HEAD' });
-} catch(e) {}
-}, 5 * 60 * 1000);
-} catch(e) {}
-})();
 
 // ==================== PAYMENT SELECTOR CARDS ====================
 (function() {
@@ -2415,6 +2518,11 @@ setTimeout(setupPaymentSelectorCards, 1200);
 setTimeout(setupPaymentSelectorCards, 2500);
 window.__setupPaymentSelectorCards = setupPaymentSelectorCards;
 })();
+
+// ✅ NEW: زر رجوع صفحة طرق الدفع
+document.getElementById('paymentBackBtn').addEventListener('click', () => {
+window.showHomePage();
+});
 </script>
 <script>
 (function(){
@@ -2743,6 +2851,58 @@ if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.b
 const settingsModalBg = document.getElementById('adminSettingsModalBg');
 const settingsForm = document.getElementById('adminSettingsForm');
 
+// ✅ NEW: دوال معاينة اللوجوهات + الحفظ
+let pendingLogos = { vodafone: null, binance: null, usdt: null, instapay: null };
+
+function updateLogoPreview(method, url) {
+const map = { vodafone: 'logoPreviewVodafone', binance: 'logoPreviewBinance', usdt: 'logoPreviewUsdt', instapay: 'logoPreviewInstapay' };
+const icons = { vodafone: 'fas fa-mobile-alt', binance: 'fab fa-bitcoin', usdt: 'fas fa-coins', instapay: 'fas fa-university' };
+const el = document.getElementById(map[method]);
+if (!el) return;
+if (url) { el.innerHTML = '<img src="' + url + '" alt="">'; }
+else { el.innerHTML = '<i class="' + icons[method] + '"></i>'; }
+}
+
+window.__removePaymentLogo = function(method) {
+pendingLogos[method] = '';
+updateLogoPreview(method, '');
+};
+
+['vodafone', 'binance', 'usdt', 'instapay'].forEach(method => {
+const input = document.getElementById('logoInput' + method.charAt(0).toUpperCase() + method.slice(1));
+if (!input) return;
+input.addEventListener('change', () => {
+const file = input.files && input.files[0];
+if (!file) return;
+if (file.size > 2 * 1024 * 1024) { toast('⚠️ حجم الصورة يجب أن يكون أقل من 2 ميجا', true); input.value = ''; return; }
+const reader = new FileReader();
+reader.onload = (ev) => {
+const img = new Image();
+img.onload = () => {
+try {
+const canvas = document.createElement('canvas');
+let w = img.width, h = img.height;
+const maxSize = 300;
+if (w > maxSize || h > maxSize) {
+if (w > h) { h = Math.round((h * maxSize) / w); w = maxSize; }
+else { w = Math.round((w * maxSize) / h); h = maxSize; }
+}
+canvas.width = w; canvas.height = h;
+const ctx = canvas.getContext('2d');
+ctx.drawImage(img, 0, 0, w, h);
+const dataUrl = canvas.toDataURL('image/png', 0.9);
+pendingLogos[method] = dataUrl;
+updateLogoPreview(method, dataUrl);
+toast('✅ تم تحميل اللوجو، لا تنسى الحفظ');
+} catch(e) { toast('فشل معالجة الصورة', true); }
+};
+img.onerror = () => { toast('فشل تحميل الصورة', true); };
+img.src = ev.target.result;
+};
+reader.readAsDataURL(file);
+});
+});
+
 async function loadSettingsIntoForm() {
 try {
 const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
@@ -2761,6 +2921,17 @@ document.getElementById('settingsInstapayNumber').value = data.instapay_number |
 document.getElementById('settingsExchangeRate').value = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? data.exchange_rate : '';
 document.getElementById('settingsActiveUsers').value = (data.active_users_override !== null && data.active_users_override !== undefined) ? data.active_users_override : '';
 document.getElementById('settingsCompletedOrders').value = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? data.completed_orders_override : '';
+// ✅ NEW: تحميل اللوجوهات
+pendingLogos = {
+vodafone: data.logo_vodafone || '',
+binance: data.logo_binance || '',
+usdt: data.logo_usdt || '',
+instapay: data.logo_instapay || ''
+};
+updateLogoPreview('vodafone', pendingLogos.vodafone);
+updateLogoPreview('binance', pendingLogos.binance);
+updateLogoPreview('usdt', pendingLogos.usdt);
+updateLogoPreview('instapay', pendingLogos.instapay);
 } catch(e) { console.warn(e); }
 try {
 const { data: { session } } = await supabase.auth.getSession();
@@ -2801,6 +2972,10 @@ instapay_number: document.getElementById('settingsInstapayNumber').value.trim() 
 exchange_rate: exchangeRateVal === '' ? null : parseFloat(exchangeRateVal),
 active_users_override: activeUsersVal === '' ? null : parseInt(activeUsersVal),
 completed_orders_override: completedOrdersVal === '' ? null : parseInt(completedOrdersVal),
+logo_vodafone: pendingLogos.vodafone === '' ? null : (pendingLogos.vodafone || null),
+logo_binance: pendingLogos.binance === '' ? null : (pendingLogos.binance || null),
+logo_usdt: pendingLogos.usdt === '' ? null : (pendingLogos.usdt || null),
+logo_instapay: pendingLogos.instapay === '' ? null : (pendingLogos.instapay || null),
 updated_at: new Date().toISOString()
 };
 const { error } = await supabase.from('site_settings').upsert(payload, { onConflict: 'id' });
@@ -2833,6 +3008,7 @@ if (window.fetchExchangeRate) { window.fetchExchangeRate(); }
 }
 });
 
+// ✅ تابات لوحة التحكم: المستخدمين افتراضي
 document.querySelectorAll('.admin-main-tab').forEach(tab => {
 tab.addEventListener('click', () => {
 const target = tab.getAttribute('data-admin-tab');
@@ -2842,6 +3018,7 @@ document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('act
 const sec = document.getElementById('adminSection' + target.charAt(0).toUpperCase() + target.slice(1));
 if (sec) sec.classList.add('active');
 if (target === 'users') loadAdminUsers();
+else if (target === 'services') { if (window.loadAdminServices) window.loadAdminServices(); }
 else if (target === 'orders') loadAdminOrders();
 else if (target === 'deposits') loadAdminDeposits();
 else if (target === 'transactions') loadAdminTransactions();
@@ -2868,6 +3045,8 @@ renderUsersTable();
 loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
 }
 }
+window.loadAdminUsers = loadAdminUsers;
+
 function renderUsersTable() {
 const table = document.getElementById('adminUsersTable');
 const empty = document.getElementById('adminUsersEmpty');
@@ -2927,9 +3106,10 @@ if (error) { toast('خطأ: ' + error.message, true); return; }
 await loadAdminUsers();
 };
 window.__adminDeleteUser = async function(id) {
-if (!confirm('⚠️ حذف المستخدم نهائياً؟')) return;
+if (!confirm('⚠️ حذف المستخدم نهائياً؟ مش هيقدر يسجل دخول تاني بنفس الإيميل.')) return;
 const { error } = await supabase.from('users').delete().eq('id', id);
 if (error) { toast('خطأ: ' + error.message, true); return; }
+toast('تم حذف المستخدم بنجاح ✅');
 await loadAdminUsers();
 };
 
@@ -2966,7 +3146,6 @@ user_id: userId, type, method, amount, currency, status: status || 'completed', 
 }
 window.__logTransaction = logTransaction;
 
-// ✅ NEW: helper round دقيق لـ 2 خانات عشرية
 function round2(n) {
 return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
 }
@@ -3112,20 +3291,16 @@ window.__adminSetOrder = async function(id, status) {
 const orderData = allOrdersData.find(o => o.id === id);
 if (!orderData) { toast('لم يتم العثور على الطلب', true); return; }
 
-// لو الطلب ملغي أو مكتمل بالفعل — منع التعديل
 if (orderData.status === 'cancelled' || orderData.status === 'completed') {
 toast('لا يمكن تعديل طلب ملغي أو مكتمل', true);
 return;
 }
 
-// تأكيد الإلغاء
 if (status === 'cancelled' && !confirm('إلغاء هذا الطلب؟ سيتم إرجاع ' + parseFloat(orderData.total || 0).toFixed(2) + ' للعميل تلقائياً.')) return;
 
-// تحديث حالة الطلب
 const { error } = await supabase.from('orders').update({ status: status }).eq('id', id);
 if (error) { toast('خطأ: ' + error.message, true); return; }
 
-// لو الحالة الجديدة "ملغي" → استرجاع الرصيد للعميل
 if (status === 'cancelled') {
 try {
 const { data: userRec } = await supabase.from('users').select('*').eq('id', orderData.user_id).single();
@@ -3140,7 +3315,6 @@ if (uErr) {
 toast('⚠️ تم إلغاء الطلب لكن فشل استرجاع الرصيد: ' + uErr.message, true);
 } else {
 toast('✅ تم إلغاء الطلب وإرجاع ' + refundAmount.toFixed(2) + ' للعميل');
-// تسجيل المعاملة
 try {
 await logTransaction(orderData.user_id, 'admin_credit', 'order_refund', refundAmount, orderData.currency, 'completed', 'استرجاع رصيد - إلغاء طلب #' + id);
 } catch(e) {}
@@ -3193,11 +3367,7 @@ else monthlyEGP += parseFloat(d.amount || 0);
 });
 const totalEGP = monthlyEGP + (monthlyUSD * exchangeRate);
 const revEl = document.getElementById('adminMonthlyRevenue');
-const subEl = document.getElementById('adminMonthlyRevenueSub');
 if (revEl) revEl.innerText = totalEGP.toFixed(2) + ' ج';
-if (subEl) subEl.innerText = (monthlyEGP > 0 || monthlyUSD > 0)
-? ('شامل: ' + monthlyEGP.toFixed(2) + ' جنيه + ' + monthlyUSD.toFixed(2) + ' دولار')
-: 'لا توجد إيداعات مؤكدة هذا الشهر';
 renderDepositsTable();
 } catch(e) {
 loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
@@ -3266,8 +3436,6 @@ bg.classList.add('show');
 document.getElementById('screenshotModalBg').addEventListener('click', () => {
 document.getElementById('screenshotModalBg').classList.remove('show');
 });
-
-// ✅ NEW: تأكيد الإيداع مع rounding دقيق + realtime
 window.__adminApproveDeposit = async function(id) {
 const d = allDepositsData.find(x => x.id === id);
 if (!d) return;
@@ -3277,7 +3445,6 @@ if (uReadErr || !userRec) { toast('لم يتم العثور على المستخ�
 const field = d.currency === 'USD' ? 'balance_usd' : 'balance_egp';
 const currentBal = parseFloat(userRec[field] || 0);
 const depositAmt = parseFloat(d.amount);
-// ✅ إضافة بالظبط مع rounding دقيق
 const newBal = round2(currentBal + depositAmt);
 const upd = {}; upd[field] = newBal;
 const { error: uErr } = await supabase.from('users').update(upd).eq('id', d.user_id);
@@ -3446,31 +3613,21 @@ function hideAuthModal() { document.getElementById('authModalBg').classList.remo
 window.showAuthModal = showAuthModal;
 
 // ============================================
-// TELEGRAM SENDER (عبر Supabase Edge Function)
+// TELEGRAM SENDER
 // ============================================
 async function sendToTelegram(text) {
 try {
 const { data, error } = await sb.functions.invoke('send-to-telegram', {
 body: { text: text }
 });
-if (error) {
-console.warn('Function error:', error);
-return false;
-}
-if (data && data.ok) {
-console.log('✅ Sent to Telegram:', data.message_id);
-return true;
-}
+if (error) { console.warn('Function error:', error); return false; }
+if (data && data.ok) { console.log('✅ Sent to Telegram:', data.message_id); return true; }
 console.warn('Function failed:', data);
 return false;
-} catch(e) {
-console.warn('Function call fail:', e);
-return false;
-}
+} catch(e) { console.warn('Function call fail:', e); return false; }
 }
 window.__sendToTelegram = sendToTelegram;
 
-// ✅ NEW: rounding helper
 function round2(n) {
 return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
 }
@@ -3508,7 +3665,6 @@ else btn.classList.remove('active');
 });
 };
 
-// ✅ NEW: تحديث البيانات من DB مباشرة (لما يفتح البروفايل أو صفحة إيداع)
 window.__refreshProfileFromDB = async function() {
 if (!currentUser) return;
 try {
@@ -3531,7 +3687,6 @@ if (!session || !session.user) {
 currentUser = null; currentProfile = null; window.currentProfile = null;
 const chip = document.getElementById('userBalanceChip');
 if (chip) chip.style.display = 'none';
-// ✅ NEW: إزالة الاشتراك لما يخرج
 if (window.__userRealtimeChannel) {
 try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
 window.__userRealtimeChannel = null;
@@ -3541,6 +3696,8 @@ return;
 currentUser = session.user;
 const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', session.user.id).single();
 if (error || !profile) {
+// ✅ NEW: لو الحساب اتحذف من قاعدة البيانات، يخرج تلقائياً
+try { await sb.auth.signOut(); } catch(e) {}
 currentProfile = null; window.currentProfile = null;
 const chip = document.getElementById('userBalanceChip');
 if (chip) chip.style.display = 'none';
@@ -3552,19 +3709,15 @@ const chip = document.getElementById('userBalanceChip');
 if (chip) chip.style.display = 'flex';
 window.refreshBalanceUI();
 window.refreshCurrencyButtons();
-// ✅ NEW: اشتراك realtime على بيانات المستخدم الحالي
 subscribeToUserRealtime();
 } catch(e) { console.warn(e); }
 }
 window.refreshUserUI = refreshUserUI;
 
-// ============================================================
-// ✅ NEW: REALTIME SUBSCRIPTION على جدول users — لتحديث الرصيد فوراً
-// ============================================================
+// ✅ REALTIME SUBSCRIPTION على جدول users
 function subscribeToUserRealtime() {
 try {
 if (!currentProfile || !currentProfile.id) return;
-// إزالة الاشتراك القديم إن وُجد
 if (window.__userRealtimeChannel) {
 try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
 window.__userRealtimeChannel = null;
@@ -3577,13 +3730,10 @@ table: 'users',
 filter: 'id=eq.' + currentProfile.id
 }, (payload) => {
 if (!payload || !payload.new) return;
-// دمج البيانات الجديدة مع القديمة
 currentProfile = Object.assign({}, currentProfile, payload.new);
 window.currentProfile = currentProfile;
-// تحديث الواجهة فوراً
 window.refreshBalanceUI();
 window.refreshCurrencyButtons();
-// لو المستخدم واقف على صفحة البروفايل — تحديث الحقول كذلك
 if (window.__currentRoute === 'profile') {
 try {
 const nameEl = document.getElementById('profileName');
@@ -3672,6 +3822,8 @@ name, username, email, phone: phone || null
 if (insertErr) { msg.className = 'auth-msg err'; msg.innerText = 'خطأ: ' + insertErr.message; return; }
 await sb.auth.signInWithPassword({ email, password });
 msg.className = 'auth-msg ok'; msg.innerText = '✅ تم إنشاء الحساب بنجاح';
+// ✅ NEW: إشعار منبثق
+userToast('🎉 تم إنشاء حسابك بنجاح! مرحباً بك', 'ok');
 await refreshUserUI();
 setTimeout(() => { afterAuthSuccess(); }, 500);
 });
@@ -3687,13 +3839,24 @@ const msg = document.getElementById('loginMsg');
 msg.className = 'auth-msg'; msg.innerText = 'جاري الدخول...';
 const { data, error } = await sb.auth.signInWithPassword({ email, password });
 if (error) { msg.className = 'auth-msg err'; msg.innerText = '❌ ' + error.message; return; }
-const { data: profile } = await sb.from('users').select('*').eq('auth_id', data.user.id).single();
-if (profile && profile.is_banned) {
+const { data: profile, error: profErr } = await sb.from('users').select('*').eq('auth_id', data.user.id).single();
+// ✅ لو الحساب محذوف أو مش موجود
+if (profErr || !profile) {
 await sb.auth.signOut();
-msg.className = 'auth-msg err'; msg.innerText = '🚫 هذا الحساب محظور';
+msg.className = 'auth-msg err';
+msg.innerText = '🚫 لا يوجد حساب مسجل بهذا البريد';
+userToast('🚫 هذا الحساب غير موجود أو تم حذفه', 'err');
+return;
+}
+if (profile.is_banned) {
+await sb.auth.signOut();
+msg.className = 'auth-msg err'; msg.innerText = '🚫 هذا الحساب محظور، تواصل مع الدعم';
+userToast('🚫 حسابك محظور من قبل الإدارة', 'err');
 return;
 }
 msg.className = 'auth-msg ok'; msg.innerText = '✅ تم تسجيل الدخول';
+// ✅ NEW: إشعار منبثق
+userToast('✅ تم تسجيل الدخول بنجاح', 'ok');
 await refreshUserUI();
 setTimeout(() => { afterAuthSuccess(); }, 400);
 });
@@ -3703,7 +3866,6 @@ setTimeout(() => { afterAuthSuccess(); }, 400);
 // ============================================
 async function openProfilePage() {
 if (!currentProfile) { showAuthModal(); return; }
-// ✅ NEW: تحديث البيانات من DB قبل العرض
 await window.__refreshProfileFromDB();
 document.getElementById('profileName').value = currentProfile.name || '';
 document.getElementById('profileUsername').value = currentProfile.username || '';
@@ -4503,7 +4665,6 @@ totalToPay = totalInEGP / exchangeRate;
 currencyName = 'دولار أمريكي';
 currencySymbol = 'USD';
 }
-// ✅ NEW: تقريب دقيق
 totalToPay = round2(totalToPay);
 
 const balEGP = parseFloat(currentProfile.balance_egp || 0);
@@ -4511,7 +4672,6 @@ const balUSD = parseFloat(currentProfile.balance_usd || 0);
 let totalAvailable = currentCurrency === 'EGP'
 ? (balEGP + balUSD * exchangeRate)
 : (balUSD + balEGP / exchangeRate);
-// ✅ NEW: تقريب قبل المقارنة
 totalAvailable = round2(totalAvailable);
 if (totalAvailable < totalToPay) {
 showInsufficientModal(totalAvailable, totalToPay);
@@ -4561,6 +4721,8 @@ link: link,
 status: 'pending'
 });
 if (ordErr) throw ordErr;
+// ✅ NEW: زيادة عدّاد الطلبات المكتملة
+if (window.registerNewOrder) { try { await window.registerNewOrder(); } catch(e) {} }
 const tgMsg = '📋 طلب شراء خدمة : ' + serviceName +
 '\n🔢 رقم الخدمة : ' + serviceNumber +
 '\n👤 العميل : ' + currentProfile.name + ' (@' + currentProfile.username + ')' +
@@ -4607,7 +4769,7 @@ const origOpenPanel = window.openAdminPanel;
 if (typeof origOpenPanel === 'function') {
 window.openAdminPanel = function(user) {
 origOpenPanel(user);
-setTimeout(() => { if (window.loadAdminServices) window.loadAdminServices(); }, 400);
+setTimeout(() => { if (window.loadAdminServices) window.loadAdminServices(); if (window.loadAdminUsers) window.loadAdminUsers(); }, 400);
 };
 }
 setTimeout(() => {

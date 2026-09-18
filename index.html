@@ -615,10 +615,10 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 
 <div class="payment-selector-card" data-method="redot">
 <div class="psc-logo redot" id="pscLogoRedot">
-<img id="pscLogoRedotImg" style="display:none;" alt="Redot Pay">
+<img id="pscLogoRedotImg" style="display:none;" alt="ريدوت باي">
 <span class="psc-logo-text">RP</span>
 </div>
-<div class="psc-info"><h3>Redot Pay</h3><p>الدفع عبر منصة Redot Pay العالمية</p></div>
+<div class="psc-info"><h3>ريدوت باي</h3><p>الدفع عبر منصة ريدوت باي العالمية</p></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 </div>
@@ -955,20 +955,20 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </form>
 </div>
 
-<!-- REDOT PAY -->
+<!-- ريدوت باي -->
 <div id="depositRedotView" style="display:none;">
 <div class="deposit-info">
 <div class="deposit-brand-header">
 <div class="deposit-brand-logo redot">RP</div>
-<div class="deposit-brand-title"><h2>Redot Pay</h2><p>الدفع عبر منصة Redot Pay العالمية</p></div>
+<div class="deposit-brand-title"><h2>ريدوت باي</h2><p>الدفع عبر منصة ريدوت باي العالمية</p></div>
 </div>
-<p>قم بالتحويل على معرف Redot Pay التالي:</p>
+<p>قم بالتحويل على معرف ريدوت باي التالي:</p>
 <div class="deposit-number-row">
 <div class="deposit-number" id="redotNumber">1770425974</div>
 <button class="deposit-copy-btn" type="button" id="redotCopyBtn" data-copy="1770425974"><i class="fas fa-copy"></i> نسخ</button>
 </div>
 <div class="deposit-steps">
-<div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق Redot Pay</span></div>
+<div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق ريدوت باي</span></div>
 <div class="step-item"><span class="step-num">2</span><span class="step-text">اختر "Send" واكتب المعرف: <b id="redotNumberStep2">1770425974</b></span></div>
 <div class="step-item"><span class="step-num">3</span><span class="step-text">أدخل المبلغ بالدولار وأكد</span></div>
 <div class="step-item"><span class="step-num">4</span><span class="step-text">احتفظ بلقطة الشاشة</span></div>
@@ -977,7 +977,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <p style="color:#F0B90B; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: 2 دولار</p>
 </div>
 <form class="deposit-form" id="redotForm">
-<h3><i class="fas fa-check-circle"></i> تأكيد عملية Redot Pay</h3>
+<h3><i class="fas fa-check-circle"></i> تأكيد عملية ريدوت باي</h3>
 <label>المبلغ (بالدولار الأمريكي)</label>
 <input type="number" id="redotAmount" placeholder="مثال: 5" min="2" step="0.01" required>
 <label>معرف العملية</label>
@@ -1336,7 +1336,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 <div class="admin-field"><label>عنوان محفظة USDT (TRC20)</label><input type="text" id="settingsUsdtAddress" placeholder="TKBAMK8gPsZnVnW8PU8XSteExbidVFPU4D" dir="ltr"></div>
 <div class="admin-grid-2">
 <div class="admin-field"><label>رقم إنستا باي</label><input type="text" id="settingsInstapayNumber" placeholder="01001606298" dir="ltr"></div>
-<div class="admin-field"><label>معرف Redot Pay</label><input type="text" id="settingsRedotNumber" placeholder="1770425974" dir="ltr"></div>
+<div class="admin-field"><label>معرف ريدوت باي</label><input type="text" id="settingsRedotNumber" placeholder="1770425974" dir="ltr"></div>
 </div>
 </div>
 
@@ -1372,7 +1372,7 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 </div>
 <div class="logo-upload-row">
 <div class="logo-upload-preview" id="logoPreviewRedot"><i class="fas fa-credit-card"></i></div>
-<div class="logo-upload-info"><div class="lbl">لوجو Redot Pay</div><div class="hint">Redot Pay</div></div>
+<div class="logo-upload-info"><div class="lbl">لوجو ريدوت باي</div><div class="hint">ريدوت باي</div></div>
 <button type="button" class="logo-upload-btn" onclick="document.getElementById('logoInputRedot').click()"><i class="fas fa-upload"></i> رفع</button>
 <button type="button" class="logo-remove-btn" onclick="__removePaymentLogo('redot')"><i class="fas fa-trash"></i></button>
 <input type="file" id="logoInputRedot" accept="image/*" style="display:none;">
@@ -1467,7 +1467,7 @@ window.SMCOLE_BOT = {
   admin_username: 'walidsalama'
 };
 
-const APP_VERSION = '2026.09.17.16';
+const APP_VERSION = '2026.09.17.17';
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -2467,7 +2467,7 @@ const supabase = getSupabase();
 // ✅ أسماء طرق الدفع بالعربي (للاستخدام في updateTransactionStatus)
 const METHOD_AR = {
 vodafone: 'محافظ كاش', binance: 'باينانس باي', usdt: 'USDT',
-instapay: 'إنستا باي', redot: 'Redot Pay'
+instapay: 'إنستا باي', redot: 'ريدوت باي'
 };
 
 function getMinLimitAndStep(service) {
@@ -3428,7 +3428,7 @@ if (d.method === 'vodafone') methodLabel = '📱 محافظ كاش';
 else if (d.method === 'binance') methodLabel = '🪙 باينانس باي';
 else if (d.method === 'usdt') methodLabel = '💎 عملات رقمية USDT';
 else if (d.method === 'instapay') methodLabel = '🏦 إنستا باي';
-else if (d.method === 'redot') methodLabel = '💳 Redot Pay';
+else if (d.method === 'redot') methodLabel = '💳 ريدوت باي';
 const cur = d.currency === 'USD' ? 'دولار' : 'جنيه';
 const stMap = { pending: ['status-pending','⏳ قيد المراجعة'], approved: ['status-completed','✅ تم التأكيد'], rejected: ['status-cancelled','❌ مرفوض'] };
 const st = stMap[d.status] || ['status-pending','—'];
@@ -3620,7 +3620,7 @@ vodafone: 'محافظ كاش',
 binance: 'باينانس باي',
 usdt: 'USDT',
 instapay: 'إنستا باي',
-redot: 'Redot Pay',
+redot: 'ريدوت باي',
 admin_manual: 'الإدارة',
 order_refund: 'استرجاع طلب'
 };
@@ -4458,7 +4458,7 @@ tgExtra: '📱 رقم المُحوِّل: ' + senderPhone
 });
 
 // ============================================================
-// REDOT PAY SUBMIT
+// ريدوت باي SUBMIT
 // ============================================================
 document.getElementById('redotForm').addEventListener('submit', async (e) => {
 e.preventDefault();
@@ -4479,7 +4479,7 @@ amount: amount,
 currency: 'USD',
 transactionId: tx,
 screenshotDataURL: compressed,
-tgTitle: '💳 طلب إيداع Redot Pay',
+tgTitle: '💳 طلب إيداع ريدوت باي',
 tgExtra: '🔢 معرف العملية: ' + tx
 });
 });
@@ -4523,7 +4523,7 @@ if (t.type === 'admin_credit' && t.method === 'order_refund') title = 'استر�
 let cleanDesc = (t.description || '').replace(/تليجرام|Telegram|بواسطة الأدمن|بواسطة الإدارة|\(تليجرام\)/g, '').trim();
 if (cleanDesc.startsWith('—')) cleanDesc = cleanDesc.slice(1).trim();
 if (cleanDesc === '—' || cleanDesc === '-') cleanDesc = '';
-if (cleanDesc && cleanDesc.match(/^(إيداع|محافظ كاش|باينانس باي|USDT|إنستا باي|Redot Pay)$/)) cleanDesc = '';
+if (cleanDesc && cleanDesc.match(/^(إيداع|محافظ كاش|باينانس باي|USDT|إنستا باي|ريدوت باي)$/)) cleanDesc = '';
 
 const cur = t.currency === 'USD' ? '$' : 'جنيه';
 const sign = (t.type === 'deposit' || t.type === 'admin_credit') ? '+' : '-';

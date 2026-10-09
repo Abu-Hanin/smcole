@@ -1325,6 +1325,24 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 @media (max-width: 600px) { .maint-strip { font-size: .74rem; padding: 7px 10px; } .maint-strip b { display: block; margin: 0; } .maint-strip div { display: flex; flex-direction: column; } body.maintenance .overlay-page, body.maintenance .sm-home { padding-top: calc(var(--topbar-h) + 58px) !important; } }
 
 /* 🔍 مراجعة الأسعار */
+/* تفاصيل الخدمة */
+.sd-body { display: flex; flex-direction: column; gap: 6px; }
+.sd-row { display: flex; gap: 8px; align-items: baseline; padding: 7px 10px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.05); }
+.sd-row b { color: #fff; white-space: nowrap; font-size: .82rem; }
+.sd-row span { color: #DDD6FE; font-size: .84rem; }
+.sd-bullet { padding-right: 14px; position: relative; color: #CFC6F2; font-size: .82rem; }
+.sd-bullet::before { content: '•'; position: absolute; right: 2px; color: var(--pc, #A855F7); }
+.sd-text { color: #DDD6FE; font-size: .84rem; }
+.sd-sep { border: none; border-top: 1px dashed rgba(168,85,247,0.35); margin: 6px 0; }
+/* لا توجد خدمات */
+.no-services { text-align: center; padding: 4rem 1rem; border-radius: 26px; border: 2px dashed rgba(168,85,247,0.35); color: var(--muted); margin: 1rem auto; max-width: 560px; }
+.no-services i { font-size: 2.6rem; color: #A855F7; margin-bottom: 12px; }
+.no-services h3 { color: #fff; margin-bottom: 6px; }
+/* منطقة الحذف */
+.danger-zone { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; border-radius: 18px; margin-bottom: 16px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.35); }
+.danger-zone div { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 220px; }
+.danger-zone b { color: #FCA5A5; }
+.danger-zone small { color: var(--muted); font-size: .76rem; line-height: 1.6; }
 .prov-cur { font-size: .76rem; color: #CFC6F2; background: rgba(255,255,255,0.04); padding: 7px 10px; border-radius: 10px; }
 .prov-cur b { color: #fff; }
 .audit-formula { margin: 12px 18px 0; padding: 12px 14px; border-radius: 14px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); color: #DCFCE7; font-size: .82rem; line-height: 1.9; }
@@ -2446,6 +2464,11 @@ body { background-attachment: scroll !important; }
 </div>
 </div>
 
+<div class="danger-zone">
+<div><b><i class="fas fa-triangle-exclamation"></i> حذف كل الخدمات</b><small>بيمسح كل الخدمات من الموقع (اليدوية والمستوردة) عشان تبدأ استيراد جديد. الطلبات القديمة وأرصدة العملاء مش بتتأثر.</small></div>
+<button type="button" class="admin-btn danger" id="deleteAllServicesBtn"><i class="fas fa-trash-can"></i> حذف كل الخدمات</button>
+</div>
+
 <div class="prov-list-head">
 <h3><i class="fas fa-server"></i> المزودين</h3>
 <button type="button" class="admin-btn gold" id="addProviderBtn"><i class="fas fa-plus"></i> إضافة مزود</button>
@@ -2830,7 +2853,7 @@ body { background-attachment: scroll !important; }
 <input type="text" id="importSearch" class="user-search-input" placeholder="🔍 ابحث بالاسم أو رقم الخدمة أو القسم...">
 <select id="importFilterPlatform"><option value="">كل المنصات</option></select>
 <label class="import-chk"><input type="checkbox" id="importOnlyNew"> غير المستوردة بس</label>
-<button type="button" class="admin-btn ghost" id="importSelectVisible"><i class="fas fa-check-double"></i> تحديد الظاهر</button>
+<button type="button" class="admin-btn ghost" id="importSelectVisible"><i class="fas fa-check-double"></i> تحديد الكل</button>
 <button type="button" class="admin-btn ghost" id="importClearSel"><i class="fas fa-eraser"></i> إلغاء التحديد</button>
 </div>
 <div class="import-info" id="importInfo"></div>
@@ -3637,6 +3660,9 @@ twitch: { id: 'twitch', title: '<i class="fab fa-twitch"></i> تويتش - مت�
 other: { id: 'other', title: '<i class="fas fa-star"></i> خدمات أخرى - إضافات متنوعة', services: [] }
 };
 
+// الخدمات بتيجي من قاعدة البيانات بس (من المزودين أو اللي الأدمن يضيفها)
+// — مفيش خدمات ثابتة جوه الكود، فلو قاعدة البيانات فاضية الموقع يبقى فاضي فعلاً
+for (const k of Object.keys(platformData)) platformData[k].services = [];
 let serviceCounter = 1;
 const PLATFORM_BRAND = { facebook: '#1877F2', instagram: '#E1306C', tiktok: '#FE2C55', youtube: '#FF0000', telegram: '#2AABEE', twitter: '#1DA1F2', snapchat: '#F7E600', whatsapp: '#25D366', twitch: '#9146FF', other: '#A855F7' };
 window.PLATFORM_BRAND = PLATFORM_BRAND;
@@ -3838,17 +3864,33 @@ btnPrev.addEventListener('click', () => sliderDiv.scrollBy({ left: -scrollStep, 
 btnNext.addEventListener('click', () => sliderDiv.scrollBy({ left: scrollStep, behavior: 'smooth' }));
 sectionsContainer.appendChild(section);
 }
+// مفيش خدمات خالص → رسالة بدل الصفحة الفاضية
+if (!sectionsContainer.children.length) {
+sectionsContainer.innerHTML = '<div class="no-services"><i class="fas fa-rocket"></i><h3>الخدمات بتتجهز حالياً</h3><p>بنضيف الخدمات والأسعار الجديدة — ارجع بعد شوية 🚀</p></div>';
+}
 // تحويل كل قسم لعرض 3D (Three.js CSS3D) مع الحفاظ على نفس البطايق ونظام الشراء
 if (window.__initCoverflows) window.__initCoverflows();
 }
 window.buildAllSections = buildAllSections;
 window.loadServicesFromDB = async function() {
 try {
-const { data, error } = await supabase.from('services').select('*')
+// تحميل كل الخدمات على دفعات (Supabase بيرجّع 1000 بالكتير في المرة)
+let data = [];
+for (let from = 0; from < 20000; from += 1000) {
+const { data: chunk, error } = await supabase.from('services').select('*')
 .order('sort_order', { ascending: true })
-.order('price_per_thousand', { ascending: true });
-if (error) { return false; }
-if (!data || data.length === 0) { return false; }
+.order('price_per_thousand', { ascending: true })
+.order('id', { ascending: true })
+.range(from, from + 999);
+if (error) { if (!data.length) return false; break; }
+data = data.concat(chunk || []);
+if (!chunk || chunk.length < 1000) break;
+}
+if (!data || data.length === 0) {
+// قاعدة البيانات فاضية → الموقع فاضي (من غير خدمات قديمة)
+for (const key of Object.keys(platformData)) platformData[key].services = [];
+return true;
+}
 const grouped = {};
 for (const key of Object.keys(platformData)) grouped[key] = [];
 let totalLoaded = 0;
@@ -3909,7 +3951,7 @@ maxLimit: maxLimit
 totalLoaded++;
 }
 }
-if (totalLoaded === 0) { return false; }
+if (totalLoaded === 0) { for (const key of Object.keys(platformData)) platformData[key].services = []; return true; }
 for (const key of Object.keys(platformData)) {
 platformData[key].services = sortFollowers(grouped[key] || []);
 }
@@ -4218,8 +4260,15 @@ if (loader) { loader.style.display = 'block'; loader.innerHTML = '<i class="fas 
 if (table) table.style.display = 'none';
 if (empty) empty.style.display = 'none';
 try {
-const { data, error } = await supabase.from('services').select('*')
-.order('platform').order('sort_order', { ascending: true }).order('id', { ascending: true });
+let data = [], error = null;
+for (let from = 0; from < 20000; from += 1000) {
+const res = await supabase.from('services').select('*')
+.order('platform').order('sort_order', { ascending: true }).order('id', { ascending: true })
+.range(from, from + 999);
+if (res.error) { error = res.error; break; }
+data = data.concat(res.data || []);
+if (!res.data || res.data.length < 1000) break;
+}
 if (loader) loader.style.display = 'none';
 if (error) { toast('خطأ في التحميل: ' + error.message, true); if (loader) { loader.style.display = 'block'; loader.innerText = '❌ فشل التحميل'; } return; }
 allServices = data || [];
@@ -5404,6 +5453,32 @@ toast('✅ تم فحص ' + (r.checked || 0) + ' طلب — اتغيرت حالة
 });
 document.getElementById('adminProvidersBtn').addEventListener('click', () => { if (window.adminGoTab) window.adminGoTab('providers'); });
 
+// ---------- 🗑️ حذف كل الخدمات ----------
+document.getElementById('deleteAllServicesBtn').addEventListener('click', async (e) => {
+const btn = e.currentTarget;
+if (!confirm('⚠️ متأكد إنك عايز تمسح كل الخدمات من الموقع؟\n\nالموقع هيبقى فاضي لحد ما تستورد خدمات جديدة.\n(الطلبات القديمة وأرصدة العملاء مش هتتأثر)')) return;
+const typed = prompt('للتأكيد النهائي اكتب كلمة: حذف');
+if (typed === null) return;
+if (typed.trim() !== 'حذف') { toast('❌ اتلغى — الكلمة مش مطابقة', true); return; }
+busy(btn, true, 'جاري الحذف');
+try {
+let deleted = 0;
+try {
+const r = await smm('admin_delete_all_services', {});
+deleted = r.deleted || 0;
+} catch (er) {
+// احتياطي لو الدالة لسه متحدثتش: الحذف من لوحة الأدمن مباشرة
+const { count } = await supabase.from('services').select('id', { count: 'exact', head: true });
+const { error } = await supabase.from('services').delete().not('id', 'is', null);
+if (error) throw error;
+deleted = count || 0;
+}
+toast('🗑️ تم حذف ' + deleted + ' خدمة — الموقع جاهز للاستيراد الجديد');
+await loadProviders(); await refreshPublicServices();
+} catch (er) { toast('❌ ' + er.message, true); }
+finally { busy(btn, false); }
+});
+
 // ---------- 🛠️ وضع الصيانة ----------
 document.getElementById('adminMaintBtn').addEventListener('click', async (e) => {
 const btn = e.currentTarget;
@@ -5530,7 +5605,10 @@ const r = await smm('admin_services', { provider_id: p.id });
 imp.list = r.services || [];
 imp.fx = r.fx; imp.profit = r.profit;
 const pct = p.profit_percent != null ? p.profit_percent : r.profit;
-document.getElementById('importInfo').innerHTML = '📦 ' + imp.list.length + ' خدمة عند المزود — نسبة الربح المطبقة: <b>' + pct + '%</b> — سعر الدولار: <b>' + Number(r.fx).toFixed(2) + '</b> جنيه — السعر اللي هيظهر للعميل محسوب لكل 1000';
+const pcur = String((r.provider && r.provider.currency) || p.currency || 'USD').toUpperCase();
+document.getElementById('importInfo').innerHTML = '📦 ' + imp.list.length + ' خدمة عند المزود — عملة أسعار المزود: <b>' + esc(pcur) + '</b>' + (pcur === 'EGP' ? '' : ' (1 ' + esc(pcur) + ' = ' + Number(r.to_egp || r.fx).toFixed(4) + ' جنيه)') + ' — نسبة الربح: <b>' + pct + '%</b>' +
+'<br>✅ تأكد إن عمود "التكلفة" هو نفس السعر اللي ظاهر في موقع المزود بنفس العملة — لو مختلف غيّر عملة المزود من "تعديل" قبل الاستيراد.' +
+'<br>📝 تفاصيل كل خدمة (الضمان، السرعة، وقت البدء...) بتتسحب تلقائياً وبتظهر للعميل في زرار "تفاصيل الخدمة".';
 const sel = document.getElementById('importFilterPlatform');
 sel.innerHTML = '<option value="">كل المنصات</option>' + Object.keys(PLAT_AR).map(k => '<option value="' + k + '">' + PLAT_AR[k] + '</option>').join('');
 renderImport();
@@ -6766,7 +6844,17 @@ document.getElementById('svcDetailsStats').innerHTML = stats.map(s => '<div clas
 const desc = String(service.description || '').trim();
 const descEl = document.getElementById('svcDetailsDesc');
 descEl.style.display = desc ? '' : 'none';
-descEl.innerHTML = desc ? '<h4><i class="fas fa-file-lines"></i> وصف الخدمة</h4><div>' + linkify(desc) + '</div>' : '';
+// كل سطر في الوصف يبقى صف مرتب: "🛡️ الضمان: 365 يوم" ← العنوان عريض والقيمة جنبه
+const lineHtml = (ln) => {
+const l = ln.trim();
+if (!l) return '';
+if (/^━+$/.test(l)) return '<hr class="sd-sep">';
+const m = l.match(/^(\S+\s+[^:：]{1,22})[:：]\s*(.+)$/);
+if (m) return '<div class="sd-row"><b>' + escHtml(m[1]) + '</b><span>' + linkify(m[2]) + '</span></div>';
+if (/^[•\-]/.test(l)) return '<div class="sd-bullet">' + linkify(l.replace(/^[•\-]\s*/, '')) + '</div>';
+return '<div class="sd-text">' + linkify(l) + '</div>';
+};
+descEl.innerHTML = desc ? '<h4><i class="fas fa-file-lines"></i> تفاصيل الخدمة</h4><div class="sd-body">' + desc.split(/\r?\n/).map(lineHtml).join('') + '</div>' : '';
 bg.classList.add('show');
 };
 function closeSvcDetails() { document.getElementById('svcDetailsModalBg').classList.remove('show'); }

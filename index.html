@@ -1310,12 +1310,56 @@ background: linear-gradient(135deg, #FFFFFF 0%, #E9D5FF 45%, #C084FC 75%, #F0ABF
 filter: drop-shadow(0 6px 30px rgba(168,85,247,0.45)); }
 .hero-title { font-size: clamp(1.35rem, 3.6vw, 2.4rem) !important; line-height: 1.5 !important; }
 @media (max-width: 900px) { .hero-brand { text-align: center; } }
+/* زرار مشاركة الموقع */
+.share-btn { width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.35); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; transition: .2s; }
+.share-btn:hover { background: rgba(168,85,247,0.2); }
+@media (max-width: 420px) {
+.sm-topbar-inner { gap: 6px; padding: 0 10px; }
+.sm-topbar-actions { gap: 6px; }
+.menu-button, .currency-circle, .share-btn, .notif-bell, .sm-top-login, .sm-top-cta { width: 38px !important; height: 38px !important; border-radius: 12px !important; font-size: .9rem !important; }
+.sm-brand { gap: 6px; font-size: 1rem; }
+.sm-brand-mark { width: 32px; height: 32px; border-radius: 10px; font-size: .85rem; }
+}
+@media (max-width: 350px) { .sm-brand-name { display: none; } }
+
+/* أزرار الهيرو */
+.hero-auth, .hero-ctas { display: none !important; }
+.hero-cta-group { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; margin-top: 6px; }
+.hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.cta-main { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 14px; height: 58px; padding: 0 28px 0 12px; border-radius: 18px; background: var(--grad); color: #fff; font-family: inherit; font-weight: 900; font-size: 1.12rem; letter-spacing: .3px; box-shadow: 0 14px 34px rgba(124,58,237,0.5), inset 0 1px 0 rgba(255,255,255,0.3); transition: transform .2s, box-shadow .2s; }
+.cta-main span { padding-inline-start: 6px; }
+.cta-main i { width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: .95rem; transition: transform .25s; }
+.cta-main:hover { transform: translateY(-3px); box-shadow: 0 20px 44px rgba(124,58,237,0.65), inset 0 1px 0 rgba(255,255,255,0.3); }
+.cta-main:hover i { transform: translateX(-4px); }
+.cta-main::after { content: ''; position: absolute; top: 0; bottom: 0; width: 45%; left: -70%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent); transform: skewX(-20deg); animation: ctaShine 3.6s ease-in-out infinite; }
+@keyframes ctaShine { 0%, 60% { left: -70%; } 100% { left: 130%; } }
+.cta-sub { display: inline-flex; align-items: center; gap: 10px; height: 58px; padding: 0 24px; border-radius: 18px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(168,85,247,0.45); color: #fff; font-family: inherit; font-weight: 800; font-size: 1.02rem; transition: background .2s, border-color .2s, transform .2s; }
+.cta-sub i { color: #D8B4FE; }
+.cta-sub:hover { background: rgba(168,85,247,0.16); border-color: rgba(168,85,247,0.8); transform: translateY(-3px); }
+.hero-trust { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.hero-trust span { font-size: .8rem; color: #CFC6F2; display: inline-flex; align-items: center; gap: 6px; }
+.hero-trust i { color: #4ADE80; font-size: .78rem; }
+.cta-install { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 30px; font-size: .78rem; font-weight: 700; color: #E9D5FF; background: rgba(255,255,255,0.04); border: 1px dashed rgba(168,85,247,0.45); transition: .2s; }
+.cta-install:hover { background: rgba(168,85,247,0.15); border-style: solid; }
+@media (max-width: 900px) {
+.hero-cta-group { align-items: center; }
+.hero-cta-row, .hero-trust { justify-content: center; }
+}
+@media (max-width: 480px) {
+.hero-cta-row { width: 100%; flex-direction: column; }
+.cta-main, .cta-sub { width: 100%; justify-content: space-between; height: 54px; }
+.cta-sub { justify-content: center; }
+.hero-trust { flex-direction: column; align-items: center; gap: 4px; }
+}
+.page-brand { font-size: clamp(2.4rem, 7vw, 4rem); font-weight: 900; line-height: 1.05; letter-spacing: 2px; margin-bottom: 12px; direction: ltr;
+background: linear-gradient(135deg, #FFFFFF 0%, #E9D5FF 45%, #C084FC 75%, #F0ABFC 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+filter: drop-shadow(0 6px 26px rgba(168,85,247,0.45)); }
 
 /* =====================================================================
    بطايق الخدمات — مقاس صغير ومتناسق (كمبيوتر + موبايل)
    ===================================================================== */
 .service-card { padding: .85rem .85rem .8rem !important; border-radius: 20px !important; }
-.cf-item .service-card { width: 268px; }
+.cf-item .service-card { width: 340px; }
 .card-header-row { margin-bottom: .35rem !important; }
 .service-number { font-size: .64rem !important; padding: .15rem .55rem !important; }
 .favorite-btn { width: 30px; height: 30px; border-radius: 10px !important; font-size: .9rem !important; }
@@ -1324,6 +1368,14 @@ filter: drop-shadow(0 6px 30px rgba(168,85,247,0.45)); }
 .badge-guarantee, .badge-max { font-size: .62rem !important; padding: .12rem .55rem !important; margin: .15rem 0 !important; }
 .service-detail { display: none !important; }
 .svc-info-btn { font-size: .68rem; padding: 4px 10px; margin: 4px 0 0; border-radius: 9px; }
+/* البطاقة العريضة: الأيقونة والاسم جنب بعض عشان الارتفاع يقل */
+.service-card { display: grid !important; grid-template-columns: auto 1fr; column-gap: 10px; align-items: start; }
+.service-card > .card-header-row, .service-card > .badge-guarantee ~ *, .service-card > .price-container, .service-card > .quantity-calc, .service-card > .buy-btn, .service-card > .svc-info-btn, .service-card > .badge-max { grid-column: 1 / -1; }
+.service-card > .card-icon { grid-column: 1; grid-row: 2 / span 2; margin-bottom: 0 !important; }
+.service-card > .service-name { grid-column: 2; grid-row: 2; align-self: center; }
+.service-card > .badge-guarantee { grid-column: 2; grid-row: 3; justify-self: start; }
+.service-card > .service-detail { display: none !important; }
+.service-card > .svc-info-btn { justify-self: start; }
 .price-container { padding: .45rem .65rem !important; margin: .45rem 0 .15rem !important; border-radius: 12px !important; }
 .price-value { font-size: 1.35rem !important; }
 .price-currency { font-size: .78rem !important; }
@@ -1340,7 +1392,7 @@ filter: drop-shadow(0 6px 30px rgba(168,85,247,0.45)); }
 .platform-title i { width: 32px !important; height: 32px !important; font-size: .95rem !important; }
 .favorites-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important; }
 @media (max-width: 600px) {
-.cf-item .service-card { width: 232px; }
+.cf-item .service-card { width: min(296px, calc(100vw - 64px)); }
 .service-card { padding: .75rem .75rem .7rem !important; }
 .price-value { font-size: 1.2rem !important; }
 .card-icon { width: 38px; height: 38px; font-size: 1rem !important; }
@@ -1379,7 +1431,6 @@ body { background-attachment: scroll !important; }
 .auth-orb { animation: none !important; filter: blur(30px); }
 .auth-platforms i { animation: none !important; }
 .feature-card:hover, .service-card:hover { transform: none !important; }
-.logos-track { animation-duration: 50s; }
 .svc-modal-bg, .insufficient-modal-bg, .auth-modal-bg, .admin-modal-bg { backdrop-filter: none !important; }
 .timeline3d-ui { padding-top: 22px !important; }
 }
@@ -1402,6 +1453,7 @@ body { background-attachment: scroll !important; }
 <button type="button" class="sm-top-login guest-only" data-auth-open="login"><i class="fas fa-right-to-bracket"></i><span> تسجيل الدخول</span></button>
 <button type="button" class="sm-top-cta guest-only" data-auth-open="register"><i class="fas fa-user-plus"></i><span> إنشاء حساب</span></button>
 <button type="button" class="sm-top-cta user-only" id="topServicesBtn"><i class="fas fa-rocket"></i><span> اطلب الآن</span></button>
+<button type="button" class="share-btn" id="shareSiteBtn" aria-label="مشاركة الموقع" title="مشاركة الموقع"><i class="fas fa-share-nodes"></i></button>
 <button type="button" class="notif-bell user-only" id="notifBellBtn" aria-label="الإشعارات"><i class="fas fa-bell"></i><b class="notif-badge" id="notifBadge"></b></button>
 <div class="currency-circle" id="currencyCircle"><i class="fas fa-coins"></i></div>
 </div>
@@ -1606,13 +1658,20 @@ body { background-attachment: scroll !important; }
 <div class="hero-brand" data-site-name>SMCOLE</div>
 <h1 class="hero-title"><span class="grad" id="siteDescriptionDisplay">افضل وارخص موقع تزويد متابعين ومشاهدات</span></h1>
 <p class="hero-desc">متابعين، لايكات، مشاهدات وتعليقات لفيسبوك وإنستجرام وتيك توك ويوتيوب وتليجرام وأكثر — تنفيذ سريع، ضمان حقيقي، ودعم فني متواجد 24 ساعة.</p>
-<div class="hero-auth guest-only">
-<button type="button" class="btn-primary" data-auth-open="register"><i class="fas fa-user-plus"></i> إنشاء حساب مجاني</button>
-<button type="button" class="btn-ghost" data-auth-open="login"><i class="fas fa-right-to-bracket"></i> تسجيل الدخول</button>
+<div class="hero-cta-group">
+<div class="hero-cta-row guest-only">
+<button type="button" class="cta-main" data-auth-open="register"><span>ابدأ الآن</span><i class="fas fa-arrow-left"></i></button>
+<button type="button" class="cta-sub" data-auth-open="login"><i class="fas fa-right-to-bracket"></i><span>تسجيل الدخول</span></button>
 </div>
-<div class="hero-ctas">
-<button type="button" class="btn-primary" id="heroServicesBtn"><i class="fas fa-rocket"></i> اطلب الآن</button>
-<button type="button" class="btn-ghost" id="installPwaBtn"><i class="fas fa-mobile-screen"></i> تثبيت التطبيق</button>
+<div class="hero-cta-row user-only">
+<button type="button" class="cta-main" id="heroServicesBtn"><span>تصفح الخدمات</span><i class="fas fa-arrow-left"></i></button>
+</div>
+<div class="hero-trust">
+<span><i class="fas fa-circle-check"></i> تسجيل مجاني في أقل من دقيقة</span>
+<span><i class="fas fa-circle-check"></i> تنفيذ تلقائي وسريع</span>
+<span><i class="fas fa-circle-check"></i> دعم فني 24/7</span>
+</div>
+<button type="button" class="cta-install" id="installPwaBtn"><i class="fas fa-mobile-screen-button"></i> ثبّت التطبيق على موبايلك</button>
 </div>
 <div class="hero-stats">
 <div class="hs"><div class="hs-val" id="usersCount">---</div><div class="hs-lbl"><i class="fas fa-users"></i> مستخدمين نشطين</div></div>
@@ -1752,6 +1811,7 @@ body { background-attachment: scroll !important; }
 <div id="servicesPage" class="overlay-page">
 <div class="services-page-inner">
 <div class="sec-head">
+<div class="page-brand" data-site-name>SMCOLE</div>
 <span class="sec-kicker"><i class="fas fa-rocket"></i> الخدمات</span>
 <h2>اختر <span class="grad">خدمتك</span> واطلب الآن</h2>
 <p>⭐ اختر الخدمات ذات الضمان — <b>ضمان 30 يوم</b> و <b>ضمان 365 يوم</b></p>
@@ -2752,7 +2812,7 @@ window.SMCOLE_BOT = {
   admin_username: 'walidsalama'
 };
 
-const APP_VERSION = '2026.10.09.4';
+const APP_VERSION = '2026.10.10.1';
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -2760,7 +2820,10 @@ const ADMIN_EMAIL = 'swlyd3393@gmail.com';
 let _supabaseClient = null;
 function getSupabase() {
 if (!_supabaseClient) {
-_supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// الجلسة بتتحفظ على الجهاز وبتتجدد تلقائياً → العميل يفضل مسجل لحد ما يضغط "تسجيل الخروج" بنفسه
+_supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage }
+});
 }
 return _supabaseClient;
 }
@@ -2858,14 +2921,22 @@ if (window.refreshBalanceUI) window.refreshBalanceUI();
 if (window.refreshCurrencyButtons) window.refreshCurrencyButtons();
 return;
 }
+// نفس سعر الصرف اللي السيرفر حسب بيه الأسعار → السعر بالدولار يطلع مظبوط 100%
+if (siteSettings.last_fx && parseFloat(siteSettings.last_fx) > 0) {
+exchangeRate = parseFloat(siteSettings.last_fx);
+updateAllPrices();
+if (window.refreshBalanceUI) window.refreshBalanceUI();
+if (window.refreshCurrencyButtons) window.refreshCurrencyButtons();
+return;
+}
 try {
-const response = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/egp.json');
+const response = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json');
 if (!response.ok) throw new Error();
 const data = await response.json();
-const usdRate = data.egp?.usd;
-if (usdRate && typeof usdRate === 'number' && usdRate > 0) exchangeRate = 1 / usdRate;
+const egpRate = data.usd?.egp;
+if (egpRate && typeof egpRate === 'number' && egpRate > 0) exchangeRate = egpRate;
 else throw new Error();
-} catch(e) { exchangeRate = 48.5; }
+} catch(e) { exchangeRate = 50; }
 updateAllPrices();
 if (window.refreshBalanceUI) window.refreshBalanceUI();
 if (window.refreshCurrencyButtons) window.refreshCurrencyButtons();
@@ -3034,6 +3105,8 @@ siteSettings.logo_redot = data.logo_redot || null;
 siteSettings.active_users_override = (data.active_users_override !== null && data.active_users_override !== undefined) ? parseInt(data.active_users_override) : null;
 siteSettings.completed_orders_override = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? parseInt(data.completed_orders_override) : null;
 siteSettings.exchange_rate = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? parseFloat(data.exchange_rate) : null;
+siteSettings.last_fx = (data.last_fx !== null && data.last_fx !== undefined) ? parseFloat(data.last_fx) : null;
+siteSettings.profit_percent = (data.profit_percent !== null && data.profit_percent !== undefined) ? parseFloat(data.profit_percent) : null;
 return true;
 } catch(e) { console.warn('Settings load failed:', e); return false; }
 };
@@ -3314,6 +3387,19 @@ document.getElementById('drawerCloseBtn').addEventListener('click', () => dropdo
 document.querySelectorAll('.pay-chip[data-goto="payment"]').forEach(el => el.addEventListener('click', () => window.__navigateTo('payment', paymentPage, true)));
 document.getElementById('directSupportBtn').addEventListener('click', () => {
 if (window.openSupportChat) window.openSupportChat();
+});
+// 🔗 مشاركة الموقع (من الموبايل بيفتح قائمة المشاركة — من الكمبيوتر بينسخ الرابط)
+document.getElementById('shareSiteBtn').addEventListener('click', async () => {
+const url = 'https://smcole.com';
+const name = siteSettings.site_name || 'SMCOLE';
+const text = name + ' — ' + (siteSettings.site_description || 'افضل وارخص موقع تزويد متابعين ومشاهدات') + ' 🚀';
+if (navigator.share) {
+try { await navigator.share({ title: name, text: text, url: url }); return; }
+catch (e) { if (e && e.name === 'AbortError') return; }
+}
+try { await navigator.clipboard.writeText(text + '\n' + url); }
+catch (e) { const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (er) {} ta.remove(); }
+if (window.userToast) window.userToast('🔗 تم نسخ رابط الموقع: ' + url, 'ok');
 });
 const backToTopBtn = document.getElementById('backToTop');
 window.addEventListener('scroll', () => {
@@ -5163,7 +5249,7 @@ finally { busy(btn, false); }
 function updateProfitExample() {
 const pct = Number(document.getElementById('profitPercentInput').value || 0);
 const sell = 1 * (1 + pct / 100);
-document.getElementById('profitExample').innerHTML = 'مثال: خدمة بـ <b>1$</b> عند المزود ← تظهر للعميل بـ <b>' + sell.toFixed(2) + '$</b> (≈ ' + (sell * (window.exchangeRate || exchangeRate || 50)).toFixed(2) + ' جنيه) — ربحك ' + (sell - 1).toFixed(2) + '$';
+document.getElementById('profitExample').innerHTML = 'الحساب: سعر المزود + (سعر المزود × ' + pct + '%)<br>مثال: خدمة بـ <b>1$</b> عند المزود ← تظهر للعميل بـ <b>' + sell.toFixed(2) + '$</b> (≈ ' + (sell * (window.exchangeRate || exchangeRate || 50)).toFixed(2) + ' جنيه)<br>المزود بيخصم منك <b>1$</b> بس — وربحك <b>' + (sell - 1).toFixed(2) + '$</b>';
 }
 document.getElementById('profitPercentInput').addEventListener('input', updateProfitExample);
 document.getElementById('profitSaveBtn').addEventListener('click', async (e) => {
@@ -5292,7 +5378,7 @@ html += '<label class="imp-row' + (dis ? ' dis' : '') + (s.imported_as ? ' done'
 '<span class="imp-name">' + esc(s.name) + (s.imported_as ? ' <em class="imp-tag ok">مستوردة</em>' : '') + (dis ? ' <em class="imp-tag">نوع غير مدعوم: ' + esc(s.type) + '</em>' : '') + (s.refill ? ' <em class="imp-tag g">♻ ضمان</em>' : '') + (s.description ? ' <em class="imp-tag i" title="' + esc(s.description.slice(0, 300)) + '">📝 وصف</em>' : '') + '</span>' +
 '<span class="imp-num" dir="ltr">' + s.min + ' - ' + s.max + '</span>' +
 '<span class="imp-rate" dir="ltr">' + s.rate + ' ' + esc(imp.provider.currency) + '</span>' +
-'<span class="imp-sell" dir="ltr">' + Number(s.sell).toFixed(2) + ' ج</span></label>';
+'<span class="imp-sell" dir="ltr">' + (String(imp.provider.currency).toUpperCase() === 'EGP' ? '' : (Number(s.sell) / Number(imp.fx || 1)).toFixed(4).replace(/0+$/, '').replace(/\.$/, '') + '$<br>') + '<small>' + Number(s.sell).toFixed(2) + ' ج</small></span></label>';
 });
 html += '</div>';
 });
@@ -5570,7 +5656,16 @@ applyRoleUI();
 hideAuthModal();
 return;
 }
-if (error || !profile) {
+if (error) {
+// خطأ مؤقت (نت ضعيف / تجديد الجلسة): منسجلش خروج أبداً — نحاول تاني بعد شوية
+console.warn('profile load (retrying):', error.message);
+applyRoleUI();
+clearTimeout(window.__profileRetry);
+window.__profileRetry = setTimeout(refreshUserUI, 4000);
+return;
+}
+if (!profile) {
+// الحساب اتمسح فعلاً من قاعدة البيانات
 try { await sb.auth.signOut(); } catch(e) {}
 currentProfile = null; window.currentProfile = null;
 const chip = document.getElementById('userBalanceChip');
@@ -6084,8 +6179,8 @@ try {
 let imageUrl = null, compressed = null;
 if (imgData) {
 compressed = await compressImage(imgData, 1400, 0.8);
-imageUrl = await uploadScreenshot(compressed, 'support');
-if (!imageUrl) throw new Error('فشل رفع الصورة');
+imageUrl = await uploadChatImage(compressed, 'support');
+if (!imageUrl) throw new Error('فشل رفع الصورة — اتأكد من الإنترنت وجرب تاني');
 }
 const { data: row, error } = await sb.from('support_messages').insert({ user_id: currentProfile.id, sender: 'user', body: text || null, image_url: imageUrl }).select().single();
 if (error) throw error;
@@ -6231,6 +6326,10 @@ pushActive = false;
 }
 window.__unsubscribeDeviceRow = unsubscribeDeviceRow;
 async function enableNotifications() {
+// البطاقة تختفي فوراً ومترجعش تاني
+hidePushPrompt();
+window.__pushPromptDone = true;
+try { localStorage.setItem('smcole_push_prompt', String(Date.now() + 3650 * 24 * 3600 * 1000)); } catch (e) {}
 if (!('Notification' in window)) { userToast('⚠️ المتصفح ده مش بيدعم الإشعارات', 'warn'); return; }
 let p = Notification.permission;
 if (p === 'default') { try { p = await Notification.requestPermission(); } catch (e) {} }
@@ -6240,17 +6339,23 @@ userToast(ok ? '🔔 تم تفعيل الإشعارات على الجهاز ده
 hidePushPrompt();
 renderNotifs();
 }
-function hidePushPrompt() { const b = document.getElementById('pushPrompt'); if (b) b.classList.remove('show'); }
+function hidePushPrompt() { const b = document.getElementById('pushPrompt'); if (b) b.classList.remove('show'); clearTimeout(window.__pushPromptTimer); }
+function pushPromptAllowed() {
+if (window.__pushPromptDone || !currentProfile || !pushSupported()) return false;
+if (Notification.permission !== 'default') return false;
+let last = 0; try { last = parseInt(localStorage.getItem('smcole_push_prompt') || '0', 10); } catch (e) {}
+return Date.now() - last > 3 * 24 * 3600 * 1000;
+}
 function maybeShowPushPrompt() {
 if (!currentProfile || !pushSupported()) return;
 if (Notification.permission === 'granted') { subscribeDevice(); return; }
-if (Notification.permission !== 'default') return;
-let last = 0; try { last = parseInt(localStorage.getItem('smcole_push_prompt') || '0', 10); } catch (e) {}
-if (Date.now() - last < 3 * 24 * 3600 * 1000) return;
-setTimeout(() => { const b = document.getElementById('pushPrompt'); if (b && currentProfile) b.classList.add('show'); }, 4000);
+if (!pushPromptAllowed()) return;
+clearTimeout(window.__pushPromptTimer);
+// بنتأكد تاني وقت الظهور (يمكن يكون فعّلها أو قفلها في الوقت ده)
+window.__pushPromptTimer = setTimeout(() => { const b = document.getElementById('pushPrompt'); if (b && pushPromptAllowed()) b.classList.add('show'); }, 4000);
 }
 document.getElementById('pushPromptYes').addEventListener('click', enableNotifications);
-document.getElementById('pushPromptLater').addEventListener('click', () => { try { localStorage.setItem('smcole_push_prompt', String(Date.now())); } catch (e) {} hidePushPrompt(); });
+document.getElementById('pushPromptLater').addEventListener('click', () => { window.__pushPromptDone = true; try { localStorage.setItem('smcole_push_prompt', String(Date.now())); } catch (e) {} hidePushPrompt(); });
 
 function showSystemNotif(n, force) {
 if (!('Notification' in window) || Notification.permission !== 'granted') return;
@@ -6400,7 +6505,7 @@ try {
 let imageUrl = null;
 if (adminImageData) {
 const c = await compressImage(adminImageData, 1400, 0.8);
-imageUrl = await uploadScreenshot(c, 'support_admin');
+imageUrl = await uploadChatImage(c, 'support_admin');
 if (!imageUrl) throw new Error('فشل رفع الصورة');
 }
 const { data: row, error } = await sb.from('support_messages').insert({ user_id: adminThreadUser, sender: 'admin', body: text || null, image_url: imageUrl }).select().single();
@@ -6644,6 +6749,26 @@ Promise.resolve(promise).then(
 });
 }
 
+// رفع صورة الشات/الإيداع: Storage مباشرة، ولو اتقفل → عن طريق السيرفر (مضمون)
+async function uploadChatImage(dataURL, prefix) {
+if (!dataURL) return null;
+try {
+const blob = await dataURLtoBlob(dataURL);
+const name = (prefix || 'img') + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.jpg';
+const r = await withTimeout(sb.storage.from('screenshots').upload(name, blob, { contentType: blob.type || 'image/jpeg', upsert: true }), 12000);
+if (r && !r.error) {
+const pub = sb.storage.from('screenshots').getPublicUrl(name);
+if (pub && pub.data && pub.data.publicUrl) return pub.data.publicUrl;
+}
+} catch (e) { console.warn('storage upload:', e.message); }
+try {
+const { data, error } = await sb.functions.invoke('support-chat', { body: { action: 'upload', data_url: dataURL, prefix: prefix || 'img' } });
+if (!error && data && data.ok && data.url) return data.url;
+} catch (e) { console.warn('server upload:', e.message); }
+return null;
+}
+window.__uploadChatImage = uploadChatImage;
+
 // رفع الصورة (نسخة احتياطية للوحة الأدمن)
 async function uploadScreenshot(dataURL, method) {
 if (!dataURL) return null;
@@ -6712,15 +6837,7 @@ console.log('tx_log_id:', txLogId);
 
 // ✅ الخطوة 2: نرفع الصورة نسخة على Storage للأدمن
 let publicUrl = null;
-try {
-const blob = await dataURLtoBlob(screenshotDataURL);
-const fileName = method + '_' + Date.now() + '_' + Math.random().toString(36).slice(2,8) + '.jpg';
-const uploadResult = await sb.storage.from('screenshots').upload(fileName, blob, { contentType: 'image/jpeg', upsert: true });
-if (uploadResult && !uploadResult.error) {
-const pubResult = sb.storage.from('screenshots').getPublicUrl(fileName);
-if (pubResult?.data?.publicUrl) publicUrl = pubResult.data.publicUrl;
-}
-} catch(e) { console.warn('storage upload skip:', e.message); }
+try { publicUrl = await uploadChatImage(screenshotDataURL, method); } catch(e) { console.warn('storage upload skip:', e.message); }
 
 // ✅ الخطوة 3: نضيف deposit_requests مع tx_log_id
 const insertPayload = {
@@ -6756,11 +6873,18 @@ let tgMsg = tgTitle + '\n\n' +
 '💰 المبلغ: ' + amount + ' ' + (currency === 'USD' ? 'دولار' : 'جنيه');
 if (tgExtra) tgMsg += '\n' + tgExtra;
 
-const sent = await sendToTelegram(tgMsg, {
-deposit_id: depositId,
-type: 'deposit',
-photo_base64: screenshotDataURL
-});
+// الإرسال عن طريق السيرفر (بيجيب رقم الطلب بنفسه = زراير التأكيد والرفض مضمونة)
+let sent = false;
+try {
+const { data: dres, error: derr } = await sb.functions.invoke('support-chat', { body: {
+action: 'deposit', deposit_id: depositId || undefined, photo_base64: publicUrl ? undefined : screenshotDataURL
+} });
+sent = !derr && dres && dres.ok;
+} catch (e) {}
+if (!sent) {
+// احتياطي: الدالة القديمة
+sent = await sendToTelegram(tgMsg, { deposit_id: depositId, type: 'deposit', photo_base64: screenshotDataURL });
+}
 
 if (sent) {
 setMsg('✅ تم إرسال طلبك بنجاح للإدارة');
@@ -7497,7 +7621,19 @@ phone.style.transform = 'rotateY(' + (-14 + dx * 30) + 'deg) rotateX(' + (6 - dy
 
 // ---------- شريط اللوجوهات (تكرار للحركة اللانهائية) ----------
 const track = document.querySelector('.logos-track');
-if (track) track.innerHTML += track.innerHTML;
+if (track) {
+track.innerHTML += track.innerHTML;
+// نفس السرعة الظاهرية على كل الأجهزة: الشريط بيعدي عرض الشاشة كلها في ~16 ثانية
+const setMarqueeSpeed = () => {
+const half = track.scrollWidth / 2;
+if (!half) return;
+const pxPerSec = Math.max(40, window.innerWidth / 16);
+track.style.animationDuration = (half / pxPerSec).toFixed(1) + 's';
+};
+setMarqueeSpeed();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(setMarqueeSpeed);
+window.addEventListener('resize', () => { clearTimeout(window.__mqT); window.__mqT = setTimeout(setMarqueeSpeed, 200); });
+}
 
 // ---------- ميل 3D للبطاقات (tilt) ----------
 function bindTilt(el) {

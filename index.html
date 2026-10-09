@@ -1103,6 +1103,7 @@ body:not(.is-admin) #adminUserPasswordModalBg,
 body:not(.is-admin) #adminProviderModalBg,
 body:not(.is-admin) #adminImportModalBg,
 body:not(.is-admin) #adminBroadcastModalBg,
+body:not(.is-admin) #adminAuditModalBg,
 body:not(.is-admin) .drawer-links a.drawer-admin-link { display: none !important; }
 
 /* ---------- خلفية Three.js للصفحات الداخلية ---------- */
@@ -1310,6 +1311,61 @@ background: linear-gradient(135deg, #FFFFFF 0%, #E9D5FF 45%, #C084FC 75%, #F0ABF
 filter: drop-shadow(0 6px 30px rgba(168,85,247,0.45)); }
 .hero-title { font-size: clamp(1.35rem, 3.6vw, 2.4rem) !important; line-height: 1.5 !important; }
 @media (max-width: 900px) { .hero-brand { text-align: center; } }
+/* 🛠️ وضع الصيانة */
+.maint-strip { position: fixed; top: var(--topbar-h); left: 0; right: 0; z-index: 1545; display: none; align-items: center; justify-content: center; gap: 10px; padding: 9px 16px; background: linear-gradient(90deg, #B45309, #D97706, #B45309); color: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.4); font-size: .85rem; text-align: center; }
+.maint-strip i { font-size: 1.1rem; animation: bellRing 2.4s ease infinite; }
+.maint-strip b { margin-left: 8px; }
+.maint-strip span { opacity: .95; }
+body.maintenance .maint-strip { display: flex; }
+body.maintenance .overlay-page, body.maintenance .sm-home { padding-top: calc(var(--topbar-h) + 44px) !important; }
+body.maintenance .buy-btn { filter: grayscale(.85) brightness(.7); cursor: not-allowed !important; }
+body.maintenance .buy-btn i::before { content: '\f7d9'; }
+.maint-btn.on { background: linear-gradient(135deg, #D97706, #B45309) !important; color: #fff !important; border-color: transparent !important; animation: pulseWarn 1.6s ease-in-out infinite; }
+@keyframes pulseWarn { 0%,100% { box-shadow: 0 0 0 0 rgba(217,119,6,0.6); } 50% { box-shadow: 0 0 0 8px rgba(217,119,6,0); } }
+@media (max-width: 600px) { .maint-strip { font-size: .74rem; padding: 7px 10px; } .maint-strip b { display: block; margin: 0; } .maint-strip div { display: flex; flex-direction: column; } body.maintenance .overlay-page, body.maintenance .sm-home { padding-top: calc(var(--topbar-h) + 58px) !important; } }
+
+/* 🔍 مراجعة الأسعار */
+.prov-cur { font-size: .76rem; color: #CFC6F2; background: rgba(255,255,255,0.04); padding: 7px 10px; border-radius: 10px; }
+.prov-cur b { color: #fff; }
+.audit-formula { margin: 12px 18px 0; padding: 12px 14px; border-radius: 14px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); color: #DCFCE7; font-size: .82rem; line-height: 1.9; }
+.audit-table-wrap { overflow-x: auto; margin-top: 10px; border-radius: 14px; border: 1px solid var(--line); }
+.audit-table { min-width: 980px !important; font-size: .78rem !important; }
+.audit-table td { vertical-align: middle; }
+.audit-table td small { color: var(--muted); }
+.audit-table .a-name { max-width: 320px; line-height: 1.6; }
+.audit-table tr.bad td { background: rgba(239,68,68,0.08); }
+
+/* بطايق الخدمات على الكمبيوتر — أكبر وأوضح */
+@media (min-width: 900px) {
+.cf-item .service-card { width: 410px !important; }
+.service-card { padding: 1.15rem 1.15rem 1.05rem !important; border-radius: 24px !important; column-gap: 14px !important; }
+.card-icon { width: 54px !important; height: 54px !important; border-radius: 16px !important; font-size: 1.4rem !important; }
+.service-name { font-size: 1.05rem !important; line-height: 1.55 !important; }
+.service-number { font-size: .72rem !important; }
+.favorite-btn { width: 36px !important; height: 36px !important; font-size: 1rem !important; }
+.badge-guarantee, .badge-max { font-size: .7rem !important; padding: .2rem .7rem !important; }
+.svc-info-btn { font-size: .76rem !important; padding: 6px 12px !important; }
+.price-container { padding: .65rem .9rem !important; border-radius: 14px !important; }
+.price-value { font-size: 1.75rem !important; }
+.price-currency { font-size: .9rem !important; }
+.small-unit { font-size: .72rem !important; }
+.quantity-calc { padding: .8rem !important; border-radius: 16px !important; }
+.quantity-label { font-size: .76rem !important; }
+.quantity-input, .url-input { padding: 10px 12px !important; font-size: .92rem !important; border-radius: 12px !important; }
+.total-price-row { padding: 8px 12px !important; font-size: .8rem !important; }
+.total-amount { font-size: 1.05rem !important; }
+.buy-btn { padding: 12px 0 !important; font-size: 1rem !important; border-radius: 14px !important; }
+.platform-title { font-size: 1.1rem !important; }
+.platform-title i { width: 38px !important; height: 38px !important; font-size: 1.05rem !important; }
+}
+/* الموبايل: أكبر سنة */
+@media (max-width: 600px) {
+.cf-item .service-card { width: min(318px, calc(100vw - 44px)) !important; }
+.price-value { font-size: 1.3rem !important; }
+.service-name { font-size: .9rem !important; }
+.card-icon { width: 42px !important; height: 42px !important; }
+}
+
 /* زرار مشاركة الموقع */
 .share-btn { width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.35); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; transition: .2s; }
 .share-btn:hover { background: rgba(168,85,247,0.2); }
@@ -1462,6 +1518,12 @@ body { background-attachment: scroll !important; }
 <div class="currency-dropdown" id="currencyDropdown">
 <a data-currency="USD"><i class="fas fa-dollar-sign"></i> USD</a>
 <a data-currency="EGP"><i class="fas fa-pound-sign"></i> EGP</a>
+</div>
+
+<!-- ============ شريط وضع الصيانة ============ -->
+<div class="maint-strip" id="maintStrip" role="status">
+<i class="fas fa-screwdriver-wrench"></i>
+<div><b>الموقع في وضع الصيانة</b><span id="maintStripMsg">الطلبات متوقفة مؤقتاً</span></div>
 </div>
 
 <!-- ============ SIDE DRAWER (القائمة الجانبية) ============ -->
@@ -2239,6 +2301,7 @@ body { background-attachment: scroll !important; }
 <div class="admin-topbar">
 <div class="admin-title-wrap"><span class="admin-title-ico"><i class="fas fa-user-shield"></i></span><div><h1>لوحة تحكم الأدمن</h1><div class="admin-title-sub" id="adminUserEmail" dir="ltr"></div></div></div>
 <div class="actions">
+<button class="admin-btn ghost maint-btn" id="adminMaintBtn" type="button"><i class="fas fa-screwdriver-wrench"></i> وضع الصيانة</button>
 <button class="admin-btn gold" id="adminBroadcastBtn" type="button"><i class="fas fa-bullhorn"></i> إشعار للكل</button>
 <button class="admin-btn ghost" id="adminProvidersBtn" type="button"><i class="fas fa-plug"></i> مزودين API</button>
 <button class="admin-btn ghost admin-support-btn" id="adminSupportBtn" type="button"><i class="fas fa-headset"></i> الدعم الفني <b class="abn-badge static" id="adminSupportBadge"></b></button>
@@ -2378,6 +2441,7 @@ body { background-attachment: scroll !important; }
 <div class="prov-actions">
 <button type="button" class="admin-btn ghost" id="syncPricesBtn"><i class="fas fa-rotate"></i> تحديث الأسعار الآن</button>
 <button type="button" class="admin-btn ghost" id="checkOrdersBtn"><i class="fas fa-list-check"></i> تحديث حالة الطلبات الآن</button>
+<button type="button" class="admin-btn gold" id="priceAuditBtn"><i class="fas fa-magnifying-glass-dollar"></i> مراجعة الأسعار</button>
 </div>
 </div>
 </div>
@@ -2703,8 +2767,9 @@ body { background-attachment: scroll !important; }
 <div class="password-wrap"><input type="password" id="providerKey" placeholder="الصق المفتاح هنا" dir="ltr" autocomplete="new-password"><button type="button" class="password-toggle" data-target="providerKey"><i class="fas fa-eye"></i></button></div>
 <div class="admin-hint" id="providerKeyHint">🔒 المفتاح بيتخزن في قاعدة البيانات ومحدش يقدر يشوفه غير الأدمن</div></div>
 <div class="admin-grid-2">
-<div class="admin-field"><label>عملة أسعار المزود</label>
-<select id="providerCurrency"><option value="USD">دولار (USD)</option><option value="EGP">جنيه مصري (EGP)</option></select></div>
+<div class="admin-field"><label>عملة أسعار المزود (مهمة جداً)</label>
+<select id="providerCurrency"><option value="USD">دولار (USD)</option><option value="EGP">جنيه مصري (EGP)</option><option value="EUR">يورو (EUR)</option><option value="SAR">ريال سعودي (SAR)</option><option value="INR">روبية (INR)</option><option value="RUB">روبل (RUB)</option><option value="TRY">ليرة تركي (TRY)</option></select>
+<div class="admin-hint">💡 نفس العملة اللي ظاهرة جنب الأسعار في موقع المزود. مثال: لو بيكتب <b dir="ltr">10.1000 EGP</b> اختار جنيه مصري.</div></div>
 <div class="admin-field"><label>نسبة ربح خاصة (اختياري)</label><input type="number" id="providerProfit" min="0" step="1" placeholder="فاضي = النسبة العامة" dir="ltr"></div>
 </div>
 <div class="admin-field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="providerActive" style="width:auto;" checked> المزود شغال (الطلبات بتتبعتله)</label></div>
@@ -2733,6 +2798,24 @@ body { background-attachment: scroll !important; }
 <button type="submit" class="admin-btn gold" id="bcSendBtn"><i class="fas fa-paper-plane"></i> إرسال للكل</button>
 </div>
 </form>
+</div>
+</div>
+
+<!-- PRICE AUDIT MODAL (مراجعة الأسعار) -->
+<div class="admin-modal-bg" id="adminAuditModalBg">
+<div class="admin-modal import-modal">
+<div class="import-head">
+<h2><i class="fas fa-magnifying-glass-dollar"></i> مراجعة أسعار الخدمات المستوردة</h2>
+<button type="button" class="import-close" id="auditCloseBtn" aria-label="إغلاق"><i class="fas fa-times"></i></button>
+</div>
+<div class="audit-formula" id="auditFormula"></div>
+<div class="import-toolbar">
+<input type="text" id="auditSearch" class="user-search-input" placeholder="🔍 ابحث باسم الخدمة أو رقمها عند المزود...">
+<label class="import-chk"><input type="checkbox" id="auditOnlyDiff"> اللي فيها فرق بس</label>
+<button type="button" class="admin-btn gold" id="auditFixBtn"><i class="fas fa-wand-magic-sparkles"></i> إعادة حساب كل الأسعار الآن</button>
+</div>
+<div class="import-info" id="auditInfo"></div>
+<div class="import-body" id="auditBody"><div class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div></div>
 </div>
 </div>
 
@@ -2943,7 +3026,7 @@ if (window.refreshCurrencyButtons) window.refreshCurrencyButtons();
 }
 function formatNumberNoCommas(value, isUSD) {
 // الأسعار الصغيرة (خدمات API) تظهر بدقة أكبر بدل ما تبان صفر
-if (value > 0 && value < 1) return value.toFixed(value < 0.1 ? 4 : 3).replace(/0+$/, '').replace(/\.$/, '');
+if (value > 0 && value < 1) return value.toFixed(value < 0.01 ? 6 : value < 0.1 ? 4 : 3).replace(/0+$/, '').replace(/\.$/, '');
 if (isUSD) return value.toFixed(2);
 if (Number.isInteger(value)) return value.toString();
 return value.toFixed(2);
@@ -3032,6 +3115,7 @@ document.title = siteSettings.site_name + ' | ' + (siteSettings.site_description
 }
 applySiteNameToAll();
 applyPaymentLogos();
+if (window.applyMaintenance) window.applyMaintenance();
 const usersSpan = document.getElementById('usersCount');
 const ordersSpan = document.getElementById('ordersCount');
 if (siteSettings.active_users_override !== null && siteSettings.active_users_override !== undefined && usersSpan) {
@@ -3080,6 +3164,18 @@ if (rpStep2) rpStep2.innerText = siteSettings.redot_number;
 }
 };
 
+// 🛠️ وضع الصيانة: شريط تنبيه + قفل أزرار الشراء
+window.applyMaintenance = function() {
+const on = siteSettings.maintenance === true;
+document.body.classList.toggle('maintenance', on);
+const msg = document.getElementById('maintStripMsg');
+if (msg) msg.innerText = siteSettings.maintenance_message || 'بنحدّث الأسعار والخدمات — الطلبات متوقفة مؤقتاً وهترجع خلال وقت قصير';
+const btn = document.getElementById('adminMaintBtn');
+if (btn) {
+btn.classList.toggle('on', on);
+btn.innerHTML = on ? '<i class="fas fa-screwdriver-wrench"></i> الصيانة شغالة — اقفلها' : '<i class="fas fa-screwdriver-wrench"></i> وضع الصيانة';
+}
+};
 window.loadSiteSettings = async function() {
 try {
 const sb = getSupabase();
@@ -3107,6 +3203,8 @@ siteSettings.completed_orders_override = (data.completed_orders_override !== nul
 siteSettings.exchange_rate = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? parseFloat(data.exchange_rate) : null;
 siteSettings.last_fx = (data.last_fx !== null && data.last_fx !== undefined) ? parseFloat(data.last_fx) : null;
 siteSettings.profit_percent = (data.profit_percent !== null && data.profit_percent !== undefined) ? parseFloat(data.profit_percent) : null;
+siteSettings.maintenance = data.maintenance === true;
+siteSettings.maintenance_message = data.maintenance_message || '';
 return true;
 } catch(e) { console.warn('Settings load failed:', e); return false; }
 };
@@ -3167,6 +3265,14 @@ supabase.channel('realtime-counters')
 if (siteSettings.active_users_override === null || siteSettings.active_users_override === undefined) {
 if (payload.new) updateUI(payload.new.count, undefined);
 }
+})
+.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_settings' }, (payload) => {
+// الأدمن شغّل/قفل الصيانة → يتطبق عند الكل فوراً
+if (!payload.new) return;
+siteSettings.maintenance = payload.new.maintenance === true;
+siteSettings.maintenance_message = payload.new.maintenance_message || '';
+if (payload.new.last_fx) siteSettings.last_fx = parseFloat(payload.new.last_fx);
+if (window.applyMaintenance) window.applyMaintenance();
 })
 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders_counter' }, (payload) => {
 if (siteSettings.completed_orders_override === null || siteSettings.completed_orders_override === undefined) {
@@ -3658,7 +3764,7 @@ let totalToShow = totalInEGP;
 let currencySymbol = 'جنيه';
 let formatted;
 if (currentCurrency === 'USD') { totalToShow = totalInEGP / exchangeRate; currencySymbol = '$'; formatted = formatNumberNoCommas(Math.max(totalToShow, 0.01), true); }
-else { formatted = Number.isInteger(totalToShow) ? totalToShow.toString() : totalToShow.toFixed(2); }
+else { totalToShow = Math.max(totalToShow, 0.01); formatted = Number.isInteger(totalToShow) ? totalToShow.toString() : totalToShow.toFixed(2); }
 totalAmountSpan.innerText = formatted + ' ' + currencySymbol;
 return { quantity: qty, totalInEGP: totalInEGP };
 }
@@ -5145,6 +5251,8 @@ return '<div class="prov-item' + (p.is_active ? '' : ' off') + '">' +
 '<div><span>آخر مزامنة</span><b>' + fmtDate(p.last_sync) + '</b></div>' +
 '</div>' +
 (p.last_error ? '<div class="prov-error"><i class="fas fa-triangle-exclamation"></i> ' + esc(p.last_error) + '</div>' : '') +
+'<div class="prov-cur">💱 عملة أسعار المزود المسجلة: <b>' + esc(p.currency) + '</b>' + (p.balance_currency ? ' — عملة حسابك عنده: <b>' + esc(p.balance_currency) + '</b>' : '') + '</div>' +
+(p.balance_currency && String(p.balance_currency).toUpperCase() !== String(p.currency).toUpperCase() ? '<div class="prov-error"><i class="fas fa-triangle-exclamation"></i> العملتين مختلفين! لو الأسعار في موقع المزود بالـ ' + esc(p.balance_currency) + ' غيّر "عملة أسعار المزود" لـ ' + esc(p.balance_currency) + ' من تعديل، وبعدين "تحديث الأسعار".</div>' : '') +
 '<div class="prov-btns">' +
 '<button type="button" class="admin-btn gold" data-act="import" data-id="' + p.id + '"><i class="fas fa-cloud-arrow-down"></i> استيراد الخدمات</button>' +
 '<button type="button" class="admin-btn ghost" data-act="balance" data-id="' + p.id + '"><i class="fas fa-wallet"></i> الرصيد</button>' +
@@ -5167,6 +5275,15 @@ if (act === 'balance') {
 busy(btn, true);
 const r = await smm('admin_balance', { provider_id: id });
 toast('💰 رصيدك عند ' + p.name + ': ' + Number(r.balance).toFixed(2) + ' ' + (r.currency || ''));
+// عينة من أسعار المزود زي ما الـ API بيبعتها → للمقارنة بموقع المزود
+let msg = '💰 رصيدك عند ' + p.name + ': ' + Number(r.balance).toFixed(2) + ' ' + (r.currency || '') + '\n';
+if (r.mismatch) msg += '\n⚠️ تنبيه مهم: حسابك عند المزود بالـ ' + r.mismatch.account + ' لكن عملة الأسعار مسجلة عندك ' + r.mismatch.configured + '!\nلو أسعار المزود بالـ ' + r.mismatch.account + ' لازم تغيّر "عملة أسعار المزود" من زرار تعديل، وإلا الأسعار هتطلع غلط (أكبر أو أصغر بحوالي ' + Math.round(window.exchangeRate || 50) + ' مرة).\n';
+if (r.sample && r.sample.length) {
+msg += '\n📋 أسعار أول خدمات زي ما الـ API بيبعتها (لكل 1000) — النظام شايفها بالـ ' + r.configured + ':\n';
+r.sample.forEach(s => { msg += '#' + s.service + ' — ' + String(s.name).slice(0, 45) + ' ← ' + s.rate + ' ' + r.configured + '\n'; });
+msg += '\n✅ قارن الأرقام دي بسعر نفس الخدمات في موقع المزود: لو نفس الرقم ونفس العملة يبقى الإعدادات مظبوطة.';
+}
+alert(msg);
 await loadProviders();
 } else if (act === 'sync') {
 busy(btn, true, 'جاري التحديث');
@@ -5239,6 +5356,7 @@ toast('✅ تم الحفظ — جاري اختبار الاتصال...');
 try {
 const r = await smm('admin_balance', { provider_id: Number(pid) });
 toast('✅ الاتصال شغال — رصيدك: ' + Number(r.balance).toFixed(2) + ' ' + (r.currency || ''));
+if (r.mismatch) alert('⚠️ حسابك عند المزود بالـ ' + r.mismatch.account + ' لكن انت مسجل عملة الأسعار ' + r.mismatch.configured + '.\n\nلو أسعار الخدمات في موقع المزود بالـ ' + r.mismatch.account + ' (زي 10.1000 ' + r.mismatch.account + ')، افتح "تعديل" وغيّر "عملة أسعار المزود" لـ ' + r.mismatch.account + '، وبعدين اضغط "تحديث الأسعار".');
 } catch (er) { toast('⚠️ اتحفظ بس الاتصال فشل: ' + er.message, true); }
 await loadProviders();
 } catch (er) { toast('❌ ' + er.message, true); }
@@ -5285,6 +5403,83 @@ toast('✅ تم فحص ' + (r.checked || 0) + ' طلب — اتغيرت حالة
 } catch (er) { toast('❌ ' + er.message, true); } finally { busy(btn, false); }
 });
 document.getElementById('adminProvidersBtn').addEventListener('click', () => { if (window.adminGoTab) window.adminGoTab('providers'); });
+
+// ---------- 🛠️ وضع الصيانة ----------
+document.getElementById('adminMaintBtn').addEventListener('click', async (e) => {
+const btn = e.currentTarget;
+const turnOn = !(window.siteSettings && window.siteSettings.maintenance === true);
+let message = null;
+if (turnOn) {
+message = prompt('🛠️ تشغيل وضع الصيانة — مفيش أي عميل هيقدر يعمل طلبات.\n\nالرسالة اللي هتظهر للعملاء (تقدر تسيبها زي ما هي):', 'بنحدّث الأسعار والخدمات — الطلبات متوقفة مؤقتاً وهترجع خلال وقت قصير');
+if (message === null) return;
+} else if (!confirm('إيقاف وضع الصيانة؟ العملاء هيقدروا يطلبوا تاني.')) return;
+busy(btn, true);
+try {
+const { error } = await supabase.from('site_settings').update({ maintenance: turnOn, maintenance_message: turnOn ? message : null }).eq('id', 1);
+if (error) throw new Error(error.message.indexOf('maintenance') !== -1 ? 'شغّل ملف update_v4.sql في Supabase الأول' : error.message);
+window.siteSettings.maintenance = turnOn;
+window.siteSettings.maintenance_message = turnOn ? message : '';
+busy(btn, false);
+if (window.applyMaintenance) window.applyMaintenance();
+toast(turnOn ? '🛠️ وضع الصيانة اتفعل — الطلبات اتقفلت عند الكل' : '✅ وضع الصيانة اتقفل — الطلبات رجعت');
+} catch (er) { busy(btn, false); toast('❌ ' + er.message, true); }
+});
+
+// ---------- 🔍 مراجعة الأسعار ----------
+const aModal = document.getElementById('adminAuditModalBg');
+let audit = { rows: [], fx: 0, profit: 0 };
+const fmt6 = (n) => { n = Number(n || 0); return (Math.abs(n) >= 1 ? n.toFixed(4) : n.toFixed(6)).replace(/0+$/, '').replace(/\.$/, ''); };
+document.getElementById('auditCloseBtn').addEventListener('click', () => aModal.classList.remove('show'));
+document.getElementById('priceAuditBtn').addEventListener('click', openAudit);
+async function openAudit() {
+aModal.classList.add('show');
+document.getElementById('auditBody').innerHTML = '<div class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري حساب الأسعار...</div>';
+try {
+const r = await smm('admin_price_audit', {});
+audit = r;
+document.getElementById('auditFormula').innerHTML =
+'<b>المعادلة:</b> سعر العميل لكل 1000 (جنيه) = سعر المزود لكل 1000 × (1 + نسبة الربح ÷ 100) × تحويل عملة المزود للجنيه' +
+'<br>سعر الدولار المستخدم: <b>' + Number(r.fx).toFixed(4) + '</b> جنيه — نسبة الربح العامة: <b>' + r.profit + '%</b>';
+renderAudit();
+} catch (er) { document.getElementById('auditBody').innerHTML = '<div class="admin-empty">❌ ' + esc(er.message) + '</div>'; }
+}
+function renderAudit() {
+const q = document.getElementById('auditSearch').value.trim().toLowerCase();
+const onlyDiff = document.getElementById('auditOnlyDiff').checked;
+const rows = audit.rows.filter(x => (!onlyDiff || Math.abs(x.diff_pct) >= 0.01) && (!q || x.name.toLowerCase().includes(q) || String(x.provider_service_id).includes(q)));
+const bad = audit.rows.filter(x => Math.abs(x.diff_pct) >= 0.01 && x.auto).length;
+const curWarn = [...new Set(audit.rows.filter(x => x.account_currency && String(x.account_currency).toUpperCase() !== String(x.currency).toUpperCase()).map(x => x.provider + ' (حسابك ' + x.account_currency + ' / مسجل ' + x.currency + ')'))];
+document.getElementById('auditInfo').innerHTML = (curWarn.length ? '<div class="prov-error" style="margin-bottom:8px;">⚠️ عملة غير متطابقة عند: ' + esc(curWarn.join('، ')) + ' — قارن عمود "سعر المزود" بموقع المزود وصحح العملة من تعديل المزود.</div>' : '') + '📦 ' + audit.rows.length + ' خدمة مستوردة — ' + (bad ? '<b style="color:#FCA5A5">' + bad + ' خدمة سعرها مختلف عن الحسبة</b> (اضغط "إعادة حساب كل الأسعار الآن")' : '<b style="color:#4ADE80">✅ كل الأسعار مطابقة للحسبة 100%</b>');
+if (!rows.length) { document.getElementById('auditBody').innerHTML = '<div class="admin-empty">لا توجد نتائج</div>'; return; }
+document.getElementById('auditBody').innerHTML = '<div class="audit-table-wrap"><table class="admin-table audit-table"><thead><tr>' +
+'<th>الخدمة</th><th>رقمها عند المزود</th><th>سعر المزود / 1000</th><th>الربح</th><th>تحويل للجنيه</th><th>السعر الصح / 1000</th><th>السعر الحالي / 1000</th><th>الفرق</th></tr></thead><tbody>' +
+rows.slice(0, 800).map(x => {
+const ok = Math.abs(x.diff_pct) < 0.01;
+const usd = Number(x.expected) / Number(audit.fx || 1);
+return '<tr class="' + (ok ? '' : 'bad') + '">' +
+'<td class="a-name">' + esc(x.name) + (x.auto ? '' : ' <em class="imp-tag i">سعر ثابت</em>') + (x.missing ? ' <em class="imp-tag">اتشالت عند المزود</em>' : '') + '</td>' +
+'<td dir="ltr">#' + esc(x.provider_service_id) + '<br><small>' + esc(x.provider) + '</small></td>' +
+'<td dir="ltr"><b>' + fmt6(x.rate) + '</b> ' + esc(x.currency) + '</td>' +
+'<td dir="ltr">+' + x.profit + '%</td>' +
+'<td dir="ltr">× ' + fmt6(x.to_egp) + '</td>' +
+'<td dir="ltr"><b style="color:#4ADE80">' + fmt6(x.expected) + ' ج</b><br><small>≈ ' + fmt6(usd) + '$</small></td>' +
+'<td dir="ltr">' + fmt6(x.stored) + ' ج</td>' +
+'<td dir="ltr">' + (ok ? '<span style="color:#4ADE80">✓</span>' : '<b style="color:#FCA5A5">' + (x.diff_pct > 0 ? '+' : '') + x.diff_pct + '%</b>') + '</td></tr>';
+}).join('') + '</tbody></table></div>';
+}
+document.getElementById('auditSearch').addEventListener('input', () => { clearTimeout(window.__auT); window.__auT = setTimeout(renderAudit, 200); });
+document.getElementById('auditOnlyDiff').addEventListener('change', renderAudit);
+document.getElementById('auditFixBtn').addEventListener('click', async (e) => {
+const btn = e.currentTarget; busy(btn, true, 'جاري إعادة الحساب');
+try {
+const r = await smm('admin_sync_prices', {});
+const changed = (r.report || []).reduce((s, x) => s + (x.changed || 0), 0);
+const fixedCur = (r.report || []).filter(x => x.currency).map(x => x.provider + ': ' + x.currency).join(' | ');
+toast('✅ اتحدث ' + changed + ' سعر' + (fixedCur ? ' — عملة الحساب: ' + fixedCur : ''));
+await refreshPublicServices();
+await openAudit();
+} catch (er) { toast('❌ ' + er.message, true); } finally { busy(btn, false); }
+});
 
 // ---------- 📢 إشعار جماعي لكل المستخدمين ----------
 const bcModal = document.getElementById('adminBroadcastModalBg');
@@ -7147,6 +7342,7 @@ showAuthModal();
 return;
 }
 if (currentProfile.is_banned) { userToast('🚫 هذا الحساب محظور', 'err'); return; }
+if (siteSettings.maintenance === true) { userToast('🛠️ ' + (siteSettings.maintenance_message || 'الموقع في وضع الصيانة — الطلبات متوقفة مؤقتاً'), 'warn'); return; }
 const card = buyBtn.closest('.service-card');
 if (!card) return;
 const serviceNumber = card.getAttribute('data-service-number') || '?';
@@ -8077,20 +8273,54 @@ g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
 g.setAttribute('color', new THREE.BufferAttribute(col, 3));
 const pts = new THREE.Points(g, new THREE.PointsMaterial({ size: 0.12, vertexColors: true, map: glowTexture('rgba(255,255,255,0.9)'), transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false }));
 scene.add(pts);
+// أيقونات السوشيال ميديا الطايرة (فيسبوك، إنستجرام، تيك توك، يوتيوب، تليجرام...)
+const SOCIAL = [
+{ g: '', bg: ['#1877F2', '#0B4FB3'] }, { g: '', bg: ['#F58529', '#DD2A7B', '#8134AF'] },
+{ g: '', bg: ['#111111', '#2b2b2b'], tt: true }, { g: '', bg: ['#FF0000', '#B30000'] },
+{ g: '', bg: ['#2AABEE', '#1A7FB8'] }, { g: '', bg: ['#1A1A1A', '#3a3a3a'] },
+{ g: '', bg: ['#25D366', '#128C4A'] }, { g: '', bg: ['#FFFC00', '#E6D800'], dark: true },
+{ g: '', bg: ['#9146FF', '#5B21B6'] }, { g: '', bg: ['#111111', '#333333'] }
+];
+function roundRectPath(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+function socialTexture(s) {
+const c = document.createElement('canvas'); c.width = c.height = 256;
+const g = c.getContext('2d');
+const grd = g.createLinearGradient(0, 0, 256, 256);
+s.bg.forEach((col, i) => grd.addColorStop(i / Math.max(1, s.bg.length - 1), col));
+roundRectPath(g, 16, 16, 224, 224, 60); g.fillStyle = grd; g.fill();
+g.lineWidth = 6; g.strokeStyle = 'rgba(255,255,255,0.22)'; g.stroke();
+g.textAlign = 'center'; g.textBaseline = 'middle';
+g.font = '900 120px "Font Awesome 6 Brands"';
+if (s.tt) { g.fillStyle = '#25F4EE'; g.fillText(s.g, 124, 134); g.fillStyle = '#FE2C55'; g.fillText(s.g, 134, 142); }
+g.fillStyle = s.dark ? '#111' : '#fff'; g.fillText(s.g, 128, 138);
+const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
+}
 const shapes = [];
-const geos = [new THREE.IcosahedronGeometry(1.4, 0), new THREE.TorusGeometry(1.2, 0.35, 10, 40), new THREE.OctahedronGeometry(1.3, 0), new THREE.TorusKnotGeometry(0.9, 0.25, 80, 10)];
-for (let i = 0; i < (isMobile ? 4 : 7); i++) {
-const m = new THREE.Mesh(geos[i % geos.length], new THREE.MeshBasicMaterial({ color: palette[i % 4], wireframe: true, transparent: true, opacity: 0.16 }));
-m.position.set((Math.random() - 0.5) * 26, (Math.random() - 0.5) * 16, -4 - Math.random() * 10);
-m.userData = { rx: (Math.random() - 0.5) * 0.4, ry: (Math.random() - 0.5) * 0.4, fy: Math.random() * Math.PI * 2 };
+const iconGeo = new THREE.PlaneGeometry(1.9, 1.9);
+const ICON_COUNT = 14;
+for (let i = 0; i < ICON_COUNT; i++) {
+const s = SOCIAL[i % SOCIAL.length];
+const m = new THREE.Mesh(iconGeo, new THREE.MeshBasicMaterial({ map: socialTexture(s), transparent: true, opacity: 0.32, side: THREE.DoubleSide, depthWrite: false }));
+// موزعة على الجوانب عشان متغطيش على البطايق
+const side = i % 2 === 0 ? -1 : 1;
+m.position.set(side * (8 + Math.random() * 9), (Math.random() - 0.5) * 18, -3 - Math.random() * 12);
+const sc = 0.7 + Math.random() * 0.7; m.scale.setScalar(sc);
+m.userData = { s, rx: (Math.random() - 0.5) * 0.25, ry: 0.15 + Math.random() * 0.35, fy: Math.random() * Math.PI * 2, base: m.position.y };
 scene.add(m); shapes.push(m);
 }
+// إعادة رسم الأيقونات بعد ما خط الأيقونات يتحمل
+if (document.fonts) document.fonts.load('900 120px "Font Awesome 6 Brands"').then(() => shapes.forEach(m => { m.material.map.dispose(); m.material.map = socialTexture(m.userData.s); m.material.needsUpdate = true; })).catch(() => {});
 const s = {
 canvas, renderer, scene, camera,
 isActive() { const on = main.style.display === 'none' && !document.body.classList.contains('auth-locked'); canvas.classList.toggle('on', on); return on; },
 update(t, dt) {
 pts.rotation.y = t * 0.015; pts.rotation.x = Math.sin(t * 0.1) * 0.05;
-shapes.forEach(m => { m.rotation.x += m.userData.rx * dt; m.rotation.y += m.userData.ry * dt; m.position.y += Math.sin(t * 0.6 + m.userData.fy) * 0.004; });
+shapes.forEach(m => {
+// دوران هادي حوالين نفسها + طفو لفوق وتحت
+m.rotation.y = Math.sin(t * m.userData.ry + m.userData.fy) * 0.9;
+m.rotation.x = Math.sin(t * 0.3 + m.userData.fy) * 0.25;
+m.position.y = m.userData.base + Math.sin(t * 0.5 + m.userData.fy) * 0.8;
+});
 camera.position.x += (mouse.x * 1.2 - camera.position.x) * 0.03;
 camera.position.y += (-mouse.y * 0.8 - camera.position.y) * 0.03;
 camera.lookAt(0, 0, 0);

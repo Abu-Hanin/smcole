@@ -1497,6 +1497,16 @@ transform: translateZ(40px) rotateX(10deg); animation: logoTilt 6s ease-in-out i
 @media (max-width: 760px), (hover: none) { .pay-card3d, .pc3-logo { animation-duration: 8s; } .pay-card3d::after { display: none; } }
 @media (prefers-reduced-motion: reduce) { .pay-card3d, .pc3-logo, .pay-card3d::after { animation: none !important; } }
 
+/* 🔗 حالة ربط بوت التليجرام (لوحة الأدمن) */
+.bot-link { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 14px; border-radius: 18px; background: rgba(255,255,255,0.04); border: 1px solid var(--line); }
+.bot-link.ok { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.35); }
+.bot-link.bad { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.45); }
+.bl-ico { width: 42px; height: 42px; border-radius: 13px; background: #2AABEE; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.bl-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.bl-txt b { color: #fff; font-size: .9rem; }
+.bl-txt small { color: #CFC6F2; font-size: .76rem; line-height: 1.6; }
+.bot-link .admin-btn { padding: 8px 12px; font-size: .78rem; }
+
 /* 📦 طلباتي — بطايق 3D + شريط التقدم */
 .oc-filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px; }
 .oc-filter { padding: 8px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); color: #CFC6F2; font-weight: 800; font-size: .85rem; font-family: inherit; }
@@ -2722,6 +2732,12 @@ body { background-attachment: scroll !important; }
 
 <!-- TAB: SUPPORT INBOX -->
 <div class="admin-section" id="adminSectionSupport">
+<div class="bot-link" id="botLinkBar">
+<span class="bl-ico"><i class="fab fa-telegram"></i></span>
+<div class="bl-txt"><b id="botLinkTitle">بوت التليجرام</b><small id="botLinkText">جاري التحقق من الربط...</small></div>
+<button type="button" class="admin-btn gold" id="botLinkBtn" style="display:none;"><i class="fas fa-link"></i> ربط البوت الآن</button>
+<button type="button" class="admin-btn ghost" id="botLinkRecheck"><i class="fas fa-rotate"></i></button>
+</div>
 <div class="admin-support-wrap">
 <div class="as-list">
 <div class="as-list-head"><i class="fas fa-inbox"></i> المحادثات <button type="button" class="as-refresh" id="adminSupportRefresh" aria-label="تحديث"><i class="fas fa-rotate"></i></button></div>
@@ -7232,9 +7248,41 @@ if (window.__adminToast) window.__adminToast('❌ ' + (err.message || 'فشل ا
 });
 document.getElementById('adminSupportRefresh').addEventListener('click', loadAdminSupport);
 document.getElementById('adminSupportBtn').addEventListener('click', () => adminGoTab('support'));
+// 🔗 ربط بوت التليجرام بدالة الدعم (عشان زراير الرد تشتغل) — بضغطة من غير التوكن
+async function checkBotLink(mode) {
+const t = document.getElementById('botLinkText'), b = document.getElementById('botLinkBtn'), bar = document.getElementById('botLinkBar');
+if (!t || !window.isAdminUser) return null;
+if (mode === 'set') { b.disabled = true; b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الربط...'; }
+try {
+const { data, error } = await sb.functions.invoke('support-chat', { body: { action: 'admin_webhook', mode: mode || 'status' } });
+let res = data;
+if (error) { try { res = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (e) {} }
+if (!res || res.ok === undefined) throw new Error('حدّث دالة support-chat على Supabase الأول');
+if (!res.ok) throw new Error(res.message || 'فشل');
+bar.classList.toggle('ok', !!res.linked);
+bar.classList.toggle('bad', !res.linked);
+b.style.display = res.linked ? 'none' : '';
+t.innerHTML = res.linked
+? '✅ مربوط — تقدر ترد على العملاء من التليجرام بالزراير أو بالـ Reply' + (res.pending ? ' · ' + res.pending + ' تحديث مستني' : '')
+: '⚠️ مش مربوط بدالة الدعم — عشان كده زراير الرد مش شغالة. اضغط "ربط البوت الآن"' + (res.url ? '<br><span dir="ltr" style="font-size:.7rem;opacity:.7">الحالي: ' + escHtml(res.url) + '</span>' : '');
+if (mode === 'set' && res.linked) userToast('✅ تم ربط البوت — جرّب ترد على عميل من التليجرام', 'ok');
+return res;
+} catch (e) {
+bar.classList.add('bad'); bar.classList.remove('ok');
+t.innerText = '❌ ' + e.message;
+b.style.display = '';
+return null;
+} finally {
+b.disabled = false; b.innerHTML = '<i class="fas fa-link"></i> ربط البوت الآن';
+}
+}
+document.getElementById('botLinkBtn').addEventListener('click', () => checkBotLink('set'));
+document.getElementById('botLinkRecheck').addEventListener('click', () => checkBotLink('status'));
 function startAdminSupportRealtime() {
 if (adminSupportChannel || !window.isAdminUser) return;
 loadAdminSupport();
+// لو البوت مش مربوط ننبه الأدمن مرة
+setTimeout(async () => { const r = await checkBotLink('status'); if (r && !r.linked) userToast('⚠️ بوت التليجرام مش مربوط — افتح "الدعم الفني" في لوحة الأدمن واضغط "ربط البوت الآن"', 'warn'); }, 2500);
 adminSupportChannel = sb.channel('admin-support-' + Date.now())
 .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'support_messages' }, (p) => {
 const m = p.new; if (!m) return;

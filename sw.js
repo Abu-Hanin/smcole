@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smcole-v2'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+const CACHE_NAME = 'smcole-v5'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
@@ -49,5 +49,22 @@ self.addEventListener('fetch', event => {
         // في حالة انقطاع الإنترنت عن العميل، نستخدم النسخة المخزنة في الكاش
         return caches.match(event.request);
       })
+  );
+});
+
+// 4. الضغط على إشعار الجهاز: يفتح الموقع (أو يرجع له) على الصفحة المطلوبة
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const link = (event.notification.data && event.notification.data.link) || '';
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      for (const client of list) {
+        if ('focus' in client) {
+          client.postMessage({ type: 'smcole-open', link: link });
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow('/' + (link ? '?open=' + encodeURIComponent(link) : ''));
+    })
   );
 });

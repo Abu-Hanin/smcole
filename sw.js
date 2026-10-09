@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smcole-v5'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+const CACHE_NAME = 'smcole-v6'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
@@ -52,7 +52,26 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// 4. الضغط على إشعار الجهاز: يفتح الموقع (أو يرجع له) على الصفحة المطلوبة
+// 4. استقبال إشعار من السيرفر (حتى لو الموقع/التطبيق مقفول)
+self.addEventListener('push', event => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch (e) { data = { title: 'SMCOLE', body: event.data ? event.data.text() : '' }; }
+  const title = data.title || 'SMCOLE';
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body: data.body || '',
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
+      tag: 'smcole-' + (data.id || Date.now()),
+      data: { link: data.link || '' },
+      dir: 'rtl',
+      lang: 'ar',
+      vibrate: [120, 60, 120]
+    })
+  );
+});
+
+// 5. الضغط على إشعار الجهاز: يفتح الموقع (أو يرجع له) على الصفحة المطلوبة
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   const link = (event.notification.data && event.notification.data.link) || '';

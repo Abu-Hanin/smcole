@@ -976,7 +976,8 @@ body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
 .notif-badge { position: absolute; top: -5px; right: -5px; }
 .notif-badge:empty, .dl-badge:empty { display: none; }
 .dl-badge { margin-inline-start: auto; margin-inline-end: 6px; }
-.menu-button { position: relative !important; }
+.menu-button { position: relative !important; top: auto !important; right: auto !important; left: auto !important; margin: 0 !important; flex-shrink: 0; }
+.currency-circle { top: auto !important; left: auto !important; right: auto !important; flex-shrink: 0; }
 .menu-button.has-dot::after { content: ''; position: absolute; top: 7px; right: 7px; width: 9px; height: 9px; border-radius: 50%; background: #EF4444; box-shadow: 0 0 0 2px #0B0619; }
 .notif-panel { position: fixed; top: calc(var(--topbar-h) + 8px); left: 16px; width: min(380px, calc(100vw - 32px)); max-height: min(70vh, 560px); display: flex; flex-direction: column; border-radius: 22px; background: linear-gradient(180deg, #170E30, #0B0619); border: 1px solid rgba(168,85,247,0.4); box-shadow: 0 30px 70px rgba(0,0,0,0.65); z-index: 1690; opacity: 0; transform: translateY(-10px) scale(.98); pointer-events: none; transition: .25s; overflow: hidden; }
 .notif-panel.show { opacity: 1; transform: none; pointer-events: auto; }
@@ -1101,6 +1102,7 @@ body:not(.is-admin) #adminBalanceModalBg,
 body:not(.is-admin) #adminUserPasswordModalBg,
 body:not(.is-admin) #adminProviderModalBg,
 body:not(.is-admin) #adminImportModalBg,
+body:not(.is-admin) #adminBroadcastModalBg,
 body:not(.is-admin) .drawer-links a.drawer-admin-link { display: none !important; }
 
 /* ---------- خلفية Three.js للصفحات الداخلية ---------- */
@@ -1277,6 +1279,110 @@ background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(168,85,247
 .timeline3d.no3d .tl-steps { position: static; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 24px; }
 .timeline3d.no3d .tl-step { position: static; opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* ---------- طلب تفعيل الإشعارات + الإشعار الجماعي ---------- */
+.push-prompt { position: fixed; left: 50%; bottom: 16px; z-index: 2800; width: min(460px, calc(100% - 24px)); display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 20px; background: linear-gradient(135deg, #24104F, #120A28); border: 1px solid rgba(168,85,247,0.55); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(124,58,237,0.3); transform: translate(-50%, 140%); transition: transform .5s cubic-bezier(.2,1.1,.3,1); }
+.push-prompt.show { transform: translate(-50%, 0); }
+body.is-admin .push-prompt { bottom: 96px; }
+.pp-ico { width: 46px; height: 46px; border-radius: 14px; background: var(--grad); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; animation: bellRing 2.4s ease infinite; }
+.pp-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.pp-txt b { color: #fff; font-size: .92rem; }
+.pp-txt small { color: #CFC6F2; font-size: .72rem; line-height: 1.6; }
+.pp-btns { display: flex; flex-direction: column; gap: 6px; }
+.pp-btns button { padding: 7px 14px; border-radius: 10px; font-weight: 800; font-size: .78rem; white-space: nowrap; }
+#pushPromptYes { background: var(--grad); color: #fff; }
+#pushPromptLater { background: rgba(255,255,255,0.07); color: #CFC6F2; }
+.broadcast-modal { max-width: 560px !important; }
+.bc-preview-lbl { font-size: .75rem; color: var(--muted); margin: 4px 0 6px; }
+.bc-preview { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 18px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); }
+.bcp-ico { width: 38px; height: 38px; border-radius: 10px; background: var(--grad); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.bcp-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.bcp-txt b { color: #fff; font-size: .88rem; }
+.bcp-txt small { color: #DDD6FE; font-size: .78rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+.bc-preview em { font-style: normal; font-size: .65rem; color: #A5A0C8; }
+@media (max-width: 600px) { .admin-topbar .actions { width: 100%; } .admin-topbar .actions .admin-btn { padding: 8px 11px !important; font-size: .76rem !important; } }
+
+/* =====================================================================
+   اسم الموقع في الهيرو
+   ===================================================================== */
+.hero-brand { font-size: clamp(2.8rem, 9vw, 5.4rem); font-weight: 900; line-height: 1; letter-spacing: 2px; margin-bottom: 10px; direction: ltr; text-align: right;
+background: linear-gradient(135deg, #FFFFFF 0%, #E9D5FF 45%, #C084FC 75%, #F0ABFC 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+filter: drop-shadow(0 6px 30px rgba(168,85,247,0.45)); }
+.hero-title { font-size: clamp(1.35rem, 3.6vw, 2.4rem) !important; line-height: 1.5 !important; }
+@media (max-width: 900px) { .hero-brand { text-align: center; } }
+
+/* =====================================================================
+   بطايق الخدمات — مقاس صغير ومتناسق (كمبيوتر + موبايل)
+   ===================================================================== */
+.service-card { padding: .85rem .85rem .8rem !important; border-radius: 20px !important; }
+.cf-item .service-card { width: 268px; }
+.card-header-row { margin-bottom: .35rem !important; }
+.service-number { font-size: .64rem !important; padding: .15rem .55rem !important; }
+.favorite-btn { width: 30px; height: 30px; border-radius: 10px !important; font-size: .9rem !important; }
+.card-icon { width: 42px; height: 42px; border-radius: 13px; font-size: 1.1rem !important; margin-bottom: .45rem !important; }
+.service-name { font-size: .9rem !important; line-height: 1.5 !important; min-height: 0 !important; margin-bottom: .25rem !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.badge-guarantee, .badge-max { font-size: .62rem !important; padding: .12rem .55rem !important; margin: .15rem 0 !important; }
+.service-detail { display: none !important; }
+.svc-info-btn { font-size: .68rem; padding: 4px 10px; margin: 4px 0 0; border-radius: 9px; }
+.price-container { padding: .45rem .65rem !important; margin: .45rem 0 .15rem !important; border-radius: 12px !important; }
+.price-value { font-size: 1.35rem !important; }
+.price-currency { font-size: .78rem !important; }
+.small-unit { font-size: .62rem !important; }
+.quantity-calc { padding: .55rem !important; border-radius: 14px !important; margin: .45rem 0 .2rem !important; }
+.quantity-label { font-size: .66rem !important; margin-bottom: 3px !important; }
+.quantity-input, .url-input { padding: 7px 10px !important; font-size: .82rem !important; border-radius: 10px !important; }
+.url-input { margin-top: 3px !important; }
+.comments-input { min-height: 54px !important; height: 58px; font-size: .78rem !important; padding: 7px 10px !important; resize: vertical; }
+.total-price-row { padding: 5px 10px !important; margin-top: 7px !important; font-size: .7rem !important; border-radius: 10px !important; }
+.total-amount { font-size: .92rem !important; }
+.buy-btn { padding: 9px 0 !important; font-size: .88rem !important; border-radius: 12px !important; margin-top: 8px !important; }
+.platform-title { font-size: .98rem !important; padding: 5px 6px 5px 14px !important; }
+.platform-title i { width: 32px !important; height: 32px !important; font-size: .95rem !important; }
+.favorites-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important; }
+@media (max-width: 600px) {
+.cf-item .service-card { width: 232px; }
+.service-card { padding: .75rem .75rem .7rem !important; }
+.price-value { font-size: 1.2rem !important; }
+.card-icon { width: 38px; height: 38px; font-size: 1rem !important; }
+.service-name { font-size: .85rem !important; }
+.cf-nav { margin-bottom: 2px; }
+.cf-dot { width: 6px; height: 6px; }
+.cf-dot.on { width: 20px; }
+.platform-header { margin: 1rem 0 .3rem !important; }
+.cf-ready .platform-section { margin-bottom: .8rem !important; }
+.search-container input { padding: 11px 16px !important; font-size: .9rem !important; }
+#servicesPage .sec-head h2 { font-size: 1.35rem; }
+#servicesPage .promo-section { padding: .7rem !important; }
+.icon-circle { width: 40px !important; height: 40px !important; font-size: 1.1rem !important; }
+}
+
+/* =====================================================================
+   الموبايل: أداء وسلاسة (بدون تقطيع أو هزات)
+   ===================================================================== */
+.hero { min-height: calc(100vh - var(--topbar-h)); min-height: calc(100svh - var(--topbar-h)); }
+.timeline3d-sticky { height: 100vh; height: 100svh; }
+.timeline3d.tl-auto { height: auto !important; }
+.timeline3d.tl-auto .timeline3d-sticky { position: relative !important; height: 640px !important; }
+@media (max-width: 760px), (hover: none) {
+/* التأثيرات التقيلة على كارت الشاشة في الموبايل */
+*, *::before, *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+body { background-attachment: scroll !important; }
+.sm-topbar { background: rgba(9,5,20,0.96) !important; }
+.dropdown-menu { box-shadow: -10px 0 30px rgba(0,0,0,0.5) !important; }
+.drawer-backdrop { background: rgba(4,2,10,0.75) !important; }
+.page-bg-canvas { display: none !important; }
+.overlay-page, #adminPanelPage, #favoritesPage { background: radial-gradient(600px 400px at 90% 0%, rgba(124,58,237,0.22), transparent 60%), #07040F !important; }
+.cf-item { will-change: auto !important; }
+.service-card, .feature-card, .pay-chip, .order-card, .payment-selector-card { transition: border-color .25s, box-shadow .25s !important; }
+.hero-phone { animation: none !important; }
+.phone-glow { filter: none !important; opacity: .6; }
+.auth-orb { animation: none !important; filter: blur(30px); }
+.auth-platforms i { animation: none !important; }
+.feature-card:hover, .service-card:hover { transform: none !important; }
+.logos-track { animation-duration: 50s; }
+.svc-modal-bg, .insufficient-modal-bg, .auth-modal-bg, .admin-modal-bg { backdrop-filter: none !important; }
+.timeline3d-ui { padding-top: 22px !important; }
+}
 </style>
 </head>
 <body class="is-guest">
@@ -1359,6 +1465,13 @@ background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(168,85,247
 <button type="button" id="notifEnableBtn">تفعيل</button>
 </div>
 <div class="np-list" id="notifList"><div class="np-empty"><i class="fas fa-bell-slash"></i>لا توجد إشعارات بعد</div></div>
+</div>
+
+<!-- ============ طلب تفعيل إشعارات الجهاز ============ -->
+<div class="push-prompt" id="pushPrompt" role="dialog" aria-live="polite">
+<div class="pp-ico"><i class="fas fa-bell"></i></div>
+<div class="pp-txt"><b>فعّل الإشعارات 🔔</b><small>يوصلك تنبيه على موبايلك أول ما طلبك يتنفذ أو الإيداع يتأكد أو الدعم يرد عليك — حتى لو التطبيق مقفول</small></div>
+<div class="pp-btns"><button type="button" id="pushPromptYes">تفعيل</button><button type="button" id="pushPromptLater">لاحقاً</button></div>
 </div>
 
 <!-- ============ صفحة الدعم الفني (شات) ============ -->
@@ -1490,6 +1603,7 @@ background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(168,85,247
 <div class="hero-inner">
 <div class="hero-text">
 <div class="hero-badge"><span class="dot"></span> <span data-site-name>SMCOLE</span> — لوحة SMM سريعة وبأرخص الأسعار</div>
+<div class="hero-brand" data-site-name>SMCOLE</div>
 <h1 class="hero-title"><span class="grad" id="siteDescriptionDisplay">افضل وارخص موقع تزويد متابعين ومشاهدات</span></h1>
 <p class="hero-desc">متابعين، لايكات، مشاهدات وتعليقات لفيسبوك وإنستجرام وتيك توك ويوتيوب وتليجرام وأكثر — تنفيذ سريع، ضمان حقيقي، ودعم فني متواجد 24 ساعة.</p>
 <div class="hero-auth guest-only">
@@ -2065,6 +2179,7 @@ background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(168,85,247
 <div class="admin-topbar">
 <div class="admin-title-wrap"><span class="admin-title-ico"><i class="fas fa-user-shield"></i></span><div><h1>لوحة تحكم الأدمن</h1><div class="admin-title-sub" id="adminUserEmail" dir="ltr"></div></div></div>
 <div class="actions">
+<button class="admin-btn gold" id="adminBroadcastBtn" type="button"><i class="fas fa-bullhorn"></i> إشعار للكل</button>
 <button class="admin-btn ghost" id="adminProvidersBtn" type="button"><i class="fas fa-plug"></i> مزودين API</button>
 <button class="admin-btn ghost admin-support-btn" id="adminSupportBtn" type="button"><i class="fas fa-headset"></i> الدعم الفني <b class="abn-badge static" id="adminSupportBadge"></b></button>
 <button class="admin-btn gold" id="adminAddBtn"><i class="fas fa-plus"></i> إضافة خدمة</button>
@@ -2541,6 +2656,26 @@ background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(168,85,247
 </div>
 </div>
 
+<!-- BROADCAST MODAL (إشعار جماعي) -->
+<div class="admin-modal-bg" id="adminBroadcastModalBg">
+<div class="admin-modal broadcast-modal">
+<h2><i class="fas fa-bullhorn"></i> إشعار لكل المستخدمين</h2>
+<p class="admin-hint" style="margin:-6px 0 14px;">الإشعار بيوصل لكل العملاء: جوه الموقع (الجرس 🔔)، وعلى الموبايل والكمبيوتر كإشعار جهاز للي فعّلوا الإشعارات — حتى لو التطبيق مقفول.</p>
+<form id="broadcastForm">
+<div class="admin-field"><label>العنوان</label><input type="text" id="bcTitle" maxlength="80" placeholder="مثال: 🔥 خصم 20% على خدمات تيك توك" required></div>
+<div class="admin-field"><label>الرسالة</label><textarea id="bcBody" rows="4" maxlength="400" placeholder="اكتب تفاصيل الإشعار هنا..."></textarea><div class="admin-hint"><span id="bcCount">0</span> / 400</div></div>
+<div class="admin-field"><label>لما العميل يضغط على الإشعار يفتح</label>
+<select id="bcLink"><option value="">بدون صفحة (إشعار بس)</option><option value="services">صفحة الخدمات</option><option value="deposit">طرق الدفع والإيداع</option><option value="orders">طلباتي</option><option value="support">الدعم الفني</option></select></div>
+<div class="bc-preview-lbl">معاينة الإشعار على الموبايل:</div>
+<div class="bc-preview"><div class="bcp-ico"><i class="fas fa-bolt"></i></div><div class="bcp-txt"><b id="bcPrevTitle">العنوان هيظهر هنا</b><small id="bcPrevBody">الرسالة هتظهر هنا</small></div><em>الآن</em></div>
+<div class="admin-modal-actions">
+<button type="button" class="admin-btn ghost" id="bcCancelBtn"><i class="fas fa-times"></i> إلغاء</button>
+<button type="submit" class="admin-btn gold" id="bcSendBtn"><i class="fas fa-paper-plane"></i> إرسال للكل</button>
+</div>
+</form>
+</div>
+</div>
+
 <!-- IMPORT MODAL (استيراد الخدمات) -->
 <div class="admin-modal-bg" id="adminImportModalBg">
 <div class="admin-modal import-modal">
@@ -2617,7 +2752,7 @@ window.SMCOLE_BOT = {
   admin_username: 'walidsalama'
 };
 
-const APP_VERSION = '2026.10.09.3';
+const APP_VERSION = '2026.10.09.4';
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -3169,7 +3304,12 @@ if (b) b.addEventListener('click', () => window.openServicesPage());
 });
 document.getElementById('servicesMenuLink').addEventListener('click', (e) => { e.preventDefault(); window.openServicesPage(); });
 document.getElementById('homeMenuLink').addEventListener('click', (e) => { e.preventDefault(); dropdown.classList.remove('show-dropdown'); window.showHomePage(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
-document.getElementById('smBrandLink').addEventListener('click', (e) => { e.preventDefault(); window.showHomePage(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+document.getElementById('smBrandLink').addEventListener('click', (e) => {
+e.preventDefault();
+// المسجل دخول: اللوجو يرجعه للخدمات — الزائر: للرئيسية
+if (!document.body.classList.contains('is-guest')) { window.openServicesPage(); return; }
+window.showHomePage(); window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 document.getElementById('drawerCloseBtn').addEventListener('click', () => dropdown.classList.remove('show-dropdown'));
 document.querySelectorAll('.pay-chip[data-goto="payment"]').forEach(el => el.addEventListener('click', () => window.__navigateTo('payment', paymentPage, true)));
 document.getElementById('directSupportBtn').addEventListener('click', () => {
@@ -5060,6 +5200,36 @@ toast('✅ تم فحص ' + (r.checked || 0) + ' طلب — اتغيرت حالة
 });
 document.getElementById('adminProvidersBtn').addEventListener('click', () => { if (window.adminGoTab) window.adminGoTab('providers'); });
 
+// ---------- 📢 إشعار جماعي لكل المستخدمين ----------
+const bcModal = document.getElementById('adminBroadcastModalBg');
+function bcPreview() {
+const t = document.getElementById('bcTitle').value.trim();
+const b = document.getElementById('bcBody').value.trim();
+document.getElementById('bcPrevTitle').innerText = t || 'العنوان هيظهر هنا';
+document.getElementById('bcPrevBody').innerText = b || 'الرسالة هتظهر هنا';
+document.getElementById('bcCount').innerText = document.getElementById('bcBody').value.length;
+}
+document.getElementById('adminBroadcastBtn').addEventListener('click', () => { document.getElementById('broadcastForm').reset(); bcPreview(); bcModal.classList.add('show'); });
+document.getElementById('bcCancelBtn').addEventListener('click', () => bcModal.classList.remove('show'));
+bcModal.addEventListener('click', e => { if (e.target === bcModal) bcModal.classList.remove('show'); });
+['bcTitle', 'bcBody'].forEach(id => document.getElementById(id).addEventListener('input', bcPreview));
+document.getElementById('broadcastForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+const title = document.getElementById('bcTitle').value.trim();
+const body = document.getElementById('bcBody').value.trim();
+if (!title) { toast('⚠️ اكتب عنوان الإشعار', true); return; }
+if (!confirm('إرسال الإشعار ده لكل المستخدمين؟\n\n' + title + (body ? '\n' + body : ''))) return;
+const btn = document.getElementById('bcSendBtn');
+busy(btn, true, 'جاري الإرسال');
+try {
+const r = await smm('admin_broadcast', { title, body, link: document.getElementById('bcLink').value });
+const d = r.devices || {};
+toast('✅ وصل لـ ' + (r.users || 0) + ' مستخدم — و ' + (d.sent || 0) + ' جهاز' + (d.failed ? ' (' + d.failed + ' جهاز فشل)' : ''));
+bcModal.classList.remove('show');
+} catch (er) { toast('❌ ' + er.message, true); }
+finally { busy(btn, false); }
+});
+
 // ---------- الاستيراد ----------
 const iModal = document.getElementById('adminImportModalBg');
 let imp = { provider: null, list: [], selected: new Set(), platformByCat: {} };
@@ -5501,7 +5671,9 @@ if (hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'depos
 setTimeout(() => { window.__navigateTo(hash, document.getElementById('depositPage'), true); }, 150);
 return;
 }
-if (window.showHomePage) window.showHomePage();
+// بعد تسجيل الدخول: الصفحة الأساسية للعميل هي الخدمات
+if (window.openServicesPage) window.openServicesPage();
+else if (window.showHomePage) window.showHomePage();
 if (pendingBuyAfterAuth) {
 const cb = pendingBuyAfterAuth;
 pendingBuyAfterAuth = null;
@@ -5696,6 +5868,8 @@ window.refreshCurrencyButtons();
 
 async function doLogout() {
 if (!confirm('هل تريد تسجيل الخروج؟')) return;
+// الجهاز ده يبطل يستقبل إشعارات الحساب ده
+if (window.__unsubscribeDeviceRow) await window.__unsubscribeDeviceRow();
 await sb.auth.signOut();
 currentUser = null; currentProfile = null; window.currentProfile = null;
 window.isAdminUser = false;
@@ -5728,8 +5902,8 @@ document.getElementById('dropdownMenu').classList.remove('show-dropdown');
 if (tab === 'home') {
 const ap = document.getElementById('adminPanelPage');
 if (ap) ap.classList.remove('active');
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
-window.routeToPage('home');
+window.__currentRoute = 'admin-left';
+if (window.openServicesPage) window.openServicesPage();
 setAdminNavActive('home');
 return;
 }
@@ -5944,7 +6118,8 @@ sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
 // ---------- الإشعارات ----------
 const NOTIF_ICONS = {
 order_done: ['fa-circle-check', 'ok'], order_processing: ['fa-hourglass-half', 'info'], order_cancelled: ['fa-circle-xmark', 'err'],
-deposit_approved: ['fa-wallet', 'ok'], deposit_rejected: ['fa-ban', 'err'], support_reply: ['fa-headset', 'info'], balance_added: ['fa-coins', 'ok']
+deposit_approved: ['fa-wallet', 'ok'], deposit_rejected: ['fa-ban', 'err'], support_reply: ['fa-headset', 'info'], balance_added: ['fa-coins', 'ok'],
+broadcast: ['fa-bullhorn', 'info']
 };
 function renderNotifs() {
 const list = document.getElementById('notifList');
@@ -5986,6 +6161,7 @@ try { await sb.from('notifications').update({ is_read: true }).in('id', ids); } 
 function goNotifLink(link) {
 closeNotifPanel();
 if (link === 'orders') openMyOrdersPage();
+else if (link === 'services') window.openServicesPage();
 else if (link === 'support') window.openSupportChat();
 else if (link === 'deposit') window.__navigateTo('payment', document.getElementById('paymentPage'), true);
 }
@@ -6014,16 +6190,71 @@ notifItems.forEach(n => n.is_read = true);
 renderNotifs();
 try { await sb.from('notifications').update({ is_read: true }).eq('user_id', currentProfile.id).eq('is_read', false); } catch (e) {}
 });
-document.getElementById('notifEnableBtn').addEventListener('click', async () => {
-if (!('Notification' in window)) return;
+document.getElementById('notifEnableBtn').addEventListener('click', () => enableNotifications());
+// ---------- 📲 إشعارات الجهاز (Web Push) — توصل حتى لو التطبيق مقفول ----------
+let pushActive = false;
+function urlB64ToUint8Array(b64) {
+const pad = '='.repeat((4 - b64.length % 4) % 4);
+const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+return Uint8Array.from(raw, c => c.charCodeAt(0));
+}
+function pushSupported() { return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
+async function subscribeDevice() {
+if (!currentProfile || !pushSupported() || Notification.permission !== 'granted') return false;
 try {
-const p = await Notification.requestPermission();
-if (p === 'granted') { userToast('🔔 تم تفعيل الإشعارات', 'ok'); showSystemNotif({ id: 'test', title: '🔔 الإشعارات شغالة', body: 'هيوصلك تنبيه بكل جديد في حسابك', link: '' }, true); }
+const { data, error } = await sb.functions.invoke('smm-api', { body: { action: 'push_vapid' } });
+if (error || !data || !data.publicKey) return false;
+const reg = await navigator.serviceWorker.ready;
+const key = urlB64ToUint8Array(data.publicKey);
+let sub = await reg.pushManager.getSubscription();
+if (sub && sub.options && sub.options.applicationServerKey) {
+const cur = new Uint8Array(sub.options.applicationServerKey);
+if (cur.length !== key.length || cur.some((v, i) => v !== key[i])) { await sub.unsubscribe(); sub = null; }
+}
+if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+const j = sub.toJSON();
+const { error: upErr } = await sb.from('push_subscriptions').upsert({
+user_id: currentProfile.id, endpoint: j.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, user_agent: navigator.userAgent.slice(0, 200)
+}, { onConflict: 'endpoint' });
+pushActive = !upErr;
+return pushActive;
+} catch (e) { console.warn('push subscribe:', e); return false; }
+}
+async function unsubscribeDeviceRow() {
+try {
+if (!('serviceWorker' in navigator)) return;
+const reg = await navigator.serviceWorker.getRegistration();
+const sub = reg && reg.pushManager ? await reg.pushManager.getSubscription() : null;
+if (sub) await sb.from('push_subscriptions').delete().eq('endpoint', sub.endpoint);
 } catch (e) {}
+pushActive = false;
+}
+window.__unsubscribeDeviceRow = unsubscribeDeviceRow;
+async function enableNotifications() {
+if (!('Notification' in window)) { userToast('⚠️ المتصفح ده مش بيدعم الإشعارات', 'warn'); return; }
+let p = Notification.permission;
+if (p === 'default') { try { p = await Notification.requestPermission(); } catch (e) {} }
+if (p !== 'granted') { userToast('⚠️ الإشعارات مقفولة من إعدادات المتصفح', 'warn'); renderNotifs(); hidePushPrompt(); return; }
+const ok = await subscribeDevice();
+userToast(ok ? '🔔 تم تفعيل الإشعارات على الجهاز ده' : '🔔 تم تفعيل الإشعارات', 'ok');
+hidePushPrompt();
 renderNotifs();
-});
+}
+function hidePushPrompt() { const b = document.getElementById('pushPrompt'); if (b) b.classList.remove('show'); }
+function maybeShowPushPrompt() {
+if (!currentProfile || !pushSupported()) return;
+if (Notification.permission === 'granted') { subscribeDevice(); return; }
+if (Notification.permission !== 'default') return;
+let last = 0; try { last = parseInt(localStorage.getItem('smcole_push_prompt') || '0', 10); } catch (e) {}
+if (Date.now() - last < 3 * 24 * 3600 * 1000) return;
+setTimeout(() => { const b = document.getElementById('pushPrompt'); if (b && currentProfile) b.classList.add('show'); }, 4000);
+}
+document.getElementById('pushPromptYes').addEventListener('click', enableNotifications);
+document.getElementById('pushPromptLater').addEventListener('click', () => { try { localStorage.setItem('smcole_push_prompt', String(Date.now())); } catch (e) {} hidePushPrompt(); });
+
 function showSystemNotif(n, force) {
 if (!('Notification' in window) || Notification.permission !== 'granted') return;
+if (pushActive && !force) return; // السيرفر هيبعته للجهاز بنفسه — منعاً للتكرار
 if (!force && document.visibilityState === 'visible') return; // لو الموقع مفتوح قدامه، كفاية الإشعار اللي جوه الموقع
 const opts = { body: n.body || '', icon: '/icon-192.png', badge: '/icon-192.png', tag: 'smcole-' + n.id, data: { link: n.link || '' }, dir: 'rtl', lang: 'ar' };
 if (navigator.serviceWorker && navigator.serviceWorker.ready) {
@@ -6045,6 +6276,7 @@ supportChannel = notifChannel = null;
 extrasForProfile = null;
 supportMsgs = []; notifItems = [];
 renderNotifs(); updateSupportBadge();
+hidePushPrompt();
 }
 function startUserExtras() {
 if (!currentProfile) { stopUserExtras(); return; }
@@ -6053,6 +6285,7 @@ stopUserExtras();
 extrasForProfile = currentProfile.id;
 loadNotifs();
 loadSupport();
+maybeShowPushPrompt();
 const uid = currentProfile.id;
 supportChannel = sb.channel('support-' + uid + '-' + Date.now())
 .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'support_messages', filter: 'user_id=eq.' + uid }, (p) => {
@@ -6964,6 +7197,8 @@ setTimeout(() => { if (window.loadAdminUsers) window.loadAdminUsers(); }, 300);
 setTimeout(() => {
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'admin-panel' && window.isAdminUser) adminGoTab('users');
+// مسجل دخول وفاتح الموقع على الرئيسية → يدخل على الخدمات على طول
+else if ((!hash || hash === 'home') && currentUser && window.openServicesPage) window.openServicesPage();
 else if (hash === 'profile' && currentProfile) openProfilePage();
 else if (hash === 'orders' && currentProfile) openMyOrdersPage();
 else if ((hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'deposit-usdt' || hash === 'deposit-instapay' || hash === 'deposit-redot') && currentProfile) {
@@ -7032,7 +7267,7 @@ if (!w) return false;
 let maxH = 0;
 cf.items.forEach(it => { if (it.wrap.style.display !== 'none') maxH = Math.max(maxH, it.card.offsetHeight); });
 cf.cardW = cf.items[0].card.offsetWidth || 340;
-const h = Math.max(420, maxH + 90);
+const h = Math.max(w < 640 ? 340 : 400, maxH + (w < 640 ? 50 : 70));
 if (w !== cf.w || h !== cf.h) {
 cf.w = w; cf.h = h;
 stage.style.height = h + 'px';
@@ -7050,7 +7285,8 @@ cf.items.forEach(it => { it.wrap.style.display = it.card.style.display === 'none
 const n = cf.visible.length;
 cf.target = Math.max(0, Math.min(n - 1, cf.target));
 if (!dragging) cf.pos = cf.target;
-if (!cf.measure()) return;
+// القياس مكلف (بيقرا ارتفاع كل البطايق) — يحصل بس لما المقاس يتغير مش مع كل حركة سحب
+if (!cf.w && !cf.measure()) return;
 const mobile = cf.w < 640;
 const spacing = cf.cardW * (mobile ? 0.5 : 0.7);
 cf.visible.forEach((it, i) => {
@@ -7069,6 +7305,8 @@ o: ad > 3.2 ? 0 : 1
 it.wrap.style.zIndex = String(1000 - Math.round(ad * 10));
 it.wrap.classList.toggle('cf-side', Math.round(ad) !== 0);
 it.wrap.style.pointerEvents = ad > 3.2 ? 'none' : 'auto';
+// البطايق البعيدة جداً تتخفي خالص (أخف بكتير على الموبايل)
+it.wrap.style.visibility = ad > 4 ? 'hidden' : 'visible';
 if (instant) it.cur = Object.assign({}, it.tgt);
 });
 cf.renderNav();
@@ -7307,7 +7545,9 @@ document.querySelectorAll('.tl-step').forEach(s => s.classList.add('active'));
 return;
 }
 const THREE = window.THREE;
-const DPR = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+// الموبايل/اللمس: دقة أقل + فريمات محدودة = سلاسة وبطارية أحسن
+const lowPower = isMobile || window.matchMedia('(hover: none)').matches;
+const DPR = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 2);
 const scenes = [];
 
 function makeRenderer(canvas) {
@@ -7355,7 +7595,7 @@ const renderer = makeRenderer(canvas);
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
 camera.position.set(0, 2.2, 13);
-const COUNT = isMobile ? 4000 : 9000;
+const COUNT = lowPower ? 2200 : 9000;
 const pos = new Float32Array(COUNT * 3), col = new Float32Array(COUNT * 3);
 const cA = new THREE.Color('#7C3AED'), cB = new THREE.Color('#EC4899'), cC = new THREE.Color('#22D3EE');
 for (let i = 0; i < COUNT; i++) {
@@ -7619,7 +7859,12 @@ scene.add(grid);
 const stepsEls = Array.from(document.querySelectorAll('.tl-step'));
 const bar = document.getElementById('tlProgressBar');
 let prog = 0, smooth = 0, lastStep = -1;
+// الموبايل: التايم لاين بيمشي لوحده (من غير ما يقفل السكرول) — الكمبيوتر: بيتحرك مع السكرول
+const autoPlay = lowPower;
+if (autoPlay) section.classList.add('tl-auto');
+let autoStart = null;
 function readProgress() {
+if (autoPlay) return;
 const r = section.getBoundingClientRect();
 const total = r.height - window.innerHeight;
 prog = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
@@ -7630,6 +7875,13 @@ const tmpA = new THREE.Vector3(), tmpB = new THREE.Vector3();
 watch({
 canvas, renderer, scene, camera, observeEl: section,
 update(t) {
+if (autoPlay) {
+// كل خطوة 3.2 ثانية، وبعد الخطوة الرابعة يرجع للأول
+if (autoStart === null) autoStart = t;
+const cyc = ((t - autoStart) / 3.2) % 4;
+prog = Math.min(0.999, (Math.floor(cyc) + Math.min(1, (cyc % 1) * 1.6) * 0.98) / 4 + 0.001);
+if (Math.floor(cyc) === 0 && smooth > 0.8) smooth = 0; // رجوع سريع للبداية
+}
 smooth += (prog - smooth) * 0.08;
 const u = 0.02 + smooth * 0.8;
 curve.getPointAt(Math.min(u, 1), tmpA);
@@ -7672,6 +7924,7 @@ grid.position.z = (t * 0.6) % (80 / 60);
 const canvas = document.getElementById('pageBgCanvas');
 const main = document.getElementById('mainContent');
 if (!canvas || !main) return;
+if (lowPower) return; // في الموبايل: خلفية ثابتة خفيفة بدل الـ 3D
 const renderer = makeRenderer(canvas);
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
@@ -7731,8 +7984,12 @@ el.style.setProperty('--my', (py * 100) + '%');
 
 // ===== حلقة الرسم الموحدة (تتوقف تلقائياً لما القسم مش ظاهر) =====
 const clock = new THREE.Clock();
-function loop() {
+const FRAME_MS = lowPower ? 1000 / 40 : 0; // الموبايل: 40 فريم بحد أقصى
+let lastFrame = 0;
+function loop(now) {
 requestAnimationFrame(loop);
+if (FRAME_MS && now - lastFrame < FRAME_MS) return;
+lastFrame = now || 0;
 const dt = Math.min(clock.getDelta(), 0.05);
 const t = clock.elapsedTime;
 if (document.hidden) return;
@@ -7743,7 +8000,7 @@ s.update(t, dt);
 s.renderer.render(s.scene, s.camera);
 }
 }
-loop();
+requestAnimationFrame(loop);
 })();
 </script>
 </body>

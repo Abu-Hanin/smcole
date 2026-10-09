@@ -3788,6 +3788,12 @@ const totalAmountSpan = document.createElement('span'); totalAmountSpan.classNam
 totalRow.appendChild(totalLabelSpan); totalRow.appendChild(totalAmountSpan);
 const errorSpan = document.createElement('div'); errorSpan.className = 'error-msg'; errorSpan.style.display = 'none';
 calcDiv.append(label, input, urlLabel, urlInput, totalRow, errorSpan);
+// الباقات/الاشتراكات: الكمية ثابتة = 1 والسعر للاشتراك الواحد
+if (service.isApi && String(service.apiType || '').toLowerCase() === 'package') {
+input.value = '1'; input.readOnly = true;
+label.innerText = '📦 الكمية: ' + (service.unit || 'باقة') + ' واحد';
+setTimeout(() => input.dispatchEvent(new Event('input', { bubbles: true })), 0);
+}
 // خدمات التعليقات المخصصة: العميل يكتب التعليقات (كل تعليق في سطر) والكمية = عدد الأسطر
 if (service.isApi && String(service.apiType || '').toLowerCase() === 'custom comments') {
 const cLabel = document.createElement('span'); cLabel.className = 'quantity-label'; cLabel.style.marginTop = '8px';
@@ -5786,7 +5792,7 @@ html += '<label class="imp-row' + (dis ? ' dis' : '') + (s.imported_as ? ' done'
 '<span class="imp-name">' + esc(s.name) + (s.imported_as ? ' <em class="imp-tag ok">مستوردة</em>' : '') + (dis ? ' <em class="imp-tag">نوع غير مدعوم: ' + esc(s.type) + '</em>' : '') + (s.refill ? ' <em class="imp-tag g">♻ ضمان</em>' : '') + (s.description ? ' <em class="imp-tag i" title="' + esc(s.description.slice(0, 300)) + '">📝 وصف</em>' : '') + '</span>' +
 '<span class="imp-num" dir="ltr">' + s.min + ' - ' + s.max + '</span>' +
 '<span class="imp-rate" dir="ltr">' + s.rate + ' ' + esc(imp.provider.currency) + '</span>' +
-'<span class="imp-sell" dir="ltr">' + (String(imp.provider.currency).toUpperCase() === 'EGP' ? '' : (Number(s.sell) / Number(imp.fx || 1)).toFixed(4).replace(/0+$/, '').replace(/\.$/, '') + '$<br>') + '<small>' + Number(s.sell).toFixed(2) + ' ج</small></span></label>';
+'<span class="imp-sell" dir="ltr">' + (String(imp.provider.currency).toUpperCase() === 'EGP' ? '' : (Number(s.sell) / Number(imp.fx || 1)).toFixed(4).replace(/0+$/, '').replace(/\.$/, '') + '$<br>') + '<small>' + Number(s.sell).toFixed(2) + ' ج' + (String(s.type).toLowerCase() === 'package' ? ' / باقة' : '') + '</small></span></label>';
 });
 html += '</div>';
 });

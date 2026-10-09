@@ -17,7 +17,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="smcole">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
@@ -1349,6 +1349,12 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 .cat-body .platform-header { margin: .8rem 0 .3rem !important; justify-content: center !important; }
 .cat-body .platform-title { display: none !important; }
 .svc-results { margin-bottom: 10px; }
+/* شبكة بطايق الخدمات (بدل العرض الـ 3D) */
+.svc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; padding: 14px 8px 10px; }
+.svc-grid .service-card { width: 100% !important; margin: 0 !important; }
+.cat-body .platform-section { margin: 0 !important; }
+@media (max-width: 900px) { .svc-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; } }
+@media (max-width: 600px) { .svc-grid { grid-template-columns: 1fr; padding: 10px 2px 8px; } }
 .cat-pager { display: flex; justify-content: center; align-items: center; gap: 10px; padding: 6px 0 10px; }
 .cat-pager span { color: var(--muted); font-size: .8rem; direction: ltr; }
 .cat-pager button { padding: 8px 14px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(168,85,247,0.35); color: #fff; font-weight: 800; font-size: .8rem; display: inline-flex; gap: 6px; align-items: center; }
@@ -1432,6 +1438,85 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 .sm-brand-mark { width: 32px; height: 32px; border-radius: 10px; font-size: .85rem; }
 }
 @media (max-width: 350px) { .sm-brand-name { display: none; } }
+
+/* 📲 إشعار تحميل التطبيق (3D) */
+.app-prompt { position: fixed; left: 50%; bottom: 18px; z-index: 2790; width: min(460px, calc(100% - 24px)); padding: 16px 16px 14px; border-radius: 24px;
+background: radial-gradient(300px 160px at 85% 0%, rgba(168,85,247,0.45), transparent 70%), linear-gradient(150deg, #2A1160, #120A28 70%);
+border: 1px solid rgba(168,85,247,0.6); box-shadow: 0 26px 60px rgba(0,0,0,0.6), 0 0 40px rgba(124,58,237,0.35);
+display: grid; grid-template-columns: 96px 1fr; grid-template-areas: "v t" "b b"; gap: 10px 14px; align-items: center;
+transform: translate(-50%, 150%) perspective(900px) rotateX(20deg); opacity: 0; transition: transform .6s cubic-bezier(.2,1.1,.3,1), opacity .4s; pointer-events: none; }
+.app-prompt.show { transform: translate(-50%, 0) perspective(900px) rotateX(0); opacity: 1; pointer-events: auto; }
+body.is-admin .app-prompt { bottom: 96px; }
+.ap-close { position: absolute; top: -10px; left: -10px; width: 30px; height: 30px; border-radius: 50%; background: #2A1660; border: 1px solid rgba(168,85,247,0.6); color: #fff; font-size: .78rem; display: flex; align-items: center; justify-content: center; }
+.ap-visual { grid-area: v; position: relative; width: 96px; height: 96px; perspective: 500px; }
+.ap-tile { position: absolute; inset: 14px; border-radius: 20px; overflow: hidden; background: #1A1036; box-shadow: 0 14px 30px rgba(0,0,0,0.5), 0 0 0 2px rgba(168,85,247,0.5), 0 0 30px rgba(168,85,247,0.5); transform-style: preserve-3d; animation: apTile 4.5s ease-in-out infinite; }
+.ap-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ap-shine { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.55) 48%, transparent 62%); background-size: 250% 100%; animation: brandShine 3.5s ease-in-out infinite; }
+@keyframes apTile { 0%, 100% { transform: rotateY(-18deg) rotateX(10deg) translateZ(0); } 50% { transform: rotateY(18deg) rotateX(-6deg) translateZ(12px); } }
+.ap-orb { position: absolute; width: 26px; height: 26px; border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .75rem; box-shadow: 0 6px 14px rgba(0,0,0,0.4); animation: apOrb 6s ease-in-out infinite; }
+.ap-orb.o1 { background: #1877F2; top: -4px; right: 6px; }
+.ap-orb.o2 { background: linear-gradient(135deg, #F58529, #DD2A7B, #8134AF); bottom: 0; right: -6px; animation-delay: -1.2s; }
+.ap-orb.o3 { background: #111; top: 34px; left: -8px; animation-delay: -2.4s; }
+.ap-orb.o4 { background: #FF0000; bottom: -6px; left: 14px; animation-delay: -3.6s; }
+.ap-orb.o5 { background: #2AABEE; top: -6px; left: 18px; animation-delay: -4.8s; }
+@keyframes apOrb { 0%, 100% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(3px, -6px) rotate(10deg); } }
+.ap-text { grid-area: t; display: flex; flex-direction: column; gap: 4px; }
+.ap-text b { color: #fff; font-size: 1rem; }
+.ap-text small { color: #CFC6F2; font-size: .76rem; line-height: 1.7; }
+.ap-btns { grid-area: b; display: flex; gap: 8px; }
+.ap-btns button { flex: 1; padding: 11px; border-radius: 14px; font-weight: 900; font-size: .9rem; font-family: inherit; }
+#appPromptInstall { background: var(--grad); color: #fff; box-shadow: 0 10px 24px rgba(124,58,237,0.5); display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+#appPromptLater { flex: 0 0 auto; padding: 11px 18px; background: rgba(255,255,255,0.07); color: #CFC6F2; }
+@media (prefers-reduced-motion: reduce) { .ap-tile, .ap-orb, .ap-shine { animation: none; } }
+
+/* 🎧 زرار الدعم العائم */
+.support-fab { position: fixed; left: 18px; bottom: 22px; z-index: 1580; width: 58px; height: 58px; border-radius: 50%; background: var(--grad); color: #fff; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.35); transition: transform .25s; }
+.support-fab:hover { transform: translateY(-3px) scale(1.05); }
+.support-fab i { animation: fabWiggle 5s ease-in-out infinite; }
+@keyframes fabWiggle { 0%, 86%, 100% { transform: rotate(0); } 89% { transform: rotate(-14deg); } 93% { transform: rotate(12deg); } 96% { transform: rotate(-6deg); } }
+.fab-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(168,85,247,0.7); animation: fabRing 2.4s ease-out infinite; pointer-events: none; }
+@keyframes fabRing { from { transform: scale(1); opacity: .9; } to { transform: scale(1.6); opacity: 0; } }
+.fab-badge { position: absolute; top: -3px; right: -3px; min-width: 21px; height: 21px; padding: 0 5px; border-radius: 11px; background: #EF4444; color: #fff; font-size: .7rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #0B0619; }
+.fab-badge:empty { display: none; }
+.fab-tip { position: absolute; left: 68px; white-space: nowrap; background: #1A1036; border: 1px solid rgba(168,85,247,0.5); color: #fff; font-size: .78rem; font-weight: 800; padding: 6px 12px; border-radius: 12px; opacity: 0; transform: translateX(-6px); transition: .25s; pointer-events: none; }
+.support-fab:hover .fab-tip { opacity: 1; transform: none; }
+body[data-route="support"] .support-fab, body.is-admin .support-fab, body.auth-locked .support-fab { display: none; }
+@media (max-width: 600px) { .support-fab { width: 52px; height: 52px; font-size: 1.25rem; left: 14px; bottom: 16px; } .fab-tip { display: none; } }
+
+/* ✨ اسم الموقع 3D (رفيع واحترافي ومتحرك) — الرئيسية + صفحة الخدمات */
+.hero-brand, .page-brand {
+font-family: 'Poppins', 'Cairo', sans-serif !important; font-weight: 600 !important; letter-spacing: .14em !important;
+background: none !important; -webkit-background-clip: initial !important; background-clip: initial !important;
+color: #F4F0FF !important; -webkit-text-fill-color: #F4F0FF;
+filter: none !important; position: relative; display: inline-block; direction: ltr;
+text-shadow:
+0 1px 0 #DDD3FF, 0 2px 0 #CBBCFB, 0 3px 0 #B7A1F6, 0 4px 0 #A185F0, 0 5px 0 #8B68E8, 0 6px 0 #7650DC,
+0 7px 1px rgba(60,20,120,0.6), 0 12px 20px rgba(76,29,149,0.55), 0 22px 44px rgba(124,58,237,0.35);
+transform-origin: 50% 70%;
+animation: brand3d 7s ease-in-out infinite;
+}
+.hero-brand { font-size: clamp(2.6rem, 8.2vw, 5rem) !important; }
+.page-brand { font-size: clamp(2.2rem, 6.4vw, 3.6rem) !important; margin-top: 18px !important; margin-bottom: 16px !important; }
+/* لمعة بتعدي على الاسم */
+.hero-brand::after, .page-brand::after {
+content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
+background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.95) 48%, rgba(240,171,252,0.9) 52%, transparent 65%);
+background-size: 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+text-shadow: none; animation: brandShine 5.5s ease-in-out infinite;
+}
+@keyframes brand3d {
+0%, 100% { transform: perspective(700px) rotateX(14deg) rotateY(-10deg) translateY(0); }
+50% { transform: perspective(700px) rotateX(8deg) rotateY(10deg) translateY(-6px); }
+}
+@keyframes brandShine { 0%, 55% { background-position: 130% 0; } 100% { background-position: -40% 0; } }
+.hero-text .hero-brand { display: block; width: fit-content; }
+@media (max-width: 900px) { .hero-text .hero-brand { margin-left: auto; margin-right: auto; } }
+@media (prefers-reduced-motion: reduce) { .hero-brand, .page-brand { animation: none; } .hero-brand::after, .page-brand::after { display: none; } }
+/* ساعة 12 ساعة */
+.phone-time .ampm { font-size: 1.1rem; font-weight: 700; margin-right: 6px; opacity: .85; vertical-align: middle; }
+
+/* استرجاع الصفحة بعد التحديث: الرئيسية متظهرش لحظة وتختفي */
+body.route-restoring #mainContent { visibility: hidden; }
 
 /* أزرار الهيرو */
 .hero-auth, .hero-ctas { display: none !important; }
@@ -1644,6 +1729,25 @@ body { background-attachment: scroll !important; }
 <button type="button" class="pp-close" aria-label="إغلاق" onclick="var b=document.getElementById('pushPrompt');b.classList.remove('show');b.classList.add('gone');try{localStorage.setItem('smcole_push_prompt',String(Date.now()))}catch(e){}"><i class="fas fa-times"></i></button>
 </div>
 
+<!-- ============ إشعار تحميل التطبيق (3D) ============ -->
+<div class="app-prompt" id="appPrompt" role="dialog" aria-live="polite">
+<button type="button" class="ap-close" id="appPromptClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
+<div class="ap-visual">
+<div class="ap-tile"><img src="/icon-192.png" alt="SMCOLE"><span class="ap-shine"></span></div>
+<i class="fab fa-facebook-f ap-orb o1"></i><i class="fab fa-instagram ap-orb o2"></i><i class="fab fa-tiktok ap-orb o3"></i><i class="fab fa-youtube ap-orb o4"></i><i class="fab fa-telegram ap-orb o5"></i>
+</div>
+<div class="ap-text"><b>حمّل تطبيق <span data-site-name>SMCOLE</span> 📲</b><small>اطلب أسرع، وتابع طلباتك، ويوصلك إشعار فوري بكل جديد — من غير ما تفتح المتصفح</small></div>
+<div class="ap-btns"><button type="button" id="appPromptInstall"><i class="fas fa-download"></i> تثبيت التطبيق</button><button type="button" id="appPromptLater">لاحقاً</button></div>
+</div>
+
+<!-- ============ زرار الدعم العائم (يفتح الشات على طول) ============ -->
+<button type="button" class="support-fab" id="supportFab" aria-label="تواصل مع الدعم الفني">
+<span class="fab-ring"></span>
+<i class="fas fa-headset"></i>
+<b class="fab-badge" id="supportFabBadge"></b>
+<span class="fab-tip">محتاج مساعدة؟ كلّمنا</span>
+</button>
+
 <!-- ============ صفحة الدعم الفني (شات) ============ -->
 <div id="supportPage" class="overlay-page">
 <div class="chat-shell">
@@ -1773,7 +1877,7 @@ body { background-attachment: scroll !important; }
 <div class="hero-inner">
 <div class="hero-text">
 <div class="hero-badge"><span class="dot"></span> <span data-site-name>SMCOLE</span> — لوحة SMM سريعة وبأرخص الأسعار</div>
-<div class="hero-brand" data-site-name>SMCOLE</div>
+<div class="hero-brand" data-site-name data-text="SMCOLE">SMCOLE</div>
 <h1 class="hero-title"><span class="grad" id="siteDescriptionDisplay">افضل وارخص موقع تزويد متابعين ومشاهدات</span></h1>
 <p class="hero-desc">متابعين، لايكات، مشاهدات وتعليقات لفيسبوك وإنستجرام وتيك توك ويوتيوب وتليجرام وأكثر — تنفيذ سريع، ضمان حقيقي، ودعم فني متواجد 24 ساعة.</p>
 <div class="hero-cta-group">
@@ -1929,7 +2033,7 @@ body { background-attachment: scroll !important; }
 <div id="servicesPage" class="overlay-page">
 <div class="services-page-inner">
 <div class="sec-head">
-<div class="page-brand" data-site-name>SMCOLE</div>
+<div class="page-brand" data-site-name data-text="SMCOLE">SMCOLE</div>
 <span class="sec-kicker"><i class="fas fa-rocket"></i> الخدمات</span>
 <h2>اختر <span class="grad">خدمتك</span> واطلب الآن</h2>
 <p>⭐ اختر الخدمات ذات الضمان — <b>ضمان 30 يوم</b> و <b>ضمان 365 يوم</b></p>
@@ -2835,6 +2939,9 @@ body { background-attachment: scroll !important; }
 <div class="admin-hint">💡 نفس العملة اللي ظاهرة جنب الأسعار في موقع المزود. مثال: لو بيكتب <b dir="ltr">10.1000 EGP</b> اختار جنيه مصري.</div></div>
 <div class="admin-field"><label>نسبة ربح خاصة (اختياري)</label><input type="number" id="providerProfit" min="0" step="1" placeholder="فاضي = النسبة العامة" dir="ltr"></div>
 </div>
+<div class="admin-field"><label>سعر الدولار عند المزود (مهم لو رصيدك عنده بالجنيه)</label>
+<input type="number" id="providerFx" min="0" step="0.0001" placeholder="مثال: 52.38 — فاضي = سعر الدولار بتاع موقعك" dir="ltr">
+<div class="admin-hint">💡 إزاي تعرفه: افتح أي خدمة في موقع المزود ← سعرها بالجنيه ÷ سعرها بالدولار.<br>مثال: 150.6916 جنيه ÷ 2.877$ = <b dir="ltr">52.38</b> — كده التكلفة عندك هتطابق اللي المزود بيخصمه منك بالقرش، والربح يطلع بالنسبة اللي حاططها بالظبط.</div></div>
 <div class="admin-field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="providerActive" style="width:auto;" checked> المزود شغال (الطلبات بتتبعتله)</label></div>
 <div class="admin-modal-actions">
 <button type="button" class="admin-btn ghost" id="providerCancelBtn"><i class="fas fa-times"></i> إلغاء</button>
@@ -3127,6 +3234,7 @@ function applySiteNameToAll() {
 const name = siteSettings.site_name || 'SMCOLE';
 document.querySelectorAll('[data-site-name]').forEach(el => {
 el.textContent = name;
+el.setAttribute('data-text', name); // للمعة اللي بتعدي على الاسم الـ 3D
 });
 }
 window.applySiteNameToAll = applySiteNameToAll;
@@ -3365,12 +3473,17 @@ const paymentMethodBtn = document.getElementById('paymentMethodBtn');
 window.__currentRoute = 'home';
 window.__routeHistory = ['home'];
 
+// عند التحديث (Refresh): نحفظ الصفحة اللي العميل كان فيها ونرجعه لها بالظبط
+// (قبل كده الرابط كان بيتمسح ويترجع للرئيسية → الصفحة كانت بتتلخبط)
 (function initHistoryGuard() {
 try {
+const h = (location.hash || '').replace('#', '');
+window.__initialHash = h;
 if (!history.state || !history.state.__sm) {
-history.replaceState({ __sm: true, route: 'home' }, '', location.pathname + location.search);
-history.pushState({ __sm: true, route: 'home' }, '', location.pathname + '#home');
+history.replaceState({ __sm: true, route: h || 'home' }, '', location.pathname + location.search + '#' + (h || 'home'));
 }
+// لحد ما الصفحة ترجع، الرئيسية متظهرش (عشان متبانش إنها بتنط)
+if (h && h !== 'home') document.body.classList.add('route-restoring');
 } catch(e) {}
 })();
 
@@ -3402,6 +3515,7 @@ window.__currentDepositMethod = method;
 };
 
 function routeToPage(routeName) {
+document.body.setAttribute('data-route', routeName);
 if (routeName !== 'admin-login' && routeName !== 'admin-panel') {
 const al = document.getElementById('adminLoginPage');
 const ap = document.getElementById('adminPanelPage');
@@ -3487,6 +3601,11 @@ routeToPage(route);
 });
 
 window.restorePageFromHash = function() {
+// الاسترجاع الحقيقي بيحصل في نظام المستخدم (بعد ما نعرف هو مسجل ولا لأ)
+// ده مجرد احتياطي لو حاجة اتأخرت
+setTimeout(() => { if (!window.__routeRestored && window.__restoreRoute) window.__restoreRoute(true); }, 4000);
+};
+window.__legacyRestorePageFromHash = function() {
 const hash = (window.location.hash || '').replace('#','');
 if (!hash) {
 window.__currentRoute = 'home';
@@ -3892,14 +4011,15 @@ function buildCardsSection(items, platform, title) {
 const section = document.createElement('div');
 section.className = 'platform-section';
 section.style.setProperty('--pc', PLATFORM_BRAND[platform] || '#A855F7');
+if (title) {
 const headerDiv = document.createElement('div'); headerDiv.className = 'platform-header';
 const titleSpan = document.createElement('div'); titleSpan.className = 'platform-title';
-titleSpan.innerHTML = title || '';
-const navDiv = document.createElement('div'); navDiv.className = 'slider-nav';
-navDiv.innerHTML = '<button class="slider-btn" type="button"><i class="fas fa-chevron-right"></i></button><button class="slider-btn" type="button"><i class="fas fa-chevron-left"></i></button>';
-headerDiv.append(titleSpan, navDiv);
+titleSpan.innerHTML = title;
+headerDiv.appendChild(titleSpan);
 section.appendChild(headerDiv);
-const sliderDiv = document.createElement('div'); sliderDiv.className = 'cards-slider';
+}
+// شبكة بطايق عادية (من غير العرض الـ 3D الكبير)
+const sliderDiv = document.createElement('div'); sliderDiv.className = 'svc-grid';
 const frag = document.createDocumentFragment();
 items.forEach(s => { s.__platform = s.platform; frag.appendChild(createServiceCard(s, s.number)); });
 sliderDiv.appendChild(frag);
@@ -3931,7 +4051,7 @@ const pages = Math.ceil(cat.items.length / CAT_PAGE);
 const pg = Math.max(0, Math.min(pages - 1, page || 0));
 const slice = cat.items.slice(pg * CAT_PAGE, pg * CAT_PAGE + CAT_PAGE);
 const body = f.querySelector('.cat-body');
-const sec = buildCardsSection(slice, cat.platform, '<i class="' + PLATFORM_FA[cat.platform] + '"></i> ' + escT(cat.name));
+const sec = buildCardsSection(slice, cat.platform, '');
 body.appendChild(sec);
 if (pages > 1) {
 const pager = document.createElement('div');
@@ -3942,7 +4062,6 @@ pager.innerHTML = '<button type="button" data-p="' + (pg - 1) + '"' + (pg === 0 
 pager.querySelectorAll('button[data-p]').forEach(b => b.addEventListener('click', () => openCategory(key, Number(b.dataset.p))));
 body.appendChild(pager);
 }
-if (window.__cfMake) window.__cfMake(sec);
 if (window.updateFavoriteButtonsInAllCards) updateFavoriteButtonsInAllCards();
 setTimeout(() => f.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
 }
@@ -4020,7 +4139,6 @@ if (noMsg) noMsg.style.display = 'none';
 box.style.display = '';
 searchSection = buildCardsSection(hits.slice(0, 40), hits[0].platform, '<i class="fas fa-magnifying-glass"></i> نتائج البحث (' + hits.length + (hits.length > 40 ? ' — أول 40' : '') + ')');
 box.appendChild(searchSection);
-if (window.__cfMake) window.__cfMake(searchSection);
 };
 window.loadServicesFromDB = async function() {
 try {
@@ -4130,13 +4248,29 @@ document.addEventListener('click', (event) => {
 if (!currencyCircle.contains(event.target) && !currencyDropdown.contains(event.target)) currencyDropdown.classList.remove('show-currency-dropdown');
 });
 let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-window.addEventListener('appinstalled', () => { deferredPrompt = null; });
-document.getElementById('installPwaBtn')?.addEventListener('click', async () => {
+// ===== 📲 تثبيت التطبيق =====
+// التطبيق متثبت؟ (مفتوح كتطبيق، أو اتثبت قبل كده) → إشعار التحميل ميظهرش تاني خالص
+window.isAppInstalled = function () {
+try {
+if (window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: window-controls-overlay)').matches || window.navigator.standalone === true) {
+localStorage.setItem('smcole_app_installed', '1'); return true;
+}
+return localStorage.getItem('smcole_app_installed') === '1';
+} catch (e) { return false; }
+};
+function markAppInstalled() {
+try { localStorage.setItem('smcole_app_installed', '1'); } catch (e) {}
+const c = document.getElementById('appPrompt'); if (c) c.classList.remove('show');
+}
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; try { localStorage.removeItem('smcole_app_installed'); } catch (er) {} });
+window.addEventListener('appinstalled', () => { deferredPrompt = null; markAppInstalled(); if (window.userToast) window.userToast('🎉 تم تثبيت التطبيق بنجاح', 'ok'); });
+window.__installApp = async function () {
 if (deferredPrompt) {
 deferredPrompt.prompt();
-try { const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') deferredPrompt = null; } catch(e) {}
-} else {
+try { const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { deferredPrompt = null; markAppInstalled(); } } catch(e) {}
+return;
+}
+{
 const ua = navigator.userAgent.toLowerCase();
 const isIOS = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const isAndroid = /android/.test(ua);
@@ -4146,7 +4280,34 @@ else if (isAndroid) msg = '📱 لتثبيت التطبيق على الأندر�
 else msg = '💻 لتثبيت التطبيق على الكمبيوتر:\n\n1. افتح الموقع في Chrome أو Edge\n2. اضغط أيقونة التثبيت ⊕ في شريط العنوان\n3. أو من قائمة ⋮ اختار "تثبيت smcole"';
 alert(msg);
 }
-});
+};
+document.getElementById('installPwaBtn')?.addEventListener('click', () => window.__installApp());
+
+// إشعار "حمّل التطبيق" (3D) — بيظهر للعميل المسجل من وقت للتاني لحد ما يثبّت التطبيق
+window.__maybeShowAppPrompt = function () {
+const card = document.getElementById('appPrompt');
+if (!card || window.isAppInstalled()) return;
+if (document.body.classList.contains('is-guest')) return;
+let snooze = 0; try { snooze = parseInt(localStorage.getItem('smcole_app_prompt_snooze') || '0', 10); } catch (e) {}
+if (Date.now() < snooze) return;
+clearTimeout(window.__appPromptT);
+window.__appPromptT = setTimeout(() => {
+// منظهرش فوق كارت الإشعارات أو جوه الشات
+const push = document.getElementById('pushPrompt');
+if (push && push.classList.contains('show')) { window.__maybeShowAppPrompt(); return; }
+if (window.isAppInstalled() || document.body.getAttribute('data-route') === 'support') return;
+card.classList.add('show');
+}, 25000);
+};
+(function () {
+const card = document.getElementById('appPrompt');
+if (!card) return;
+const hide = (snoozeMs) => { card.classList.remove('show'); try { localStorage.setItem('smcole_app_prompt_snooze', String(Date.now() + snoozeMs)); } catch (e) {} };
+document.getElementById('appPromptInstall').addEventListener('click', async () => { hide(6 * 3600 * 1000); await window.__installApp(); });
+document.getElementById('appPromptLater').addEventListener('click', () => hide(2 * 3600 * 1000)); // يرجع بعد ساعتين
+document.getElementById('appPromptClose').addEventListener('click', () => hide(2 * 3600 * 1000));
+window.isAppInstalled();
+})();
 if ('serviceWorker' in navigator) {
 let swRefreshing = false;
 navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -5441,7 +5602,8 @@ return '<div class="prov-item' + (p.is_active ? '' : ' off') + '">' +
 '<div><span>آخر مزامنة</span><b>' + fmtDate(p.last_sync) + '</b></div>' +
 '</div>' +
 (p.last_error ? '<div class="prov-error"><i class="fas fa-triangle-exclamation"></i> ' + esc(p.last_error) + '</div>' : '') +
-'<div class="prov-cur">💱 عملة أسعار المزود المسجلة: <b>' + esc(p.currency) + '</b>' + (p.balance_currency ? ' — عملة حسابك عنده: <b>' + esc(p.balance_currency) + '</b>' : '') + '</div>' +
+'<div class="prov-cur">💱 عملة أسعار المزود المسجلة: <b>' + esc(p.currency) + '</b>' + (p.balance_currency ? ' — عملة حسابك عنده: <b>' + esc(p.balance_currency) + '</b>' : '') +
+(String(p.currency).toUpperCase() !== 'EGP' ? '<br>💵 سعر الدولار المستخدم للمزود ده: <b dir="ltr">' + (p.fx_rate ? Number(p.fx_rate) + '</b> (سعر المزود)' : Number(window.exchangeRate || 0).toFixed(2) + '</b> (سعر موقعك)') : '') + '</div>' +
 (p.balance_currency && String(p.balance_currency).toUpperCase() !== String(p.currency).toUpperCase() ? '<div class="prov-error"><i class="fas fa-triangle-exclamation"></i> العملتين مختلفين! لو الأسعار في موقع المزود بالـ ' + esc(p.balance_currency) + ' غيّر "عملة أسعار المزود" لـ ' + esc(p.balance_currency) + ' من تعديل، وبعدين "تحديث الأسعار".</div>' : '') +
 '<div class="prov-btns">' +
 '<button type="button" class="admin-btn gold" data-act="import" data-id="' + p.id + '"><i class="fas fa-cloud-arrow-down"></i> استيراد الخدمات</button>' +
@@ -5514,6 +5676,7 @@ document.getElementById('providerKey').required = !p;
 document.getElementById('providerCurrency').value = p ? (p.currency || 'USD') : 'USD';
 document.getElementById('providerProfit').value = p && p.profit_percent != null ? p.profit_percent : '';
 document.getElementById('providerActive').checked = p ? p.is_active : true;
+document.getElementById('providerFx').value = p && p.fx_rate ? p.fx_rate : '';
 document.getElementById('providerModalTitle').innerHTML = p ? '<i class="fas fa-pen"></i> تعديل المزود' : '<i class="fas fa-plug"></i> إضافة مزود جديد';
 pModal.classList.add('show');
 }
@@ -5535,12 +5698,24 @@ profit_percent: profitRaw === '' ? null : Number(profitRaw),
 is_active: document.getElementById('providerActive').checked
 };
 if (key) payload.api_key = key;
+const fxRaw = document.getElementById('providerFx').value.trim();
+payload.fx_rate = fxRaw === '' ? null : Number(fxRaw);
 if (!id && !key) { toast('⚠️ مفتاح الـ API مطلوب', true); return; }
 busy(btn, true, 'جاري الحفظ');
 try {
 let pid = id;
-if (id) { const { error } = await supabase.from('api_providers').update(payload).eq('id', id); if (error) throw error; }
-else { const { data, error } = await supabase.from('api_providers').insert(payload).select('id').single(); if (error) throw error; pid = data.id; }
+const saveProv = async (pl) => id
+? await supabase.from('api_providers').update(pl).eq('id', id).select('id').single()
+: await supabase.from('api_providers').insert(pl).select('id').single();
+let res = await saveProv(payload);
+if (res.error && /fx_rate/i.test(res.error.message)) {
+// عمود سعر الدولار لسه مش موجود → نحفظ الباقي وننبه
+delete payload.fx_rate;
+res = await saveProv(payload);
+toast('⚠️ شغّل ملف update_v6.sql عشان "سعر الدولار عند المزود" يتحفظ', true);
+}
+if (res.error) throw res.error;
+pid = res.data.id;
 pModal.classList.remove('show');
 toast('✅ تم الحفظ — جاري اختبار الاتصال...');
 try {
@@ -6504,6 +6679,7 @@ scrollChat(document.getElementById('chatBody'));
 function updateSupportBadge() {
 const unread = supportMsgs.filter(m => m.sender === 'admin' && !m.is_read).length;
 setBadge('drawerSupportBadge', unread);
+setBadge('supportFabBadge', unread);
 updateMenuDot();
 }
 function updateMenuDot() {
@@ -6531,6 +6707,7 @@ try { await sb.from('support_messages').update({ is_read: true }).eq('user_id', 
 // إشعارات "رد جديد من الدعم" تتعلم كمقروءة
 markNotifsReadByLink('support');
 }
+document.getElementById('supportFab').addEventListener('click', () => window.openSupportChat());
 window.openSupportChat = function () {
 if (!currentProfile) { if (currentUser) userToast('⚠️ الدعم الفني متاح لحسابات العملاء', 'warn'); else showAuthModal('login'); return; }
 window.__navigateTo('support', document.getElementById('supportPage'), true);
@@ -6796,6 +6973,8 @@ extrasForProfile = null;
 supportMsgs = []; notifItems = [];
 renderNotifs(); updateSupportBadge();
 hidePushPrompt();
+clearTimeout(window.__appPromptT);
+const apc = document.getElementById('appPrompt'); if (apc) apc.classList.remove('show');
 }
 function startUserExtras() {
 if (!currentProfile) { stopUserExtras(); return; }
@@ -6805,6 +6984,7 @@ extrasForProfile = currentProfile.id;
 loadNotifs();
 loadSupport();
 maybeShowPushPrompt();
+if (window.__maybeShowAppPrompt) window.__maybeShowAppPrompt();
 const uid = currentProfile.id;
 supportChannel = sb.channel('support-' + uid + '-' + Date.now())
 .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'support_messages', filter: 'user_id=eq.' + uid }, (p) => {
@@ -7754,18 +7934,32 @@ origOpenPanel(user);
 setTimeout(() => { if (window.loadAdminUsers) window.loadAdminUsers(); }, 300);
 };
 }
-setTimeout(() => {
-const hash = (window.location.hash || '').replace('#','');
-if (hash === 'admin-panel' && window.isAdminUser) adminGoTab('users');
-// مسجل دخول وفاتح الموقع على الرئيسية → يدخل على الخدمات على طول
-else if ((!hash || hash === 'home') && currentUser && window.openServicesPage) window.openServicesPage();
-else if (hash === 'profile' && currentProfile) openProfilePage();
-else if (hash === 'orders' && currentProfile) openMyOrdersPage();
-else if ((hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'deposit-usdt' || hash === 'deposit-instapay' || hash === 'deposit-redot') && currentProfile) {
-window.__navigateTo(hash, document.getElementById('depositPage'), true);
+window.__restoreRoute();
 }
-}, 1000);
-}
+// 🔄 بعد التحديث: نرجّع العميل لنفس الصفحة اللي كان فيها بالظبط
+window.__routeRestored = false;
+window.__restoreRoute = function (fallback) {
+if (window.__routeRestored) return;
+window.__routeRestored = true;
+const h = window.__initialHash || '';
+const nav = (r, id) => window.__navigateTo(r, document.getElementById(id), false);
+const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot)$/.test(h);
+try {
+if (h === 'admin-panel' && window.isAdminUser) adminGoTab('users');
+else if (!h) { if (currentUser && !fallback) nav('services', 'servicesPage'); } // فتح الموقع من جديد وهو مسجل → الخدمات
+else if (h === 'home') { /* يفضل على الرئيسية */ }
+else if (h === 'services') nav('services', 'servicesPage');
+else if (h === 'terms') nav('terms', 'termsPage');
+else if (h === 'payment') nav('payment', 'paymentPage');
+else if (h === 'favorites') nav('favorites', 'favoritesPage');
+else if (h === 'support' && currentProfile) nav('support', 'supportPage');
+else if (h === 'profile' && currentProfile) openProfilePage();
+else if (h === 'orders' && currentProfile) openMyOrdersPage();
+else if (isDeposit && currentProfile) nav(h, 'depositPage');
+else if (window.routeToPage) window.routeToPage('home');
+} catch (e) { console.warn('restore route:', e); }
+document.body.classList.remove('route-restoring');
+};
 initUserSystem();
 
 sb.auth.onAuthStateChange(async (event, session) => {
@@ -8026,9 +8220,11 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ---------- ساعة الموبايل + إشعارات متحركة ----------
 const phoneTime = document.getElementById('phoneTime');
+// ساعة الموبايل بنظام 12 ساعة (زي 9:41 م)
 function tickClock() {
 const d = new Date();
-if (phoneTime) phoneTime.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+const h = d.getHours() % 12 || 12;
+if (phoneTime) phoneTime.innerHTML = h + ':' + String(d.getMinutes()).padStart(2, '0') + '<small class="ampm">' + (d.getHours() < 12 ? 'ص' : 'م') + '</small>';
 }
 tickClock(); setInterval(tickClock, 20000);
 const NOTIFS = [
@@ -8068,11 +8264,12 @@ phone.style.transform = 'rotateY(' + (-14 + dx * 30) + 'deg) rotateX(' + (6 - dy
 const track = document.querySelector('.logos-track');
 if (track) {
 track.innerHTML += track.innerHTML;
-// نفس السرعة الظاهرية على كل الأجهزة: الشريط بيعدي عرض الشاشة كلها في ~16 ثانية
+// سرعة هادية على كل الأجهزة: الشريط بيعدي عرض الشاشة في ~16 ثانية (الموبايل أهدى: ~24 ثانية)
 const setMarqueeSpeed = () => {
 const half = track.scrollWidth / 2;
 if (!half) return;
-const pxPerSec = Math.max(40, window.innerWidth / 16);
+const small = window.innerWidth < 700;
+const pxPerSec = small ? Math.max(14, window.innerWidth / 24) : Math.max(40, window.innerWidth / 16);
 track.style.animationDuration = (half / pxPerSec).toFixed(1) + 's';
 };
 setMarqueeSpeed();

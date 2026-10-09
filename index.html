@@ -1469,6 +1469,86 @@ body.is-admin .app-prompt { bottom: 96px; }
 #appPromptLater { flex: 0 0 auto; padding: 11px 18px; background: rgba(255,255,255,0.07); color: #CFC6F2; }
 @media (prefers-reduced-motion: reduce) { .ap-tile, .ap-orb, .ap-shine { animation: none; } }
 
+/* 💳 طرق الدفع في الرئيسية — كروت 3D متحركة */
+.pay-grid3d { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; perspective: 1100px; max-width: 1100px; margin: 0 auto; }
+@media (max-width: 1000px) { .pay-grid3d { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .pay-grid3d { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+.pay-card3d { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 22px 12px 16px; border-radius: 24px; font-family: inherit; cursor: pointer;
+background: radial-gradient(180px 120px at 50% 0%, color-mix(in srgb, var(--c1) 35%, transparent), transparent 75%), linear-gradient(165deg, rgba(34,22,68,0.92), rgba(11,6,25,0.96));
+border: 1px solid color-mix(in srgb, var(--c1) 45%, rgba(168,85,247,0.25)); box-shadow: 0 18px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.07);
+transform-style: preserve-3d; animation: payFloat 6s ease-in-out infinite; transition: transform .2s ease-out, box-shadow .3s, border-color .3s; }
+.pay-card3d:nth-child(2) { animation-delay: -1.2s; } .pay-card3d:nth-child(3) { animation-delay: -2.4s; } .pay-card3d:nth-child(4) { animation-delay: -3.6s; } .pay-card3d:nth-child(5) { animation-delay: -4.8s; }
+@keyframes payFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+.pay-card3d:hover { border-color: var(--c1); box-shadow: 0 26px 56px rgba(0,0,0,0.55), 0 0 36px color-mix(in srgb, var(--c1) 40%, transparent); }
+.pay-card3d::after { content: ''; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); transform: skewX(-20deg); animation: payShine 5s ease-in-out infinite; pointer-events: none; }
+.pay-card3d:nth-child(2)::after { animation-delay: .8s; } .pay-card3d:nth-child(3)::after { animation-delay: 1.6s; } .pay-card3d:nth-child(4)::after { animation-delay: 2.4s; } .pay-card3d:nth-child(5)::after { animation-delay: 3.2s; }
+@keyframes payShine { 0%, 70% { left: -60%; } 100% { left: 140%; } }
+.pc3-logo { width: 66px; height: 66px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; color: #fff; margin-bottom: 6px; overflow: hidden;
+background: linear-gradient(135deg, var(--c1), var(--c2)); box-shadow: 0 14px 28px color-mix(in srgb, var(--c1) 45%, transparent), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -6px 12px rgba(0,0,0,0.25);
+transform: translateZ(40px) rotateX(10deg); animation: logoTilt 6s ease-in-out infinite; }
+.pc3-logo.dark { color: #1A1A1A; }
+.pc3-logo img { width: 100%; height: 100%; object-fit: cover; }
+.pc3-logo.has-img i { display: none; }
+.pc3-logo.has-img { background: #fff; }
+@keyframes logoTilt { 0%, 100% { transform: translateZ(40px) rotateY(-14deg) rotateX(8deg); } 50% { transform: translateZ(40px) rotateY(14deg) rotateX(4deg); } }
+.pay-card3d b { color: #fff; font-size: .98rem; font-weight: 900; transform: translateZ(24px); }
+.pay-card3d small { color: var(--muted); font-size: .72rem; transform: translateZ(16px); }
+.pay-card3d em { font-style: normal; margin-top: 4px; font-size: .7rem; font-weight: 800; color: #fff; padding: 3px 10px; border-radius: 20px; background: color-mix(in srgb, var(--c1) 30%, transparent); border: 1px solid color-mix(in srgb, var(--c1) 55%, transparent); }
+@media (max-width: 760px), (hover: none) { .pay-card3d, .pc3-logo { animation-duration: 8s; } .pay-card3d::after { display: none; } }
+@media (prefers-reduced-motion: reduce) { .pay-card3d, .pc3-logo, .pay-card3d::after { animation: none !important; } }
+
+/* 📦 طلباتي — بطايق 3D + شريط التقدم */
+.oc-filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px; }
+.oc-filter { padding: 8px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); color: #CFC6F2; font-weight: 800; font-size: .85rem; font-family: inherit; }
+.oc-filter b { margin-right: 4px; color: #fff; background: rgba(168,85,247,0.25); padding: 0 8px; border-radius: 10px; font-size: .75rem; }
+.oc-filter.on { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 8px 22px rgba(124,58,237,0.45); }
+.oc-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; perspective: 1200px; }
+@media (max-width: 600px) { .oc-list { grid-template-columns: 1fr; } }
+.oc3d { --st: #A855F7; position: relative; padding: 16px; border-radius: 24px; overflow: hidden;
+background: radial-gradient(260px 140px at 100% 0%, color-mix(in srgb, var(--pc) 22%, transparent), transparent 70%), linear-gradient(160deg, rgba(34,22,68,0.92), rgba(11,6,25,0.95));
+border: 1px solid color-mix(in srgb, var(--st) 40%, rgba(168,85,247,0.2));
+box-shadow: 0 18px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) backwards; transition: transform .2s ease-out, box-shadow .3s; }
+.oc3d:hover { box-shadow: 0 26px 56px rgba(0,0,0,0.55), 0 0 34px color-mix(in srgb, var(--st) 28%, transparent); }
+@keyframes ocIn { from { opacity: 0; transform: perspective(900px) rotateX(18deg) translateY(24px); } to { opacity: 1; transform: none; } }
+.oc3d.st-pending { --st: #F59E0B; } .oc3d.st-processing { --st: #3B82F6; } .oc3d.st-completed { --st: #22C55E; } .oc3d.st-partial { --st: #F59E0B; } .oc3d.st-cancelled { --st: #EF4444; }
+.oc3d::before { content: ''; position: absolute; top: 0; right: 18px; left: 18px; height: 3px; border-radius: 0 0 6px 6px; background: var(--st); box-shadow: 0 0 16px var(--st); }
+.oc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.oc-id { font-weight: 900; color: #E9D5FF; background: rgba(168,85,247,0.15); padding: 4px 12px; border-radius: 20px; font-size: .8rem; direction: ltr; }
+.oc-badge { font-weight: 800; font-size: .78rem; padding: 5px 12px; border-radius: 20px; color: #fff; background: color-mix(in srgb, var(--st) 22%, transparent); border: 1px solid color-mix(in srgb, var(--st) 55%, transparent); }
+.oc-main { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; transform: translateZ(20px); }
+.oc-ico { width: 48px; height: 48px; flex-shrink: 0; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.25rem; background: linear-gradient(135deg, var(--pc), color-mix(in srgb, var(--pc) 40%, #2A1160)); box-shadow: 0 10px 22px color-mix(in srgb, var(--pc) 40%, transparent); }
+.oc-name { color: #fff; font-weight: 800; font-size: .92rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.oc-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.oc-bar { position: relative; flex: 1; height: 12px; border-radius: 10px; background: rgba(255,255,255,0.07); overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
+.oc-fill { position: absolute; inset: 0 auto 0 0; right: 0; left: auto; width: var(--p); border-radius: 10px; background: linear-gradient(90deg, color-mix(in srgb, var(--st) 70%, #fff), var(--st)); box-shadow: 0 0 14px var(--st); animation: ocFill 1.2s cubic-bezier(.2,.9,.3,1) both; }
+@keyframes ocFill { from { width: 0; } }
+.st-pending .oc-fill, .st-processing .oc-fill { background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.28) 0 8px, transparent 8px 16px), linear-gradient(90deg, color-mix(in srgb, var(--st) 70%, #fff), var(--st)); background-size: 22px 22px, 100% 100%; animation: ocFill 1.2s cubic-bezier(.2,.9,.3,1) both, ocStripes .8s linear infinite; }
+@keyframes ocStripes { to { background-position: -22px 0, 0 0; } }
+.st-cancelled .oc-fill { background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.25) 0 6px, transparent 6px 12px), linear-gradient(90deg, #F87171, #DC2626); }
+.oc-pct { min-width: 54px; text-align: left; color: #fff; font-size: .8rem; direction: rtl; }
+.oc-steps { display: flex; align-items: center; margin-bottom: 12px; }
+.oc-step { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 64px; }
+.oc-step span { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .8rem; color: #8B84B5; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); transition: .3s; }
+.oc-step small { font-size: .66rem; color: #8B84B5; white-space: nowrap; }
+.oc-step.done span { background: var(--st); color: #fff; border-color: transparent; box-shadow: 0 0 12px color-mix(in srgb, var(--st) 60%, transparent); }
+.oc-step.done small, .oc-step.active small { color: #fff; font-weight: 700; }
+.oc-step.active span { background: color-mix(in srgb, var(--st) 25%, transparent); color: #fff; border-color: var(--st); animation: ocPulse 1.6s ease-in-out infinite; }
+.oc-step.fail span { background: #EF4444; color: #fff; border-color: transparent; }
+.oc-step.fail small { color: #FCA5A5; font-weight: 700; }
+@keyframes ocPulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st) 60%, transparent); } 50% { box-shadow: 0 0 0 7px transparent; } }
+.oc-step-line { flex: 1; height: 2px; margin: 0 2px 18px; background: rgba(255,255,255,0.1); font-style: normal; }
+.oc-stats { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.oc-stats span { font-size: .72rem; color: #CFC6F2; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 10px; display: inline-flex; gap: 5px; align-items: center; }
+.oc-stats span i { color: #D8B4FE; }
+.oc-stats b { color: #fff; direction: ltr; }
+.oc-refund { font-size: .78rem; color: #4ADE80; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 6px 10px; border-radius: 10px; margin-bottom: 10px; }
+.oc-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.08); }
+.oc-link { color: #E9D5FF; font-size: .78rem; font-weight: 700; text-decoration: none; padding: 5px 12px; border-radius: 10px; background: rgba(168,85,247,0.14); }
+.oc-date { font-size: .7rem; color: #8B84B5; }
+.oc-total { font-weight: 900; color: #fff; font-size: 1rem; direction: ltr; }
+@media (prefers-reduced-motion: reduce) { .oc3d, .oc-fill { animation: none !important; } }
+
 /* 🎧 زرار الدعم العائم */
 .support-fab { position: fixed; left: 18px; bottom: 22px; z-index: 1580; width: 58px; height: 58px; border-radius: 50%; background: var(--grad); color: #fff; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.35); transition: transform .25s; }
 .support-fab:hover { transform: translateY(-3px) scale(1.05); }
@@ -1483,35 +1563,40 @@ body.is-admin .app-prompt { bottom: 96px; }
 body[data-route="support"] .support-fab, body.is-admin .support-fab, body.auth-locked .support-fab { display: none; }
 @media (max-width: 600px) { .support-fab { width: 52px; height: 52px; font-size: 1.25rem; left: 14px; bottom: 16px; } .fab-tip { display: none; } }
 
-/* ✨ اسم الموقع 3D (رفيع واحترافي ومتحرك) — الرئيسية + صفحة الخدمات */
+/* ✨ اسم الموقع: مكعب 3D بيلف + الاسم بتدرج ألوان متحرك وعمق ناعم — الرئيسية + صفحة الخدمات */
+.brand3d { display: inline-flex; align-items: center; gap: 18px; direction: ltr; width: fit-content; margin-bottom: 12px; animation: brandFloat 5s ease-in-out infinite; }
+.hero-text .brand3d { display: flex; }
+@media (max-width: 900px) { .hero-text .brand3d { margin-left: auto; margin-right: auto; } }
+.brand-cube { --s: 58px; position: relative; width: var(--s); height: var(--s); transform-style: preserve-3d; animation: cubeSpin 12s linear infinite; flex-shrink: 0; }
+.brand-cube .bf { position: absolute; inset: 0; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: calc(var(--s) * 0.42);
+background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 45%, #EC4899 100%); border: 1px solid rgba(255,255,255,0.28);
+box-shadow: inset 0 0 18px rgba(255,255,255,0.22), inset 0 -6px 14px rgba(76,29,149,0.45); backface-visibility: hidden; }
+.brand-cube .f1 { transform: translateZ(calc(var(--s) / 2)); }
+.brand-cube .f2 { transform: rotateY(180deg) translateZ(calc(var(--s) / 2)); background: linear-gradient(135deg, #1877F2, #7C3AED); }
+.brand-cube .f3 { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); background: linear-gradient(135deg, #F58529, #DD2A7B, #8134AF); }
+.brand-cube .f4 { transform: rotateY(-90deg) translateZ(calc(var(--s) / 2)); background: linear-gradient(135deg, #111, #3a3a3a); }
+.brand-cube .f5 { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); background: linear-gradient(135deg, #FF0000, #9333EA); }
+.brand-cube .f6 { transform: rotateX(-90deg) translateZ(calc(var(--s) / 2)); background: linear-gradient(135deg, #2AABEE, #7C3AED); }
+.brand-cube::after { content: ''; position: absolute; left: 6%; right: 6%; bottom: -26px; height: 12px; border-radius: 50%; background: radial-gradient(ellipse, rgba(168,85,247,0.55), transparent 70%); filter: blur(4px); transform: rotateX(90deg); }
+@keyframes cubeSpin { from { transform: rotateX(-16deg) rotateY(0deg); } to { transform: rotateX(-16deg) rotateY(360deg); } }
+@keyframes brandFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 .hero-brand, .page-brand {
-font-family: 'Poppins', 'Cairo', sans-serif !important; font-weight: 600 !important; letter-spacing: .14em !important;
-background: none !important; -webkit-background-clip: initial !important; background-clip: initial !important;
-color: #F4F0FF !important; -webkit-text-fill-color: #F4F0FF;
-filter: none !important; position: relative; display: inline-block; direction: ltr;
-text-shadow:
-0 1px 0 #DDD3FF, 0 2px 0 #CBBCFB, 0 3px 0 #B7A1F6, 0 4px 0 #A185F0, 0 5px 0 #8B68E8, 0 6px 0 #7650DC,
-0 7px 1px rgba(60,20,120,0.6), 0 12px 20px rgba(76,29,149,0.55), 0 22px 44px rgba(124,58,237,0.35);
-transform-origin: 50% 70%;
-animation: brand3d 7s ease-in-out infinite;
+font-family: 'Poppins', 'Cairo', sans-serif !important; font-weight: 700 !important; letter-spacing: .06em !important; line-height: 1 !important;
+background: linear-gradient(90deg, #FFFFFF 0%, #E9D5FF 22%, #C084FC 45%, #F0ABFC 62%, #FFFFFF 82%, #E9D5FF 100%) !important;
+background-size: 220% 100% !important; -webkit-background-clip: text !important; background-clip: text !important;
+color: transparent !important; -webkit-text-fill-color: transparent !important;
+filter: drop-shadow(0 2px 0 rgba(91,33,182,0.95)) drop-shadow(0 3px 0 rgba(76,29,149,0.8)) drop-shadow(0 10px 22px rgba(124,58,237,0.45)) !important;
+text-shadow: none !important; transform: none !important; animation: brandFlow 7s linear infinite !important;
+margin: 0 !important; display: inline-block; direction: ltr; position: relative;
 }
-.hero-brand { font-size: clamp(2.6rem, 8.2vw, 5rem) !important; }
-.page-brand { font-size: clamp(2.2rem, 6.4vw, 3.6rem) !important; margin-top: 18px !important; margin-bottom: 16px !important; }
-/* لمعة بتعدي على الاسم */
-.hero-brand::after, .page-brand::after {
-content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
-background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.95) 48%, rgba(240,171,252,0.9) 52%, transparent 65%);
-background-size: 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
-text-shadow: none; animation: brandShine 5.5s ease-in-out infinite;
-}
-@keyframes brand3d {
-0%, 100% { transform: perspective(700px) rotateX(14deg) rotateY(-10deg) translateY(0); }
-50% { transform: perspective(700px) rotateX(8deg) rotateY(10deg) translateY(-6px); }
-}
-@keyframes brandShine { 0%, 55% { background-position: 130% 0; } 100% { background-position: -40% 0; } }
-.hero-text .hero-brand { display: block; width: fit-content; }
-@media (max-width: 900px) { .hero-text .hero-brand { margin-left: auto; margin-right: auto; } }
-@media (prefers-reduced-motion: reduce) { .hero-brand, .page-brand { animation: none; } .hero-brand::after, .page-brand::after { display: none; } }
+.hero-brand::after, .page-brand::after { display: none !important; }
+@keyframes brandFlow { from { background-position: 0% 0; } to { background-position: 220% 0; } }
+.hero-brand { font-size: clamp(2.5rem, 7.4vw, 4.6rem) !important; }
+.page-brand { font-size: clamp(2rem, 5.6vw, 3.2rem) !important; }
+.sec-head .brand3d { margin: 14px auto 14px; }
+.sec-head .brand-cube { --s: 46px; }
+@media (max-width: 600px) { .brand-cube { --s: 44px; } .sec-head .brand-cube { --s: 38px; } .brand3d { gap: 12px; } }
+@media (prefers-reduced-motion: reduce) { .brand3d, .brand-cube, .hero-brand, .page-brand { animation: none !important; } }
 /* ساعة 12 ساعة */
 .phone-time .ampm { font-size: 1.1rem; font-weight: 700; margin-right: 6px; opacity: .85; vertical-align: middle; }
 
@@ -1877,7 +1962,7 @@ body { background-attachment: scroll !important; }
 <div class="hero-inner">
 <div class="hero-text">
 <div class="hero-badge"><span class="dot"></span> <span data-site-name>SMCOLE</span> — لوحة SMM سريعة وبأرخص الأسعار</div>
-<div class="hero-brand" data-site-name data-text="SMCOLE">SMCOLE</div>
+<div class="brand3d"><span class="brand-cube" aria-hidden="true"><span class="bf f1"><i class="fas fa-bolt"></i></span><span class="bf f2"><i class="fab fa-facebook-f"></i></span><span class="bf f3"><i class="fab fa-instagram"></i></span><span class="bf f4"><i class="fab fa-tiktok"></i></span><span class="bf f5"><i class="fab fa-youtube"></i></span><span class="bf f6"><i class="fab fa-telegram"></i></span></span><span class="hero-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
 <h1 class="hero-title"><span class="grad" id="siteDescriptionDisplay">افضل وارخص موقع تزويد متابعين ومشاهدات</span></h1>
 <p class="hero-desc">متابعين، لايكات، مشاهدات وتعليقات لفيسبوك وإنستجرام وتيك توك ويوتيوب وتليجرام وأكثر — تنفيذ سريع، ضمان حقيقي، ودعم فني متواجد 24 ساعة.</p>
 <div class="hero-cta-group">
@@ -1988,12 +2073,27 @@ body { background-attachment: scroll !important; }
 <span class="sec-kicker"><i class="fas fa-money-bill-wave"></i> الدفع</span>
 <h2>طرق الدفع <span class="grad">المتاحة</span></h2>
 </div>
-<div class="pay-strip">
-<div class="pay-chip tilt" data-goto="payment"><span class="pc-logo vf"><i class="fas fa-mobile-screen"></i></span>محافظ الكاش</div>
-<div class="pay-chip tilt" data-goto="payment"><span class="pc-logo ip">IP</span>إنستا باي</div>
-<div class="pay-chip tilt" data-goto="payment"><span class="pc-logo bn"><i class="fab fa-bitcoin"></i></span>باينانس باي</div>
-<div class="pay-chip tilt" data-goto="payment"><span class="pc-logo us">₮</span>USDT TRC20</div>
-<div class="pay-chip tilt" data-goto="payment"><span class="pc-logo rp">RP</span>ريدوت باي</div>
+<div class="pay-grid3d">
+<button type="button" class="pay-card3d" data-goto="payment" style="--c1:#E60000;--c2:#7F0000">
+<span class="pc3-logo"><img data-pay-logo="vodafone" alt="" hidden><i class="fas fa-mobile-screen-button"></i></span>
+<b>محافظ الكاش</b><small>فودافون · اتصالات · أورنج · وي</small><em><i class="fas fa-bolt"></i> تحويل فوري</em>
+</button>
+<button type="button" class="pay-card3d" data-goto="payment" style="--c1:#6B2D8C;--c2:#3B1259">
+<span class="pc3-logo"><img data-pay-logo="instapay" alt="" hidden><i class="fas fa-building-columns"></i></span>
+<b>إنستا باي</b><small>من أي حساب بنكي في مصر</small><em><i class="fas fa-bolt"></i> تحويل فوري</em>
+</button>
+<button type="button" class="pay-card3d" data-goto="payment" style="--c1:#F0B90B;--c2:#9A7400">
+<span class="pc3-logo dark"><img data-pay-logo="binance" alt="" hidden><i class="fab fa-bitcoin"></i></span>
+<b>باينانس باي</b><small>Binance Pay ID</small><em><i class="fas fa-globe"></i> عالمي</em>
+</button>
+<button type="button" class="pay-card3d" data-goto="payment" style="--c1:#26A17B;--c2:#0F5A43">
+<span class="pc3-logo"><img data-pay-logo="usdt" alt="" hidden><i class="fas fa-coins"></i></span>
+<b>USDT</b><small>شبكة TRC20</small><em><i class="fas fa-shield-halved"></i> آمن</em>
+</button>
+<button type="button" class="pay-card3d" data-goto="payment" style="--c1:#2563EB;--c2:#1E3A8A">
+<span class="pc3-logo"><img data-pay-logo="redot" alt="" hidden><i class="fas fa-credit-card"></i></span>
+<b>ريدوت باي</b><small>Redotpay ID</small><em><i class="fas fa-globe"></i> عالمي</em>
+</button>
 </div>
 </section>
 
@@ -2033,7 +2133,7 @@ body { background-attachment: scroll !important; }
 <div id="servicesPage" class="overlay-page">
 <div class="services-page-inner">
 <div class="sec-head">
-<div class="page-brand" data-site-name data-text="SMCOLE">SMCOLE</div>
+<div class="brand3d"><span class="brand-cube" aria-hidden="true"><span class="bf f1"><i class="fas fa-bolt"></i></span><span class="bf f2"><i class="fab fa-facebook-f"></i></span><span class="bf f3"><i class="fab fa-instagram"></i></span><span class="bf f4"><i class="fab fa-tiktok"></i></span><span class="bf f5"><i class="fab fa-youtube"></i></span><span class="bf f6"><i class="fab fa-telegram"></i></span></span><span class="page-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
 <span class="sec-kicker"><i class="fas fa-rocket"></i> الخدمات</span>
 <h2>اختر <span class="grad">خدمتك</span> واطلب الآن</h2>
 <p>⭐ اختر الخدمات ذات الضمان — <b>ضمان 30 يوم</b> و <b>ضمان 365 يوم</b></p>
@@ -3247,6 +3347,15 @@ const map = [
 { key: 'logo_instapay', wrapId: 'pscLogoInstapay', imgId: 'pscLogoInstapayImg' },
 { key: 'logo_redot', wrapId: 'pscLogoRedot', imgId: 'pscLogoRedotImg' }
 ];
+// نفس اللوجوهات في كروت الدفع اللي في الصفحة الرئيسية
+map.forEach(m => {
+const method = m.key.replace('logo_', '');
+const url = siteSettings[m.key];
+document.querySelectorAll('img[data-pay-logo="' + method + '"]').forEach(img => {
+if (url) { img.src = url; img.hidden = false; img.parentElement.classList.add('has-img'); }
+else { img.hidden = true; img.removeAttribute('src'); img.parentElement.classList.remove('has-img'); }
+});
+});
 map.forEach(m => {
 const url = siteSettings[m.key];
 const wrap = document.getElementById(m.wrapId);
@@ -3682,7 +3791,7 @@ if (!document.body.classList.contains('is-guest')) { window.openServicesPage(); 
 window.showHomePage(); window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 document.getElementById('drawerCloseBtn').addEventListener('click', () => dropdown.classList.remove('show-dropdown'));
-document.querySelectorAll('.pay-chip[data-goto="payment"]').forEach(el => el.addEventListener('click', () => window.__navigateTo('payment', paymentPage, true)));
+document.querySelectorAll('.pay-chip[data-goto="payment"], .pay-card3d[data-goto="payment"]').forEach(el => el.addEventListener('click', () => window.__navigateTo('payment', paymentPage, true)));
 document.getElementById('directSupportBtn').addEventListener('click', () => {
 if (window.openSupportChat) window.openSupportChat();
 });
@@ -4011,15 +4120,15 @@ function buildCardsSection(items, platform, title) {
 const section = document.createElement('div');
 section.className = 'platform-section';
 section.style.setProperty('--pc', PLATFORM_BRAND[platform] || '#A855F7');
-if (title) {
 const headerDiv = document.createElement('div'); headerDiv.className = 'platform-header';
 const titleSpan = document.createElement('div'); titleSpan.className = 'platform-title';
-titleSpan.innerHTML = title;
-headerDiv.appendChild(titleSpan);
+titleSpan.innerHTML = title || '';
+const navDiv = document.createElement('div'); navDiv.className = 'slider-nav';
+navDiv.innerHTML = '<button class="slider-btn" type="button"><i class="fas fa-chevron-right"></i></button><button class="slider-btn" type="button"><i class="fas fa-chevron-left"></i></button>';
+headerDiv.append(titleSpan, navDiv);
 section.appendChild(headerDiv);
-}
-// شبكة بطايق عادية (من غير العرض الـ 3D الكبير)
-const sliderDiv = document.createElement('div'); sliderDiv.className = 'svc-grid';
+// العرض الـ 3D (بيتحوّل بعد كده بـ __cfMake)
+const sliderDiv = document.createElement('div'); sliderDiv.className = 'cards-slider';
 const frag = document.createDocumentFragment();
 items.forEach(s => { s.__platform = s.platform; frag.appendChild(createServiceCard(s, s.number)); });
 sliderDiv.appendChild(frag);
@@ -4062,6 +4171,7 @@ pager.innerHTML = '<button type="button" data-p="' + (pg - 1) + '"' + (pg === 0 
 pager.querySelectorAll('button[data-p]').forEach(b => b.addEventListener('click', () => openCategory(key, Number(b.dataset.p))));
 body.appendChild(pager);
 }
+if (window.__cfMake) window.__cfMake(sec);
 if (window.updateFavoriteButtonsInAllCards) updateFavoriteButtonsInAllCards();
 setTimeout(() => f.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
 }
@@ -4139,6 +4249,7 @@ if (noMsg) noMsg.style.display = 'none';
 box.style.display = '';
 searchSection = buildCardsSection(hits.slice(0, 40), hits[0].platform, '<i class="fas fa-magnifying-glass"></i> نتائج البحث (' + hits.length + (hits.length > 40 ? ' — أول 40' : '') + ')');
 box.appendChild(searchSection);
+if (window.__cfMake) window.__cfMake(searchSection);
 };
 window.loadServicesFromDB = async function() {
 try {
@@ -6378,8 +6489,13 @@ if (!/^[a-z0-9_]{3,20}$/.test(username)) {
 msg.className = 'auth-msg err'; msg.innerText = 'اسم المستخدم لازم 3-20 حرف إنجليزي/رقم/_'; return;
 }
 try {
+// التحقق من اسم المستخدم من غير ما نكشف بيانات العملاء التانيين
+const { data: available, error: avErr } = await sb.rpc('smcole_username_available', { u: username });
+if (!avErr && available === false) { msg.className = 'auth-msg err'; msg.innerText = 'اسم المستخدم مستخدم بالفعل'; return; }
+if (avErr) {
 const { data: existing } = await sb.from('users').select('id').eq('username', username).maybeSingle();
 if (existing) { msg.className = 'auth-msg err'; msg.innerText = 'اسم المستخدم مستخدم بالفعل'; return; }
+}
 } catch(e) {}
 const { data: signData, error: signErr } = await sb.auth.signUp({ email, password });
 if (signErr) { msg.className = 'auth-msg err'; msg.innerText = signErr.message; return; }
@@ -7205,10 +7321,100 @@ document.getElementById('adminSupportThreadHead').addEventListener('click', () =
 if (isMobile()) document.querySelector('.admin-support-wrap').classList.remove('thread-open');
 });
 
-async function loadMyOrders() {
+// ===== 📦 طلباتي: بطايق 3D + شريط تقدم بيوضح الطلب وصل لحد فين =====
+let myOrdersData = [];
+let myOrdersFilter = 'all';
+const ORDER_PLAT_ICON = { facebook: 'fab fa-facebook-f', instagram: 'fab fa-instagram', tiktok: 'fab fa-tiktok', youtube: 'fab fa-youtube', telegram: 'fab fa-telegram', twitter: 'fab fa-x-twitter', snapchat: 'fab fa-snapchat', whatsapp: 'fab fa-whatsapp', twitch: 'fab fa-twitch' };
+const ORDER_PLAT_COLOR = { facebook: '#1877F2', instagram: '#E1306C', tiktok: '#FE2C55', youtube: '#FF0000', telegram: '#2AABEE', twitter: '#1DA1F2', snapchat: '#F7E600', whatsapp: '#25D366', twitch: '#9146FF' };
+function orderState(o) {
+const refunded = parseFloat(o.refunded || 0);
+const qty = Number(o.quantity) || 0;
+const remains = o.remains !== null && o.remains !== undefined ? Number(o.remains) : null;
+const delivered = qty && remains !== null ? Math.max(0, Math.min(qty, qty - remains)) : null;
+if (o.status === 'cancelled') return { key: 'cancelled', label: '❌ ملغي', pct: 100, step: 3, delivered };
+if (o.status === 'completed' && refunded > 0) return { key: 'partial', label: '⚠️ مكتمل جزئياً', pct: 100, step: 3, delivered, partPct: qty ? Math.round((delivered ?? 0) / qty * 100) : null };
+if (o.status === 'completed') return { key: 'completed', label: '✅ مكتمل', pct: 100, step: 3, delivered: delivered ?? qty };
+if (o.status === 'processing') {
+const live = delivered !== null && qty ? delivered / qty : null;
+return { key: 'processing', label: '🔄 جاري التنفيذ', pct: live !== null ? Math.max(38, Math.min(96, Math.round(30 + live * 66))) : 55, step: 2, delivered };
+}
+return { key: 'pending', label: '⏳ قيد المعالجة', pct: 16, step: 1, delivered };
+}
+function renderMyOrders() {
+const container = document.getElementById('myOrdersContainer');
+if (!container) return;
+const counts = { all: myOrdersData.length, active: 0, completed: 0, cancelled: 0 };
+myOrdersData.forEach(o => { const s = orderState(o).key; if (s === 'pending' || s === 'processing') counts.active++; else if (s === 'cancelled') counts.cancelled++; else counts.completed++; });
+const tabs = [['all', 'الكل'], ['active', 'جاري'], ['completed', 'مكتمل'], ['cancelled', 'ملغي']];
+let html = '<div class="oc-filters">' + tabs.map(t => '<button type="button" class="oc-filter' + (myOrdersFilter === t[0] ? ' on' : '') + '" data-f="' + t[0] + '">' + t[1] + ' <b>' + counts[t[0]] + '</b></button>').join('') + '</div>';
+const list = myOrdersData.filter(o => {
+if (myOrdersFilter === 'all') return true;
+const s = orderState(o).key;
+if (myOrdersFilter === 'active') return s === 'pending' || s === 'processing';
+if (myOrdersFilter === 'cancelled') return s === 'cancelled';
+return s === 'completed' || s === 'partial';
+});
+if (!list.length) html += '<div class="empty-orders"><i class="fas fa-receipt"></i><p>' + (myOrdersData.length ? 'مفيش طلبات في القسم ده' : 'لا توجد طلبات بعد') + '</p></div>';
+const svcIndex = new Map((window.__svcAll || []).map(s => [String(s.dbId), s]));
+html += '<div class="oc-list">' + list.map((o, i) => {
+const st = orderState(o);
+const cur = o.currency === 'USD' ? '$' : 'جنيه';
+const svc = svcIndex.get(String(o.service_id));
+const plat = svc ? svc.platform : '';
+const icon = ORDER_PLAT_ICON[plat] || 'fas fa-rocket';
+const color = ORDER_PLAT_COLOR[plat] || '#A855F7';
+const dateStr = o.created_at ? new Date(o.created_at).toLocaleString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : '-';
+const qty = Number(o.quantity) || 0;
+const lastLbl = st.key === 'cancelled' ? 'ملغي' : st.key === 'partial' ? 'مكتمل جزئياً' : 'مكتمل';
+const lastIco = st.key === 'cancelled' ? 'fa-ban' : st.key === 'partial' ? 'fa-circle-half-stroke' : 'fa-flag-checkered';
+const steps = [['fa-inbox', 'تم الاستلام'], ['fa-gears', 'جاري التنفيذ'], [lastIco, lastLbl]];
+const stepHtml = steps.map((s, k) => {
+const n = k + 1;
+const cls = n < st.step ? 'done' : n === st.step ? (st.key === 'cancelled' && n === 3 ? 'fail' : (st.key === 'completed' || st.key === 'partial') && n === 3 ? 'done' : 'active') : '';
+return '<div class="oc-step ' + cls + '"><span><i class="fas ' + s[0] + '"></i></span><small>' + s[1] + '</small></div>';
+}).join('<i class="oc-step-line"></i>');
+const chips = [];
+chips.push('<span><i class="fas fa-layer-group"></i> الكمية <b>' + qty.toLocaleString('en-US') + '</b></span>');
+if (o.start_count !== null && o.start_count !== undefined) chips.push('<span><i class="fas fa-flag"></i> البداية <b>' + Number(o.start_count).toLocaleString('en-US') + '</b></span>');
+if (st.delivered !== null && st.delivered !== undefined && st.key !== 'pending') chips.push('<span><i class="fas fa-circle-check"></i> اتنفذ <b>' + Number(st.delivered).toLocaleString('en-US') + '</b></span>');
+if (o.remains !== null && o.remains !== undefined && (st.key === 'processing' || st.key === 'partial')) chips.push('<span><i class="fas fa-hourglass-half"></i> المتبقي <b>' + Number(o.remains).toLocaleString('en-US') + '</b></span>');
+const refunded = parseFloat(o.refunded || 0);
+const safeLink = /^https?:\/\//i.test(o.link || '') ? o.link : '';
+return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st.pct + '%;animation-delay:' + Math.min(i, 8) * 60 + 'ms">' +
+'<div class="oc-top"><span class="oc-id">#' + o.id + '</span><span class="oc-badge">' + st.label + '</span></div>' +
+'<div class="oc-main"><div class="oc-ico"><i class="' + icon + '"></i></div><div class="oc-name">' + escHtml(o.service_name || '-') + '</div></div>' +
+'<div class="oc-progress"><div class="oc-bar"><span class="oc-fill"></span></div><b class="oc-pct">' + (st.key === 'partial' && st.partPct !== null ? st.partPct + '% اتنفذ' : st.key === 'cancelled' ? 'اتلغى' : st.pct + '%') + '</b></div>' +
+'<div class="oc-steps">' + stepHtml + '</div>' +
+'<div class="oc-stats">' + chips.join('') + '</div>' +
+(refunded > 0 ? '<div class="oc-refund"><i class="fas fa-rotate-left"></i> اترجعلك ' + refunded.toFixed(2) + ' ' + cur + ' في رصيدك</div>' : '') +
+'<div class="oc-foot">' + (safeLink ? '<a href="' + escHtml(safeLink) + '" target="_blank" rel="noopener" class="oc-link"><i class="fas fa-link"></i> الرابط</a>' : '<span></span>') +
+'<span class="oc-date"><i class="far fa-clock"></i> ' + dateStr + '</span>' +
+'<span class="oc-total">' + parseFloat(o.total || 0).toFixed(2) + ' ' + cur + '</span></div>' +
+'</div>';
+}).join('') + '</div>';
+container.innerHTML = html;
+container.querySelectorAll('.oc-filter').forEach(b => b.addEventListener('click', () => { myOrdersFilter = b.dataset.f; renderMyOrders(); }));
+}
+async function loadMyOrders(silent) {
 if (!currentProfile) return;
 const container = document.getElementById('myOrdersContainer');
-container.innerHTML = '<div style="text-align:center;padding:3rem;"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#A855F7;"></i></div>';
+if (!silent) container.innerHTML = '<div style="text-align:center;padding:3rem;"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#A855F7;"></i></div>';
+try {
+const { data, error } = await sb.from('orders').select('*').eq('user_id', currentProfile.id).order('created_at', { ascending: false }).limit(300);
+if (error) throw error;
+myOrdersData = data || [];
+renderMyOrders();
+// تحديث تلقائي كل 30 ثانية طول ما العميل فاتح صفحة طلباتي
+clearTimeout(window.__ordersAutoT);
+window.__ordersAutoT = setTimeout(() => { if (window.__currentRoute === 'orders' && document.visibilityState === 'visible') loadMyOrders(true); }, 30000);
+return;
+} catch (e) {
+container.innerHTML = '<div class="empty-orders"><i class="fas fa-exclamation-triangle"></i><p>خطأ: ' + escHtml(e.message) + '</p></div>';
+return;
+}
+}
+async function loadMyOrdersLegacy() {
+const container = document.getElementById('myOrdersContainer');
 try {
 const { data, error } = await sb.from('orders').select('*').eq('user_id', currentProfile.id).order('created_at', { ascending: false });
 if (error) throw error;
@@ -7838,78 +8044,10 @@ userToast('❌ ' + ((serverRes && serverRes.message) || 'تعذر إرسال ا�
 }
 return;
 }
-// السيرفر لسه ما اتفعلش → الخدمات اليدوية تكمل بالطريقة القديمة
 }
-try {
-let newEGP = balEGP, newUSD = balUSD;
-if (currentCurrency === 'EGP') {
-const needEGP = totalToPay;
-if (newEGP >= needEGP) newEGP = round2(newEGP - needEGP);
-else {
-const remaining = needEGP - newEGP;
-newEGP = 0;
-newUSD = round2(newUSD - (remaining / exchangeRate));
-}
-} else {
-const needUSD = totalToPay;
-if (newUSD >= needUSD) newUSD = round2(newUSD - needUSD);
-else {
-const remaining = needUSD - newUSD;
-newUSD = 0;
-newEGP = round2(newEGP - (remaining * exchangeRate));
-}
-}
-if (newEGP < 0) newEGP = 0;
-if (newUSD < 0) newUSD = 0;
-const { error: updErr } = await sb.from('users').update({ balance_egp: newEGP, balance_usd: newUSD }).eq('id', currentProfile.id);
-if (updErr) throw updErr;
-
-const { error: ordErr } = await sb.from('orders').insert({
-user_id: currentProfile.id,
-user_username: currentProfile.username,
-user_name: currentProfile.name,
-service_number: parseInt(serviceNumber) || 0,
-service_name: serviceName,
-quantity: quantity,
-unit: unit,
-price: pricePerBase,
-total: totalToPay,
-currency: currencySymbol,
-link: link,
-status: 'pending'
-});
-if (ordErr) throw ordErr;
-
-let orderId = 0;
-try {
-const { data: latestOrder } = await sb.from('orders').select('id').eq('user_id', currentProfile.id).order('id', { ascending: false }).limit(1).single();
-orderId = latestOrder?.id || 0;
-} catch(e) {}
-
-if (window.registerNewOrder) { try { await window.registerNewOrder(); } catch(e) {} }
-
-const tgMsg = '📋 طلب شراء خدمة\n\n' +
-'🆔 رقم الطلب: #' + orderId + '\n' +
-'🔢 رقم الخدمة: ' + serviceNumber + '\n' +
-'📦 الخدمة: ' + serviceName + '\n' +
-'👤 العميل: ' + currentProfile.name + ' (@' + currentProfile.username + ')\n' +
-'📊 الكمية: ' + quantity + ' ' + unit + '\n' +
-'💰 الإجمالي: ' + totalToPay.toFixed(2) + ' ' + currencyName + '\n' +
-'🔗 الرابط: ' + link;
-
-sendToTelegram(tgMsg, { order_id: orderId, type: 'order' }).catch(err => console.warn('tg error:', err));
-
-await refreshUserUI();
-userToast('✅ تم إرسال طلبك بنجاح! سيتم مراجعته قريباً', 'ok');
-buyBtn.innerHTML = oldHTML;
-buyBtn.disabled = false;
-buyBtn.dataset.processing = '0';
-} catch(err) {
-userToast('❌ خطأ: ' + err.message, 'err');
-buyBtn.innerHTML = oldHTML;
-buyBtn.disabled = false;
-buyBtn.dataset.processing = '0';
-}
+// 🔐 الطلبات بتتعمل من السيرفر بس (هو اللي بيخصم الرصيد) — مفيش أي خصم من المتصفح
+buyBtn.innerHTML = oldHTML; buyBtn.disabled = false; buyBtn.dataset.processing = '0';
+userToast('❌ الخدمة دي غير متاحة للطلب حالياً — تواصل مع الدعم الفني', 'err');
 }, true);
 
 setTimeout(() => {
@@ -8107,7 +8245,7 @@ if (!it.tgt) return;
 const c = it.cur, t = it.tgt;
 for (const k of ['x', 'y', 'z', 'ry', 's', 'o']) {
 const diff = t[k] - c[k];
-if (Math.abs(diff) > (k === 'x' || k === 'z' ? 0.3 : 0.002)) { c[k] += diff * 0.16; moving = true; }
+if (Math.abs(diff) > (k === 'x' || k === 'z' ? 0.3 : 0.002)) { c[k] += diff * (cf.w < 640 ? 0.3 : 0.18); moving = true; }
 else c[k] = t[k];
 }
 it.obj.position.set(c.x, c.y, c.z);
@@ -8132,10 +8270,30 @@ next.addEventListener('click', () => cf.go(Math.round(cf.target) + 1));
 // السحب بالماوس أو بالصباع
 let dragging = false, startX = 0, startPos = 0, pid = null;
 stage.addEventListener('pointerdown', (e) => {
+if (e.pointerType === 'touch') return; // اللمس ليه نظام سريع لوحده تحت
 if (e.button !== undefined && e.button !== 0) return;
 if (e.target.closest(FORM_SEL) && !e.target.closest('.cf-side')) return;
 dragging = true; cf.dragMoved = false; startX = e.clientX; startPos = cf.pos; pid = e.pointerId;
 });
+// 👆 الموبايل: سحبة صغيرة (يمين/شمال) = البطاقة اللي بعدها على طول — من غير ما البطايق تتسحب ببطء ورا الصباع
+let tX = 0, tY = 0, tOn = false;
+stage.addEventListener('touchstart', (e) => {
+if (e.touches.length !== 1) { tOn = false; return; }
+if (e.target.closest(FORM_SEL) && !e.target.closest('.cf-side')) { tOn = false; return; }
+tX = e.touches[0].clientX; tY = e.touches[0].clientY; tOn = true;
+}, { passive: true });
+stage.addEventListener('touchend', (e) => {
+if (!tOn) return;
+tOn = false;
+const t = e.changedTouches[0];
+const dx = t.clientX - tX, dy = t.clientY - tY;
+if (Math.abs(dx) > 28 && Math.abs(dx) > Math.abs(dy) * 1.1) {
+cf.dragMoved = true;
+cf.go(Math.round(cf.target) + (dx > 0 ? 1 : -1));
+setTimeout(() => { cf.dragMoved = false; }, 350);
+}
+}, { passive: true });
+stage.addEventListener('touchcancel', () => { tOn = false; }, { passive: true });
 window.addEventListener('pointermove', (e) => {
 if (!dragging || e.pointerId !== pid) return;
 const dx = e.clientX - startX;
@@ -8776,7 +8934,7 @@ scenes.push(s);
 })();
 
 // ميل 3D لبطايق الخدمات وبطايق الدفع والطلبات (event delegation — تشتغل حتى مع البطايق اللي بتتبني بعدين)
-const TILT_SEL = '.service-card, .payment-selector-card, .order-card, .profile-stat-mini';
+const TILT_SEL = '.service-card, .payment-selector-card, .order-card, .oc3d, .pay-card3d, .profile-stat-mini';
 let tiltEl = null;
 document.addEventListener('pointermove', (e) => {
 if (e.pointerType === 'touch') return;

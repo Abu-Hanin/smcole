@@ -619,8 +619,9 @@ body.is-admin .drawer-links a.drawer-admin-link { display: flex !important; }
 /* ---------- pages offset under top bar ---------- */
 .overlay-page { padding-top: calc(var(--topbar-h) + 22px) !important; background: var(--bg) !important; }
 #adminPanelPage { padding-top: calc(var(--topbar-h) + 18px) !important; padding-bottom: 110px !important; }
-.back-to-top { background: var(--grad) !important; color: #fff !important; border-radius: 16px !important; }
-body.is-admin .back-to-top { bottom: 100px; }
+.back-to-top { background: var(--grad) !important; color: #fff !important; border-radius: 16px !important; z-index: 1575 !important; bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important; }
+@media (max-width: 600px) { .back-to-top { width: 44px !important; height: 44px !important; font-size: 1.15rem !important; right: 14px !important; bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important; border-radius: 14px !important; } }
+body.is-admin .back-to-top { bottom: 100px !important; }
 .welcome-card { border-radius: 28px !important; }
 .welcome-card p { color: #F0ABFC !important; }
 
@@ -1525,6 +1526,13 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .oc3d::before { content: ''; position: absolute; top: 0; right: 18px; left: 18px; height: 3px; border-radius: 0 0 6px 6px; background: var(--st); box-shadow: 0 0 16px var(--st); }
 .oc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .oc-id { font-weight: 900; color: #E9D5FF; background: rgba(168,85,247,0.15); padding: 4px 12px; border-radius: 20px; font-size: .8rem; direction: ltr; }
+.oc-top-r { display: inline-flex; align-items: center; gap: 8px; }
+.oc-again { width: 34px; height: 34px; border-radius: 11px; border: 1px solid rgba(168,85,247,0.45); background: linear-gradient(135deg, rgba(124,58,237,0.35), rgba(236,72,153,0.22)); color: #fff; font-size: .85rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.oc-again:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(124,58,237,0.45); }
+.oc-again:active { transform: scale(.92); }
+.oc3d.st-received { --st: #8B5CF6; }
+.st-received .oc-fill { background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.28) 0 8px, transparent 8px 16px), linear-gradient(90deg, color-mix(in srgb, var(--st) 70%, #fff), var(--st)); background-size: 22px 22px, 100% 100%; animation: ocFill 1.2s cubic-bezier(.2,.9,.3,1) both, ocStripes .8s linear infinite; }
+.svc-focus-close { margin-inline-start: 10px; padding: 5px 12px; border-radius: 10px; border: 1px solid rgba(168,85,247,0.4); background: rgba(255,255,255,0.06); color: #E9D5FF; font-family: inherit; font-weight: 700; font-size: .75rem; cursor: pointer; }
 .oc-badge { font-weight: 800; font-size: .78rem; padding: 5px 12px; border-radius: 20px; color: #fff; background: color-mix(in srgb, var(--st) 22%, transparent); border: 1px solid color-mix(in srgb, var(--st) 55%, transparent); }
 .oc-main { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; transform: translateZ(20px); }
 .oc-ico { width: 48px; height: 48px; flex-shrink: 0; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.25rem; background: linear-gradient(135deg, var(--pc), color-mix(in srgb, var(--pc) 40%, #2A1160)); box-shadow: 0 10px 22px color-mix(in srgb, var(--pc) 40%, transparent); }
@@ -1538,7 +1546,8 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .st-cancelled .oc-fill { background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.25) 0 6px, transparent 6px 12px), linear-gradient(90deg, #F87171, #DC2626); }
 .oc-pct { min-width: 54px; text-align: left; color: #fff; font-size: .8rem; direction: rtl; }
 .oc-steps { display: flex; align-items: center; margin-bottom: 12px; }
-.oc-step { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 64px; }
+.oc-step { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 58px; }
+@media (max-width: 420px) { .oc-step { min-width: 50px; } .oc-step small { font-size: .6rem !important; } .oc-step span { width: 28px !important; height: 28px !important; } }
 .oc-step span { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .8rem; color: #8B84B5; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); transition: .3s; }
 .oc-step small { font-size: .66rem; color: #8B84B5; white-space: nowrap; }
 .oc-step.done span { background: var(--st); color: #fff; border-color: transparent; box-shadow: 0 0 12px color-mix(in srgb, var(--st) 60%, transparent); }
@@ -1608,6 +1617,11 @@ margin: 0 !important; display: inline-block; direction: ltr; position: relative;
 .hero-brand { font-size: clamp(2.5rem, 7.4vw, 4.6rem) !important; }
 .page-brand { font-size: clamp(2rem, 5.6vw, 3.2rem) !important; }
 .sec-head .brand3d { margin: 14px auto 14px; }
+/* صفحة الخدمات: الاسم لوحده (من غير المكعب) وزرار "الخدمات" تحته على طول */
+.svc-brand { display: flex; justify-content: center; margin: 10px auto 8px; }
+.svc-brand .page-brand { font-size: clamp(2.4rem, 6.4vw, 4.6rem) !important; }
+.sec-head .svc-kicker { margin-top: 0; margin-bottom: 14px; }
+@media (min-width: 900px) { .svc-brand .page-brand { font-size: 4.8rem !important; } }
 .sec-head .brand-cube { --s: 46px; }
 @media (max-width: 600px) { .brand-cube { --s: 44px; } .sec-head .brand-cube { --s: 38px; } .brand3d { gap: 12px; } }
 @media (prefers-reduced-motion: reduce) { .brand3d, .brand-cube, .hero-brand, .page-brand { animation: none !important; } }
@@ -1789,13 +1803,13 @@ body { background-attachment: scroll !important; }
 <a href="#" id="adminPanelMenuLink" class="drawer-admin-link"><span class="dl-ico"><i class="fas fa-user-shield"></i></span><span class="dl-txt">لوحة الأدمن<small>إدارة الموقع بالكامل</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="homeMenuLink"><span class="dl-ico"><i class="fas fa-house"></i></span><span class="dl-txt">الرئيسية<small>تعرف على خدماتنا</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="servicesMenuLink"><span class="dl-ico"><i class="fas fa-rocket"></i></span><span class="dl-txt">الخدمات<small>اطلب متابعين ولايكات ومشاهدات</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="profileMenuLink"><span class="dl-ico"><i class="fas fa-user-circle"></i></span><span class="dl-txt">الملف الشخصي<small>بياناتك ورصيدك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="myOrdersLink"><span class="dl-ico"><i class="fas fa-receipt"></i></span><span class="dl-txt">طلباتي<small>تابع حالة طلباتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="depositMenuLink"><span class="dl-ico"><i class="fas fa-wallet"></i></span><span class="dl-txt">طرق الإيداع<small>اشحن رصيدك بسهولة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="myOrdersLink"><span class="dl-ico"><i class="fas fa-receipt"></i></span><span class="dl-txt">الطلبات<small>تابع حالة طلباتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="favoritesLink"><span class="dl-ico"><i class="fas fa-heart"></i></span><span class="dl-txt">المفضلة<small>خدماتك المحفوظة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="depositMenuLink"><span class="dl-ico"><i class="fas fa-wallet"></i></span><span class="dl-txt">طرق الدفع والإيداع<small>اشحن رصيدك بسهولة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="supportDropdownLink"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="notifMenuLink" class="user-only"><span class="dl-ico"><i class="fas fa-bell"></i></span><span class="dl-txt">الإشعارات<small>تحديثات طلباتك وإيداعاتك</small></span><b class="dl-badge" id="drawerNotifBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="termsLink"><span class="dl-ico"><i class="fas fa-file-alt"></i></span><span class="dl-txt">شروط الخدمة<small>السياسات والأحكام</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="profileMenuLink"><span class="dl-ico"><i class="fas fa-user-circle"></i></span><span class="dl-txt">الملف الشخصي<small>بياناتك ورصيدك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" class="drawer-login-link guest-only" data-auth-open="login"><span class="dl-ico"><i class="fas fa-right-to-bracket"></i></span><span class="dl-txt">تسجيل الدخول<small>ادخل لحسابك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" class="drawer-login-link guest-only" data-auth-open="register"><span class="dl-ico"><i class="fas fa-user-plus"></i></span><span class="dl-txt">إنشاء حساب جديد<small>سجّل مجاناً في أقل من دقيقة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="logoutMenuLink" class="drawer-logout-link user-only"><span class="dl-ico"><i class="fas fa-right-from-bracket"></i></span><span class="dl-txt">تسجيل الخروج<small>الخروج من حسابك</small></span></a>
@@ -1956,6 +1970,11 @@ body { background-attachment: scroll !important; }
 <div class="step-list"><div class="step-card"><div class="step-number">1</div> اختر الوسيلة المناسبة</div><div class="step-card"><div class="step-number">2</div> حوّل المبلغ على الرقم/العنوان</div><div class="step-card"><div class="step-number">3</div> احتفظ بلقطة شاشة للتحويل</div><div class="step-card"><div class="step-number">4</div> املأ البيانات واضغط تأكيد</div><div class="step-card"><div class="step-number">5</div> سيتم مراجعة طلبك خلال 24 ساعة</div></div>
 <h2><i class="fas fa-info-circle"></i> ملاحظات مهمة</h2>
 <div class="note-box"><ul style="margin:0"><li>جميع المدفوعات تتم بشكل آمن.</li><li>يبدأ تنفيذ الطلب بعد تأكيد الدفع فقط.</li><li>يُرجى التأكد من صحة بيانات الطلب قبل الدفع.</li><li>جميع المدفوعات بعد التأكيد تعتبر نهائية وغير قابلة للاسترداد.</li></ul></div>
+<!-- سجل كل الإيداعات (كل طرق الدفع في مكان واحد) — للعميل المسجل بس -->
+<div class="tx-log-section" id="payTxLog" style="display:none;">
+<h3><i class="fas fa-history"></i> سجل معاملات الإيداع</h3>
+<div id="txLogContainer"><div style="text-align:center;padding:2rem;color:#848E9C;"><i class="fas fa-spinner fa-spin"></i></div></div>
+</div>
 </div>
 </div>
 
@@ -2147,8 +2166,8 @@ body { background-attachment: scroll !important; }
 <div id="servicesPage" class="overlay-page">
 <div class="services-page-inner">
 <div class="sec-head">
-<div class="brand3d"><span class="brand-cube" aria-hidden="true"><span class="bf f1"><i class="fas fa-bolt"></i></span><span class="bf f2"><i class="fab fa-facebook-f"></i></span><span class="bf f3"><i class="fab fa-instagram"></i></span><span class="bf f4"><i class="fab fa-tiktok"></i></span><span class="bf f5"><i class="fab fa-youtube"></i></span><span class="bf f6"><i class="fab fa-telegram"></i></span></span><span class="page-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
-<span class="sec-kicker"><i class="fas fa-rocket"></i> الخدمات</span>
+<div class="svc-brand"><span class="page-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
+<span class="sec-kicker svc-kicker"><i class="fas fa-rocket"></i> الخدمات</span>
 <h2>اختر <span class="grad">خدمتك</span> واطلب الآن</h2>
 <p>⭐ اختر الخدمات ذات الضمان — <b>ضمان 30 يوم</b> و <b>ضمان 365 يوم</b></p>
 </div>
@@ -2505,10 +2524,6 @@ body { background-attachment: scroll !important; }
 </form>
 </div>
 
-<div class="tx-log-section">
-<h3><i class="fas fa-history"></i> سجل معاملات الإيداع</h3>
-<div id="txLogContainer"><div style="text-align:center;padding:2rem;color:#848E9C;"><i class="fas fa-spinner fa-spin"></i></div></div>
-</div>
 </div>
 </div>
 
@@ -3645,6 +3660,7 @@ window.__currentDepositMethod = method;
 
 function routeToPage(routeName) {
 document.body.setAttribute('data-route', routeName);
+if (window.__btUpdate) setTimeout(window.__btUpdate, 60);
 if (routeName !== 'admin-login' && routeName !== 'admin-panel') {
 const al = document.getElementById('adminLoginPage');
 const ap = document.getElementById('adminPanelPage');
@@ -3655,7 +3671,12 @@ if (routeName === 'home') setPageVisibility(null);
 else if (routeName === 'services') { setPageVisibility(servicesPage); if (window.__cfRefreshAll) setTimeout(() => window.__cfRefreshAll(), 30); }
 else if (routeName === 'support' && window.currentProfile) { setPageVisibility(supportPage); if (window.__onSupportOpen) window.__onSupportOpen(); }
 else if (routeName === 'terms') setPageVisibility(termsPage);
-else if (routeName === 'payment') setPageVisibility(paymentPage);
+else if (routeName === 'payment') {
+setPageVisibility(paymentPage);
+const txBox = document.getElementById('payTxLog');
+if (txBox) txBox.style.display = window.currentProfile ? '' : 'none';
+if (window.currentProfile && window.loadUserTransactions) window.loadUserTransactions();
+}
 else if (routeName === 'favorites') { setPageVisibility(favoritesPage); renderFavoritesPage(); }
 else if (routeName === 'profile' && window.currentProfile) {
 setPageVisibility(profilePage);
@@ -3829,11 +3850,23 @@ catch (e) { const ta = document.createElement('textarea'); ta.value = url; docum
 if (window.userToast) window.userToast('🔗 تم نسخ رابط الموقع: ' + url, 'ok');
 });
 const backToTopBtn = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-if (window.scrollY > 300) backToTopBtn.classList.add('show');
-else backToTopBtn.classList.remove('show');
+// السهم بيشتغل في الرئيسية وفي صفحة الخدمات (صفحة الخدمات ليها scroll خاص بيها)
+const servicesScroller = document.getElementById('servicesPage');
+function btScroller() { return (window.__currentRoute === 'services' || document.body.getAttribute('data-route') === 'services') && servicesScroller && servicesScroller.style.display !== 'none' ? servicesScroller : null; }
+function btUpdate() {
+const sc = btScroller();
+const route = document.body.getAttribute('data-route') || 'home';
+const allowed = route === 'home' || route === 'services';
+const y = sc ? sc.scrollTop : window.scrollY;
+backToTopBtn.classList.toggle('show', allowed && y > 300);
+}
+window.addEventListener('scroll', btUpdate, { passive: true });
+if (servicesScroller) servicesScroller.addEventListener('scroll', btUpdate, { passive: true });
+backToTopBtn.addEventListener('click', () => {
+const sc = btScroller();
+if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' }); else window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+window.__btUpdate = btUpdate;
 let searchTimeout;
 document.getElementById('searchInput').addEventListener('input', function(e) {
 clearTimeout(searchTimeout);
@@ -4155,6 +4188,7 @@ sliderDiv.appendChild(frag);
 section.appendChild(sliderDiv);
 return section;
 }
+window.__buildCardsSection = buildCardsSection;
 function closeOpenCategory() {
 if (!openCatKey) return;
 const f = document.querySelector('.cat-folder[data-key="' + CSS.escape(openCatKey) + '"]');
@@ -4253,6 +4287,7 @@ const sum = document.getElementById('catSummary');
 const noMsg = document.getElementById('noResultsMsg');
 if (!box || !list) return;
 if (searchSection && window.__cfDrop) { window.__cfDrop(searchSection); searchSection = null; }
+if (window.__svcFocusSec && window.__cfDrop) { window.__cfDrop(window.__svcFocusSec); window.__svcFocusSec = null; }
 box.innerHTML = '';
 if (!term) { box.style.display = 'none'; list.style.display = ''; if (sum) sum.style.display = ''; if (noMsg) noMsg.style.display = 'none'; return; }
 closeOpenCategory();
@@ -4414,30 +4449,44 @@ alert(msg);
 };
 document.getElementById('installPwaBtn')?.addEventListener('click', () => window.__installApp());
 
-// إشعار "حمّل التطبيق" (3D) — بيظهر للعميل المسجل من وقت للتاني لحد ما يثبّت التطبيق
-window.__maybeShowAppPrompt = function () {
+// إشعار "حمّل التطبيق" (3D) — بيظهر لأي حد مش مثبّت التطبيق (زائر أو عميل)
+// في الرئيسية وصفحة الخدمات بس، وبيرجع يظهر كل شوية لحد ما يثبّته
+const APP_PROMPT_ROUTES = ['home', 'services'];
+const APP_PROMPT_SNOOZE = 15 * 60 * 1000; // لو قفله يرجع بعد ربع ساعة
+function appPromptAllowed() {
+if (window.isAppInstalled()) return false;
+if (document.body.classList.contains('is-admin')) return false;
+if (!APP_PROMPT_ROUTES.includes(document.body.getAttribute('data-route') || 'home')) return false;
+const auth = document.getElementById('authModalBg');
+if (auth && auth.classList.contains('show')) return false;
+const push = document.getElementById('pushPrompt');
+if (push && push.classList.contains('show')) return false;
+let snooze = 0; try { snooze = parseInt(localStorage.getItem('smcole_app_prompt_snooze') || '0', 10); } catch (e) {}
+return Date.now() >= snooze;
+}
+window.__maybeShowAppPrompt = function (delay) {
 const card = document.getElementById('appPrompt');
 if (!card || window.isAppInstalled()) return;
-if (document.body.classList.contains('is-guest')) return;
-let snooze = 0; try { snooze = parseInt(localStorage.getItem('smcole_app_prompt_snooze') || '0', 10); } catch (e) {}
-if (Date.now() < snooze) return;
 clearTimeout(window.__appPromptT);
-window.__appPromptT = setTimeout(() => {
-// منظهرش فوق كارت الإشعارات أو جوه الشات
-const push = document.getElementById('pushPrompt');
-if (push && push.classList.contains('show')) { window.__maybeShowAppPrompt(); return; }
-if (window.isAppInstalled() || document.body.getAttribute('data-route') === 'support') return;
-card.classList.add('show');
-}, 25000);
+window.__appPromptT = setTimeout(() => { if (appPromptAllowed()) card.classList.add('show'); }, delay == null ? 12000 : delay);
 };
 (function () {
 const card = document.getElementById('appPrompt');
 if (!card) return;
 const hide = (snoozeMs) => { card.classList.remove('show'); try { localStorage.setItem('smcole_app_prompt_snooze', String(Date.now() + snoozeMs)); } catch (e) {} };
-document.getElementById('appPromptInstall').addEventListener('click', async () => { hide(6 * 3600 * 1000); await window.__installApp(); });
-document.getElementById('appPromptLater').addEventListener('click', () => hide(2 * 3600 * 1000)); // يرجع بعد ساعتين
-document.getElementById('appPromptClose').addEventListener('click', () => hide(2 * 3600 * 1000));
+document.getElementById('appPromptInstall').addEventListener('click', async () => { hide(APP_PROMPT_SNOOZE); await window.__installApp(); });
+document.getElementById('appPromptLater').addEventListener('click', () => hide(APP_PROMPT_SNOOZE));
+document.getElementById('appPromptClose').addEventListener('click', () => hide(APP_PROMPT_SNOOZE));
 window.isAppInstalled();
+// كل ما يدخل الرئيسية أو الخدمات → يظهر بعد شوية — ولو خرج منهم يستخبى
+new MutationObserver(() => {
+const r = document.body.getAttribute('data-route') || 'home';
+if (!APP_PROMPT_ROUTES.includes(r)) { card.classList.remove('show'); clearTimeout(window.__appPromptT); }
+else if (!card.classList.contains('show')) window.__maybeShowAppPrompt();
+}).observe(document.body, { attributes: true, attributeFilter: ['data-route'] });
+// وكمان بيتشيّك كل دقيقة (لو فضل في نفس الصفحة وخلص وقت التأجيل)
+setInterval(() => { if (!card.classList.contains('show') && appPromptAllowed()) card.classList.add('show'); }, 60000);
+window.__maybeShowAppPrompt();
 })();
 if ('serviceWorker' in navigator) {
 let swRefreshing = false;
@@ -6841,15 +6890,18 @@ document.getElementById('supportFab').addEventListener('click', () => window.ope
 // يستخبى وانت بتنزل في الصفحة ويرجع لما تطلع أو تقف (عشان ميغطيش على المحتوى في الموبايل)
 (function () {
 const fab = document.getElementById('supportFab');
-let lastY = window.scrollY, idle = null;
-window.addEventListener('scroll', () => {
-const y = window.scrollY;
+let lastY = 0, idle = null;
+const onScroll = (e) => {
+const t = e && e.target && e.target.nodeType === 1 ? e.target : null;
+const y = t ? t.scrollTop : window.scrollY;
 if (y > lastY + 6 && y > 120) fab.classList.add('fab-hide');
 else if (y < lastY - 6) fab.classList.remove('fab-hide');
 lastY = y;
 clearTimeout(idle);
 idle = setTimeout(() => fab.classList.remove('fab-hide'), 900);
-}, { passive: true });
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+document.querySelectorAll('.overlay-page').forEach(p => p.addEventListener('scroll', onScroll, { passive: true }));
 })();
 window.openSupportChat = function () {
 if (!currentProfile) { if (currentUser) userToast('⚠️ الدعم الفني متاح لحسابات العملاء', 'warn'); else showAuthModal('login'); return; }
@@ -7390,26 +7442,30 @@ const refunded = parseFloat(o.refunded || 0);
 const qty = Number(o.quantity) || 0;
 const remains = o.remains !== null && o.remains !== undefined ? Number(o.remains) : null;
 const delivered = qty && remains !== null ? Math.max(0, Math.min(qty, qty - remains)) : null;
-if (o.status === 'cancelled') return { key: 'cancelled', label: '❌ ملغي', pct: 100, step: 3, delivered };
-if (o.status === 'completed' && refunded > 0) return { key: 'partial', label: '⚠️ مكتمل جزئياً', pct: 100, step: 3, delivered, partPct: qty ? Math.round((delivered ?? 0) / qty * 100) : null };
-if (o.status === 'completed') return { key: 'completed', label: '✅ مكتمل', pct: 100, step: 3, delivered: delivered ?? qty };
+// 4 مراحل: قيد الانتظار → تم الاستلام → جاري التنفيذ → (مكتمل / مكتمل جزئياً / ملغي)
+if (o.status === 'cancelled') return { key: 'cancelled', label: '❌ ملغي', pct: 100, step: 4, delivered };
+if (o.status === 'completed' && refunded > 0) return { key: 'partial', label: '⚠️ مكتمل جزئياً', pct: 100, step: 4, delivered, partPct: qty ? Math.round((delivered ?? 0) / qty * 100) : null };
+if (o.status === 'completed') return { key: 'completed', label: '✅ مكتمل', pct: 100, step: 4, delivered: delivered ?? qty };
 if (o.status === 'processing') {
+// المزود استلم الطلب بس لسه مبدأش (Pending عنده)
+const ps = String(o.provider_status || '').toLowerCase();
+if (ps === 'pending' && !(delivered > 0)) return { key: 'received', label: '📥 تم الاستلام', pct: 35, step: 2, delivered };
 const live = delivered !== null && qty ? delivered / qty : null;
-return { key: 'processing', label: '🔄 جاري التنفيذ', pct: live !== null ? Math.max(38, Math.min(96, Math.round(30 + live * 66))) : 55, step: 2, delivered };
+return { key: 'processing', label: '🔄 جاري التنفيذ', pct: live !== null ? Math.max(52, Math.min(96, Math.round(50 + live * 46))) : 62, step: 3, delivered };
 }
-return { key: 'pending', label: '⏳ قيد المعالجة', pct: 16, step: 1, delivered };
+return { key: 'pending', label: '⏳ قيد الانتظار', pct: 12, step: 1, delivered };
 }
 function renderMyOrders() {
 const container = document.getElementById('myOrdersContainer');
 if (!container) return;
 const counts = { all: myOrdersData.length, active: 0, completed: 0, cancelled: 0 };
-myOrdersData.forEach(o => { const s = orderState(o).key; if (s === 'pending' || s === 'processing') counts.active++; else if (s === 'cancelled') counts.cancelled++; else counts.completed++; });
+myOrdersData.forEach(o => { const s = orderState(o).key; if (s === 'pending' || s === 'received' || s === 'processing') counts.active++; else if (s === 'cancelled') counts.cancelled++; else counts.completed++; });
 const tabs = [['all', 'الكل'], ['active', 'جاري'], ['completed', 'مكتمل'], ['cancelled', 'ملغي']];
 let html = '<div class="oc-filters">' + tabs.map(t => '<button type="button" class="oc-filter' + (myOrdersFilter === t[0] ? ' on' : '') + '" data-f="' + t[0] + '">' + t[1] + ' <b>' + counts[t[0]] + '</b></button>').join('') + '</div>';
 const list = myOrdersData.filter(o => {
 if (myOrdersFilter === 'all') return true;
 const s = orderState(o).key;
-if (myOrdersFilter === 'active') return s === 'pending' || s === 'processing';
+if (myOrdersFilter === 'active') return s === 'pending' || s === 'received' || s === 'processing';
 if (myOrdersFilter === 'cancelled') return s === 'cancelled';
 return s === 'completed' || s === 'partial';
 });
@@ -7426,10 +7482,10 @@ const dateStr = o.created_at ? new Date(o.created_at).toLocaleString('ar-EG', { 
 const qty = Number(o.quantity) || 0;
 const lastLbl = st.key === 'cancelled' ? 'ملغي' : st.key === 'partial' ? 'مكتمل جزئياً' : 'مكتمل';
 const lastIco = st.key === 'cancelled' ? 'fa-ban' : st.key === 'partial' ? 'fa-circle-half-stroke' : 'fa-flag-checkered';
-const steps = [['fa-inbox', 'تم الاستلام'], ['fa-gears', 'جاري التنفيذ'], [lastIco, lastLbl]];
+const steps = [['fa-hourglass-start', 'قيد الانتظار'], ['fa-inbox', 'تم الاستلام'], ['fa-gears', 'جاري التنفيذ'], [lastIco, lastLbl]];
 const stepHtml = steps.map((s, k) => {
 const n = k + 1;
-const cls = n < st.step ? 'done' : n === st.step ? (st.key === 'cancelled' && n === 3 ? 'fail' : (st.key === 'completed' || st.key === 'partial') && n === 3 ? 'done' : 'active') : '';
+const cls = n < st.step ? 'done' : n === st.step ? (st.key === 'cancelled' && n === 4 ? 'fail' : (st.key === 'completed' || st.key === 'partial') && n === 4 ? 'done' : 'active') : '';
 return '<div class="oc-step ' + cls + '"><span><i class="fas ' + s[0] + '"></i></span><small>' + s[1] + '</small></div>';
 }).join('<i class="oc-step-line"></i>');
 const chips = [];
@@ -7440,7 +7496,8 @@ if (o.remains !== null && o.remains !== undefined && (st.key === 'processing' ||
 const refunded = parseFloat(o.refunded || 0);
 const safeLink = /^https?:\/\//i.test(o.link || '') ? o.link : '';
 return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st.pct + '%;animation-delay:' + Math.min(i, 8) * 60 + 'ms">' +
-'<div class="oc-top"><span class="oc-id">#' + o.id + '</span><span class="oc-badge">' + st.label + '</span></div>' +
+'<div class="oc-top"><span class="oc-id">#' + o.id + '</span><span class="oc-top-r"><span class="oc-badge">' + st.label + '</span>' +
+'<button type="button" class="oc-again" data-svc="' + escHtml(String(o.service_id || '')) + '" title="اطلب نفس الخدمة تاني" aria-label="اطلب نفس الخدمة تاني"><i class="fas fa-right-left"></i></button></span></div>' +
 '<div class="oc-main"><div class="oc-ico"><i class="' + icon + '"></i></div><div class="oc-name">' + escHtml(o.service_name || '-') + '</div></div>' +
 '<div class="oc-progress"><div class="oc-bar"><span class="oc-fill"></span></div><b class="oc-pct">' + (st.key === 'partial' && st.partPct !== null ? st.partPct + '% اتنفذ' : st.key === 'cancelled' ? 'اتلغى' : st.pct + '%') + '</b></div>' +
 '<div class="oc-steps">' + stepHtml + '</div>' +
@@ -7453,7 +7510,36 @@ return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st
 }).join('') + '</div>';
 container.innerHTML = html;
 container.querySelectorAll('.oc-filter').forEach(b => b.addEventListener('click', () => { myOrdersFilter = b.dataset.f; renderMyOrders(); }));
+container.querySelectorAll('.oc-again').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); window.__reorderService(b.dataset.svc); }));
 }
+// 🔁 اطلب تاني: يفتح صفحة الخدمات على نفس الخدمة بالظبط (من غير بحث) — والعميل يكتب الرابط والكمية الجديدة
+window.__reorderService = function (svcId) {
+const svc = (window.__svcAll || []).find(s => String(s.dbId) === String(svcId));
+if (!svc) { userToast('⚠️ الخدمة دي مش متاحة حالياً — اختار خدمة تانية من صفحة الخدمات', 'warn'); return; }
+window.__navigateTo('services', document.getElementById('servicesPage'), true);
+setTimeout(() => {
+const box = document.getElementById('svcSearchResults');
+const list = document.getElementById('catList');
+const sum = document.getElementById('catSummary');
+const input = document.getElementById('searchInput');
+if (!box || !list) return;
+if (input) input.value = '';
+if (window.__svcSearch) window.__svcSearch('');
+list.style.display = 'none'; if (sum) sum.style.display = 'none';
+box.innerHTML = '';
+box.style.display = '';
+const sec = window.__buildCardsSection([svc], svc.platform, '<i class="fas fa-right-left"></i> اطلب تاني — نفس الخدمة <button type="button" class="svc-focus-close"><i class="fas fa-layer-group"></i> كل الخدمات</button>');
+window.__svcFocusSec = sec;
+box.appendChild(sec);
+if (window.__cfMake) window.__cfMake(sec);
+sec.querySelector('.svc-focus-close').addEventListener('click', () => { if (window.__cfDrop) window.__cfDrop(sec); window.__svcFocusSec = null; window.__svcSearch(''); });
+const page = document.getElementById('servicesPage');
+setTimeout(() => {
+const top = box.getBoundingClientRect().top + page.scrollTop - 90;
+page.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}, 120);
+}, 120);
+};
 async function loadMyOrders(silent) {
 if (!currentProfile) return;
 const container = document.getElementById('myOrdersContainer');

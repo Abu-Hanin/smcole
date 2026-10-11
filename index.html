@@ -914,6 +914,50 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .admin-table th { color: #D8B4FE !important; }
 .admin-modal-bg { z-index: 2600 !important; }
 .admin-modal { background: linear-gradient(160deg, #1A1233, #0E0919) !important; }
+/* كروت الإحصائيات اللي بتتضغط (فلتر) */
+.admin-stats-click .admin-stat-box { cursor: pointer; text-align: inherit; font-family: inherit; color: inherit; transition: transform .2s, border-color .2s, box-shadow .2s; }
+.admin-stats-click .admin-stat-box:hover { transform: translateY(-2px); border-color: rgba(168,85,247,0.55) !important; }
+.admin-stats-click .admin-stat-box.active { border-color: #A855F7 !important; box-shadow: 0 0 0 1px #A855F7, 0 10px 26px rgba(124,58,237,0.35); }
+.admin-stats-click .admin-stat-box.active .lbl { color: #E9D5FF; }
+/* ☑️ تحديد الكل + أوامر جماعية للخدمات */
+.svc-bulk-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 10px 14px; margin-bottom: 12px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(168,85,247,0.2); }
+.svc-bulk-bar.has-sel { background: rgba(124,58,237,0.12); border-color: rgba(168,85,247,0.55); }
+.svc-check-all { display: inline-flex; align-items: center; gap: 8px; color: #E9D5FF; font-weight: 800; font-size: .82rem; cursor: pointer; }
+.svc-check-all input, .svc-chk { width: 18px; height: 18px; accent-color: #A855F7; cursor: pointer; }
+.svc-bulk-count { color: #C4B5FD; font-weight: 800; font-size: .8rem; }
+.svc-bulk-actions { display: none; gap: 8px; flex-wrap: wrap; margin-inline-start: auto; }
+.svc-bulk-bar.has-sel .svc-bulk-actions { display: flex; }
+.svc-bulk-actions .admin-btn { padding: 8px 12px; font-size: .78rem; }
+.admin-btn.danger { background: linear-gradient(135deg, #EF4444, #B91C1C) !important; color: #fff !important; border: none; }
+.svc-chk-col { width: 34px; text-align: center; }
+#adminTableBody tr.sel { background: rgba(124,58,237,0.14) !important; }
+.admin-platform-tabs.flash { animation: tabsFlash 1.2s ease; border-radius: 16px; }
+@keyframes tabsFlash { 0%, 100% { box-shadow: none; } 30% { box-shadow: 0 0 0 2px #A855F7, 0 0 24px rgba(168,85,247,0.6); } }
+/* 💰 كارت ربح الموقع */
+.profit-card { display: flex; align-items: center; gap: 14px; padding: 16px 18px; margin-bottom: 16px; border-radius: 22px; background: radial-gradient(260px 120px at 100% 0%, rgba(34,197,94,0.22), transparent 70%), linear-gradient(160deg, #13261C, #0E0919 70%); border: 1px solid rgba(34,197,94,0.35); }
+.pf-ico { width: 52px; height: 52px; border-radius: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #fff; background: linear-gradient(135deg, #22C55E, #15803D); box-shadow: 0 10px 22px rgba(34,197,94,0.35); }
+.pf-info { flex: 1; min-width: 0; }
+.pf-lbl { color: #BBF7D0; font-weight: 800; font-size: .85rem; }
+.pf-lbl small { color: #86EFAC; font-weight: 600; }
+.pf-val { color: #fff; font-weight: 900; font-size: 1.6rem; direction: ltr; text-align: right; line-height: 1.3; }
+.pf-val.neg, .pf-n.neg { color: #F87171 !important; }
+.pf-sub { color: #A7C4B5; font-size: .72rem; }
+.pf-btn { flex-shrink: 0; }
+@media (max-width: 600px) { .profit-card { flex-wrap: wrap; } .pf-btn { width: 100%; justify-content: center; } }
+.profit-modal { position: relative; max-width: 560px !important; }
+.profit-modal h3 { color: #fff; margin-bottom: 6px; }
+.pm-close { position: absolute; top: 14px; left: 14px; width: 34px; height: 34px; border-radius: 11px; background: rgba(255,255,255,0.08); color: #fff; border: none; cursor: pointer; }
+.pm-note { color: #A59CC9; font-size: .74rem; margin-bottom: 12px; line-height: 1.7; }
+.pf-total { padding: 10px 14px; border-radius: 14px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #BBF7D0; margin-bottom: 10px; }
+.pf-total b { color: #fff; direction: ltr; display: inline-block; }
+.pf-row { display: grid; grid-template-columns: 96px 1fr 130px; gap: 10px; align-items: center; padding: 8px 4px; border-bottom: 1px dashed rgba(255,255,255,0.07); }
+.pf-m { color: #E9D5FF; font-weight: 700; font-size: .82rem; }
+.pf-bar { height: 10px; border-radius: 8px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.pf-bar span { display: block; height: 100%; border-radius: 8px; background: linear-gradient(90deg, #22C55E, #86EFAC); }
+.pf-bar span.neg { background: linear-gradient(90deg, #DC2626, #F87171); }
+.pf-n { color: #fff; font-weight: 800; font-size: .85rem; direction: ltr; text-align: right; display: flex; flex-direction: column; }
+.pf-n small { color: #8B84B5; font-weight: 600; font-size: .62rem; direction: rtl; }
+@media (max-width: 520px) { .pf-row { grid-template-columns: 80px 1fr; } .pf-n { grid-column: 1 / -1; text-align: left; } }
 .admin-toast { z-index: 99990 !important; bottom: 100px !important; }
 .admin-bottom-nav { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%) translateY(140%); width: min(640px, calc(100% - 20px)); display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 8px; border-radius: 24px; background: rgba(18,12,34,0.88); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); border: 1px solid rgba(168,85,247,0.4); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03) inset; z-index: 1600; transition: transform .5s cubic-bezier(.2,.9,.2,1); }
 body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
@@ -1491,8 +1535,24 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 #servicesPage .icon-circle::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,0.28), transparent 55%); pointer-events: none; }
 #servicesPage .icon-circle::after { position: absolute; top: calc(100% + 5px); left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: .66rem; font-weight: 800; color: #CFC6F2; font-family: Cairo, sans-serif; }
 #servicesPage .icon-circle:hover { transform: translateY(-3px) scale(1.04); filter: brightness(1.1); background: linear-gradient(145deg, var(--b1), var(--b2)) !important; }
-#servicesPage .icon-circle.active { background: linear-gradient(145deg, var(--b1), var(--b2)) !important; transform: translateY(-3px) scale(1.06); box-shadow: 0 0 0 2.5px #fff, 0 0 0 5px var(--b1), 0 14px 28px color-mix(in srgb, var(--b1) 55%, transparent) !important; }
-#servicesPage .icon-circle.active::after { color: #fff; }
+/* ✨ 3D + لمعة: بلاطة بسُمك + لمعة بتعدي عليها كل شوية (هادية) */
+#servicesPage .platform-icons { perspective: 600px; }
+#servicesPage .icon-circle { transform-style: preserve-3d; outline: none !important; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--b1) 38%, transparent), 0 4px 0 color-mix(in srgb, var(--b2) 75%, #000), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -6px 12px rgba(0,0,0,0.25) !important;
+  animation: pfFloat 5s ease-in-out infinite; }
+#servicesPage .icon-circle:nth-child(2n) { animation-delay: -1.2s; } #servicesPage .icon-circle:nth-child(3n) { animation-delay: -2.4s; }
+@keyframes pfFloat { 0%, 100% { transform: rotateX(8deg) rotateY(-8deg); } 50% { transform: rotateX(4deg) rotateY(8deg) translateY(-2px); } }
+#servicesPage .icon-circle i { position: relative; z-index: 1; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35)); }
+#servicesPage .icon-circle::before { background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.5) 48%, transparent 62%), linear-gradient(180deg, rgba(255,255,255,0.28), transparent 55%) !important; background-size: 260% 100%, 100% 100% !important; background-repeat: no-repeat !important; animation: pfShine 4.5s ease-in-out infinite; z-index: 2; }
+#servicesPage .icon-circle:nth-child(2n)::before { animation-delay: 1.5s; } #servicesPage .icon-circle:nth-child(3n)::before { animation-delay: 3s; }
+@keyframes pfShine { 0%, 60% { background-position: 130% 0, 0 0; } 100% { background-position: -40% 0, 0 0; } }
+#servicesPage .icon-circle:focus, #servicesPage .icon-circle:focus-visible { outline: none !important; }
+/* المنصة المختارة: بتتنطط لقدام وتنوّر بلونها + خط تحت الاسم — والباقي بيبهت سنة (من غير إطار) */
+#servicesPage .platform-icons.has-active .icon-circle:not(.active) { filter: saturate(0.55) brightness(0.72); opacity: .75; }
+#servicesPage .icon-circle.active { background: linear-gradient(145deg, var(--b1), var(--b2)) !important; animation: none; transform: translateY(-6px) scale(1.12) !important; filter: brightness(1.12) !important;
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--b1) 70%, transparent), 0 0 26px color-mix(in srgb, var(--b1) 55%, transparent), 0 5px 0 color-mix(in srgb, var(--b2) 75%, #000), inset 0 1px 0 rgba(255,255,255,0.5) !important; }
+#servicesPage .icon-circle.active::after { color: #fff; font-weight: 900; padding-bottom: 3px; background: linear-gradient(var(--b1), var(--b1)) no-repeat center bottom / 70% 3px; border-radius: 2px; }
+#servicesPage .icon-circle[data-target="instagram"].active { background: linear-gradient(45deg, #FEDA75, #FA7E1E 25%, #D62976 50%, #962FBF 75%, #4F5BD5) !important; }
 #servicesPage .icon-circle[data-target="facebook"] { --b1: #1877F2; --b2: #0B4FB3; } #servicesPage .icon-circle[data-target="facebook"]::after { content: 'فيسبوك'; }
 #servicesPage .icon-circle[data-target="youtube"] { --b1: #FF2D2D; --b2: #B30000; } #servicesPage .icon-circle[data-target="youtube"]::after { content: 'يوتيوب'; }
 #servicesPage .icon-circle[data-target="tiktok"] { --b1: #2B2B2B; --b2: #000; text-shadow: -2px -1px 0 #25F4EE, 2px 1px 0 #FE2C55; } #servicesPage .icon-circle[data-target="tiktok"]::after { content: 'تيك توك'; text-shadow: none; }
@@ -1943,6 +2003,10 @@ body { background-attachment: scroll !important; }
 <p>صلوا على النبي</p>
 </div>
 </div>
+<script>
+// "صلوا على النبي" بتظهر مرة واحدة بس أول ما العميل يفتح الموقع — مش مع كل تنقل أو تحديث
+try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('welcomeOverlay').style.display = 'none'; else sessionStorage.setItem('smcole_welcomed', '1'); } catch (e) {}
+</script>
 <!-- ============ TOP BAR ============ -->
 <header class="sm-topbar" id="smTopbar">
 <div class="sm-topbar-inner">
@@ -2432,7 +2496,7 @@ body { background-attachment: scroll !important; }
 <input type="text" id="regUsername" placeholder="🆔 اسم المستخدم (بالإنجليزي بدون مسافات)" required pattern="[a-zA-Z0-9_]{3,20}" title="3-20 حرف إنجليزي أو رقم أو _">
 <div class="hint">اسم المستخدم لازم يكون فريد ويستخدم في البحث عنه</div>
 <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" required autocomplete="email">
-<input type="tel" id="regPhone" placeholder="📱 رقم الهاتف (اختياري)" autocomplete="tel">
+<input type="tel" id="regPhone" placeholder="📱 رقم الهاتف (مطلوب)" autocomplete="tel" required minlength="8" pattern="[+0-9 ]{8,20}" title="اكتب رقم هاتف صحيح">
 <div class="password-wrap">
 <input type="password" id="regPassword" placeholder="🔒 كلمة المرور (6 أحرف على الأقل)" required minlength="6" autocomplete="new-password">
 <button type="button" class="password-toggle" data-target="regPassword"><i class="fas fa-eye"></i></button>
@@ -2828,19 +2892,30 @@ body { background-attachment: scroll !important; }
 
 <!-- TAB 2: SERVICES -->
 <div class="admin-section" id="adminSectionServices">
-<div class="admin-stats">
-<div class="admin-stat-box"><div class="lbl">إجمالي الخدمات</div><div class="val" id="adminTotalServices">0</div></div>
-<div class="admin-stat-box"><div class="lbl">خدمات ظاهرة</div><div class="val" id="adminVisibleServices">0</div></div>
-<div class="admin-stat-box"><div class="lbl">خدمات مخفية</div><div class="val" id="adminHiddenServices">0</div></div>
-<div class="admin-stat-box"><div class="lbl">عدد المنصات</div><div class="val" id="adminTotalPlatforms">0</div></div>
+<div class="admin-stats admin-stats-click" id="adminSvcStats">
+<button type="button" class="admin-stat-box active" data-sfilter="all"><div class="lbl">إجمالي الخدمات</div><div class="val" id="adminTotalServices">0</div></button>
+<button type="button" class="admin-stat-box" data-sfilter="visible"><div class="lbl">خدمات ظاهرة</div><div class="val" id="adminVisibleServices">0</div></button>
+<button type="button" class="admin-stat-box" data-sfilter="hidden"><div class="lbl">خدمات مخفية</div><div class="val" id="adminHiddenServices">0</div></button>
+<button type="button" class="admin-stat-box" data-sfilter="platforms"><div class="lbl">عدد المنصات</div><div class="val" id="adminTotalPlatforms">0</div></button>
 </div>
 <div class="admin-platform-tabs" id="adminPlatformTabs"></div>
 <input type="text" id="adminSvcSearch" class="user-search-input" placeholder="🔍 ابحث في الخدمات بالاسم أو الرقم أو القسم...">
 <div class="admin-hint" id="adminSvcCapInfo" style="margin:-6px 0 10px;"></div>
+<!-- تحديد الكل + أوامر جماعية -->
+<div class="svc-bulk-bar" id="svcBulkBar">
+<label class="svc-check-all"><input type="checkbox" id="svcSelectAll"> <span id="svcSelectAllLbl">تحديد الكل</span></label>
+<span class="svc-bulk-count" id="svcBulkCount"></span>
+<div class="svc-bulk-actions" id="svcBulkActions">
+<button type="button" class="admin-btn ghost" data-bulk="hide"><i class="fas fa-eye-slash"></i> إخفاء</button>
+<button type="button" class="admin-btn ghost" data-bulk="show"><i class="fas fa-eye"></i> إظهار</button>
+<button type="button" class="admin-btn danger" data-bulk="delete"><i class="fas fa-trash"></i> حذف المحدد</button>
+<button type="button" class="admin-btn ghost" data-bulk="clear"><i class="fas fa-xmark"></i> إلغاء التحديد</button>
+</div>
+</div>
 <div class="admin-table-wrap">
 <div id="adminTableLoader" class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
 <table class="admin-table" id="adminServicesTable" style="display:none;">
-<thead><tr><th>#</th><th>المنصة</th><th>اسم الخدمة</th><th>النوع</th><th>الوحدة</th><th>السعر</th><th>الضمان</th><th>الحد الأدنى</th><th>الحد الأقصى</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+<thead><tr><th class="svc-chk-col"></th><th>#</th><th>المنصة</th><th>اسم الخدمة</th><th>النوع</th><th>الوحدة</th><th>السعر</th><th>الضمان</th><th>الحد الأدنى</th><th>الحد الأقصى</th><th>الحالة</th><th>إجراءات</th></tr></thead>
 <tbody id="adminTableBody"></tbody>
 </table>
 <div id="adminEmpty" class="admin-empty" style="display:none;"><i class="fas fa-inbox" style="font-size:2.5rem; color:#A855F7; margin-bottom:1rem;"></i><p>لا توجد خدمات بعد. اضغط "إضافة خدمة" للبدء.</p></div>
@@ -2849,11 +2924,22 @@ body { background-attachment: scroll !important; }
 
 <!-- TAB 3: ORDERS -->
 <div class="admin-section" id="adminSectionOrders">
-<div class="admin-stats">
-<div class="admin-stat-box"><div class="lbl">إجمالي الطلبات</div><div class="val" id="adminTotalOrders">0</div></div>
-<div class="admin-stat-box"><div class="lbl">قيد الانتظار</div><div class="val" id="adminPendingOrders">0</div></div>
-<div class="admin-stat-box"><div class="lbl">جاري التنفيذ</div><div class="val" id="adminProcessingOrders">0</div></div>
-<div class="admin-stat-box"><div class="lbl">تم التنفيذ</div><div class="val" id="adminCompletedOrders">0</div></div>
+<!-- 💰 ربح الموقع -->
+<div class="profit-card" id="profitCard">
+<div class="pf-ico"><i class="fas fa-sack-dollar"></i></div>
+<div class="pf-info">
+<div class="pf-lbl">ربح الموقع هذا الشهر <small id="profitMonthName"></small></div>
+<div class="pf-val" id="profitThisMonth">—</div>
+<div class="pf-sub" id="profitThisMonthSub">جاري الحساب...</div>
+</div>
+<button type="button" class="admin-btn ghost pf-btn" id="profitHistoryBtn"><i class="fas fa-chart-column"></i> آخر 12 شهر</button>
+</div>
+<div class="admin-stats admin-stats-click" id="adminOrderStats">
+<button type="button" class="admin-stat-box active" data-ofilter="all"><div class="lbl">إجمالي الطلبات</div><div class="val" id="adminTotalOrders">0</div></button>
+<button type="button" class="admin-stat-box" data-ofilter="pending"><div class="lbl">قيد الانتظار</div><div class="val" id="adminPendingOrders">0</div></button>
+<button type="button" class="admin-stat-box" data-ofilter="processing"><div class="lbl">جاري التنفيذ</div><div class="val" id="adminProcessingOrders">0</div></button>
+<button type="button" class="admin-stat-box" data-ofilter="completed"><div class="lbl">تم التنفيذ</div><div class="val" id="adminCompletedOrders">0</div></button>
+<button type="button" class="admin-stat-box" data-ofilter="cancelled"><div class="lbl">ملغي</div><div class="val" id="adminCancelledOrders">0</div></button>
 </div>
 <div style="margin-bottom:1rem;">
 <input type="text" id="adminOrderSearch" class="user-search-input" placeholder="🔍 ابحث برقم الطلب أو اليوزر أو اسم الخدمة...">
@@ -3364,6 +3450,16 @@ body { background-attachment: scroll !important; }
 <button type="submit" class="admin-btn gold" id="balanceSaveBtn"><i class="fas fa-save"></i> تأكيد</button>
 </div>
 </form>
+</div>
+</div>
+
+<!-- 💰 PROFIT HISTORY MODAL -->
+<div class="admin-modal-bg" id="profitModalBg">
+<div class="admin-modal profit-modal">
+<button type="button" class="pm-close" id="profitModalClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
+<h3><i class="fas fa-chart-column"></i> ربح الموقع — آخر 12 شهر</h3>
+<p class="pm-note">الربح = سعر البيع للعميل − تكلفة المزود (الطلبات الملغية مش بتتحسب، والجزئية بتتحسب على الجزء اللي اتنفذ بس)</p>
+<div id="profitModalBody"></div>
 </div>
 </div>
 
@@ -4021,10 +4117,6 @@ if (window.openSupportChat) window.openSupportChat();
 const iconCircles = document.querySelectorAll('.icon-circle');
 iconCircles.forEach(icon => {
 icon.addEventListener('click', function(e) {
-this.style.transition = '0.1s';
-this.style.backgroundColor = '#7C3AED';
-this.style.color = '#07040F';
-setTimeout(() => { this.style.backgroundColor = ''; this.style.color = ''; }, 200);
 const targetId = this.getAttribute('data-target');
 if (targetId) window.goToPlatform(targetId);
 });
@@ -4044,6 +4136,7 @@ window.__svcPlatformFilter = '';
 window.__setPlatformFilter = function(p) {
 window.__svcPlatformFilter = p || '';
 document.querySelectorAll('#servicesPage .icon-circle').forEach(ic => ic.classList.toggle('active', ic.getAttribute('data-target') === p));
+const pIcons = document.querySelector('#servicesPage .platform-icons'); if (pIcons) pIcons.classList.toggle('has-active', !!p);
 if (window.__applyPlatformFilter) window.__applyPlatformFilter(p || '');
 };
 window.openServicesPage = function() { window.__navigateTo('services', servicesPage, true); };
@@ -4836,12 +4929,8 @@ setInterval(() => { if (!card.classList.contains('show') && appPromptAllowed()) 
 window.__maybeShowAppPrompt();
 })();
 if ('serviceWorker' in navigator) {
-let swRefreshing = false;
-navigator.serviceWorker.addEventListener('controllerchange', () => {
-if (swRefreshing) return;
-swRefreshing = true;
-window.location.reload();
-});
+// ⚠️ مفيش Refresh تلقائي لما يتنزل تحديث جديد (كان بيعمل ريفرش وسط الاستخدام ويظهر "صلوا على النبي")
+// التحديث بيتطبق بهدوء أول ما العميل يفتح الموقع المرة الجاية (الملفات بتتحمل من النت الأول)
 navigator.serviceWorker.register('/sw.js?v=' + APP_VERSION, { updateViaCache: 'none' })
 .then(reg => {
 try { reg.update(); } catch(e) {}
@@ -5009,7 +5098,8 @@ const table = document.getElementById('adminServicesTable');
 const empty = document.getElementById('adminEmpty');
 const tbody = document.getElementById('adminTableBody');
 if (!tbody) return;
-const list = activePlatform === 'all' ? allServices : allServices.filter(s => s.platform === activePlatform);
+const list = svcFilteredList();
+updateBulkBar();
 if (list.length === 0) {
 table.style.display = 'none';
 if (empty) {
@@ -5024,8 +5114,7 @@ tbody.innerHTML = '';
 const platformServices = (activePlatform === 'all') ? [] : allServices.filter(s => s.platform === activePlatform).slice();
 // جدول 3000 صف بيعلّق الصفحة → بنعرض 300 بس، والباقي بالبحث أو اختيار المنصة
 const ADMIN_MAX_ROWS = 300;
-const adminQ = ((document.getElementById('adminSvcSearch') || {}).value || '').trim().toLowerCase();
-let shownList = adminQ ? list.filter(s => String(s.id) === adminQ || (s.name || '').toLowerCase().includes(adminQ) || (s.category || '').toLowerCase().includes(adminQ)) : list;
+let shownList = list;
 const hiddenCount = Math.max(0, shownList.length - ADMIN_MAX_ROWS);
 shownList = shownList.slice(0, ADMIN_MAX_ROWS);
 const capInfo = document.getElementById('adminSvcCapInfo');
@@ -5058,9 +5147,11 @@ sortCell = '<span class="admin-sort-cell">'
 + '<button class="admin-sort-btn" ' + downDisabled + ' onclick="__adminSort(' + s.id + ', \'down\')" title="أسفل"><i class="fas fa-arrow-down"></i></button>'
 + '</span>';
 }
-tr.innerHTML = '<td>' + (i + 1) + '</td>'
+if (svcSelected.has(String(s.id))) tr.classList.add('sel');
+tr.innerHTML = '<td class="svc-chk-col"><input type="checkbox" class="svc-chk" data-id="' + s.id + '"' + (svcSelected.has(String(s.id)) ? ' checked' : '') + '></td>'
++ '<td>' + (i + 1) + '</td>'
 + '<td><span class="admin-badge gold">' + (PLATFORM_AR[s.platform] || s.platform) + '</span></td>'
-+ '<td>' + (s.is_api ? '<span class="api-svc-badge"><i class="fas fa-plug"></i> API</span> ' : '') + s.name + (s.category ? '<br><small style="color:#A5A0C8;">📁 ' + String(s.category).replace(/</g, '&lt;') + '</small>' : '') + '</td>'
++ '<td>' + (s.is_api ? '<span class="api-svc-badge"><i class="fas fa-plug"></i> API</span> ' : '') + __esc(s.name) + (s.category ? '<br><small style="color:#A5A0C8;">📁 ' + String(s.category).replace(/</g, '&lt;') + '</small>' : '') + '</td>'
 + '<td>' + (TYPE_AR[s.type] || s.type || '-') + '</td>'
 + '<td>' + s.unit + '</td>'
 + '<td style="color:#7C3AED; font-weight:700;">' + s.price_per_thousand + ' <span style="font-size:0.7rem; color:#aaa;">(' + baseLabel + ')</span></td>'
@@ -5078,6 +5169,86 @@ tbody.appendChild(tr);
 }
 
 document.getElementById('adminSvcSearch').addEventListener('input', () => { clearTimeout(window.__admSvcT); window.__admSvcT = setTimeout(renderAdminTable, 250); });
+
+// ===== فلتر الكروت (ظاهرة / مخفية) + تحديد الكل + أوامر جماعية =====
+let svcVisFilter = 'all';
+const svcSelected = new Set();
+// الخدمات اللي ظاهرة حسب: المنصة + (ظاهرة/مخفية) + البحث — "تحديد الكل" بيحدد دول كلهم (حتى لو أكتر من 300)
+function svcFilteredList() {
+let list = activePlatform === 'all' ? allServices : allServices.filter(s => s.platform === activePlatform);
+if (svcVisFilter === 'visible') list = list.filter(s => s.is_hidden !== true);
+else if (svcVisFilter === 'hidden') list = list.filter(s => s.is_hidden === true);
+const q = ((document.getElementById('adminSvcSearch') || {}).value || '').trim().toLowerCase();
+if (q) list = list.filter(s => String(s.id) === q || (s.name || '').toLowerCase().includes(q) || (s.category || '').toLowerCase().includes(q));
+return list;
+}
+function updateBulkBar() {
+const list = svcFilteredList();
+const n = svcSelected.size;
+const allSel = list.length > 0 && list.every(s => svcSelected.has(String(s.id)));
+const chkAll = document.getElementById('svcSelectAll');
+chkAll.checked = allSel; chkAll.indeterminate = !allSel && list.some(s => svcSelected.has(String(s.id)));
+const where = activePlatform === 'all' ? '' : ' في ' + (PLATFORM_AR[activePlatform] || activePlatform);
+const kind = svcVisFilter === 'hidden' ? ' المخفية' : svcVisFilter === 'visible' ? ' الظاهرة' : '';
+document.getElementById('svcSelectAllLbl').textContent = 'تحديد كل الخدمات' + kind + where + ' (' + list.length + ')';
+document.getElementById('svcBulkCount').textContent = n ? '✔ تم تحديد ' + n + ' خدمة' : '';
+document.getElementById('svcBulkBar').classList.toggle('has-sel', n > 0);
+}
+document.getElementById('adminSvcStats').addEventListener('click', (e) => {
+const b = e.target.closest('[data-sfilter]'); if (!b) return;
+const f = b.dataset.sfilter;
+if (f === 'platforms') {
+// عدد المنصات → ينزلك على تابات المنصات تختار منها
+const tabs = document.getElementById('adminPlatformTabs');
+tabs.scrollIntoView({ behavior: 'smooth', block: 'center' });
+tabs.classList.remove('flash'); void tabs.offsetWidth; tabs.classList.add('flash');
+return;
+}
+svcVisFilter = f;
+document.querySelectorAll('#adminSvcStats [data-sfilter]').forEach(x => x.classList.toggle('active', x === b));
+renderAdminTable();
+});
+document.getElementById('svcSelectAll').addEventListener('change', (e) => {
+const list = svcFilteredList();
+if (e.target.checked) list.forEach(s => svcSelected.add(String(s.id)));
+else list.forEach(s => svcSelected.delete(String(s.id)));
+renderAdminTable();
+});
+document.getElementById('adminTableBody').addEventListener('change', (e) => {
+const c = e.target.closest('.svc-chk'); if (!c) return;
+if (c.checked) svcSelected.add(String(c.dataset.id)); else svcSelected.delete(String(c.dataset.id));
+c.closest('tr').classList.toggle('sel', c.checked);
+updateBulkBar();
+});
+document.getElementById('svcBulkActions').addEventListener('click', async (e) => {
+const b = e.target.closest('[data-bulk]'); if (!b) return;
+const act = b.dataset.bulk;
+if (act === 'clear') { svcSelected.clear(); renderAdminTable(); return; }
+const ids = Array.from(svcSelected);
+if (!ids.length) return;
+if (act === 'delete' && !confirm('⚠️ حذف ' + ids.length + ' خدمة نهائياً؟\nالطلبات القديمة مش هتتمسح.')) return;
+const btns = document.querySelectorAll('#svcBulkActions button'); btns.forEach(x => x.disabled = true);
+const old = b.innerHTML; b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التنفيذ...';
+let done = 0, failed = 0;
+try {
+for (let i = 0; i < ids.length; i += 200) {
+const chunk = ids.slice(i, i + 200);
+let r;
+if (act === 'delete') {
+r = await supabase.from('services').delete().in('id', chunk);
+if (!r.error) { try { await supabase.from('api_service_links').delete().in('service_id', chunk); } catch (er) {} }
+} else {
+r = await supabase.from('services').update({ is_hidden: act === 'hide' }).in('id', chunk);
+}
+if (r.error) failed += chunk.length; else done += chunk.length;
+}
+toast(failed ? '⚠️ اتنفذ على ' + done + ' وفشل ' + failed : (act === 'delete' ? '🗑️ اتحذف ' : act === 'hide' ? '👁️‍🗨️ اتخفى ' : '✅ ظهر ') + done + ' خدمة', !!failed);
+svcSelected.clear();
+await window.loadAdminServices();
+if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.buildAllSections) window.buildAllSections(); }
+} catch (er) { toast('خطأ: ' + er.message, true); }
+finally { btns.forEach(x => x.disabled = false); b.innerHTML = old; }
+});
 window.loadAdminServices = async function() {
 const loader = document.getElementById('adminTableLoader');
 const table = document.getElementById('adminServicesTable');
@@ -5758,10 +5929,12 @@ const table = document.getElementById('adminOrdersTable');
 const empty = document.getElementById('adminOrdersEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
-const { data, error } = await supabase.from('orders')
-.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name')
+let res = await supabase.from('orders')
+.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_order_id,provider_status,api_error')
 .order('created_at', { ascending: false })
-.limit(100);
+.limit(300);
+if (res.error) res = await supabase.from('orders').select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name').order('created_at', { ascending: false }).limit(300);
+const { data, error } = res;
 loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 allOrdersData = data || [];
@@ -5769,7 +5942,9 @@ document.getElementById('adminTotalOrders').innerText = allOrdersData.length;
 document.getElementById('adminPendingOrders').innerText = allOrdersData.filter(o => o.status === 'pending').length;
 document.getElementById('adminProcessingOrders').innerText = allOrdersData.filter(o => o.status === 'processing').length;
 document.getElementById('adminCompletedOrders').innerText = allOrdersData.filter(o => o.status === 'completed').length;
+document.getElementById('adminCancelledOrders').innerText = allOrdersData.filter(o => o.status === 'cancelled').length;
 renderOrdersTable();
+loadProfitStats();
 } catch(e) {
 loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
 }
@@ -5780,6 +5955,7 @@ const empty = document.getElementById('adminOrdersEmpty');
 const tbody = document.getElementById('adminOrdersBody');
 const term = ordersSearchTerm.toLowerCase();
 let list = allOrdersData;
+if (ordersStatusFilter !== 'all') list = list.filter(o => o.status === ordersStatusFilter);
 if (term) {
 list = list.filter(o =>
 (o.user_username || '').toLowerCase().includes(term) ||
@@ -5809,7 +5985,7 @@ actBtns = '<button class="admin-edit-btn" onclick="__adminSetOrder(' + o.id + ',
 '<button class="admin-del-btn" onclick="__adminSetOrder(' + o.id + ',\'cancelled\')"><i class="fas fa-times"></i> إلغاء</button>';
 }
 tr.innerHTML = '<td>#' + o.id + '</td>' +
-'<td>' + __esc(o.user_username || '-') + '</td>' +
+'<td>' + (o.user_username ? '<button type="button" class="user-copy" data-copy="' + __esc(o.user_username) + '" title="اضغط للنسخ"><i class="far fa-copy"></i> ' + __esc(o.user_username) + '</button>' : '-') + '</td>' +
 '<td style="font-size:0.75rem;">' + __esc(o.service_name || '-') + '</td>' +
 '<td>' + __esc(o.quantity) + ' ' + __esc(o.unit || '') + '</td>' +
 '<td style="color:#7C3AED; font-weight:700;">' + parseFloat(o.total || 0).toFixed(2) + ' ' + cur + '</td>' +
@@ -5824,6 +6000,58 @@ document.getElementById('adminOrderSearch').addEventListener('input', (e) => {
 ordersSearchTerm = e.target.value.trim();
 renderOrdersTable();
 });
+// 🔘 كروت الإحصائيات = فلتر (اضغط على الكارت تشوف طلبات الحالة دي بس)
+let ordersStatusFilter = 'all';
+document.getElementById('adminOrderStats').addEventListener('click', (e) => {
+const b = e.target.closest('[data-ofilter]'); if (!b) return;
+ordersStatusFilter = b.dataset.ofilter;
+document.querySelectorAll('#adminOrderStats [data-ofilter]').forEach(x => x.classList.toggle('active', x === b));
+renderOrdersTable();
+});
+// 📋 نسخ اليوزر بضغطة في جدول الطلبات
+document.getElementById('adminOrdersBody').addEventListener('click', async (e) => {
+const cp = e.target.closest('.user-copy'); if (!cp) return;
+const v = cp.dataset.copy || '';
+try { await navigator.clipboard.writeText(v); } catch (er) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
+cp.classList.add('copied'); setTimeout(() => cp.classList.remove('copied'), 1200);
+toast('📋 تم نسخ اليوزر: ' + v);
+});
+
+// 💰 ربح الموقع (سعر البيع − تكلفة المزود) — الشهر الحالي + آخر 12 شهر
+const AR_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+let profitRows = [];
+const fmtMoney = (n) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+async function loadProfitStats() {
+const v = document.getElementById('profitThisMonth'), sub = document.getElementById('profitThisMonthSub');
+const now = new Date();
+document.getElementById('profitMonthName').textContent = '(' + AR_MONTHS[now.getMonth()] + ' ' + now.getFullYear() + ')';
+try {
+const { data, error } = await supabase.rpc('smcole_profit_stats', { p_months: 12 });
+if (error) throw new Error(/function|schema cache/i.test(error.message) ? 'شغّل ملف update_v10.sql في Supabase الأول' : error.message);
+profitRows = data || [];
+const cur = profitRows.find(r => Number(r.y) === now.getFullYear() && Number(r.m) === now.getMonth() + 1) || { profit: 0, revenue: 0, cost: 0, orders: 0 };
+v.textContent = fmtMoney(cur.profit) + ' ج';
+v.classList.toggle('neg', Number(cur.profit) < 0);
+sub.textContent = 'المبيعات ' + fmtMoney(cur.revenue) + ' ج · تكلفة المزود ' + fmtMoney(cur.cost) + ' ج · ' + (cur.orders || 0) + ' طلب';
+} catch (e) { v.textContent = '—'; sub.textContent = '⚠️ ' + e.message; }
+}
+document.getElementById('profitHistoryBtn').addEventListener('click', async () => {
+if (!profitRows.length) await loadProfitStats();
+const bg = document.getElementById('profitModalBg');
+const body = document.getElementById('profitModalBody');
+const max = Math.max(1, ...profitRows.map(r => Math.abs(Number(r.profit) || 0)));
+const total = profitRows.reduce((s, r) => s + (Number(r.profit) || 0), 0);
+body.innerHTML = '<div class="pf-total">إجمالي ربح آخر 12 شهر: <b>' + fmtMoney(total) + ' ج</b></div>' +
+profitRows.slice().reverse().map(r => {
+const p = Number(r.profit) || 0;
+return '<div class="pf-row"><div class="pf-m">' + AR_MONTHS[(Number(r.m) || 1) - 1] + ' ' + r.y + '</div>' +
+'<div class="pf-bar"><span style="width:' + Math.round(Math.abs(p) / max * 100) + '%"' + (p < 0 ? ' class="neg"' : '') + '></span></div>' +
+'<div class="pf-n' + (p < 0 ? ' neg' : '') + '">' + fmtMoney(p) + ' ج<small>' + (r.orders || 0) + ' طلب · مبيعات ' + fmtMoney(r.revenue) + '</small></div></div>';
+}).join('');
+bg.classList.add('show');
+});
+document.getElementById('profitModalClose').addEventListener('click', () => document.getElementById('profitModalBg').classList.remove('show'));
+document.getElementById('profitModalBg').addEventListener('click', (e) => { if (e.target.id === 'profitModalBg') e.currentTarget.classList.remove('show'); });
 window.__adminSetOrder = async function(id, status) {
 const orderData = allOrdersData.find(o => o.id === id);
 if (!orderData) { toast('لم يتم العثور على الطلب', true); return; }
@@ -7524,6 +7752,13 @@ window.__pushPromptDone = true;
 try { localStorage.setItem('smcole_push_prompt', String(Date.now() + 3650 * 24 * 3600 * 1000)); } catch (e) {}
 if (!('Notification' in window)) { userToast('⚠️ المتصفح ده مش بيدعم الإشعارات', 'warn'); return; }
 let p = Notification.permission;
+if (p === 'denied') {
+const standalone = window.matchMedia('(display-mode: standalone)').matches;
+alert('🔔 عشان تفعّل الإشعارات:\n\n' + (standalone
+? '1. اضغط ضغطة طويلة على أيقونة التطبيق\n2. اختار "معلومات التطبيق" (App info)\n3. الإشعارات ← تشغيل'
+: '1. اضغط على علامة القفل 🔒 جنب رابط الموقع فوق\n2. اختار "الأذونات" أو "الإشعارات"\n3. خليها "سماح" (Allow)\n4. حدّث الصفحة'));
+return;
+}
 if (p === 'default') { try { p = await Notification.requestPermission(); } catch (e) {} }
 if (p !== 'granted') { userToast('⚠️ الإشعارات مقفولة من إعدادات المتصفح', 'warn'); renderNotifs(); hidePushPrompt(); return; }
 const ok = await subscribeDevice();
@@ -7532,22 +7767,35 @@ hidePushPrompt();
 renderNotifs();
 }
 function hidePushPrompt() { const b = document.getElementById('pushPrompt'); if (b) b.classList.remove('show'); clearTimeout(window.__pushPromptTimer); }
-// بطاقة تفعيل الإشعارات: للعملاء بس (مش للأدمن) — بتظهر مرة واحدة بس أول مرة ومترجعش تاني
+// بطاقة تفعيل الإشعارات: للعملاء بس (مش للأدمن) — بتظهر كل ما يفتح الموقع/التطبيق (مرة في الزيارة) لحد ما يفعّلها
 function pushPromptAllowed() {
 if (window.__pushPromptDone || !currentProfile || !pushSupported()) return false;
 if (window.isAdminUser || document.body.classList.contains('is-admin')) return false;
-if (Notification.permission !== 'default') return false;
-let last = 0; try { last = parseInt(localStorage.getItem('smcole_push_prompt') || '0', 10); } catch (e) {}
-return !last;
+if (Notification.permission === 'granted') return false;
+try { if (sessionStorage.getItem('smcole_push_prompt_session')) return false; } catch (e) {}
+return true;
 }
-function markPushPromptSeen() { window.__pushPromptDone = true; try { localStorage.setItem('smcole_push_prompt', String(Date.now() + 3650 * 24 * 3600 * 1000)); } catch (e) {} }
+function markPushPromptSeen() { window.__pushPromptDone = true; try { sessionStorage.setItem('smcole_push_prompt_session', '1'); } catch (e) {} }
+// لو العميل كان قافل الإشعارات من المتصفح: البطاقة بتشرحله يفتحها إزاي (المتصفح مش بيسمح نطلبها تاني)
+function preparePushPromptText() {
+const t = document.querySelector('#pushPrompt .pp-txt');
+const yes = document.getElementById('pushPromptYes');
+if (!t || !yes) return;
+if (Notification.permission === 'denied') {
+t.innerHTML = '<b>الإشعارات مقفولة 🔕</b><small>فعّلها عشان يوصلك تنبيه أول ما طلبك يتنفذ أو الإيداع يتأكد أو الدعم يرد عليك</small>';
+yes.textContent = 'إزاي أفعّلها؟';
+} else {
+t.innerHTML = '<b>فعّل الإشعارات 🔔</b><small>يوصلك تنبيه فوري أول ما طلبك يتنفذ أو الإيداع يتأكد أو الدعم يرد عليك — حتى لو التطبيق مقفول</small>';
+yes.textContent = 'تفعيل الإشعارات';
+}
+}
 function maybeShowPushPrompt() {
 if (!currentProfile || !pushSupported()) return;
 if (Notification.permission === 'granted') { subscribeDevice(); return; }
 if (!pushPromptAllowed()) return;
 clearTimeout(window.__pushPromptTimer);
 // بنتأكد تاني وقت الظهور (يمكن يكون فعّلها أو قفلها في الوقت ده)
-window.__pushPromptTimer = setTimeout(() => { const b = document.getElementById('pushPrompt'); if (b && pushPromptAllowed()) { b.classList.add('show'); markPushPromptSeen(); } }, 4000);
+window.__pushPromptTimer = setTimeout(() => { const b = document.getElementById('pushPrompt'); if (b && pushPromptAllowed()) { preparePushPromptText(); b.classList.remove('gone'); b.classList.add('show'); markPushPromptSeen(); } }, 2500);
 }
 document.getElementById('pushPromptYes').addEventListener('click', enableNotifications);
 document.getElementById('pushPromptLater').addEventListener('click', () => { markPushPromptSeen(); hidePushPrompt(); });
@@ -8812,7 +9060,7 @@ if (!it.tgt) return;
 const c = it.cur, t = it.tgt;
 for (const k of ['x', 'y', 'z', 'ry', 's', 'o']) {
 const diff = t[k] - c[k];
-if (Math.abs(diff) > (k === 'x' || k === 'z' ? 0.3 : 0.002)) { c[k] += diff * (cf.w < 640 ? 0.3 : 0.18); moving = true; }
+if (Math.abs(diff) > (k === 'x' || k === 'z' ? 0.3 : 0.002)) { c[k] += diff * (cf.w < 640 ? 0.4 : 0.22); moving = true; }
 else c[k] = t[k];
 }
 it.obj.position.set(c.x, c.y, c.z);
@@ -8842,23 +9090,36 @@ if (e.button !== undefined && e.button !== 0) return;
 if (e.target.closest(FORM_SEL) && !e.target.closest('.cf-side')) return;
 dragging = true; cf.dragMoved = false; startX = e.clientX; startPos = cf.pos; pid = e.pointerId;
 });
-// 👆 الموبايل: سحبة صغيرة (يمين/شمال) = البطاقة اللي بعدها على طول — من غير ما البطايق تتسحب ببطء ورا الصباع
-let tX = 0, tY = 0, tOn = false;
+// 👆 الموبايل: سحبة واحدة من أي حتة في البطاقة (فوق/تحت/على الزراير) وفي أي اتجاه مايل (يمين-فوق، شمال-تحت...)
+// = البطاقة اللي بعدها على طول — بتتقلب أول ما الصباع يتحرك (من غير ما تستنى تشيل صباعك)
+// السحب لفوق/تحت بس (عمودي) = سكرول عادي للصفحة
+let tX = 0, tY = 0, tOn = false, tFlipped = false;
+const swipeDir = (dx, dy) => (Math.abs(dx) > 24 && Math.abs(dx) >= Math.abs(dy) * 0.45) ? (dx > 0 ? 1 : -1) : 0;
+const flip = (dir) => {
+tFlipped = true;
+cf.dragMoved = true;
+const ae = document.activeElement;
+if (ae && stage.contains(ae) && /INPUT|TEXTAREA|SELECT/.test(ae.tagName)) ae.blur();
+cf.go(Math.round(cf.target) + dir);
+setTimeout(() => { cf.dragMoved = false; }, 350);
+};
 stage.addEventListener('touchstart', (e) => {
 if (e.touches.length !== 1) { tOn = false; return; }
-if (e.target.closest(FORM_SEL) && !e.target.closest('.cf-side')) { tOn = false; return; }
-tX = e.touches[0].clientX; tY = e.touches[0].clientY; tOn = true;
+tX = e.touches[0].clientX; tY = e.touches[0].clientY; tOn = true; tFlipped = false;
+}, { passive: true });
+stage.addEventListener('touchmove', (e) => {
+if (!tOn || tFlipped || e.touches.length !== 1) return;
+const t = e.touches[0];
+const dir = swipeDir(t.clientX - tX, t.clientY - tY);
+if (dir) flip(dir);
 }, { passive: true });
 stage.addEventListener('touchend', (e) => {
 if (!tOn) return;
 tOn = false;
+if (tFlipped) return;
 const t = e.changedTouches[0];
-const dx = t.clientX - tX, dy = t.clientY - tY;
-if (Math.abs(dx) > 28 && Math.abs(dx) > Math.abs(dy) * 1.1) {
-cf.dragMoved = true;
-cf.go(Math.round(cf.target) + (dx > 0 ? 1 : -1));
-setTimeout(() => { cf.dragMoved = false; }, 350);
-}
+const dir = swipeDir(t.clientX - tX, t.clientY - tY);
+if (dir) flip(dir);
 }, { passive: true });
 stage.addEventListener('touchcancel', () => { tOn = false; }, { passive: true });
 window.addEventListener('pointermove', (e) => {

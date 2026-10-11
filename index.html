@@ -2184,6 +2184,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 </div>
 <div class="drawer-links">
 <a href="#" id="adminPanelMenuLink" class="drawer-admin-link"><span class="dl-ico"><i class="fas fa-user-shield"></i></span><span class="dl-txt">لوحة الأدمن<small>إدارة الموقع بالكامل</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="adminAffMenuLink" class="drawer-admin-link"><span class="dl-ico"><i class="fas fa-handshake"></i></span><span class="dl-txt">إدارة التسويق بالعمولة<small>المسوّقين وأرباحهم وصرفها</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="homeMenuLink"><span class="dl-ico"><i class="fas fa-house"></i></span><span class="dl-txt">الرئيسية<small>تعرف على خدماتنا</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="servicesMenuLink"><span class="dl-ico"><i class="fas fa-rocket"></i></span><span class="dl-txt">الخدمات<small>اطلب متابعين ولايكات ومشاهدات</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="depositMenuLink"><span class="dl-ico"><i class="fas fa-wallet"></i></span><span class="dl-txt">طرق الإيداع<small>اشحن رصيدك بسهولة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
@@ -3076,6 +3077,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <button class="admin-btn ghost maint-btn" id="adminMaintBtn" type="button"><i class="fas fa-screwdriver-wrench"></i> وضع الصيانة</button>
 <button class="admin-btn gold" id="adminBroadcastBtn" type="button"><i class="fas fa-bullhorn"></i> إشعار للكل</button>
 <button class="admin-btn ghost" id="adminProvidersBtn" type="button"><i class="fas fa-plug"></i> مزودين API</button>
+<button class="admin-btn ghost" id="adminAffiliateBtn" type="button"><i class="fas fa-handshake"></i> التسويق بالعمولة</button>
 <button class="admin-btn ghost admin-support-btn" id="adminSupportBtn" type="button"><i class="fas fa-headset"></i> الدعم الفني <b class="abn-badge static" id="adminSupportBadge"></b></button>
 <button class="admin-btn gold" id="adminAddBtn"><i class="fas fa-plus"></i> إضافة خدمة</button>
 <button class="admin-btn ghost" id="adminSettingsBtn"><i class="fas fa-cog"></i> إعدادات الموقع</button>
@@ -7009,6 +7011,8 @@ toast('✅ تم فحص ' + (r.checked || 0) + ' طلب — اتغيرت حالة
 } catch (er) { toast('❌ ' + er.message, true); } finally { busy(btn, false); }
 });
 document.getElementById('adminProvidersBtn').addEventListener('click', () => { if (window.adminGoTab) window.adminGoTab('providers'); });
+document.getElementById('adminAffiliateBtn').addEventListener('click', () => { if (window.adminGoTab) window.adminGoTab('affiliate'); });
+document.getElementById('adminAffMenuLink').addEventListener('click', (e) => { e.preventDefault(); if (window.adminGoTab) window.adminGoTab('affiliate'); });
 
 // ---------- 🗑️ حذف كل الخدمات ----------
 document.getElementById('deleteAllServicesBtn').addEventListener('click', async (e) => {

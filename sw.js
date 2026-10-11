@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smcole-v19'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+const CACHE_NAME = 'smcole-v20'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
@@ -65,15 +65,14 @@ self.addEventListener('push', event => {
   try { data = event.data ? event.data.json() : {}; } catch (e) { data = { title: 'SMCOLE', body: event.data ? event.data.text() : '' }; }
   const title = data.title || 'SMCOLE';
   const link = data.link || '';
-  // رسايل الدعم: نفس شكل إشعار الشات — كل رسالة بتنبّه (renotify) وبتتجمع تحت محادثة واحدة
+  // كل إشعار لوحده في كارت منفصل (مش بيتجمعوا ولا واحد بيمسح التاني)
   const isChat = link === 'support';
   event.waitUntil(
     self.registration.showNotification(title, {
       body: data.body || '',
       icon: ICON,
       badge: ICON,
-      tag: isChat ? 'smcole-support' : 'smcole-' + (data.id || Date.now()),
-      renotify: isChat,
+      tag: 'smcole-' + (data.id || '') + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
       data: { link: link },
       dir: 'rtl',
       lang: 'ar',

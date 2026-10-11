@@ -659,6 +659,97 @@ input, textarea, select { user-select: text; }
 .sm-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: 900; font-size: 1.35rem; letter-spacing: .5px; }
 .sm-brand-mark { width: 38px; height: 38px; border-radius: 12px; background: var(--grad); display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 1.05rem; box-shadow: 0 6px 18px rgba(124,58,237,0.55); }
 .sm-brand-mark.big { width: 54px; height: 54px; border-radius: 16px; font-size: 1.5rem; }
+/* 🤝 صفحة التسويق بالعمولة */
+.drawer-links .dl-new { font-style: normal; font-size: .6rem; font-weight: 900; color: #fff; background: linear-gradient(135deg, #22C55E, #16A34A); padding: 2px 8px; border-radius: 10px; margin-inline-start: auto; margin-inline-end: 6px; }
+.aff-wrap { max-width: 980px; margin: 0 auto; padding: 0 4px 40px; }
+.aff-hero { position: relative; overflow: hidden; text-align: center; padding: 34px 20px 26px; border-radius: 28px; margin-bottom: 18px;
+  background: radial-gradient(500px 220px at 50% 0%, rgba(168,85,247,0.35), transparent 70%), linear-gradient(160deg, #1E1240, #0B0619 75%); border: 1px solid rgba(168,85,247,0.35); }
+.aff-hero h1 { color: #fff; font-size: clamp(1.45rem, 4.4vw, 2.3rem); line-height: 1.5; font-weight: 900; margin: 10px 0; }
+.aff-hero p { color: #CFC6F2; max-width: 640px; margin: 0 auto 14px; line-height: 1.9; font-size: .92rem; }
+.aff-hero p b { color: #4ADE80; }
+.aff-orb { position: absolute; border-radius: 50%; filter: blur(40px); opacity: .55; pointer-events: none; }
+.aff-orb.o1 { width: 180px; height: 180px; background: #22C55E; top: -60px; right: -40px; }
+.aff-orb.o2 { width: 200px; height: 200px; background: #EC4899; bottom: -80px; left: -50px; opacity: .35; }
+.aff-hero-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; position: relative; }
+.aff-hero-badges span { font-size: .78rem; font-weight: 800; color: #fff; padding: 6px 14px; border-radius: 20px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); }
+.aff-hero-badges i { color: #4ADE80; margin-left: 5px; }
+/* رابط الإحالة */
+.aff-link-card { position: relative; overflow: hidden; padding: 20px; border-radius: 24px; margin-bottom: 14px; background: radial-gradient(420px 160px at 100% 0%, rgba(168,85,247,0.3), transparent 70%), linear-gradient(160deg, #1E1240, #0E0820 80%); border: 1px solid rgba(168,85,247,0.45); box-shadow: 0 18px 44px rgba(124,58,237,0.22); }
+.alc-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.alc-ico { width: 46px; height: 46px; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.15rem; background: linear-gradient(135deg, #7C3AED, #EC4899); box-shadow: 0 10px 22px rgba(236,72,153,0.35); }
+.alc-top b { display: block; color: #fff; font-size: 1rem; } .alc-top small { color: #CFC6F2; font-size: .76rem; }
+.alc-row { display: flex; align-items: stretch; gap: 0; border-radius: 16px; overflow: hidden; border: 1px solid rgba(168,85,247,0.45); background: rgba(0,0,0,0.35); }
+.alc-row input { flex: 1; min-width: 0; padding: 14px; border: none; background: transparent; color: #E9D5FF; font-family: Poppins, monospace; font-size: .86rem; outline: none; }
+.alc-copy { display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border: none; background: linear-gradient(135deg, #7C3AED, #EC4899); color: #fff; font-weight: 800; font-family: inherit; font-size: .85rem; cursor: pointer; white-space: nowrap; transition: filter .2s; }
+.alc-copy:hover { filter: brightness(1.12); } .alc-copy.done { background: linear-gradient(135deg, #16A34A, #22C55E); }
+.alc-share { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.alc-share > span { color: #A59CC9; font-size: .78rem; font-weight: 700; margin-inline-end: 2px; }
+.alc-share button { width: 44px; height: 44px; border-radius: 14px; border: none; cursor: pointer; color: #fff; font-size: 1.15rem; background: linear-gradient(145deg, var(--c), color-mix(in srgb, var(--c) 55%, #000)); box-shadow: 0 8px 18px color-mix(in srgb, var(--c) 40%, transparent), inset 0 1px 0 rgba(255,255,255,0.3); transition: transform .2s; }
+.alc-share button:hover { transform: translateY(-3px); }
+/* المحفظة: الأرباح المتاحة + السحب */
+.aff-wallet { position: relative; padding: 20px; border-radius: 24px; margin-bottom: 14px; background: radial-gradient(380px 180px at 0% 0%, rgba(34,197,94,0.22), transparent 70%), linear-gradient(160deg, #0F2A1C, #0B0619 75%); border: 1px solid rgba(34,197,94,0.4); box-shadow: 0 18px 44px rgba(0,0,0,0.4); }
+.aw-main { display: flex; align-items: center; gap: 18px; margin-bottom: 16px; }
+.aw-ring { --p: 0; width: 104px; height: 104px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient(#22C55E calc(var(--p) * 1%), rgba(255,255,255,0.08) 0); box-shadow: 0 0 26px rgba(34,197,94,0.25); }
+.aw-ring-in { width: 82px; height: 82px; border-radius: 50%; background: #0D1B14; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.aw-ring-in b { color: #4ADE80; font-size: 1.25rem; font-weight: 900; } .aw-ring-in small { color: #86A896; font-size: .56rem; }
+.aw-bal { flex: 1; min-width: 0; }
+.aw-bal > small { color: #A7C4B5; font-weight: 800; font-size: .8rem; } .aw-bal > small i { color: #4ADE80; margin-left: 4px; }
+.aw-bal > b { display: block; color: #fff; font-size: 2rem; font-weight: 900; line-height: 1.25; }
+.aw-bal > b span { direction: ltr; display: inline-block; } .aw-bal > b em { font-style: normal; font-size: .9rem; color: #86EFAC; }
+.aw-bal p { color: #CFE9DA; font-size: .78rem; margin-top: 2px; } .aw-bal p b { color: #fff; }
+.aw-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.aw-act { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 18px; cursor: pointer; text-align: right; font-family: inherit; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: #fff; transition: transform .2s, box-shadow .2s, filter .2s; }
+.aw-act.primary { background: linear-gradient(135deg, #16A34A, #22C55E); border-color: transparent; box-shadow: 0 12px 26px rgba(34,197,94,0.35); }
+.aw-act:not(:disabled):hover { transform: translateY(-2px); filter: brightness(1.08); }
+.aa-ico { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: rgba(255,255,255,0.15); }
+.aa-txt { flex: 1; display: flex; flex-direction: column; } .aa-txt b { font-size: .95rem; } .aa-txt small { font-size: .7rem; opacity: .85; }
+.aa-arrow { opacity: .7; font-size: .8rem; }
+.aw-act:disabled { cursor: not-allowed; filter: grayscale(0.85); opacity: .5; box-shadow: none; }
+.aw-lock { margin-top: 12px; padding: 9px 12px; border-radius: 12px; background: rgba(0,0,0,0.25); color: #A7C4B5; font-size: .75rem; font-weight: 700; text-align: center; }
+.aw-lock i { color: #FCD34D; margin-left: 4px; }
+.aff-wallet.ready { border-color: rgba(34,197,94,0.75); box-shadow: 0 0 0 1px rgba(34,197,94,0.3), 0 18px 44px rgba(34,197,94,0.18); }
+/* الإحصائيات */
+.aff-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.aff-stat { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 18px; background: linear-gradient(160deg, rgba(34,22,68,0.85), rgba(11,6,25,0.95)); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); }
+.as-ico { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(145deg, var(--c), color-mix(in srgb, var(--c) 45%, #000)); box-shadow: 0 8px 18px color-mix(in srgb, var(--c) 35%, transparent); }
+.aff-stat b { display: block; color: #fff; font-size: 1.25rem; font-weight: 900; line-height: 1.2; }
+.aff-stat small { color: #A59CC9; font-size: .7rem; }
+.aff-empty i { display: block; font-size: 1.6rem; color: #4ADE80; margin-bottom: 6px; }
+.aff-history { padding: 16px 18px; border-radius: 20px; margin-bottom: 22px; background: rgba(255,255,255,0.03); border: 1px solid rgba(168,85,247,0.2); }
+.aff-history h3 { color: #fff; font-size: 1rem; margin-bottom: 10px; } .aff-history h3 i { color: #C084FC; margin-left: 6px; }
+.aff-empty { color: #8B84B5; text-align: center; padding: 16px; font-size: .85rem; }
+.aff-row { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px dashed rgba(255,255,255,0.07); }
+.ar-ico { width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(34,197,94,0.15); color: #4ADE80; flex-shrink: 0; }
+.ar-txt { flex: 1; display: flex; flex-direction: column; } .ar-txt b { color: #4ADE80; } .ar-txt small { color: #A59CC9; font-size: .72rem; }
+.aff-row em { font-style: normal; color: #8B84B5; font-size: .7rem; }
+.aff-how { margin-bottom: 22px; text-align: center; } .aff-how h2, .aff-faq h2 { color: #fff; margin-bottom: 14px; font-size: 1.4rem; }
+.aff-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.aff-step { position: relative; padding: 18px 12px 14px; border-radius: 18px; background: linear-gradient(160deg, rgba(34,22,68,0.9), rgba(11,6,25,0.95)); border: 1px solid rgba(168,85,247,0.25); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.aff-step span { position: absolute; top: -10px; right: 12px; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #7C3AED, #EC4899); color: #fff; font-weight: 900; font-size: .8rem; display: flex; align-items: center; justify-content: center; }
+.aff-step i { font-size: 1.4rem; color: #C084FC; } .aff-step b { color: #fff; } .aff-step small { color: #A59CC9; font-size: .74rem; line-height: 1.6; }
+.aff-faq { margin-bottom: 10px; }
+@media (max-width: 720px) {
+  .aff-steps { grid-template-columns: 1fr 1fr; }
+  .aff-stats { grid-template-columns: 1fr 1fr; } .aff-stats .aff-stat:last-child { grid-column: 1 / -1; }
+  .aw-actions { grid-template-columns: 1fr; }
+  .aw-ring { width: 88px; height: 88px; } .aw-ring-in { width: 70px; height: 70px; } .aw-bal > b { font-size: 1.6rem; }
+  .alc-copy span { display: none; } .alc-copy { padding: 0 16px; font-size: 1rem; }
+}
+/* لوجو التطبيق 3D جنب اسم الموقع في الرئيسية (بدل المكعب) — بيميل يمين وشمال ويطفو ولمعة بتعدي عليه */
+.brand-app3d { --s: 74px; width: var(--s); height: var(--s); flex-shrink: 0; perspective: 600px; display: inline-block; }
+.ba-tile { position: relative; display: block; width: 100%; height: 100%; border-radius: 22%; overflow: hidden; background: #1A1036; transform-style: preserve-3d;
+  box-shadow: 0 16px 34px rgba(0,0,0,0.55), 0 0 0 2px rgba(168,85,247,0.45), 0 0 34px rgba(168,85,247,0.55), 0 6px 0 #120A28;
+  animation: baTilt 5s ease-in-out infinite; }
+.ba-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ba-shine { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.45) 48%, transparent 62%); background-size: 260% 100%; animation: baShine 3.8s ease-in-out infinite; pointer-events: none; }
+@keyframes baTilt { 0%, 100% { transform: rotateY(-20deg) rotateX(10deg) translateY(0); } 50% { transform: rotateY(20deg) rotateX(-6deg) translateY(-6px); } }
+@keyframes baShine { 0%, 55% { background-position: 130% 0; } 100% { background-position: -40% 0; } }
+@media (max-width: 600px) { .brand-app3d { --s: 56px; } }
+/* لوجو الموقع (نفس أيقونة التطبيق) في الهيدر والفوتر */
+.sm-brand-mark.site-logo { background: #1A1036 !important; padding: 0; overflow: hidden; position: relative; box-shadow: 0 6px 18px rgba(124,58,237,0.45), 0 0 0 1px rgba(168,85,247,0.35) !important; }
+.sm-brand-mark.site-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sm-brand-mark.site-logo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.35) 50%, transparent 65%); background-size: 260% 100%; background-position: 130% 0; animation: logoGlint 5s ease-in-out infinite; pointer-events: none; }
+@keyframes logoGlint { 0%, 70% { background-position: 130% 0; } 100% { background-position: -40% 0; } }
 .sm-topbar-actions { margin-right: auto; display: flex; align-items: center; gap: 10px; }
 .sm-top-cta { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 12px; background: var(--grad); color: #fff; font-weight: 800; font-size: .9rem; box-shadow: 0 6px 18px rgba(124,58,237,0.45); transition: .2s; }
 .sm-top-cta:hover { transform: translateY(-2px); }
@@ -958,6 +1049,22 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .pf-n { color: #fff; font-weight: 800; font-size: .85rem; direction: ltr; text-align: right; display: flex; flex-direction: column; }
 .pf-n small { color: #8B84B5; font-weight: 600; font-size: .62rem; direction: rtl; }
 @media (max-width: 520px) { .pf-row { grid-template-columns: 80px 1fr; } .pf-n { grid-column: 1 / -1; text-align: left; } }
+.profit-modal { max-width: 720px !important; }
+.pf-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.pf-summary div { padding: 12px; border-radius: 16px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); display: flex; flex-direction: column; gap: 2px; }
+.pf-summary small { color: #A7C4B5; font-size: .7rem; font-weight: 700; }
+.pf-summary b { color: #fff; font-size: 1.05rem; direction: ltr; text-align: right; }
+.pf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.pf-month { padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(168,85,247,0.2); }
+.pf-month.now { border-color: rgba(34,197,94,0.6); background: rgba(34,197,94,0.08); }
+.pf-month.neg .pfm-val { color: #F87171; }
+.pfm-top { display: flex; justify-content: space-between; align-items: center; color: #E9D5FF; font-weight: 800; font-size: .8rem; margin-bottom: 4px; }
+.pfm-top em { font-style: normal; font-size: .62rem; padding: 2px 8px; border-radius: 10px; background: rgba(34,197,94,0.18); color: #86EFAC; }
+.pfm-top em.best { background: rgba(251,191,36,0.18); color: #FCD34D; }
+.pfm-val { color: #fff; font-weight: 900; font-size: 1.35rem; direction: ltr; text-align: right; margin-bottom: 6px; }
+.pfm-val small { font-size: .7rem; color: #A7C4B5; }
+.pfm-sub { color: #8B84B5; font-size: .66rem; margin-top: 6px; line-height: 1.6; }
+@media (max-width: 520px) { .pf-summary { grid-template-columns: 1fr 1fr; } .pf-summary div:last-child { grid-column: 1 / -1; } }
 .admin-toast { z-index: 99990 !important; bottom: 100px !important; }
 .admin-bottom-nav { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%) translateY(140%); width: min(640px, calc(100% - 20px)); display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 8px; border-radius: 24px; background: rgba(18,12,34,0.88); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); border: 1px solid rgba(168,85,247,0.4); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03) inset; z-index: 1600; transition: transform .5s cubic-bezier(.2,.9,.2,1); }
 body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
@@ -1292,6 +1399,7 @@ body:not(.is-admin) .drawer-links a.drawer-admin-link { display: none !important
 .service-card[data-platform="snapchat"] .card-icon { color: #111 !important; }
 .service-name { color: #fff !important; font-size: 1.08rem !important; font-weight: 800 !important; line-height: 1.5 !important; min-height: 3em; }
 .badge-guarantee { background: rgba(34,197,94,0.14) !important; color: #4ADE80 !important; border: 1px solid rgba(34,197,94,0.3); padding: .25rem .8rem !important; font-size: .72rem !important; font-weight: 800 !important; }
+.badge-guarantee.no-guar { background: rgba(148,163,184,0.12) !important; color: #CBD5E1 !important; border-color: rgba(148,163,184,0.3); }
 .badge-max { background: rgba(245,158,11,0.12) !important; color: #FBBF24 !important; border: 1px solid rgba(245,158,11,0.3); font-size: .72rem !important; }
 .service-detail { color: var(--muted) !important; font-size: .78rem !important; }
 .service-detail i { color: var(--pc); }
@@ -1553,6 +1661,7 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
   box-shadow: 0 16px 34px color-mix(in srgb, var(--b1) 70%, transparent), 0 0 26px color-mix(in srgb, var(--b1) 55%, transparent), 0 5px 0 color-mix(in srgb, var(--b2) 75%, #000), inset 0 1px 0 rgba(255,255,255,0.5) !important; }
 #servicesPage .icon-circle.active::after { color: #fff; font-weight: 900; padding-bottom: 3px; background: linear-gradient(var(--b1), var(--b1)) no-repeat center bottom / 70% 3px; border-radius: 2px; }
 #servicesPage .icon-circle[data-target="instagram"].active { background: linear-gradient(45deg, #FEDA75, #FA7E1E 25%, #D62976 50%, #962FBF 75%, #4F5BD5) !important; }
+
 #servicesPage .icon-circle[data-target="facebook"] { --b1: #1877F2; --b2: #0B4FB3; } #servicesPage .icon-circle[data-target="facebook"]::after { content: 'فيسبوك'; }
 #servicesPage .icon-circle[data-target="youtube"] { --b1: #FF2D2D; --b2: #B30000; } #servicesPage .icon-circle[data-target="youtube"]::after { content: 'يوتيوب'; }
 #servicesPage .icon-circle[data-target="tiktok"] { --b1: #2B2B2B; --b2: #000; text-shadow: -2px -1px 0 #25F4EE, 2px 1px 0 #FE2C55; } #servicesPage .icon-circle[data-target="tiktok"]::after { content: 'تيك توك'; text-shadow: none; }
@@ -2006,12 +2115,14 @@ body { background-attachment: scroll !important; }
 <script>
 // "صلوا على النبي" بتظهر مرة واحدة بس أول ما العميل يفتح الموقع — مش مع كل تنقل أو تحديث
 try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('welcomeOverlay').style.display = 'none'; else sessionStorage.setItem('smcole_welcomed', '1'); } catch (e) {}
+// 🤝 رابط إحالة (?ref=USERNAME) → بيتحفظ لحد ما الزائر يعمل حساب
+try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\w.\-]{2,40}$/.test(rf)) localStorage.setItem('smcole_ref', JSON.stringify({ code: rf, at: Date.now() })); } catch (e) {}
 </script>
 <!-- ============ TOP BAR ============ -->
 <header class="sm-topbar" id="smTopbar">
 <div class="sm-topbar-inner">
 <div class="menu-button" id="menuButton" aria-label="القائمة"><span></span><span></span><span></span></div>
-<a class="sm-brand" id="smBrandLink" href="#home"><span class="sm-brand-mark"><i class="fas fa-bolt"></i></span><span class="sm-brand-name" data-site-name>SMCOLE</span></a>
+<a class="sm-brand" id="smBrandLink" href="#home"><span class="sm-brand-mark site-logo"><img src="/app-icon-192.png" alt="SMCOLE" width="38" height="38"></span><span class="sm-brand-name" data-site-name>SMCOLE</span></a>
 <div class="sm-topbar-actions">
 <button type="button" class="sm-top-login guest-only" data-auth-open="login"><i class="fas fa-right-to-bracket"></i><span> تسجيل الدخول</span></button>
 <button type="button" class="sm-top-cta guest-only" data-auth-open="register"><i class="fas fa-user-plus"></i><span> إنشاء حساب</span></button>
@@ -2060,6 +2171,7 @@ try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('we
 <a href="#" id="depositMenuLink"><span class="dl-ico"><i class="fas fa-wallet"></i></span><span class="dl-txt">طرق الإيداع<small>اشحن رصيدك بسهولة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="myOrdersLink"><span class="dl-ico"><i class="fas fa-receipt"></i></span><span class="dl-txt">الطلبات<small>تابع حالة طلباتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="favoritesLink"><span class="dl-ico"><i class="fas fa-heart"></i></span><span class="dl-txt">المفضلة<small>خدماتك المحفوظة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="affiliateLink" class="drawer-aff-link user-only"><span class="dl-ico"><i class="fas fa-handshake"></i></span><span class="dl-txt">التسويق بالعمولة<small>اربح 10% من كل إيداع</small></span><b class="dl-new">جديد</b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="supportDropdownLink"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="notifMenuLink" class="user-only"><span class="dl-ico"><i class="fas fa-bell"></i></span><span class="dl-txt">الإشعارات<small>تحديثات طلباتك وإيداعاتك</small></span><b class="dl-badge" id="drawerNotifBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="termsLink"><span class="dl-ico"><i class="fas fa-file-alt"></i></span><span class="dl-txt">شروط الخدمة<small>السياسات والأحكام</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
@@ -2145,6 +2257,99 @@ try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('we
 <textarea id="chatInput" rows="1" placeholder="اكتب رسالتك..." maxlength="2000"></textarea>
 <button type="submit" class="chat-send" id="chatSendBtn" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button>
 </form>
+</div>
+</div>
+
+<!-- ============ 🤝 التسويق بالعمولة ============ -->
+<div id="affiliatePage" class="overlay-page">
+<div class="aff-wrap">
+<section class="aff-hero">
+<div class="aff-orb o1"></div><div class="aff-orb o2"></div>
+<span class="sec-kicker"><i class="fas fa-handshake"></i> التسويق بالعمولة</span>
+<h1>اربح <span class="grad">10%</span> من كل إيداع<br>لكل صاحب بيسجّل من رابطك — <span class="grad">مدى الحياة</span></h1>
+<p>شارك رابطك الخاص مع أصحابك ومتابعينك. أي حد يعمل حساب من رابطك، كل ما يشحن رصيده بتاخد <b>10%</b> من المبلغ في أرباحك على طول — من غير أي حد أقصى ومن غير مدة.</p>
+<div class="aff-hero-badges"><span><i class="fas fa-infinity"></i> عمولة مدى الحياة</span><span><i class="fas fa-bolt"></i> بتتضاف تلقائياً</span><span><i class="fas fa-wallet"></i> سحب من أول 5 دولار</span></div>
+</section>
+
+<!-- للعميل (الصفحة بتظهر للمسجلين بس) -->
+<div id="affUser">
+<!-- رابط الإحالة -->
+<section class="aff-link-card">
+<div class="alc-top">
+<span class="alc-ico"><i class="fas fa-link"></i></span>
+<div><b>رابط الإحالة الخاص بيك</b><small>أي حد يسجّل من الرابط ده بيتربط بيك مدى الحياة</small></div>
+</div>
+<div class="alc-row">
+<input type="text" id="affLinkInput" readonly dir="ltr" value="جاري تجهيز رابطك...">
+<button type="button" class="alc-copy" id="affCopyBtn"><i class="far fa-copy"></i><span>نسخ الرابط</span></button>
+</div>
+<div class="alc-share">
+<span>شارك على:</span>
+<button type="button" data-share="whatsapp" style="--c:#25D366" title="واتساب"><i class="fab fa-whatsapp"></i></button>
+<button type="button" data-share="telegram" style="--c:#2AABEE" title="تليجرام"><i class="fab fa-telegram"></i></button>
+<button type="button" data-share="facebook" style="--c:#1877F2" title="فيسبوك"><i class="fab fa-facebook-f"></i></button>
+<button type="button" data-share="native" style="--c:#A855F7" title="مشاركة"><i class="fas fa-share-nodes"></i></button>
+</div>
+</section>
+
+<!-- المحفظة: الأرباح المتاحة + السحب -->
+<section class="aff-wallet">
+<div class="aw-main">
+<div class="aw-ring" id="affRing" style="--p:0">
+<div class="aw-ring-in"><b id="affPct">0%</b><small>من الحد الأدنى</small></div>
+</div>
+<div class="aw-bal">
+<small><i class="fas fa-sack-dollar"></i> أرباحك المتاحة للسحب</small>
+<b><span id="affBalance">0.00</span> <em>جنيه</em></b>
+<p id="affMinText">الحد الأدنى للسحب 5 دولار</p>
+</div>
+</div>
+<div class="aw-actions">
+<button type="button" class="aw-act primary" id="affToBalanceBtn">
+<span class="aa-ico"><i class="fas fa-wallet"></i></span>
+<span class="aa-txt"><b>تحويل لرصيدي</b><small>فوري — تستخدمها في الطلبات</small></span>
+<i class="fas fa-chevron-left aa-arrow"></i>
+</button>
+<button type="button" class="aw-act" id="affCashBtn">
+<span class="aa-ico"><i class="fas fa-money-bill-wave"></i></span>
+<span class="aa-txt"><b>سحب كاش</b><small>على محفظتك عن طريق الدعم الفني</small></span>
+<i class="fas fa-chevron-left aa-arrow"></i>
+</button>
+</div>
+<div class="aw-lock" id="affLock"><i class="fas fa-lock"></i> <span id="affLockText">السحب بيتفتح من أول 5 دولار</span></div>
+</section>
+
+<!-- الإحصائيات -->
+<section class="aff-stats">
+<div class="aff-stat" style="--c:#A855F7"><span class="as-ico"><i class="fas fa-users"></i></span><div><b id="affRefs">0</b><small>سجّلوا من رابطك</small></div></div>
+<div class="aff-stat" style="--c:#22D3EE"><span class="as-ico"><i class="fas fa-user-check"></i></span><div><b id="affActive">0</b><small>عملوا إيداع</small></div></div>
+<div class="aff-stat" style="--c:#22C55E"><span class="as-ico"><i class="fas fa-coins"></i></span><div><b id="affTotal">0.00</b><small>إجمالي أرباحك (جنيه)</small></div></div>
+</section>
+
+<section class="aff-history">
+<h3><i class="fas fa-clock-rotate-left"></i> آخر العمولات</h3>
+<div id="affHistory"><div class="aff-empty"><i class="fas fa-seedling"></i>لسه مفيش عمولات — شارك رابطك وابدأ تكسب 🚀</div></div>
+</section>
+</div>
+
+<section class="aff-how">
+<h2>إزاي <span class="grad">بتكسب</span>؟</h2>
+<div class="aff-steps">
+<div class="aff-step"><span>1</span><i class="fas fa-link"></i><b>انسخ رابطك</b><small>كل عميل ليه رابط خاص باسم المستخدم بتاعه</small></div>
+<div class="aff-step"><span>2</span><i class="fas fa-share-nodes"></i><b>شاركه</b><small>مع أصحابك وعلى السوشيال ميديا والجروبات</small></div>
+<div class="aff-step"><span>3</span><i class="fas fa-user-plus"></i><b>بيسجّلوا من رابطك</b><small>بيتربطوا بيك مدى الحياة</small></div>
+<div class="aff-step"><span>4</span><i class="fas fa-sack-dollar"></i><b>تكسب 10%</b><small>من كل إيداع بيتأكد ليهم — تلقائياً</small></div>
+</div>
+</section>
+
+<section class="aff-faq">
+<h2>أسئلة <span class="grad">متكررة</span></h2>
+<details class="faq-item"><summary>العمولة بتتحسب إزاي؟</summary><p>10% من أي مبلغ إيداع بيتأكد للعميل اللي سجّل من رابطك. مثلاً لو شحن 500 جنيه بتاخد 50 جنيه، ولو شحن 10 دولار بتاخد 1 دولار (بيتحسب بالجنيه حسب سعر الدولار في الموقع).</p></details>
+<details class="faq-item"><summary>العمولة لمدة قد إيه؟</summary><p>مدى الحياة — طول ما العميل بيشحن رصيده، بتاخد عمولتك على كل إيداع.</p></details>
+<details class="faq-item"><summary>أسحب أرباحي إزاي؟</summary><p>من أول 5 دولار (بالجنيه): يا إما تحوّلها لرصيدك على طول وتستخدمها في الخدمات، يا إما تضغط "سحب كاش" وهتتبعت رسالة للدعم الفني بالمبلغ ويتحوّلك على محفظتك.</p></details>
+<details class="faq-item"><summary>إمتى العمولة بتظهر؟</summary><p>أول ما الإدارة تأكد إيداع العميل، العمولة بتتضاف لأرباحك ويوصلك إشعار.</p></details>
+<details class="faq-item"><summary>ينفع أسجّل نفسي من رابطي؟</summary><p>لا، الحساب مينفعش يتربط بنفسه، والحسابات المكررة أو الوهمية بيتم إلغاء أرباحها.</p></details>
+</section>
 </div>
 </div>
 
@@ -2246,7 +2451,7 @@ try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('we
 <div class="hero-inner">
 <div class="hero-text">
 <div class="hero-badge"><span class="dot"></span> <span data-site-name>SMCOLE</span> — لوحة SMM سريعة وبأرخص الأسعار</div>
-<div class="brand3d"><span class="brand-cube" aria-hidden="true"><span class="bf f1"><i class="fas fa-bolt"></i></span><span class="bf f2"><i class="fab fa-facebook-f"></i></span><span class="bf f3"><i class="fab fa-instagram"></i></span><span class="bf f4"><i class="fab fa-tiktok"></i></span><span class="bf f5"><i class="fab fa-youtube"></i></span><span class="bf f6"><i class="fab fa-telegram"></i></span></span><span class="hero-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
+<div class="brand3d"><span class="brand-app3d" aria-hidden="true"><span class="ba-tile"><img src="/app-icon-512.png" alt=""><span class="ba-shine"></span></span></span><span class="hero-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
 <h1 class="hero-title"><span class="grad" id="siteDescriptionDisplay">افضل وارخص موقع تزويد متابعين ومشاهدات</span></h1>
 <p class="hero-desc">متابعين، لايكات، مشاهدات وتعليقات لفيسبوك وإنستجرام وتيك توك ويوتيوب وتليجرام وأكثر — تنفيذ سريع، ضمان حقيقي، ودعم فني متواجد 24 ساعة.</p>
 <div class="hero-cta-group">
@@ -2407,7 +2612,7 @@ try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('we
 </section>
 
 <footer class="sm-footer">
-<div class="sm-footer-brand"><span class="sm-brand-mark"><i class="fas fa-bolt"></i></span> <span id="siteNameDisplay" data-site-name>SMCOLE</span></div>
+<div class="sm-footer-brand"><span class="sm-brand-mark site-logo"><img src="/app-icon-192.png" alt="SMCOLE" width="38" height="38"></span> <span id="siteNameDisplay" data-site-name>SMCOLE</span></div>
 <div class="sm-footer-icons"><i class="fab fa-facebook-f"></i><i class="fab fa-instagram"></i><i class="fab fa-tiktok"></i><i class="fab fa-youtube"></i><i class="fab fa-telegram"></i><i class="fab fa-x-twitter"></i><i class="fab fa-snapchat"></i></div>
 <nav class="sm-footer-links" aria-label="خدماتنا">
 <a href="/facebook-followers.html">تزويد متابعين فيسبوك</a>
@@ -3932,8 +4137,9 @@ const depositPage = document.getElementById('depositPage');
 const myOrdersPage = document.getElementById('myOrdersPage');
 const servicesPage = document.getElementById('servicesPage');
 const supportPage = document.getElementById('supportPage');
+const affiliatePage = document.getElementById('affiliatePage');
 const mainContent = document.getElementById('mainContent');
-const ALL_PAGES = () => [termsPage, paymentPage, favoritesPage, profilePage, depositPage, myOrdersPage, servicesPage, supportPage];
+const ALL_PAGES = () => [termsPage, paymentPage, favoritesPage, profilePage, depositPage, myOrdersPage, servicesPage, supportPage, affiliatePage];
 const termsLink = document.getElementById('termsLink');
 const supportDropdownLink = document.getElementById('supportDropdownLink');
 const paymentMethodBtn = document.getElementById('paymentMethodBtn');
@@ -3995,6 +4201,7 @@ if (routeName === 'home') setPageVisibility(null);
 else if (routeName === 'services') { setPageVisibility(servicesPage); if (window.__cfRefreshAll) setTimeout(() => window.__cfRefreshAll(), 30); }
 else if (routeName === 'support' && window.currentProfile) { setPageVisibility(supportPage); if (window.__onSupportOpen) window.__onSupportOpen(); }
 else if (routeName === 'terms') setPageVisibility(termsPage);
+else if (routeName === 'affiliate') { setPageVisibility(affiliatePage); if (window.__onAffiliateOpen) window.__onAffiliateOpen(); }
 else if (routeName === 'payment') {
 setPageVisibility(paymentPage);
 const txBox = document.getElementById('payTxLog');
@@ -4108,6 +4315,7 @@ document.addEventListener('click', function(event) { if (!menuBtn.contains(event
 termsLink.addEventListener('click', (e) => { e.preventDefault(); window.__navigateTo('terms', termsPage, true); });
 const favoritesLink = document.getElementById('favoritesLink');
 favoritesLink.addEventListener('click', (e) => { e.preventDefault(); window.__navigateTo('favorites', favoritesPage, true); });
+document.getElementById('affiliateLink').addEventListener('click', (e) => { e.preventDefault(); window.__navigateTo('affiliate', affiliatePage, true); });
 if (paymentMethodBtn) paymentMethodBtn.addEventListener('click', () => { window.__navigateTo('payment', paymentPage, true); });
 supportDropdownLink.addEventListener('click', (e) => {
 e.preventDefault();
@@ -4341,8 +4549,13 @@ card.appendChild(headerRow);
 const iconDiv = document.createElement('div'); iconDiv.className = 'card-icon'; iconDiv.innerHTML = '<i class="' + service.icon + '"></i>';
 const nameEl = document.createElement('h3'); nameEl.className = 'service-name'; nameEl.innerText = service.name;
 card.append(iconDiv, nameEl);
-if (service.guarantee) {
-const guarSpan = document.createElement('div'); guarSpan.className = 'badge-guarantee'; guarSpan.innerHTML = '<i class="fas fa-shield-alt"></i> ' + service.guarantee;
+{
+// الضمان بيتكتب من اسم الخدمة بالظبط (40 يوم / 60 يوم / سنة / مدى الحياة / بدون إعادة تعبئة / بدون ضمان...)
+const gText = window.guaranteeLabel ? window.guaranteeLabel(service) : (service.guarantee || 'بدون ضمان');
+const guarSpan = document.createElement('div');
+guarSpan.className = 'badge-guarantee' + (/^بدون/.test(gText) ? ' no-guar' : '');
+guarSpan.innerHTML = '<i class="fas ' + (/^بدون/.test(gText) ? 'fa-circle-minus' : 'fa-shield-alt') + '"></i> ';
+guarSpan.appendChild(document.createTextNode(gText));
 card.appendChild(guarSpan);
 }
 if (maxLimit > 0) {
@@ -5235,6 +5448,11 @@ for (let i = 0; i < ids.length; i += 200) {
 const chunk = ids.slice(i, i + 200);
 let r;
 if (act === 'delete') {
+// الخدمات المستوردة اللي بتتحذف بإيدك مبترجعش تاني مع المزامنة التلقائية
+try {
+const { data: ls } = await supabase.from('api_service_links').select('provider_id,provider_service_id').in('service_id', chunk);
+if (ls && ls.length) await supabase.from('api_ignored_services').upsert(ls.map(l => ({ provider_id: l.provider_id, provider_service_id: String(l.provider_service_id) })), { onConflict: 'provider_id,provider_service_id', ignoreDuplicates: true });
+} catch (er) {}
 r = await supabase.from('services').delete().in('id', chunk);
 if (!r.error) { try { await supabase.from('api_service_links').delete().in('service_id', chunk); } catch (er) {} }
 } else {
@@ -5412,6 +5630,10 @@ window.__adminDelete = async function(id) {
 const s = allServices.find(x => x.id === id);
 if (!s) return;
 if (!confirm('هل أنت متأكد من حذف الخدمة:\n"' + s.name + '"؟')) return;
+try {
+const { data: ls } = await supabase.from('api_service_links').select('provider_id,provider_service_id').eq('service_id', id);
+if (ls && ls.length) await supabase.from('api_ignored_services').upsert(ls.map(l => ({ provider_id: l.provider_id, provider_service_id: String(l.provider_service_id) })), { onConflict: 'provider_id,provider_service_id', ignoreDuplicates: true });
+} catch (er) {}
 const { error } = await supabase.from('services').delete().eq('id', id);
 if (error) { toast('خطأ في الحذف: ' + error.message, true); return; }
 toast('تم الحذف بنجاح 🗑️');
@@ -6008,27 +6230,79 @@ ordersStatusFilter = b.dataset.ofilter;
 document.querySelectorAll('#adminOrderStats [data-ofilter]').forEach(x => x.classList.toggle('active', x === b));
 renderOrdersTable();
 });
-// 📋 نسخ اليوزر بضغطة في جدول الطلبات
-document.getElementById('adminOrdersBody').addEventListener('click', async (e) => {
+// 📋 نسخ اليوزر بضغطة في جدول الطلبات وجدول طلبات الإيداع
+const copyUserHandler = async (e) => {
 const cp = e.target.closest('.user-copy'); if (!cp) return;
 const v = cp.dataset.copy || '';
 try { await navigator.clipboard.writeText(v); } catch (er) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
 cp.classList.add('copied'); setTimeout(() => cp.classList.remove('copied'), 1200);
 toast('📋 تم نسخ اليوزر: ' + v);
-});
+};
+document.getElementById('adminOrdersBody').addEventListener('click', copyUserHandler);
+document.getElementById('adminDepositsBody').addEventListener('click', copyUserHandler);
 
 // 💰 ربح الموقع (سعر البيع − تكلفة المزود) — الشهر الحالي + آخر 12 شهر
 const AR_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 let profitRows = [];
 const fmtMoney = (n) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// حساب الربح من الطلبات نفسها (بالجنيه): اللي العميل دفعه − تكلفة المزود (الملغي مش بيتحسب، والجزئي على الجزء اللي اتنفذ)
+async function computeProfitClient(months) {
+const now = new Date();
+const start = new Date(now.getFullYear(), now.getMonth() - (months - 1), 1);
+let orders = [];
+for (let from = 0; from < 50000; from += 1000) {
+const { data, error } = await supabase.from('orders').select('id,total,refunded,quantity,service_id,status,created_at').neq('status', 'cancelled').gte('created_at', start.toISOString()).range(from, from + 999);
+if (error) throw new Error(error.message);
+orders = orders.concat(data || []);
+if (!data || data.length < 1000) break;
+}
+const svcIds = [...new Set(orders.map(o => String(o.service_id)).filter(Boolean))];
+const links = new Map();
+for (let i = 0; i < svcIds.length; i += 300) {
+const { data } = await supabase.from('api_service_links').select('service_id,provider_id,provider_rate,provider_type').in('service_id', svcIds.slice(i, i + 300));
+(data || []).forEach(l => links.set(String(l.service_id), l));
+}
+const provs = new Map();
+try { const { data } = await supabase.from('api_providers').select('id,currency,fx_rate'); (data || []).forEach(p => provs.set(String(p.id), p)); } catch (e) {}
+const costs = new Map();
+try {
+const ids = orders.map(o => o.id);
+for (let i = 0; i < ids.length; i += 300) {
+const { data, error } = await supabase.from('order_costs').select('order_id,cost_egp').in('order_id', ids.slice(i, i + 300));
+if (error) break;
+(data || []).forEach(c => costs.set(String(c.order_id), Number(c.cost_egp) || 0));
+}
+} catch (e) {}
+const ss = (typeof siteSettings !== 'undefined' && siteSettings) || {};
+const fx = Number(ss.last_fx) || Number(ss.exchange_rate) || Number(window.exchangeRate) || 50;
+const rows = [];
+for (let k = months - 1; k >= 0; k--) { const d = new Date(now.getFullYear(), now.getMonth() - k, 1); rows.push({ y: d.getFullYear(), m: d.getMonth() + 1, revenue: 0, cost: 0, profit: 0, orders: 0 }); }
+orders.forEach(o => {
+const d = new Date(o.created_at);
+const row = rows.find(r => r.y === d.getFullYear() && r.m === d.getMonth() + 1); if (!row) return;
+const total = Number(o.total) || 0, paid = Math.max(total - (Number(o.refunded) || 0), 0);
+let cost = costs.get(String(o.id));
+if (cost === undefined) {
+const l = links.get(String(o.service_id));
+if (l) {
+const p = provs.get(String(l.provider_id)) || {};
+const toEgp = String(p.currency || 'USD').toUpperCase() === 'EGP' ? 1 : (Number(p.fx_rate) || fx);
+cost = (Number(l.provider_rate) || 0) * toEgp * (String(l.provider_type || '').toLowerCase() === 'package' ? (Number(o.quantity) || 0) : (Number(o.quantity) || 0) / 1000);
+} else cost = 0;
+}
+const realCost = total > 0 ? cost * (paid / total) : 0;
+row.revenue += paid; row.cost += realCost; row.profit += paid - realCost; row.orders++;
+});
+return rows;
+}
 async function loadProfitStats() {
 const v = document.getElementById('profitThisMonth'), sub = document.getElementById('profitThisMonthSub');
 const now = new Date();
 document.getElementById('profitMonthName').textContent = '(' + AR_MONTHS[now.getMonth()] + ' ' + now.getFullYear() + ')';
 try {
 const { data, error } = await supabase.rpc('smcole_profit_stats', { p_months: 12 });
-if (error) throw new Error(/function|schema cache/i.test(error.message) ? 'شغّل ملف update_v10.sql في Supabase الأول' : error.message);
-profitRows = data || [];
+// لو ملف update_v10.sql لسه متشغلش → نحسب هنا من الطلبات مباشرة
+profitRows = (!error && data && data.length) ? data : await computeProfitClient(12);
 const cur = profitRows.find(r => Number(r.y) === now.getFullYear() && Number(r.m) === now.getMonth() + 1) || { profit: 0, revenue: 0, cost: 0, orders: 0 };
 v.textContent = fmtMoney(cur.profit) + ' ج';
 v.classList.toggle('neg', Number(cur.profit) < 0);
@@ -6041,13 +6315,27 @@ const bg = document.getElementById('profitModalBg');
 const body = document.getElementById('profitModalBody');
 const max = Math.max(1, ...profitRows.map(r => Math.abs(Number(r.profit) || 0)));
 const total = profitRows.reduce((s, r) => s + (Number(r.profit) || 0), 0);
-body.innerHTML = '<div class="pf-total">إجمالي ربح آخر 12 شهر: <b>' + fmtMoney(total) + ' ج</b></div>' +
-profitRows.slice().reverse().map(r => {
+const totalSales = profitRows.reduce((s, r) => s + (Number(r.revenue) || 0), 0);
+const totalOrders = profitRows.reduce((s, r) => s + (Number(r.orders) || 0), 0);
+const best = profitRows.reduce((b, r) => (Number(r.profit) || 0) > (Number(b && b.profit) || -Infinity) ? r : b, null);
+const now = new Date();
+body.innerHTML =
+'<div class="pf-summary">' +
+'<div><small>💰 إجمالي الربح</small><b>' + fmtMoney(total) + ' ج</b></div>' +
+'<div><small>🛒 إجمالي المبيعات</small><b>' + fmtMoney(totalSales) + ' ج</b></div>' +
+'<div><small>📦 عدد الطلبات</small><b>' + totalOrders + '</b></div>' +
+'</div>' +
+'<div class="pf-grid">' + profitRows.slice().reverse().map(r => {
 const p = Number(r.profit) || 0;
-return '<div class="pf-row"><div class="pf-m">' + AR_MONTHS[(Number(r.m) || 1) - 1] + ' ' + r.y + '</div>' +
+const isNow = Number(r.y) === now.getFullYear() && Number(r.m) === now.getMonth() + 1;
+const isBest = best && best === r && p > 0;
+return '<div class="pf-month' + (isNow ? ' now' : '') + (p < 0 ? ' neg' : '') + '">' +
+'<div class="pfm-top"><span>' + AR_MONTHS[(Number(r.m) || 1) - 1] + ' ' + r.y + '</span>' + (isNow ? '<em>الشهر الحالي</em>' : isBest ? '<em class="best">🏆 أعلى شهر</em>' : '') + '</div>' +
+'<div class="pfm-val">' + fmtMoney(p) + ' <small>ج</small></div>' +
 '<div class="pf-bar"><span style="width:' + Math.round(Math.abs(p) / max * 100) + '%"' + (p < 0 ? ' class="neg"' : '') + '></span></div>' +
-'<div class="pf-n' + (p < 0 ? ' neg' : '') + '">' + fmtMoney(p) + ' ج<small>' + (r.orders || 0) + ' طلب · مبيعات ' + fmtMoney(r.revenue) + '</small></div></div>';
-}).join('');
+'<div class="pfm-sub">مبيعات ' + fmtMoney(r.revenue) + ' ج · تكلفة المزود ' + fmtMoney(r.cost) + ' ج · ' + (r.orders || 0) + ' طلب</div>' +
+'</div>';
+}).join('') + '</div>';
 bg.classList.add('show');
 });
 document.getElementById('profitModalClose').addEventListener('click', () => document.getElementById('profitModalBg').classList.remove('show'));
@@ -6166,7 +6454,7 @@ const screenshotBtn = d.screenshot
 ? '<button class="screenshot-preview-btn" onclick="__adminViewScreenshot(' + d.id + ')"><i class="fas fa-image"></i> عرض</button>'
 : '<span style="color:#555;font-size:0.7rem;">—</span>';
 tr.innerHTML = '<td>#' + d.id + '</td>' +
-'<td>' + __esc(d._user ? (d._user.username || d._user.name) : '-') + '</td>' +
+'<td>' + (d._user && d._user.username ? '<button type="button" class="user-copy" data-copy="' + __esc(d._user.username) + '" title="اضغط للنسخ"><i class="far fa-copy"></i> ' + __esc(d._user.username) + '</button>' : __esc(d._user ? (d._user.name || '-') : '-')) + '</td>' +
 '<td>' + methodLabel + '</td>' +
 '<td style="color:#7C3AED; font-weight:700;">' + parseFloat(d.amount).toFixed(2) + ' ' + cur + '</td>' +
 '<td style="font-size:0.75rem; direction:ltr;">' + __esc(txDisplay) + '</td>' +
@@ -7679,6 +7967,7 @@ if (link === 'orders') openMyOrdersPage();
 else if (link === 'services') window.openServicesPage();
 else if (link === 'support') window.openSupportChat();
 else if (link === 'deposit') window.__navigateTo('payment', document.getElementById('paymentPage'), true);
+else if (link === 'affiliate') window.__navigateTo('affiliate', document.getElementById('affiliatePage'), true);
 }
 async function openNotif(id) {
 const n = notifItems.find(x => String(x.id) === String(id));
@@ -7838,6 +8127,8 @@ extrasForProfile = currentProfile.id;
 loadNotifs();
 loadSupport();
 maybeShowPushPrompt();
+if (window.__applyPendingReferral) setTimeout(() => window.__applyPendingReferral(), 1500);
+if (window.__currentRoute === 'affiliate' && window.__onAffiliateOpen) window.__onAffiliateOpen();
 if (window.__maybeShowAppPrompt) window.__maybeShowAppPrompt();
 const uid = currentProfile.id;
 supportChannel = sb.channel('support-' + uid + '-' + Date.now())
@@ -8041,6 +8332,52 @@ window.__startAdminSupport = startAdminSupportRealtime;
 window.__stopAdminSupport = stopAdminSupportRealtime;
 // ---------- ℹ️ تفاصيل الخدمة ----------
 let detailsCardNumber = null;
+// تفاصيل الخدمة من اسمها (لما المزود مايبعتش وصف) — نفس أسلوب السيرفر
+function autoDescFromName(service, minLimit, maxLimit) {
+const name = String(service.name || '');
+const parts = name.split(/\s*[|｜•]\s*|\s+-\s+/).map(x => x.trim()).filter(Boolean).slice(1);
+const rows = [];
+const full = name + ' ' + (service.category || '');
+const pct = /100\s*%/.test(full) ? ' 100%' : '';
+if (/مصري|مصريين|مصر|egypt/i.test(full)) rows.push('🇪🇬 الجمهور: مصريين' + pct);
+else if (/خليج|سعودي|gulf|saudi/i.test(full)) rows.push('🌍 الجمهور: خليجي' + pct);
+else if (/عرب|عربي|arab/i.test(full)) rows.push('🌍 الجمهور: عرب' + pct);
+else if (/اجانب|أجانب|foreign|worldwide|global|عالمي/i.test(full)) rows.push('🌎 الجمهور: أجانب / عالمي');
+let hasStart = false, hasSpeed = false;
+parts.forEach(v => {
+if (/(\d+\s*[-–]\s*\d+\s*(ساعة|ساعات|دقيقة|دقائق|يوم|أيام|h\b|hours?|min|days?))|فوري|instant|بدء|start/i.test(v)) { rows.push('⏱️ وقت البدء: ' + v); hasStart = true; }
+else if (/(\/\s*(يوم|day))|يومي|per day|سرعة|speed|سريع|fast/i.test(v)) { rows.push('🚀 السرعة: ' + v); hasSpeed = true; }
+else if (/حقيقي|real|جودة|quality|\bHQ\b|نشط|active/i.test(v)) rows.push('⭐ الجودة: ' + v);
+});
+rows.push('🛡️ الضمان: ' + guaranteeLabel(service));
+if (!hasStart) rows.push('⏱️ وقت البدء: غالباً خلال دقائق لساعات حسب ضغط الطلبات');
+rows.push('📦 الكمية: من ' + Number(minLimit || 1).toLocaleString('en-US') + ' إلى ' + (maxLimit > 0 ? Number(maxLimit).toLocaleString('en-US') : 'غير محدود'));
+void hasSpeed;
+return rows.join('\n') + '\n\n⚠️ ملاحظات:\n• ما تعملش أكتر من طلب لنفس الرابط في نفس الوقت\n• ما تغيّرش اسم الحساب أو تقفله لحد ما الطلب يكمل\n• لازم الحساب أو المنشور يكون عام (مش خاص)';
+}
+// 🛡️ الضمان من اسم الخدمة بالظبط (40 يوم، 60 يوم، شهرين، سنة، مدى الحياة، بدون إعادة تعبئة...)
+function guaranteeLabel(service) {
+const n = String(service.name || '') + ' ' + String(service.category || '');
+const AR_NUM = { '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9' };
+const s = n.replace(/[٠-٩]/g, d => AR_NUM[d]);
+if (/بدون\s*ضمان|لا\s*يوجد\s*ضمان|no\s*guarantee/i.test(s)) return 'بدون ضمان';
+if (/بدون\s*(إعادة|اعادة)\s*(تعبئة|تعبئه)|no\s*refill|non[\s-]*refill|without\s*refill|\bNR\b/i.test(s)) return 'بدون إعادة تعبئة';
+if (/مدى\s*الحياة|مدي\s*الحياة|lifetime|life\s*time|دائم|♾/i.test(s)) return 'ضمان مدى الحياة';
+const refillWord = /(إعادة|اعادة)\s*(تعبئة|تعبئه)/.test(s) ? ' إعادة تعبئة' : '';
+let m = s.match(/(?:ضمان|refill|guarantee|♻️?)\s*[:\-]?\s*(\d{1,4})\s*(?:يوم|أيام|ايام|يوما|يومًا|days?|d(?![a-z]))/i) || s.match(/(\d{1,4})\s*(?:يوم|أيام|ايام|days?)\s*(?:ضمان|refill|guarantee|إعادة|اعادة)/i);
+if (m) return 'ضمان ' + (+m[1]) + ' يوم' + refillWord;
+m = s.match(/\bR\s?(\d{1,4})\b/);
+if (m) return 'ضمان ' + m[1] + ' يوم';
+if (/ضمان\s*(سنة|سنه|عام)|1\s*year|one\s*year/i.test(s)) return 'ضمان سنة';
+if (/ضمان\s*(شهرين)|2\s*months?/i.test(s)) return 'ضمان شهرين';
+m = s.match(/ضمان\s*(\d{1,2})\s*(?:شهر|شهور|أشهر|اشهر)|(\d{1,2})\s*months?\s*(?:refill|guarantee)/i);
+if (m) return 'ضمان ' + (m[1] || m[2]) + ' شهر';
+if (/ضمان\s*(شهر)\b|1\s*month/i.test(s)) return 'ضمان شهر';
+if (/(إعادة|اعادة)\s*تعبئة|refill|♻/i.test(s)) return 'ضمان (إعادة تعبئة)';
+if (/ضمان|guarant/i.test(s)) return 'بضمان';
+return 'بدون ضمان';
+}
+window.guaranteeLabel = guaranteeLabel;
 window.openServiceDetails = function (service, number, minLimit, maxLimit) {
 detailsCardNumber = number;
 const bg = document.getElementById('svcDetailsModalBg');
@@ -8059,7 +8396,9 @@ const stats = [
 ['fa-arrow-up-wide-short', 'الحد الأقصى', maxLimit > 0 ? Number(maxLimit).toLocaleString('en-US') : 'مفتوح'],
 ['fa-shield-halved', 'الضمان', service.guarantee || 'بدون ضمان']
 ];
-document.getElementById('svcDetailsStats').innerHTML = stats.map(s => '<div class="svc-stat"><i class="fas ' + s[0] + '"></i><span>' + s[1] + '</span><b>' + escHtml(s[2]) + '</b></div>').join('');
+// المربعات الصغيرة (السعر/الحد الأدنى/الأقصى/الضمان) اتشالت — اسم الخدمة + التفاصيل بس
+const statsEl = document.getElementById('svcDetailsStats');
+statsEl.innerHTML = ''; statsEl.style.display = 'none'; void stats;
 const descEl = document.getElementById('svcDetailsDesc');
 // الوصف مش بيتحمّل مع الخدمات (عشان السرعة) → بنجيبه دلوقتي من قاعدة البيانات
 if (service.description === undefined && service.dbId != null) {
@@ -8072,7 +8411,8 @@ if (detailsCardNumber === number && bg.classList.contains('show')) window.openSe
 }).catch(() => { service.description = ''; descEl.style.display = 'none'; });
 return;
 }
-const desc = String(service.description || '').trim();
+// لو مفيش وصف من المزود → تفاصيل بتتكتب من اسم الخدمة + الملاحظات العامة
+const desc = String(service.description || '').trim() || autoDescFromName(service, minLimit, maxLimit);
 descEl.style.display = desc ? '' : 'none';
 // كل سطر في الوصف يبقى صف مرتب: "🛡️ الضمان: 365 يوم" ← العنوان عريض والقيمة جنبه
 const lineHtml = (ln) => {
@@ -8903,6 +9243,7 @@ else if (!h) { if (currentUser && !fallback) nav('services', 'servicesPage'); } 
 else if (h === 'home') { /* يفضل على الرئيسية */ }
 else if (h === 'services') nav('services', 'servicesPage');
 else if (h === 'terms') nav('terms', 'termsPage');
+else if (h === 'affiliate' && currentProfile) nav('affiliate', 'affiliatePage');
 else if (h === 'payment') nav('payment', 'paymentPage');
 else if (h === 'favorites') nav('favorites', 'favoritesPage');
 else if (h === 'support' && currentProfile) nav('support', 'supportPage');
@@ -8913,6 +9254,110 @@ else if (window.routeToPage) window.routeToPage('home');
 } catch (e) { console.warn('restore route:', e); }
 document.body.classList.remove('route-restoring');
 };
+
+// ===================== 🤝 التسويق بالعمولة =====================
+// ربط الحساب الجديد بصاحب رابط الإحالة (مرة واحدة)
+async function applyPendingReferral() {
+if (!currentProfile) return;
+let r = null; try { r = JSON.parse(localStorage.getItem('smcole_ref') || 'null'); } catch (e) {}
+if (!r || !r.code) return;
+if (Date.now() - (r.at || 0) > 30 * 24 * 3600 * 1000 || String(r.code).toLowerCase() === String(currentProfile.username || '').toLowerCase()) { try { localStorage.removeItem('smcole_ref'); } catch (e) {} return; }
+try {
+const { data, error } = await sb.rpc('smcole_set_referrer', { p_code: r.code });
+if (error && /function|schema cache/i.test(error.message)) return; // ملف update_v12 لسه متشغلش → نحاول المرة الجاية
+try { localStorage.removeItem('smcole_ref'); } catch (e) {}
+if (data && data.ok) userToast('🤝 حسابك اتربط برابط الإحالة بتاع ' + data.referrer, 'ok');
+} catch (e) {}
+}
+window.__applyPendingReferral = applyPendingReferral;
+const affLink = () => location.origin.replace(/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/, 'https://smcole.com') + '/?ref=' + encodeURIComponent((currentProfile && currentProfile.username) || '');
+const affMoney = (n) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+let affStats = null;
+window.__onAffiliateOpen = async function () {
+// الصفحة للمسجلين بس — لو بيانات الحساب لسه بتتحمّل، بتتحدث لوحدها أول ما تجهز
+if (!currentProfile) { document.getElementById('affLinkInput').value = 'جاري تجهيز رابطك...'; return; }
+document.getElementById('affLinkInput').value = affLink();
+try {
+const { data, error } = await sb.rpc('smcole_affiliate_stats');
+if (error) throw error;
+affStats = data || {};
+document.getElementById('affRefs').textContent = affStats.referrals || 0;
+document.getElementById('affActive').textContent = affStats.active || 0;
+document.getElementById('affTotal').textContent = affMoney(affStats.total);
+document.getElementById('affBalance').textContent = affMoney(affStats.balance);
+const min = Number(affStats.min_egp) || 250, bal = Number(affStats.balance) || 0;
+const pct = Math.min(100, Math.round(bal / min * 100));
+const ready = bal >= min;
+document.getElementById('affRing').style.setProperty('--p', pct);
+document.getElementById('affPct').textContent = pct + '%';
+document.getElementById('affMinText').innerHTML = ready
+? '✅ تقدر تسحب أرباحك دلوقتي'
+: 'الحد الأدنى للسحب <b>5$</b> = <b>' + affMoney(min) + ' ج</b> · فاضلك <b>' + affMoney(min - bal) + ' ج</b>';
+document.getElementById('affLock').style.display = ready ? 'none' : '';
+document.getElementById('affLockText').textContent = 'السحب بيتفتح أول ما أرباحك توصل ' + affMoney(min) + ' جنيه (5 دولار)';
+document.querySelector('.aff-wallet').classList.toggle('ready', ready);
+['affToBalanceBtn', 'affCashBtn'].forEach(id => { document.getElementById(id).disabled = !ready; });
+} catch (e) {
+document.getElementById('affMinText').textContent = '⚠️ نظام العمولة لسه بيتجهز — جرّب بعد شوية';
+['affToBalanceBtn', 'affCashBtn'].forEach(id => { document.getElementById(id).disabled = true; });
+}
+try {
+const { data } = await sb.from('affiliate_earnings').select('referred_label,deposit_amount,currency,commission_egp,created_at').order('created_at', { ascending: false }).limit(30);
+const h = document.getElementById('affHistory');
+if (data && data.length) h.innerHTML = data.map(r => '<div class="aff-row"><span class="ar-ico"><i class="fas fa-coins"></i></span><span class="ar-txt"><b>+' + affMoney(r.commission_egp) + ' جنيه</b><small>' + escHtml(r.referred_label || 'عميل') + ' شحن ' + affMoney(r.deposit_amount) + ' ' + (r.currency === 'USD' ? 'دولار' : 'جنيه') + '</small></span><em>' + timeAgo(r.created_at) + '</em></div>').join('');
+} catch (e) {}
+};
+document.getElementById('affCopyBtn').addEventListener('click', async () => {
+const v = document.getElementById('affLinkInput').value;
+if (!/^https?:\/\//.test(v)) return;
+try { await navigator.clipboard.writeText(v); } catch (e) { const i = document.getElementById('affLinkInput'); i.select(); try { document.execCommand('copy'); } catch (x) {} }
+const b = document.getElementById('affCopyBtn');
+b.classList.add('done'); b.innerHTML = '<i class="fas fa-check"></i><span>اتنسخ</span>';
+setTimeout(() => { b.classList.remove('done'); b.innerHTML = '<i class="far fa-copy"></i><span>نسخ الرابط</span>'; }, 1600);
+userToast('📋 تم نسخ رابط الإحالة', 'ok');
+});
+document.querySelector('.alc-share').addEventListener('click', async (e) => {
+const b = e.target.closest('[data-share]'); if (!b) return;
+const link = affLink();
+const text = '🚀 أرخص موقع تزويد متابعين ولايكات ومشاهدات لكل المنصات — سجّل من هنا:';
+const map = { whatsapp: 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + link), telegram: 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(text), facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(link) };
+if (b.dataset.share === 'native') {
+if (navigator.share) { try { await navigator.share({ title: 'SMCOLE', text, url: link }); } catch (er) {} }
+else { try { await navigator.clipboard.writeText(link); } catch (er) {} userToast('📋 تم نسخ رابط الإحالة', 'ok'); }
+return;
+}
+window.open(map[b.dataset.share], '_blank', 'noopener');
+});
+async function affWithdraw(method) {
+const bal = affStats ? Number(affStats.balance) || 0 : 0;
+const msg = method === 'balance' ? 'تحويل ' + affMoney(bal) + ' جنيه من أرباحك لرصيد حسابك؟' : 'طلب سحب ' + affMoney(bal) + ' جنيه كاش؟\nهتتبعت رسالة للدعم الفني بالمبلغ عشان يتحوّلك.';
+if (!confirm(msg)) return;
+const btn = document.getElementById(method === 'balance' ? 'affToBalanceBtn' : 'affCashBtn'); btn.disabled = true;
+try {
+const { data, error } = await sb.rpc('smcole_affiliate_withdraw', { p_method: method });
+if (error) throw error;
+if (!data || !data.ok) { userToast(data && data.error === 'min' ? '⚠️ الحد الأدنى للسحب ' + affMoney(data.min_egp) + ' جنيه' : '⚠️ مينفعش السحب دلوقتي', 'warn'); return; }
+if (method === 'balance') {
+userToast('✅ اتضاف ' + affMoney(data.amount) + ' جنيه لرصيدك', 'ok');
+if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
+} else {
+userToast('✅ تم تسجيل طلب السحب — هيتبعت للدعم الفني', 'ok');
+// رسالة تلقائية للدعم بالمبلغ (بتوصل للأدمن على التليجرام)
+window.openSupportChat();
+setTimeout(() => {
+const inp = document.getElementById('chatInput'), form = document.getElementById('chatForm');
+if (!inp || !form) return;
+inp.value = '💸 طلب سحب أرباح التسويق بالعمولة\nالمبلغ: ' + affMoney(data.amount) + ' جنيه\nرقم المحفظة / الحساب اللي هستلم عليه: ';
+inp.focus();
+userToast('✍️ اكتب رقم المحفظة اللي هتستلم عليها واضغط إرسال', 'ok');
+}, 700);
+}
+} catch (e) { userToast('❌ ' + (e.message || 'حصل خطأ'), 'warn'); }
+finally { window.__onAffiliateOpen(); }
+}
+document.getElementById('affToBalanceBtn').addEventListener('click', () => affWithdraw('balance'));
+document.getElementById('affCashBtn').addEventListener('click', () => affWithdraw('cash'));
+
 initUserSystem();
 
 sb.auth.onAuthStateChange(async (event, session) => {

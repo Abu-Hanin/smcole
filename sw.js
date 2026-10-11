@@ -1,10 +1,11 @@
-const CACHE_NAME = 'smcole-v18'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+const CACHE_NAME = 'smcole-v19'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/app-icon-192.png',
+  '/app-icon-512.png'
 ];
+const ICON = '/app-icon-192.png';
 
 // 1. التثبيت: تحميل الملفات الأساسية للتطبيق وتخطي الانتظار
 self.addEventListener('install', event => {
@@ -12,6 +13,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
+      .catch(() => {})
   );
 });
 
@@ -31,23 +33,28 @@ self.addEventListener('activate', event => {
   );
 });
 
-// 3. استراتيجية (الإنترنت أولاً - Network First):
+// 3. استراتيجية (الإنترنت أولاً - Network First) — لملفات الموقع نفسه بس
 self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  let sameOrigin = false;
+  try { sameOrigin = new URL(req.url).origin === self.location.origin; } catch (e) {}
+  if (!sameOrigin) return; // طلبات السيرفر (Supabase) والخطوط بتعدي عادي من غير كاش
   event.respondWith(
-    fetch(event.request)
+    fetch(req)
       .then(response => {
         // إذا نجح الاتصال بالإنترنت، نقوم بتحديث الكاش بالنسخة الجديدة ثم عرضها
         if (response && response.status === 200 && response.type === 'basic') {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
+            cache.put(req, responseToCache);
           });
         }
         return response; // عرض التحديث فوراً للعميل
       })
       .catch(() => {
         // في حالة انقطاع الإنترنت عن العميل، نستخدم النسخة المخزنة في الكاش
-        return caches.match(event.request);
+        return caches.match(req).then(r => r || caches.match('/index.html'));
       })
   );
 });
@@ -57,16 +64,21 @@ self.addEventListener('push', event => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; } catch (e) { data = { title: 'SMCOLE', body: event.data ? event.data.text() : '' }; }
   const title = data.title || 'SMCOLE';
+  const link = data.link || '';
+  // رسايل الدعم: نفس شكل إشعار الشات — كل رسالة بتنبّه (renotify) وبتتجمع تحت محادثة واحدة
+  const isChat = link === 'support';
   event.waitUntil(
     self.registration.showNotification(title, {
       body: data.body || '',
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
-      tag: 'smcole-' + (data.id || Date.now()),
-      data: { link: data.link || '' },
+      icon: ICON,
+      badge: ICON,
+      tag: isChat ? 'smcole-support' : 'smcole-' + (data.id || Date.now()),
+      renotify: isChat,
+      data: { link: link },
       dir: 'rtl',
       lang: 'ar',
-      vibrate: [120, 60, 120]
+      vibrate: isChat ? [80, 40, 80, 40, 80] : [120, 60, 120],
+      timestamp: Date.now()
     })
   );
 });

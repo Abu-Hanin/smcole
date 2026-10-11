@@ -1024,6 +1024,24 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 #adminTableBody tr.sel { background: rgba(124,58,237,0.14) !important; }
 .admin-platform-tabs.flash { animation: tabsFlash 1.2s ease; border-radius: 16px; }
 @keyframes tabsFlash { 0%, 100% { box-shadow: none; } 30% { box-shadow: 0 0 0 2px #A855F7, 0 0 24px rgba(168,85,247,0.6); } }
+.prov-auto { margin: 10px 0; padding: 10px 12px; border-radius: 14px; font-size: .78rem; line-height: 1.8; color: #E9D5FF; }
+.prov-auto.ok { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.35); } .prov-auto.ok i { color: #4ADE80; }
+.prov-auto.warn { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.35); } .prov-auto.warn i { color: #FCD34D; }
+.prov-auto small { display: block; color: #A59CC9; font-size: .7rem; } .prov-auto small b { color: #fff; }
+/* 🤝 التسويق بالعمولة (الأدمن) */
+.aff-adm-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; } .aff-adm-head input { flex: 1; margin: 0 !important; }
+.aff-adm-pending { padding: 14px; border-radius: 18px; margin-bottom: 14px; background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.4); }
+.aff-adm-pending h3 { color: #FCD34D; font-size: .95rem; margin-bottom: 10px; }
+.aap-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.08); }
+.aap-u { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 140px; } .aap-u small { color: #A59CC9; font-size: .7rem; }
+.aap-row b { color: #fff; font-size: 1rem; } .aap-row em { font-style: normal; color: #8B84B5; font-size: .72rem; }
+.aff-refs-btn { padding: 5px 12px; border-radius: 10px; border: 1px solid rgba(168,85,247,0.4); background: rgba(168,85,247,0.1); color: #E9D5FF; font-family: inherit; font-weight: 800; cursor: pointer; }
+.aff-bal { font-weight: 900; color: #E9D5FF; } .aff-bal.ready { color: #4ADE80; }
+.aff-flag { display: block; font-size: .64rem; color: #86EFAC; margin-top: 2px; } .aff-flag.wait { color: #FCD34D; }
+#affAdmBody tr.aff-ready { background: rgba(34,197,94,0.07) !important; }
+.aff-pay { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-weight: 800; font-size: .72rem; color: #fff; }
+.aff-pay.cash { background: linear-gradient(135deg, #D97706, #F59E0B); } .aff-pay.bal { background: linear-gradient(135deg, #16A34A, #22C55E); }
+.aff-pay:disabled { opacity: .5; }
 /* 💰 كارت ربح الموقع */
 .profit-card { display: flex; align-items: center; gap: 14px; padding: 16px 18px; margin-bottom: 16px; border-radius: 22px; background: radial-gradient(260px 120px at 100% 0%, rgba(34,197,94,0.22), transparent 70%), linear-gradient(160deg, #13261C, #0E0919 70%); border: 1px solid rgba(34,197,94,0.35); }
 .pf-ico { width: 52px; height: 52px; border-radius: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #fff; background: linear-gradient(135deg, #22C55E, #15803D); box-shadow: 0 10px 22px rgba(34,197,94,0.35); }
@@ -2698,7 +2716,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 </form>
 <form class="auth-form" id="registerForm" style="display:none;" autocomplete="on">
 <input type="text" id="regName" placeholder="👤 الاسم الكامل" required>
-<input type="text" id="regUsername" placeholder="🆔 اسم المستخدم (بالإنجليزي بدون مسافات)" required pattern="[a-zA-Z0-9_]{3,20}" title="3-20 حرف إنجليزي أو رقم أو _">
+<input type="text" id="regUsername" placeholder="🆔 اسم المستخدم (بالإنجليزي بدون مسافات)" required pattern="[a-zA-Z0-9_.]{3,30}" title="3 حروف أو أكتر — حروف إنجليزي أو أرقام أو _ من غير مسافات" autocapitalize="none" autocorrect="off" spellcheck="false">
 <div class="hint">اسم المستخدم لازم يكون فريد ويستخدم في البحث عنه</div>
 <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" required autocomplete="email">
 <input type="tel" id="regPhone" placeholder="📱 رقم الهاتف (مطلوب)" autocomplete="tel" required minlength="8" pattern="[+0-9 ]{8,20}" title="اكتب رقم هاتف صحيح">
@@ -3073,6 +3091,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <button class="admin-main-tab" data-admin-tab="transactions" type="button"><i class="fas fa-history"></i> سجل الإيداعات</button>
 <button class="admin-main-tab" data-admin-tab="support" type="button"><i class="fas fa-headset"></i> الدعم الفني</button>
 <button class="admin-main-tab" data-admin-tab="providers" type="button"><i class="fas fa-plug"></i> مزودين API</button>
+<button class="admin-main-tab" data-admin-tab="affiliate" type="button"><i class="fas fa-handshake"></i> التسويق بالعمولة</button>
 </div>
 
 <!-- TAB 1: USERS -->
@@ -3188,6 +3207,33 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 </div>
 
 <!-- TAB: API PROVIDERS -->
+<!-- TAB: 🤝 التسويق بالعمولة -->
+<div class="admin-section" id="adminSectionAffiliate">
+<div class="admin-stats">
+<div class="admin-stat-box"><div class="lbl">عدد المسوّقين</div><div class="val" id="affAdmCount">0</div></div>
+<div class="admin-stat-box"><div class="lbl">إجمالي اللي سجّلوا بالإحالة</div><div class="val" id="affAdmRefs">0</div></div>
+<div class="admin-stat-box"><div class="lbl">أرباح مستحقة (جنيه)</div><div class="val" id="affAdmDue">0</div></div>
+<div class="admin-stat-box"><div class="lbl">وصلوا للحد الأدنى</div><div class="val" id="affAdmReady">0</div></div>
+</div>
+<div class="aff-adm-pending" id="affAdmPendingBox" style="display:none;">
+<h3><i class="fas fa-hourglass-half"></i> طلبات سحب كاش مستنية الدفع</h3>
+<div id="affAdmPending"></div>
+</div>
+<div class="aff-adm-head">
+<input type="text" id="affAdmSearch" class="user-search-input" placeholder="🔍 ابحث باليوزر أو الاسم...">
+<button type="button" class="admin-btn ghost" id="affAdmRefresh"><i class="fas fa-rotate"></i> تحديث</button>
+</div>
+<p class="admin-hint" id="affAdmMinHint"></p>
+<div class="admin-table-wrap">
+<div id="affAdmLoader" class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
+<table class="admin-table" id="affAdmTable" style="display:none;">
+<thead><tr><th>اليوزر</th><th>الاسم</th><th>سجّلوا من رابطه</th><th>عملوا إيداع</th><th>إجمالي أرباحه</th><th>المتاح للسحب</th><th>اتصرفله</th><th>صرف الأرباح</th></tr></thead>
+<tbody id="affAdmBody"></tbody>
+</table>
+<div id="affAdmEmpty" class="admin-empty" style="display:none;"><i class="fas fa-handshake" style="font-size:2.5rem;color:#A855F7;margin-bottom:1rem;"></i><p>لسه مفيش حد سجّل من رابط إحالة.</p></div>
+</div>
+</div>
+
 <div class="admin-section" id="adminSectionProviders">
 <div class="prov-hero">
 <div class="prov-hero-ico"><i class="fas fa-plug-circle-bolt"></i></div>
@@ -5824,6 +5870,7 @@ else if (target === 'deposits') loadAdminDeposits();
 else if (target === 'transactions') loadAdminTransactions();
 else if (target === 'support') { if (window.__loadAdminSupport) window.__loadAdminSupport(); }
 else if (target === 'providers') { if (window.__loadProviders) window.__loadProviders(); }
+else if (target === 'affiliate') { if (window.__loadAdminAffiliates) window.__loadAdminAffiliates(); }
 });
 });
 
@@ -6240,6 +6287,93 @@ toast('📋 تم نسخ اليوزر: ' + v);
 };
 document.getElementById('adminOrdersBody').addEventListener('click', copyUserHandler);
 document.getElementById('adminDepositsBody').addEventListener('click', copyUserHandler);
+
+// ===================== 🤝 التسويق بالعمولة (الأدمن) =====================
+let affAdmData = { items: [], pending: [], min_egp: 0 };
+const affM = (n) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+async function loadAdminAffiliates() {
+const loader = document.getElementById('affAdmLoader'), table = document.getElementById('affAdmTable'), empty = document.getElementById('affAdmEmpty');
+loader.style.display = 'block'; loader.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...'; table.style.display = 'none'; empty.style.display = 'none';
+try {
+const { data, error } = await supabase.rpc('smcole_admin_affiliates');
+if (error) throw new Error(/function|schema cache/i.test(error.message) ? 'شغّل ملفات update_v12.sql و update_v13.sql في Supabase الأول' : error.message);
+affAdmData = { items: data.items || [], pending: data.pending || [], min_egp: Number(data.min_egp) || 0 };
+loader.style.display = 'none';
+const items = affAdmData.items;
+document.getElementById('affAdmCount').innerText = items.length;
+document.getElementById('affAdmRefs').innerText = items.reduce((s, x) => s + (Number(x.referrals) || 0), 0);
+document.getElementById('affAdmDue').innerText = affM(items.reduce((s, x) => s + (Number(x.balance) || 0), 0));
+document.getElementById('affAdmReady').innerText = items.filter(x => Number(x.balance) >= affAdmData.min_egp && affAdmData.min_egp > 0).length;
+document.getElementById('affAdmMinHint').innerText = 'الحد الأدنى لسحب العميل: ' + affM(affAdmData.min_egp) + ' جنيه (5 دولار). إنت كأدمن تقدر تصرف أي مبلغ في أي وقت.';
+renderAdminAffPending();
+renderAdminAffTable();
+} catch (e) { loader.style.display = 'block'; loader.innerText = '⚠️ ' + e.message; }
+}
+window.__loadAdminAffiliates = loadAdminAffiliates;
+function renderAdminAffPending() {
+const box = document.getElementById('affAdmPendingBox'), list = document.getElementById('affAdmPending');
+const p = affAdmData.pending || [];
+box.style.display = p.length ? '' : 'none';
+list.innerHTML = p.map(w => '<div class="aap-row"><span class="aap-u"><button type="button" class="user-copy" data-copy="' + __esc(w.username || '') + '"><i class="far fa-copy"></i> ' + __esc(w.username || '-') + '</button><small>' + __esc(w.name || '') + '</small></span>' +
+'<b>' + affM(w.amount) + ' ج</b><em>' + new Date(w.created_at).toLocaleString('ar-EG', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) + '</em>' +
+'<button type="button" class="admin-btn gold" data-wd-done="' + w.id + '"><i class="fas fa-check"></i> تم الدفع</button></div>').join('');
+}
+function renderAdminAffTable() {
+const table = document.getElementById('affAdmTable'), empty = document.getElementById('affAdmEmpty'), body = document.getElementById('affAdmBody');
+const q = (document.getElementById('affAdmSearch').value || '').trim().toLowerCase();
+const list = affAdmData.items.filter(x => !q || String(x.username || '').toLowerCase().includes(q) || String(x.name || '').toLowerCase().includes(q));
+if (!list.length) { table.style.display = 'none'; empty.style.display = 'block'; return; }
+table.style.display = 'table'; empty.style.display = 'none';
+body.innerHTML = list.map(x => {
+const bal = Number(x.balance) || 0;
+const ready = affAdmData.min_egp > 0 && bal >= affAdmData.min_egp;
+return '<tr' + (ready ? ' class="aff-ready"' : '') + '>' +
+'<td><button type="button" class="user-copy" data-copy="' + __esc(x.username || '') + '"><i class="far fa-copy"></i> ' + __esc(x.username || '-') + '</button></td>' +
+'<td>' + __esc(x.name || '-') + '</td>' +
+'<td><button type="button" class="aff-refs-btn" data-refs="' + __esc(x.id) + '" data-uname="' + __esc(x.username || '') + '"><i class="fas fa-users"></i> ' + (x.referrals || 0) + '</button></td>' +
+'<td>' + (x.active || 0) + '</td>' +
+'<td style="font-weight:800;">' + affM(x.total) + ' ج</td>' +
+'<td><span class="aff-bal' + (ready ? ' ready' : '') + '">' + affM(bal) + ' ج</span>' + (ready ? '<small class="aff-flag">✅ وصل للحد الأدنى</small>' : '') + (Number(x.pending_cash) > 0 ? '<small class="aff-flag wait">⏳ طالب سحب ' + affM(x.pending_cash) + ' ج</small>' : '') + '</td>' +
+'<td>' + affM(x.paid) + ' ج</td>' +
+'<td class="user-row-actions">' + (bal > 0
+? '<button type="button" class="aff-pay cash" data-pay="cash" data-id="' + __esc(x.id) + '" data-amt="' + bal + '" data-uname="' + __esc(x.username || '') + '"><i class="fas fa-money-bill-wave"></i> صرف كاش</button>' +
+'<button type="button" class="aff-pay bal" data-pay="balance" data-id="' + __esc(x.id) + '" data-amt="' + bal + '" data-uname="' + __esc(x.username || '') + '"><i class="fas fa-wallet"></i> إضافة لرصيده</button>'
+: '<span style="color:#666;font-size:.75rem;">—</span>') + '</td></tr>';
+}).join('');
+}
+document.getElementById('affAdmSearch').addEventListener('input', renderAdminAffTable);
+document.getElementById('affAdmRefresh').addEventListener('click', loadAdminAffiliates);
+document.getElementById('adminSectionAffiliate').addEventListener('click', async (e) => {
+const cp = e.target.closest('.user-copy'); if (cp) { copyUserHandler(e); return; }
+const pay = e.target.closest('[data-pay]');
+if (pay) {
+const m = pay.dataset.pay, amt = affM(pay.dataset.amt), u = pay.dataset.uname;
+if (!confirm(m === 'cash' ? 'تأكيد إنك هتصرف ' + amt + ' جنيه كاش لـ ' + u + '؟\nأرباحه هتتصفر وهيوصله إشعار.' : 'إضافة ' + amt + ' جنيه لرصيد ' + u + '؟\nيقدر يستخدمها في الطلبات على طول.')) return;
+pay.disabled = true;
+const { data, error } = await supabase.rpc('smcole_admin_affiliate_payout', { p_user: String(pay.dataset.id), p_method: m });
+if (error || !data || !data.ok) { toast('❌ ' + (error ? error.message : 'مفيش أرباح للصرف'), true); pay.disabled = false; return; }
+toast(m === 'cash' ? '💵 تم صرف ' + affM(data.amount) + ' جنيه كاش' : '💰 اتضاف ' + affM(data.amount) + ' جنيه لرصيده');
+loadAdminAffiliates(); if (window.loadAdminUsers) window.loadAdminUsers();
+return;
+}
+const done = e.target.closest('[data-wd-done]');
+if (done) {
+if (!confirm('تأكيد إنك حوّلت المبلغ للعميل؟ هيوصله إشعار.')) return;
+done.disabled = true;
+const { data, error } = await supabase.rpc('smcole_admin_withdrawal_done', { p_id: Number(done.dataset.wdDone) });
+if (error || !data || !data.ok) { toast('❌ ' + (error ? error.message : 'الطلب ده اتقفل قبل كده'), true); done.disabled = false; return; }
+toast('✅ تم — العميل وصله إشعار');
+loadAdminAffiliates();
+return;
+}
+const refs = e.target.closest('[data-refs]');
+if (refs) {
+const { data, error } = await supabase.rpc('smcole_admin_referrals', { p_user: String(refs.dataset.refs) });
+if (error) { toast('❌ ' + error.message, true); return; }
+const rows = (data || []).map(r => '• ' + (r.username || '-') + ' (' + (r.name || '') + ') — عمولته منه: ' + affM(r.earned) + ' ج').join('\n');
+alert('👥 اللي سجّلوا من رابط ' + refs.dataset.uname + ' (' + (data || []).length + '):\n\n' + (rows || 'مفيش'));
+}
+});
 
 // 💰 ربح الموقع (سعر البيع − تكلفة المزود) — الشهر الحالي + آخر 12 شهر
 const AR_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
@@ -6697,6 +6831,17 @@ return '<div class="prov-item' + (p.is_active ? '' : ' off') + '">' +
 '<div><span>نسبة الربح</span><b>' + (p.profit_percent != null ? p.profit_percent + '%' : 'العامة') + '</b></div>' +
 '<div><span>آخر مزامنة</span><b>' + fmtDate(p.last_sync) + '</b></div>' +
 '</div>' +
+// 🔄 حالة المزامنة التلقائية (كل نص ساعة): عشان تتأكد إنها شغالة من غير ما تعمل حاجة
+(function () {
+if (!p.is_active) return '';
+const mins = p.last_sync ? Math.round((Date.now() - new Date(p.last_sync).getTime()) / 60000) : null;
+const ok = mins !== null && mins <= 45;
+const when = mins === null ? 'لسه محصلتش' : mins < 1 ? 'من أقل من دقيقة' : mins < 60 ? 'من ' + mins + ' دقيقة' : 'من ' + Math.round(mins / 60) + ' ساعة';
+const res = (p.last_sync_added != null || p.last_sync_deleted != null) ? ' · آخر مرة: اتضاف <b>' + (p.last_sync_added || 0) + '</b> خدمة جديدة واتشال <b>' + (p.last_sync_deleted || 0) + '</b>' + (p.last_sync_total ? ' (عند المزود ' + p.last_sync_total + ' خدمة)' : '') : '';
+return '<div class="prov-auto ' + (ok ? 'ok' : 'warn') + '"><i class="fas ' + (ok ? 'fa-circle-check' : 'fa-clock') + '"></i> ' +
+(ok ? '<b>المزامنة التلقائية شغالة</b> — كل نص ساعة بتضيف الخدمات الجديدة وتشيل المحذوفة وتحدّث الأسعار لوحدها' : '<b>المزامنة التلقائية مستنية</b> — اتأكد إنك شغلت update_v11.sql، أو اضغط "تحديث الأسعار" عشان تشتغل دلوقتي') +
+'<small>آخر مزامنة ' + when + res + '</small></div>';
+})() +
 (p.last_error ? '<div class="prov-error"><i class="fas fa-triangle-exclamation"></i> ' + esc(p.last_error) + '</div>' : '') +
 '<div class="prov-cur">💱 عملة أسعار المزود المسجلة: <b>' + esc(p.currency) + '</b>' + (p.balance_currency ? ' — عملة حسابك عنده: <b>' + esc(p.balance_currency) + '</b>' : '') +
 (String(p.currency).toUpperCase() !== 'EGP' ? '<br>💵 سعر الدولار المستخدم للمزود ده: <b dir="ltr">' + (p.fx_rate ? Number(p.fx_rate) + '</b> (سعر المزود)' : Number(window.exchangeRate || 0).toFixed(2) + '</b> (سعر موقعك)') : '') + '</div>' +
@@ -7470,9 +7615,32 @@ const phone = document.getElementById('regPhone').value.trim();
 const password = document.getElementById('regPassword').value;
 const msg = document.getElementById('registerMsg');
 msg.className = 'auth-msg'; msg.innerText = 'جاري إنشاء الحساب...';
-if (!/^[a-z0-9_]{3,20}$/.test(username)) {
-msg.className = 'auth-msg err'; msg.innerText = 'اسم المستخدم لازم 3-20 حرف إنجليزي/رقم/_'; return;
+const btn = e.target.querySelector('button[type="submit"]');
+if (btn && btn.disabled) return;
+if (!/^[a-z0-9_.]{3,30}$/.test(username)) {
+msg.className = 'auth-msg err'; msg.innerText = 'اسم المستخدم لازم 3 حروف أو أكتر — إنجليزي أو أرقام أو _ من غير مسافات'; return;
 }
+// ⚡ إنشاء الحساب في خطوة واحدة على السيرفر → العميل بيدخل على طول (من غير تأكيد إيميل)
+if (btn) btn.disabled = true;
+try {
+let res = null;
+try {
+const { data, error } = await sb.functions.invoke('smm-api', { body: { action: 'register', name, username, email, phone, password } });
+res = data;
+if (error) { try { res = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { res = null; } }
+} catch (er) { res = null; }
+if (res && res.ok === false && res.message && res.error !== 'unknown action') { msg.className = 'auth-msg err'; msg.innerText = res.message; return; }
+if (res && res.ok) {
+const { error: inErr } = await sb.auth.signInWithPassword({ email, password });
+if (inErr) { msg.className = 'auth-msg err'; msg.innerText = 'تم إنشاء الحساب — سجّل دخول بالإيميل وكلمة المرور'; return; }
+msg.className = 'auth-msg ok'; msg.innerText = '✅ تم إنشاء الحساب بنجاح';
+userToast('🎉 تم إنشاء حسابك بنجاح! مرحباً بك', 'ok');
+await refreshUserUI();
+setTimeout(() => { afterAuthSuccess(); }, 500);
+return;
+}
+} finally { if (btn) btn.disabled = false; }
+// احتياطي (لو دالة smm-api لسه متحدثتش): الطريقة القديمة
 try {
 // التحقق من اسم المستخدم من غير ما نكشف بيانات العملاء التانيين
 const { data: available, error: avErr } = await sb.rpc('smcole_username_available', { u: username });

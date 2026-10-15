@@ -708,6 +708,27 @@ input, textarea, select { user-select: text; }
 .aw-lock { margin-top: 12px; padding: 9px 12px; border-radius: 12px; background: rgba(0,0,0,0.25); color: #A7C4B5; font-size: .75rem; font-weight: 700; text-align: center; }
 .aw-lock i { color: #FCD34D; margin-left: 4px; }
 .aff-wallet.ready { border-color: rgba(34,197,94,0.75); box-shadow: 0 0 0 1px rgba(34,197,94,0.3), 0 18px 44px rgba(34,197,94,0.18); }
+/* 🧮 حاسبة الأرباح */
+.aff-calc { padding: 18px; border-radius: 22px; margin-bottom: 14px; background: linear-gradient(160deg, rgba(34,211,238,0.12), rgba(11,6,25,0.95) 70%); border: 1px solid rgba(34,211,238,0.35); }
+.aff-calc h3 { color: #fff; font-size: 1rem; margin-bottom: 12px; } .aff-calc h3 i { color: #22D3EE; margin-left: 6px; }
+.ac-row { margin-bottom: 12px; } .ac-row label { display: flex; justify-content: space-between; color: #CFC6F2; font-size: .8rem; margin-bottom: 6px; } .ac-row label b { color: #fff; }
+.ac-row input[type=range] { width: 100%; accent-color: #22D3EE; }
+.ac-result { text-align: center; padding: 14px; border-radius: 16px; background: rgba(0,0,0,0.3); }
+.ac-result span { display: block; color: #A5F3FC; font-size: .78rem; font-weight: 700; } .ac-result b { display: block; color: #fff; font-size: 2rem; font-weight: 900; } .ac-result small { color: #A59CC9; font-size: .74rem; }
+/* 💸 نافذة السحب الكاش */
+.aff-modal-bg { position: fixed; inset: 0; z-index: 3300; background: rgba(4,2,10,0.75); display: none; align-items: center; justify-content: center; padding: 16px; }
+.aff-modal-bg.show { display: flex; }
+.aff-modal { position: relative; width: min(460px, 100%); max-height: 90vh; overflow-y: auto; padding: 20px; border-radius: 24px; background: linear-gradient(160deg, #1E1240, #0B0619 75%); border: 1px solid rgba(168,85,247,0.45); box-shadow: 0 30px 70px rgba(0,0,0,0.6); }
+.aff-modal h3 { color: #fff; margin-bottom: 6px; } .aff-modal h3 i { color: #4ADE80; margin-left: 6px; }
+.aff-modal-x { position: absolute; top: 14px; left: 14px; width: 34px; height: 34px; border-radius: 11px; border: none; background: rgba(255,255,255,0.08); color: #fff; cursor: pointer; }
+.am-amount { color: #CFC6F2; margin-bottom: 12px; } .am-amount b { color: #4ADE80; font-size: 1.3rem; }
+.am-lbl { display: block; color: #E9D5FF; font-weight: 800; font-size: .82rem; margin: 8px 0 8px; }
+.am-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.am-methods button { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #E9D5FF; font-family: inherit; font-weight: 700; font-size: .72rem; cursor: pointer; }
+.am-methods button.on { border-color: #22C55E; background: rgba(34,197,94,0.12); color: #fff; box-shadow: 0 0 0 1px #22C55E; }
+.am-methods .pay-mark { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; }
+#affCashAccount { width: 100%; padding: 13px 14px; border-radius: 14px; border: 1px solid rgba(168,85,247,0.45); background: rgba(0,0,0,0.35); color: #fff; font-family: Poppins, monospace; font-size: .95rem; margin-bottom: 14px; }
+.am-send { width: 100%; }
 /* الإحصائيات */
 .aff-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
 .aff-stat { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 18px; background: linear-gradient(160deg, rgba(34,22,68,0.85), rgba(11,6,25,0.95)); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); }
@@ -976,6 +997,14 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .auth-gate .auth-modal h2 { color: #fff !important; font-size: 1.6rem !important; font-weight: 900; }
 .auth-logo-icon { background: var(--grad) !important; color: #fff !important; border-radius: 20px !important; }
 .auth-form input { border-radius: 14px !important; background: rgba(255,255,255,0.04) !important; }
+.google-auth-btn { position: relative; z-index: 2; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,.9); background: #fff; color: #1f1f1f; font-family: inherit; font-weight: 800; font-size: .95rem; cursor: pointer; box-shadow: 0 8px 22px rgba(0,0,0,.28); transition: transform .2s, box-shadow .2s; }
+.google-auth-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(66,133,244,.35); }
+.google-auth-btn:disabled { opacity: .75; cursor: wait; transform: none; }
+.google-auth-btn .g-logo { width: 22px; height: 22px; flex-shrink: 0; }
+.google-auth-btn .g-spin { display: none; color: #4285F4; }
+.google-auth-btn.loading .g-spin { display: inline-block; }
+.auth-or { position: relative; z-index: 2; display: flex; align-items: center; gap: 10px; margin: 14px 0 12px; color: var(--muted); font-size: .78rem; font-weight: 700; }
+.auth-or::before, .auth-or::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(168,85,247,.45), transparent); }
 .auth-foot-note { margin-top: 18px; text-align: center; font-size: .75rem; color: var(--muted); position: relative; z-index: 2; }
 .auth-foot-note i { color: var(--primary2); }
 @media (max-width: 860px) {
@@ -1006,6 +1035,9 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .admin-modal-bg { z-index: 2600 !important; }
 .admin-modal { background: linear-gradient(160deg, #1A1233, #0E0919) !important; }
 /* كروت الإحصائيات اللي بتتضغط (فلتر) */
+.svc-desc-field { margin-top: 12px; padding: 12px; border-radius: 16px; background: rgba(168,85,247,0.06); border: 1px dashed rgba(168,85,247,0.35); }
+.svc-desc-field label small { color: #A59CC9; font-weight: 600; }
+.svc-desc-field textarea { width: 100%; min-height: 150px; resize: vertical; line-height: 1.8; font-family: inherit; }
 .admin-stats-click .admin-stat-box { cursor: pointer; text-align: inherit; font-family: inherit; color: inherit; transition: transform .2s, border-color .2s, box-shadow .2s; }
 .admin-stats-click .admin-stat-box:hover { transform: translateY(-2px); border-color: rgba(168,85,247,0.55) !important; }
 .admin-stats-click .admin-stat-box.active { border-color: #A855F7 !important; box-shadow: 0 0 0 1px #A855F7, 0 10px 26px rgba(124,58,237,0.35); }
@@ -1034,7 +1066,8 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .aff-adm-pending h3 { color: #FCD34D; font-size: .95rem; margin-bottom: 10px; }
 .aap-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.08); }
 .aap-u { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 140px; } .aap-u small { color: #A59CC9; font-size: .7rem; }
-.aap-row b { color: #fff; font-size: 1rem; } .aap-row em { font-style: normal; color: #8B84B5; font-size: .72rem; }
+.aap-row b { color: #fff; font-size: 1rem; }
+.aap-pm { display: flex; align-items: center; gap: 6px; color: #CFC6F2; font-size: .75rem; font-weight: 700; } .aap-row em { font-style: normal; color: #8B84B5; font-size: .72rem; }
 .aff-refs-btn { padding: 5px 12px; border-radius: 10px; border: 1px solid rgba(168,85,247,0.4); background: rgba(168,85,247,0.1); color: #E9D5FF; font-family: inherit; font-weight: 800; cursor: pointer; }
 .aff-bal { font-weight: 900; color: #E9D5FF; } .aff-bal.ready { color: #4ADE80; }
 .aff-flag { display: block; font-size: .64rem; color: #86EFAC; margin-top: 2px; } .aff-flag.wait { color: #FCD34D; }
@@ -2345,6 +2378,35 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="aff-stat" style="--c:#22C55E"><span class="as-ico"><i class="fas fa-coins"></i></span><div><b id="affTotal">0.00</b><small>إجمالي أرباحك (جنيه)</small></div></div>
 </section>
 
+<!-- 🧮 احسب أرباحك -->
+<section class="aff-calc">
+<h3><i class="fas fa-calculator"></i> احسب هتكسب كام</h3>
+<div class="ac-row"><label>عدد الأصحاب اللي هيسجلوا من رابطك <b id="acFriendsVal">10</b></label><input type="range" id="acFriends" min="1" max="200" value="10"></div>
+<div class="ac-row"><label>متوسط شحن كل واحد في الشهر <b id="acDepVal">300 ج</b></label><input type="range" id="acDep" min="50" max="5000" step="50" value="300"></div>
+<div class="ac-result"><span>أرباحك المتوقعة كل شهر</span><b id="acResult">300 ج</b><small id="acResultSub">يعني في السنة حوالي 3,600 جنيه — ومدى الحياة 🚀</small></div>
+</section>
+
+<!-- 💸 نافذة السحب الكاش -->
+<div class="aff-modal-bg" id="affCashModal">
+<div class="aff-modal">
+<button type="button" class="aff-modal-x" id="affCashClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
+<h3><i class="fas fa-money-bill-wave"></i> سحب أرباحك كاش</h3>
+<p class="am-amount">المبلغ: <b id="affCashAmount">0</b> جنيه</p>
+<label class="am-lbl">اختار طريقة الاستلام</label>
+<div class="am-methods" id="affCashMethods">
+<button type="button" data-pm="فودافون كاش" class="on"><span class="pay-mark pm-vodafone" data-mk="vodafone"></span>فودافون كاش</button>
+<button type="button" data-pm="اتصالات / أورنج / وي كاش"><span class="pay-mark pm-vodafone" data-mk="vodafone"></span>محافظ تانية</button>
+<button type="button" data-pm="إنستا باي"><span class="pay-mark pm-instapay" data-mk="instapay"></span>إنستا باي</button>
+<button type="button" data-pm="باينانس Pay"><span class="pay-mark pm-binance" data-mk="binance"></span>باينانس</button>
+<button type="button" data-pm="USDT (TRC20)"><span class="pay-mark pm-usdt" data-mk="usdt"></span>USDT</button>
+<button type="button" data-pm="ريدوت باي"><span class="pay-mark pm-redot" data-mk="redot"></span>ريدوت باي</button>
+</div>
+<label class="am-lbl" id="affCashAccLbl">رقم المحفظة اللي هتستلم عليه</label>
+<input type="text" id="affCashAccount" dir="ltr" placeholder="01xxxxxxxxx" autocomplete="off">
+<button type="button" class="aw-act primary am-send" id="affCashSend"><span class="aa-ico"><i class="fas fa-paper-plane"></i></span><span class="aa-txt"><b>تأكيد طلب السحب</b><small>هيوصل للدعم الفني ويتحوّلك في أسرع وقت</small></span></button>
+</div>
+</div>
+
 <section class="aff-history">
 <h3><i class="fas fa-clock-rotate-left"></i> آخر العمولات</h3>
 <div id="affHistory"><div class="aff-empty"><i class="fas fa-seedling"></i>لسه مفيش عمولات — شارك رابطك وابدأ تكسب 🚀</div></div>
@@ -2642,6 +2704,17 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <a href="/snapchat-followers.html">تزويد متابعين سناب شات</a>
 <a href="/twitter-followers.html">تزويد متابعين تويتر</a>
 <a href="/whatsapp-channel-followers.html">متابعين قنوات واتساب</a>
+<a href="/facebook-likes.html">لايكات فيسبوك</a>
+<a href="/facebook-views.html">مشاهدات فيسبوك</a>
+<a href="/instagram-likes.html">لايكات انستقرام</a>
+<a href="/instagram-views.html">مشاهدات ريلز انستقرام</a>
+<a href="/tiktok-likes.html">لايكات تيك توك</a>
+<a href="/tiktok-views.html">مشاهدات تيك توك</a>
+<a href="/youtube-views.html">مشاهدات يوتيوب</a>
+<a href="/youtube-watch-hours.html">ساعات مشاهدة يوتيوب</a>
+<a href="/telegram-views.html">مشاهدات تليجرام</a>
+<a href="/egyptian-followers.html">متابعين مصريين</a>
+<a href="/smm-panel-egypt.html">أرخص موقع تزويد متابعين</a>
 </nav>
 <div class="footer">© <span id="footerYear">2026</span> حقوق الطبع والنشر. كل الحقوق محفوظة لموقع <span id="footerSiteName" data-site-name>smcole</span></div>
 </footer>
@@ -2706,6 +2779,8 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <button class="auth-tab active" id="loginTabBtn" type="button"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</button>
 <button class="auth-tab" id="registerTabBtn" type="button"><i class="fas fa-user-plus"></i> حساب جديد</button>
 </div>
+<button type="button" class="google-auth-btn"><svg class="g-logo" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span>المتابعة بحساب جوجل</span><i class="fas fa-circle-notch fa-spin g-spin"></i></button>
+<div class="auth-or"><span>أو بالإيميل وكلمة المرور</span></div>
 <form class="auth-form" id="loginForm" autocomplete="on">
 <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" required autocomplete="email">
 <div class="password-wrap">
@@ -3468,7 +3543,12 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 🔄 تحديث السعر تلقائياً مع سعر المزود ونسبة الربح
 </label>
 <div class="admin-hint" id="adminSvcProviderInfo"></div>
-<div class="admin-field" style="margin-top:10px;"><label>وصف الخدمة (يظهر في "تفاصيل الخدمة")</label><textarea id="adminSvcDescription" rows="4" placeholder="فاضي = بدون وصف"></textarea></div>
+</div>
+<!-- 📝 وصف الخدمة (لكل الخدمات — اليدوية والمستوردة) -->
+<div class="admin-field svc-desc-field">
+<label><i class="fas fa-file-lines"></i> وصف الخدمة <small>(بيظهر للعميل في "تفاصيل الخدمة")</small></label>
+<textarea id="adminSvcDescription" rows="7" placeholder="اكتب وصف الخدمة زي ما تحب، مثلاً:&#10;🛡️ الضمان: 30 يوم إعادة تعبئة&#10;⏱️ وقت البدء: خلال ساعة&#10;🚀 السرعة: 5 آلاف في اليوم&#10;🔗 المطلوب: رابط الحساب (لازم يكون عام)&#10;&#10;⚠️ ملاحظات:&#10;• ما تعملش أكتر من طلب لنفس الرابط في نفس الوقت"></textarea>
+<div class="admin-hint">💡 كل سطر بيظهر لوحده. السطر اللي فيه ":" بيظهر كعنوان وقيمة (زي "🛡️ الضمان: 30 يوم"). لو سبته فاضي، التفاصيل بتتكتب تلقائياً من اسم الخدمة.</div>
 </div>
 <div class="admin-modal-actions">
 <button type="button" class="admin-btn ghost" id="adminCancelModal"><i class="fas fa-times"></i> إلغاء</button>
@@ -3738,7 +3818,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 </div>
 
 <div class="admin-toast" id="adminToast"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 window.SMCOLE_BOT = {
   admin_chat_id: '6242313550',
@@ -3754,8 +3834,28 @@ let _supabaseClient = null;
 function getSupabase() {
 if (!_supabaseClient) {
 // الجلسة بتتحفظ على الجهاز وبتتجدد تلقائياً → العميل يفضل مسجل لحد ما يضغط "تسجيل الخروج" بنفسه
+// ⚡ إصلاح "الموقع بيهنّج لما ترجعله": لما الموبايل يقفل الصفحة في الخلفية وترجع، قفل الجلسة الداخلي
+// (navigator.locks) ساعات بيعلق وكل الطلبات (شراء/تحميل/أزرار) تفضل مستنية للأبد → بنلغيه
+// + أي طلب للسيرفر ليه حد أقصى للانتظار بدل ما الزرار يفضل واقف
+const smFetch = (url, opts) => {
+const ms = /\/functions\/v1\//.test(String(url)) ? 120000 : 25000;
+const ctrl = new AbortController();
+const t = setTimeout(() => ctrl.abort(), ms);
+if (opts && opts.signal) { try { opts.signal.addEventListener('abort', () => ctrl.abort()); } catch (e) {} }
+return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
+};
 _supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage }
+auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage, lock: async (name, acquireTimeout, fn) => await fn() },
+global: { fetch: smFetch }
+});
+// لما العميل يرجع للموقع: نجدد الجلسة والاتصال اللحظي فوراً (من غير ما الصفحة تعلق)
+document.addEventListener('visibilitychange', () => {
+if (document.visibilityState !== 'visible' || !_supabaseClient) return;
+try { _supabaseClient.auth.startAutoRefresh(); } catch (e) {}
+try { if (_supabaseClient.realtime && !_supabaseClient.realtime.isConnected()) _supabaseClient.realtime.connect(); } catch (e) {}
+});
+document.addEventListener('visibilitychange', () => {
+if (document.visibilityState === 'hidden' && _supabaseClient) { try { _supabaseClient.auth.stopAutoRefresh(); } catch (e) {} }
 });
 }
 return _supabaseClient;
@@ -5615,6 +5715,7 @@ document.getElementById('adminSvcMinLimit').value = displayMinLimit;
 document.getElementById('adminSvcMaxLimit').value = (s.max_limit && parseInt(s.max_limit) > 0) ? parseInt(s.max_limit) : '';
 document.getElementById('adminSvcStep').value = displayStepValue;
 document.getElementById('adminSvcIsComment').checked = s.is_comment === true;
+document.getElementById('adminSvcDescription').value = s.description || '';
 document.getElementById('adminModalTitle').innerHTML = '<i class="fas fa-pen"></i> تعديل الخدمة';
 const apiRow = document.getElementById('adminSvcAutoPriceRow');
 apiRow.style.display = 'none';
@@ -5622,7 +5723,6 @@ apiRow.dataset.serviceId = '';
 if (s.is_api) {
 apiRow.style.display = 'block';
 apiRow.dataset.serviceId = s.id;
-document.getElementById('adminSvcDescription').value = s.description || '';
 document.getElementById('adminSvcProviderInfo').innerText = 'جاري تحميل بيانات المزود...';
 supabase.from('api_service_links').select('*, api_providers(name,currency)').eq('service_id', s.id).maybeSingle().then(({ data }) => {
 if (!data) { document.getElementById('adminSvcProviderInfo').innerText = ''; return; }
@@ -5648,7 +5748,8 @@ icon: document.getElementById('adminSvcIcon').value.trim() || 'fas fa-star',
 min_limit: parseInt(document.getElementById('adminSvcMinLimit').value) || 1000,
 max_limit: maxLimitVal === '' ? null : parseInt(maxLimitVal),
 step_value: parseInt(document.getElementById('adminSvcStep').value) || 500,
-is_comment: document.getElementById('adminSvcIsComment').checked
+is_comment: document.getElementById('adminSvcIsComment').checked,
+description: document.getElementById('adminSvcDescription').value.trim() || null
 };
 const btn = document.getElementById('adminSaveBtn');
 btn.disabled = true;
@@ -5667,7 +5768,6 @@ if (res.error) { toast('خطأ: ' + res.error.message, true); return; }
 const apiRowEl = document.getElementById('adminSvcAutoPriceRow');
 if (id && apiRowEl.style.display !== 'none' && apiRowEl.dataset.serviceId == id) {
 await supabase.from('api_service_links').update({ auto_price: document.getElementById('adminSvcAutoPrice').checked }).eq('service_id', id);
-await supabase.from('services').update({ description: document.getElementById('adminSvcDescription').value.trim() || null }).eq('id', id);
 }
 toast(id ? 'تم التعديل بنجاح ✅' : 'تمت الإضافة بنجاح ✅');
 modalBg.classList.remove('show');
@@ -6201,7 +6301,7 @@ const empty = document.getElementById('adminOrdersEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
 let res = await supabase.from('orders')
-.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_order_id,provider_status,api_error')
+.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error')
 .order('created_at', { ascending: false })
 .limit(300);
 if (res.error) res = await supabase.from('orders').select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name').order('created_at', { ascending: false }).limit(300);
@@ -6248,7 +6348,11 @@ const apiInfo = o.provider_order_id
 ? '<div class="api-order-chip" title="' + (o.provider_status || '') + '"><i class="fas fa-plug"></i> API #' + o.provider_order_id + (o.provider_status ? ' · ' + o.provider_status : '') + (o.remains != null ? ' · متبقي ' + o.remains : '') + '</div>'
 : (o.api_error ? '<div class="api-order-chip err" title="' + String(o.api_error).replace(/"/g, '&quot;') + '"><i class="fas fa-triangle-exclamation"></i> فشل الإرسال للمزود</div>' : '');
 let actBtns = '';
-if (o.status === 'pending') {
+if (o.status === 'pending' && o.provider_id && !o.provider_order_id) {
+// طلب API متعلّق (غالباً رصيدك عند المزود مكانش كفاية) → إعادة إرسال بعد ما تشحن
+actBtns = '<button class="admin-edit-btn" onclick="__adminRetryOrder(' + o.id + ', this)"><i class="fas fa-rotate-right"></i> إعادة الإرسال للمزود</button>' +
+'<button class="admin-del-btn" onclick="__adminSetOrder(' + o.id + ',\'cancelled\')"><i class="fas fa-times"></i> إلغاء</button>';
+} else if (o.status === 'pending') {
 actBtns = '<button class="admin-edit-btn" onclick="__adminSetOrder(' + o.id + ',\'processing\')"><i class="fas fa-play"></i> بدء</button>' +
 '<button class="admin-del-btn" onclick="__adminSetOrder(' + o.id + ',\'cancelled\')"><i class="fas fa-times"></i> إلغاء</button>';
 } else if (o.status === 'processing') {
@@ -6317,7 +6421,7 @@ const box = document.getElementById('affAdmPendingBox'), list = document.getElem
 const p = affAdmData.pending || [];
 box.style.display = p.length ? '' : 'none';
 list.innerHTML = p.map(w => '<div class="aap-row"><span class="aap-u"><button type="button" class="user-copy" data-copy="' + __esc(w.username || '') + '"><i class="far fa-copy"></i> ' + __esc(w.username || '-') + '</button><small>' + __esc(w.name || '') + '</small></span>' +
-'<b>' + affM(w.amount) + ' ج</b><em>' + new Date(w.created_at).toLocaleString('ar-EG', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) + '</em>' +
+'<b>' + affM(w.amount) + ' ج</b>' + (w.pay_method ? '<span class="aap-pm">' + __esc(w.pay_method) + ': <button type="button" class="user-copy" data-copy="' + __esc(w.pay_account || '') + '"><i class="far fa-copy"></i> ' + __esc(w.pay_account || '-') + '</button></span>' : '') + '<em>' + new Date(w.created_at).toLocaleString('ar-EG', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) + '</em>' +
 '<button type="button" class="admin-btn gold" data-wd-done="' + w.id + '"><i class="fas fa-check"></i> تم الدفع</button></div>').join('');
 }
 function renderAdminAffTable() {
@@ -6476,6 +6580,16 @@ bg.classList.add('show');
 });
 document.getElementById('profitModalClose').addEventListener('click', () => document.getElementById('profitModalBg').classList.remove('show'));
 document.getElementById('profitModalBg').addEventListener('click', (e) => { if (e.target.id === 'profitModalBg') e.currentTarget.classList.remove('show'); });
+window.__adminRetryOrder = async function(id, btn) {
+if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...'; }
+try {
+const { data, error } = await supabase.functions.invoke('smm-api', { body: { action: 'admin_retry_order', order_id: id } });
+let r = data;
+if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (e) { r = null; } }
+toast(r && r.message ? r.message : '❌ حصل خطأ', !(r && r.ok));
+} catch (e) { toast('❌ ' + e.message, true); }
+await loadAdminOrders();
+};
 window.__adminSetOrder = async function(id, status) {
 const orderData = allOrdersData.find(o => o.id === id);
 if (!orderData) { toast('لم يتم العثور على الطلب', true); return; }
@@ -7499,6 +7613,19 @@ window.__profileRetry = setTimeout(refreshUserUI, 4000);
 return;
 }
 if (!profile) {
+// 🔵 أول دخول بجوجل → نعمل بيانات العميل تلقائياً على السيرفر
+const u = session.user, am = u.app_metadata || {};
+const viaGoogle = am.provider === 'google' || (am.providers || []).indexOf('google') >= 0 || (u.identities || []).some(i => i.provider === 'google');
+if (viaGoogle && !window.__oauthTried) {
+window.__oauthTried = true;
+let res = null;
+try { const r = await sb.functions.invoke('smm-api', { body: { action: 'oauth_profile' } }); res = r.data; if (r.error) { try { res = await r.error.context.json(); } catch (er) {} } } catch (er) {}
+if (res && res.ok) { if (res.created) userToast('🎉 تم إنشاء حسابك بجوجل! مرحباً بك', 'ok'); window.__oauthTried = false; window.__oauthJustIn = true; return refreshUserUI(); }
+try { await sb.auth.signOut(); } catch(e) {}
+window.__oauthTried = false;
+userToast('❌ ' + ((res && res.message) || 'تعذر الدخول بجوجل — حاول تاني'), 'err');
+return;
+}
 // الحساب اتمسح فعلاً من قاعدة البيانات
 try { await sb.auth.signOut(); } catch(e) {}
 currentProfile = null; window.currentProfile = null;
@@ -7523,9 +7650,27 @@ window.refreshCurrencyButtons();
 subscribeToUserRealtime();
 applyRoleUI();
 hideAuthModal();
+if (window.__oauthJustIn || /[#&?](access_token|code)=/.test(location.href)) {
+window.__oauthJustIn = false;
+try { history.replaceState(null, '', location.pathname); } catch(e) {}
+setTimeout(() => { afterAuthSuccess(); }, 300);
+}
 } catch(e) { console.warn(e); }
 }
 window.refreshUserUI = refreshUserUI;
+
+// 🔵 الدخول / إنشاء حساب بجوجل
+async function signInWithGoogle(btn) {
+if (btn) { btn.disabled = true; btn.classList.add('loading'); }
+try {
+const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + '/', queryParams: { prompt: 'select_account' } } });
+if (error) throw error;
+} catch (e) {
+if (btn) { btn.disabled = false; btn.classList.remove('loading'); }
+userToast('❌ الدخول بجوجل مش متاح دلوقتي — استخدم الإيميل وكلمة المرور', 'err');
+}
+}
+document.querySelectorAll('.google-auth-btn').forEach(b => b.addEventListener('click', () => signInWithGoogle(b)));
 
 function subscribeToUserRealtime() {
 try {
@@ -9500,35 +9645,74 @@ return;
 }
 window.open(map[b.dataset.share], '_blank', 'noopener');
 });
-async function affWithdraw(method) {
+// 💳 تحويل الأرباح لرصيد الحساب (فوري)
+async function affToBalance() {
 const bal = affStats ? Number(affStats.balance) || 0 : 0;
-const msg = method === 'balance' ? 'تحويل ' + affMoney(bal) + ' جنيه من أرباحك لرصيد حسابك؟' : 'طلب سحب ' + affMoney(bal) + ' جنيه كاش؟\nهتتبعت رسالة للدعم الفني بالمبلغ عشان يتحوّلك.';
-if (!confirm(msg)) return;
-const btn = document.getElementById(method === 'balance' ? 'affToBalanceBtn' : 'affCashBtn'); btn.disabled = true;
+if (!confirm('تحويل ' + affMoney(bal) + ' جنيه من أرباحك لرصيد حسابك؟\nتقدر تستخدمها في الطلبات على طول.')) return;
+const btn = document.getElementById('affToBalanceBtn'); btn.disabled = true;
 try {
-const { data, error } = await sb.rpc('smcole_affiliate_withdraw', { p_method: method });
+let { data, error } = await sb.rpc('smcole_affiliate_withdraw_to', { p_method: 'balance', p_pay_method: null, p_account: null });
+if (error && /function|schema cache/i.test(error.message)) ({ data, error } = await sb.rpc('smcole_affiliate_withdraw', { p_method: 'balance' }));
 if (error) throw error;
 if (!data || !data.ok) { userToast(data && data.error === 'min' ? '⚠️ الحد الأدنى للسحب ' + affMoney(data.min_egp) + ' جنيه' : '⚠️ مينفعش السحب دلوقتي', 'warn'); return; }
-if (method === 'balance') {
 userToast('✅ اتضاف ' + affMoney(data.amount) + ' جنيه لرصيدك', 'ok');
 if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
-} else {
-userToast('✅ تم تسجيل طلب السحب — هيتبعت للدعم الفني', 'ok');
-// رسالة تلقائية للدعم بالمبلغ (بتوصل للأدمن على التليجرام)
-window.openSupportChat();
-setTimeout(() => {
-const inp = document.getElementById('chatInput'), form = document.getElementById('chatForm');
-if (!inp || !form) return;
-inp.value = '💸 طلب سحب أرباح التسويق بالعمولة\nالمبلغ: ' + affMoney(data.amount) + ' جنيه\nرقم المحفظة / الحساب اللي هستلم عليه: ';
-inp.focus();
-userToast('✍️ اكتب رقم المحفظة اللي هتستلم عليها واضغط إرسال', 'ok');
-}, 700);
-}
 } catch (e) { userToast('❌ ' + (e.message || 'حصل خطأ'), 'warn'); }
 finally { window.__onAffiliateOpen(); }
 }
-document.getElementById('affToBalanceBtn').addEventListener('click', () => affWithdraw('balance'));
-document.getElementById('affCashBtn').addEventListener('click', () => affWithdraw('cash'));
+// 💸 السحب الكاش: نافذة تختار فيها الطريقة وتكتب رقمك
+const cashModal = document.getElementById('affCashModal');
+let cashMethod = 'فودافون كاش';
+const ACC_HINT = { 'فودافون كاش': ['رقم المحفظة اللي هتستلم عليه', '01xxxxxxxxx'], 'اتصالات / أورنج / وي كاش': ['رقم المحفظة (واكتب الشبكة)', '01xxxxxxxxx — اتصالات'], 'إنستا باي': ['عنوان إنستا باي أو رقم الموبايل', 'name@instapay'], 'باينانس Pay': ['Binance Pay ID أو الإيميل', '123456789'], 'USDT (TRC20)': ['عنوان محفظة USDT (شبكة TRC20)', 'T...'], 'ريدوت باي': ['RedotPay ID', '123456789'] };
+cashModal.querySelectorAll('[data-mk]').forEach(el => { if (window.PAY_MARK && window.PAY_MARK[el.dataset.mk]) el.innerHTML = window.PAY_MARK[el.dataset.mk]; });
+document.getElementById('affCashMethods').addEventListener('click', (e) => {
+const b = e.target.closest('[data-pm]'); if (!b) return;
+cashMethod = b.dataset.pm;
+document.querySelectorAll('#affCashMethods [data-pm]').forEach(x => x.classList.toggle('on', x === b));
+const h = ACC_HINT[cashMethod] || ['الرقم / الحساب', ''];
+document.getElementById('affCashAccLbl').textContent = h[0];
+document.getElementById('affCashAccount').placeholder = h[1];
+});
+function openCashModal() {
+const bal = affStats ? Number(affStats.balance) || 0 : 0;
+document.getElementById('affCashAmount').textContent = affMoney(bal);
+cashModal.classList.add('show');
+setTimeout(() => { try { document.getElementById('affCashAccount').focus(); } catch (e) {} }, 200);
+}
+document.getElementById('affCashClose').addEventListener('click', () => cashModal.classList.remove('show'));
+cashModal.addEventListener('click', (e) => { if (e.target === cashModal) cashModal.classList.remove('show'); });
+document.getElementById('affCashSend').addEventListener('click', async () => {
+const acc = document.getElementById('affCashAccount').value.trim();
+if (acc.length < 4) { userToast('✍️ اكتب الرقم أو الحساب اللي هتستلم عليه', 'warn'); return; }
+const btn = document.getElementById('affCashSend'); if (btn.disabled) return; btn.disabled = true;
+try {
+const { data, error } = await sb.rpc('smcole_affiliate_withdraw_to', { p_method: 'cash', p_pay_method: cashMethod, p_account: acc });
+if (error) throw new Error(/function|schema cache/i.test(error.message) ? 'السحب الكاش لسه بيتجهز — جرّب بعد شوية' : error.message);
+if (!data || !data.ok) { userToast(data && data.error === 'min' ? '⚠️ الحد الأدنى للسحب ' + affMoney(data.min_egp) + ' جنيه' : '⚠️ مينفعش السحب دلوقتي', 'warn'); return; }
+cashModal.classList.remove('show');
+userToast('✅ طلب السحب اتسجل — هيتحوّلك ' + affMoney(data.amount) + ' جنيه على ' + cashMethod, 'ok');
+// رسالة تلقائية للدعم (بتوصلك على التليجرام بالتفاصيل كاملة)
+try {
+const body = '💸 طلب سحب أرباح التسويق بالعمولة\nالمبلغ: ' + affMoney(data.amount) + ' جنيه\nالطريقة: ' + cashMethod + '\nالرقم / الحساب: ' + acc;
+const { data: row } = await sb.from('support_messages').insert({ user_id: currentProfile.id, sender: 'user', body }).select().single();
+if (row) await sb.functions.invoke('support-chat', { body: { message_id: row.id } });
+} catch (e) {}
+} catch (e) { userToast('❌ ' + (e.message || 'حصل خطأ'), 'warn'); }
+finally { btn.disabled = false; window.__onAffiliateOpen(); }
+});
+document.getElementById('affToBalanceBtn').addEventListener('click', affToBalance);
+document.getElementById('affCashBtn').addEventListener('click', openCashModal);
+// 🧮 حاسبة الأرباح
+function updateAffCalc() {
+const f = Number(document.getElementById('acFriends').value) || 0, d = Number(document.getElementById('acDep').value) || 0;
+const m = f * d * 0.10;
+document.getElementById('acFriendsVal').textContent = f;
+document.getElementById('acDepVal').textContent = d.toLocaleString('en-US') + ' ج';
+document.getElementById('acResult').textContent = Math.round(m).toLocaleString('en-US') + ' ج';
+document.getElementById('acResultSub').textContent = 'يعني في السنة حوالي ' + Math.round(m * 12).toLocaleString('en-US') + ' جنيه — ومدى الحياة 🚀';
+}
+['acFriends', 'acDep'].forEach(id => document.getElementById(id).addEventListener('input', updateAffCalc));
+updateAffCalc();
 
 initUserSystem();
 

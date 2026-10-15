@@ -3845,7 +3845,7 @@ if (opts && opts.signal) { try { opts.signal.addEventListener('abort', () => ctr
 return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
 };
 _supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage, lock: async (name, acquireTimeout, fn) => await fn() },
+auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce', storage: window.localStorage, lock: async (name, acquireTimeout, fn) => await fn() },
 global: { fetch: smFetch }
 });
 // لما العميل يرجع للموقع: نجدد الجلسة والاتصال اللحظي فوراً (من غير ما الصفحة تعلق)
@@ -4299,7 +4299,9 @@ window.__routeHistory = ['home'];
 // (قبل كده الرابط كان بيتمسح ويترجع للرئيسية → الصفحة كانت بتتلخبط)
 (function initHistoryGuard() {
 try {
-const h = (location.hash || '').replace('#', '');
+let h = (location.hash || '').replace('#', '');
+// 🔵 راجع من الدخول بجوجل: بيانات الدخول في الرابط مش اسم صفحة → نفتح الرئيسية ونسيب Supabase يقراها
+if (/(^|&)(access_token|refresh_token|error|error_description)=/.test(h)) h = '';
 window.__initialHash = h;
 if (!history.state || !history.state.__sm) {
 history.replaceState({ __sm: true, route: h || 'home' }, '', location.pathname + location.search + '#' + (h || 'home'));
@@ -7616,7 +7618,8 @@ if (!profile) {
 // 🔵 أول دخول بجوجل → نعمل بيانات العميل تلقائياً على السيرفر
 const u = session.user, am = u.app_metadata || {};
 const viaGoogle = am.provider === 'google' || (am.providers || []).indexOf('google') >= 0 || (u.identities || []).some(i => i.provider === 'google');
-if (viaGoogle && !window.__oauthTried) {
+if (viaGoogle && window.__oauthTried) return; // في محاولة شغالة دلوقتي بتعمل الحساب → منسجلش خروج
+if (viaGoogle) {
 window.__oauthTried = true;
 let res = null;
 try { const r = await sb.functions.invoke('smm-api', { body: { action: 'oauth_profile' } }); res = r.data; if (r.error) { try { res = await r.error.context.json(); } catch (er) {} } } catch (er) {}
@@ -7652,7 +7655,7 @@ applyRoleUI();
 hideAuthModal();
 if (window.__oauthJustIn || /[#&?](access_token|code)=/.test(location.href)) {
 window.__oauthJustIn = false;
-try { history.replaceState(null, '', location.pathname); } catch(e) {}
+try { history.replaceState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
 setTimeout(() => { afterAuthSuccess(); }, 300);
 }
 } catch(e) { console.warn(e); }
@@ -7671,6 +7674,17 @@ userToast('❌ الدخول بجوجل مش متاح دلوقتي — استخد
 }
 }
 document.querySelectorAll('.google-auth-btn').forEach(b => b.addEventListener('click', () => signInWithGoogle(b)));
+// لو الرجوع من جوجل فيه خطأ → نعرضه بوضوح وننضف الرابط
+(function () {
+try {
+const q = new URLSearchParams(location.search + '&' + (location.hash || '').replace(/^#/, ''));
+const err = q.get('error_description') || q.get('error');
+if (err) {
+history.replaceState(null, '', location.pathname + '#home');
+setTimeout(() => userToast('❌ الدخول بجوجل: ' + decodeURIComponent(String(err).replace(/\+/g, ' ')).slice(0, 160), 'err'), 800);
+}
+} catch (e) {}
+})();
 
 function subscribeToUserRealtime() {
 try {

@@ -7577,7 +7577,16 @@ window.refreshCurrencyButtons();
 } catch(e) {}
 };
 
-async function refreshUserUI() {
+// تحديث حالة الحساب: مرة واحدة في نفس الوقت (لو اتطلب تاني وهو شغال بيتعاد بعده مرة واحدة بس)
+function refreshUserUI() {
+if (window.__ruiBusy) { window.__ruiAgain = true; return window.__ruiBusy; }
+window.__ruiBusy = refreshUserUIOnce().finally(() => {
+window.__ruiBusy = null;
+if (window.__ruiAgain) { window.__ruiAgain = false; refreshUserUI(); }
+});
+return window.__ruiBusy;
+}
+async function refreshUserUIOnce() {
 try {
 const { data: { session } } = await sb.auth.getSession();
 if (!session || !session.user) {
@@ -7623,7 +7632,7 @@ if (viaGoogle) {
 window.__oauthTried = true;
 let res = null;
 try { const r = await sb.functions.invoke('smm-api', { body: { action: 'oauth_profile' } }); res = r.data; if (r.error) { try { res = await r.error.context.json(); } catch (er) {} } } catch (er) {}
-if (res && res.ok) { if (res.created) userToast('🎉 تم إنشاء حسابك بجوجل! مرحباً بك', 'ok'); window.__oauthTried = false; window.__oauthJustIn = true; return refreshUserUI(); }
+if (res && res.ok) { if (res.created) userToast('🎉 تم إنشاء حسابك بجوجل! مرحباً بك', 'ok'); window.__oauthTried = false; window.__oauthJustIn = true; return refreshUserUIOnce(); }
 try { await sb.auth.signOut(); } catch(e) {}
 window.__oauthTried = false;
 userToast('❌ ' + ((res && res.message) || 'تعذر الدخول بجوجل — حاول تاني'), 'err');
@@ -9730,8 +9739,12 @@ updateAffCalc();
 
 initUserSystem();
 
-sb.auth.onAuthStateChange(async (event, session) => {
-await refreshUserUI();
+// ⚠️ مهم: منستناش أي طلب لـ Supabase جوه الإشعار نفسه (ده كان بيعلّق الدخول والخروج والموقع كله)
+// → بنأجل التحديث لحظة لحد ما Supabase يخلص، ولو جه كذا إشعار ورا بعض بنعمل تحديث واحد بس
+let __authRefreshTimer = null;
+sb.auth.onAuthStateChange((event, session) => {
+clearTimeout(__authRefreshTimer);
+__authRefreshTimer = setTimeout(() => { refreshUserUI(); }, 50);
 });
 })();
 </script>

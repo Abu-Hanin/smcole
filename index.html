@@ -323,6 +323,22 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .settings-section h3 i { color: #7C3AED; }
 .settings-section .admin-field:last-child { margin-bottom: 0; }
 .settings-section textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+.pm-toggles { display: flex; flex-direction: column; gap: 8px; }
+.pm-toggle { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px solid rgba(168,85,247,.2); transition: .2s; }
+.pm-toggle .pmt-name { flex: 1 1 170px; }
+.pmt-min { display: flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--muted); }
+.pmt-min input { width: 90px; padding: 6px 8px !important; margin: 0 !important; border-radius: 8px; text-align: center; font-weight: 700; }
+.pmt-min em { font-style: normal; color: #C4B5FD; font-weight: 700; }
+.pmt-sw { cursor: pointer; display: flex; }
+.pm-toggle.off { opacity: .6; border-style: dashed; }
+.pm-toggle.busy { pointer-events: none; opacity: .5; }
+.pmt-name { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .88rem; color: #fff; }
+.pmt-name i { color: #C084FC; width: 18px; text-align: center; }
+.pmt-sw input { display: none; }
+.pmt-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; border-radius: 12px; background: #3b2f5c; transition: .25s; }
+.pmt-switch::after { content: ''; position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: .25s; }
+.pm-toggle input:checked + .pmt-switch { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.pm-toggle input:checked + .pmt-switch::after { right: 23px; }
 .settings-save-bar { position: sticky; bottom: -1.8rem; background: #120C22; padding: 1rem 0 0; border-top: 1px solid rgba(168, 85, 247,0.2); margin-top: 1rem; display: flex; gap: 10px; justify-content: flex-end; z-index: 10; }
 .auth-modal-bg { position:fixed; inset:0; background:radial-gradient(circle at center,rgba(168, 85, 247,0.15),rgba(0,0,0,0.9)); display:none; align-items:center; justify-content:center; z-index:3000; padding:20px; backdrop-filter:blur(8px); }
 .auth-modal-bg.show { display:flex; }
@@ -2894,9 +2910,9 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div id="kpayForm">
 <h3 id="kpayTitle"><i class="fas fa-credit-card"></i> شحن الرصيد بالكارت</h3>
 <p class="kpay-sub">فيزا • ماستركارد • ميزة • المحافظ الإلكترونية — الدفع بيتم على صفحة كاشير الآمنة، والرصيد بيتضاف لحسابك أول ما الدفع يتأكد.</p>
-<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="800" step="1" placeholder="أقل مبلغ 800"><span>جنيه</span></div>
-<div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>800 جنيه</b></div>
-<div class="kpay-chips"><button type="button" data-amt="800">800</button><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="5000">5000</button></div>
+<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="1000" step="1" placeholder="أقل مبلغ 1000"><span>جنيه</span></div>
+<div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>1,000 جنيه</b></div>
+<div class="kpay-chips"><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="3000">3000</button><button type="button" data-amt="5000">5000</button></div>
 <button type="button" class="kpay-go" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
 <div class="kpay-msg" id="kpayMsg"></div>
 <div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
@@ -3008,7 +3024,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="step-item"><span class="step-num">4</span><span class="step-text">احتفظ بـ <b>لقطة شاشة للتحويل</b></span></div>
 <div class="step-item"><span class="step-num">5</span><span class="step-text">ارجع هنا واملأ البيانات</span></div>
 </div>
-<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: 50 جنيه</p>
+<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="vodafone">50</span> جنيه</p>
 </div>
 <form class="deposit-form" id="vodafoneForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية الإيداع</h3>
@@ -3048,7 +3064,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="step-item"><span class="step-num">4</span><span class="step-text">احتفظ بلقطة الشاشة</span></div>
 <div class="step-item"><span class="step-num">5</span><span class="step-text">ارجع هنا واملأ البيانات</span></div>
 </div>
-<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: 2 دولار</p>
+<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="binance">2</span> دولار</p>
 </div>
 <form class="deposit-form" id="binanceForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية Binance</h3>
@@ -3090,7 +3106,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="step-item"><span class="step-num">5</span><span class="step-text">ارجع هنا واملأ البيانات</span></div>
 </div>
 <p style="color:#e83e5c; font-weight:700;"><i class="fas fa-exclamation-triangle"></i> تنبيه: الإرسال على شبكة أخرى قد يؤدي لفقدان المبلغ</p>
-<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: 2 دولار</p>
+<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="usdt">2</span> دولار</p>
 </div>
 <form class="deposit-form" id="usdtForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية USDT</h3>
@@ -3130,7 +3146,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="step-item"><span class="step-num">4</span><span class="step-text">احتفظ بلقطة الشاشة</span></div>
 <div class="step-item"><span class="step-num">5</span><span class="step-text">ارجع هنا واملأ البيانات</span></div>
 </div>
-<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: 50 جنيه</p>
+<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="instapay">50</span> جنيه</p>
 </div>
 <form class="deposit-form" id="instapayForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية إنستا باي</h3>
@@ -3170,7 +3186,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="step-item"><span class="step-num">4</span><span class="step-text">احتفظ بلقطة الشاشة</span></div>
 <div class="step-item"><span class="step-num">5</span><span class="step-text">ارجع هنا واملأ البيانات</span></div>
 </div>
-<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: 2 دولار</p>
+<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="redot">2</span> دولار</p>
 </div>
 <form class="deposit-form" id="redotForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية ريدوت باي</h3>
@@ -3695,6 +3711,19 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="admin-grid-2">
 <div class="admin-field"><label>رقم الدعم الفني (واتساب)</label><input type="text" id="settingsSupportPhone" placeholder="201154846407" dir="ltr"></div>
 <div class="admin-field"><label>رقم الشراء "شراء الآن"</label><input type="text" id="settingsPurchasePhone" placeholder="201154846407" dir="ltr"></div>
+</div>
+</div>
+
+<div class="settings-section pm-toggles-section">
+<h3><i class="fas fa-toggle-on"></i> وسائل الدفع — إظهار / إخفاء والحد الأدنى</h3>
+<div class="admin-hint" style="margin-bottom:.7rem;">💡 زرار الإظهار/الإخفاء بيتطبق فوراً عند كل العملاء، والحد الأدنى بيتحفظ مع "حفظ الإعدادات" تحت. الاتنين بيتقفلوا على السيرفر كمان — محدش يقدر يتحايل عليهم.</div>
+<div class="pm-toggles" id="pmToggles">
+<div class="pm-toggle" data-pm="vodafone" data-def="50"><span class="pmt-name"><i class="fas fa-mobile-screen"></i> محافظ الكاش</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="instapay" data-def="50"><span class="pmt-name"><i class="fas fa-building-columns"></i> إنستا باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="binance" data-def="2"><span class="pmt-name"><i class="fab fa-bitcoin"></i> باينانس باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0.1" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="kashier" data-def="1000"><span class="pmt-name"><i class="fas fa-credit-card"></i> فيزا / ماستركارد / ميزة</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="10" step="any" dir="ltr" placeholder="1000"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="usdt" data-def="2"><span class="pmt-name"><i class="fas fa-coins"></i> العملات الرقمية USDT</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0.1" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="redot" data-def="2"><span class="pmt-name"><i class="fas fa-globe"></i> ريدوت باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0.1" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
 </div>
 </div>
 
@@ -4314,6 +4343,19 @@ siteSettings.last_fx = (data.last_fx !== null && data.last_fx !== undefined) ? p
 siteSettings.profit_percent = (data.profit_percent !== null && data.profit_percent !== undefined) ? parseFloat(data.profit_percent) : null;
 siteSettings.maintenance = data.maintenance === true;
 siteSettings.maintenance_message = data.maintenance_message || '';
+siteSettings.payment_methods = (data.payment_methods && typeof data.payment_methods === 'object') ? data.payment_methods : {};
+siteSettings.payment_min = (data.payment_min && typeof data.payment_min === 'object') ? data.payment_min : {};
+if (window.applyPaymentMethods) window.applyPaymentMethods();
+};
+// الحد الأدنى لكل وسيلة دفع (من إعدادات الأدمن — ولو مش متحدد بيرجع للقيمة الافتراضية)
+window.pmMin = function (m, def) { const v = Number(((window.siteSettings || {}).payment_min || {})[m]); return v > 0 ? v : def; };
+// 💳 إظهار/إخفاء وسائل الدفع حسب اختيار الأدمن
+window.applyPaymentMethods = function () {
+const pm = siteSettings.payment_methods || {};
+document.querySelectorAll('.payment-selector-card[data-method]').forEach(c => { c.style.display = pm[c.dataset.method] === false ? 'none' : ''; });
+const k = document.getElementById('kashierCard');
+if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' : 'none';
+document.querySelectorAll('.pm-min-label[data-pm]').forEach(s => { const d = Number(s.dataset.def || s.textContent) || 0; if (!s.dataset.def) s.dataset.def = d; s.textContent = Number(window.pmMin(s.dataset.pm, d)).toLocaleString('en-US'); });
 };
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -4379,6 +4421,9 @@ if (!payload.new) return;
 siteSettings.maintenance = payload.new.maintenance === true;
 siteSettings.maintenance_message = payload.new.maintenance_message || '';
 if (payload.new.last_fx) siteSettings.last_fx = parseFloat(payload.new.last_fx);
+if (payload.new.payment_methods && typeof payload.new.payment_methods === 'object') siteSettings.payment_methods = payload.new.payment_methods;
+if (payload.new.payment_min && typeof payload.new.payment_min === 'object') siteSettings.payment_min = payload.new.payment_min;
+if (window.applyPaymentMethods) window.applyPaymentMethods();
 if (window.applyMaintenance) window.applyMaintenance();
 })
 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders_counter' }, (payload) => {
@@ -5986,6 +6031,14 @@ document.getElementById('settingsRedotNumber').value = data.redot_number || '';
 document.getElementById('settingsExchangeRate').value = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? data.exchange_rate : '';
 document.getElementById('settingsActiveUsers').value = (data.active_users_override !== null && data.active_users_override !== undefined) ? data.active_users_override : '';
 document.getElementById('settingsCompletedOrders').value = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? data.completed_orders_override : '';
+const pmNow = (data.payment_methods && typeof data.payment_methods === 'object') ? data.payment_methods : {};
+const pmMinNow = (data.payment_min && typeof data.payment_min === 'object') ? data.payment_min : {};
+document.querySelectorAll('#pmToggles .pm-toggle').forEach(l => {
+const on = pmNow[l.dataset.pm] !== false;
+l.querySelector('input[type=checkbox]').checked = on; l.classList.toggle('off', !on);
+const v = Number(pmMinNow[l.dataset.pm]);
+l.querySelector('.pmt-min input').value = v > 0 ? v : l.dataset.def;
+});
 pendingLogos = {
 vodafone: data.logo_vodafone || '', binance: data.logo_binance || '',
 usdt: data.logo_usdt || '', instapay: data.logo_instapay || '', redot: data.logo_redot || ''
@@ -6009,6 +6062,22 @@ document.getElementById('adminSettingsBtn').addEventListener('click', async () =
 await loadSettingsIntoForm();
 settingsModalBg.classList.add('show');
 });
+// 💳 إظهار/إخفاء وسيلة دفع — بيتحفظ فوراً من غير زرار الحفظ
+document.querySelectorAll('#pmToggles .pm-toggle input[type=checkbox]').forEach(inp => inp.addEventListener('change', async () => {
+const lab = inp.closest('.pm-toggle'), key = lab.dataset.pm, on = inp.checked;
+lab.classList.add('busy');
+try {
+const { data: cur, error: rErr } = await supabase.from('site_settings').select('payment_methods').eq('id', 1).single();
+if (rErr) throw new Error(/payment_methods/.test(rErr.message) ? 'شغّل update_v17.sql الأول' : rErr.message);
+const pm = Object.assign({}, (cur && cur.payment_methods) || {}); pm[key] = on;
+const { error } = await supabase.from('site_settings').update({ payment_methods: pm }).eq('id', 1);
+if (error) throw new Error(error.message);
+lab.classList.toggle('off', !on);
+if (window.siteSettings) window.siteSettings.payment_methods = pm; if (window.applyPaymentMethods) window.applyPaymentMethods();
+toast(on ? '✅ ' + lab.querySelector('.pmt-name').textContent.trim() + ' — ظهرت للعملاء' : '🙈 ' + lab.querySelector('.pmt-name').textContent.trim() + ' — اتخفت ومحدش يقدر يستخدمها');
+} catch (e) { inp.checked = !on; toast('خطأ: ' + e.message, true); }
+finally { lab.classList.remove('busy'); }
+}));
 document.getElementById('adminSettingsCancel').addEventListener('click', () => settingsModalBg.classList.remove('show'));
 settingsModalBg.addEventListener('click', e => { if (e.target === settingsModalBg) settingsModalBg.classList.remove('show'); });
 
@@ -6043,6 +6112,14 @@ logo_instapay: pendingLogos.instapay === '' ? null : (pendingLogos.instapay || n
 logo_redot: pendingLogos.redot === '' ? null : (pendingLogos.redot || null),
 updated_at: new Date().toISOString()
 };
+// الحد الأدنى لكل وسيلة دفع
+const pmMin = {};
+document.querySelectorAll('#pmToggles .pm-toggle').forEach(l => {
+const v = parseFloat(l.querySelector('.pmt-min input').value);
+pmMin[l.dataset.pm] = v > 0 ? Math.round(v * 100) / 100 : Number(l.dataset.def);
+});
+if (pmMin.kashier < 10) pmMin.kashier = 10;
+payload.payment_min = pmMin;
 const { error } = await supabase.from('site_settings').upsert(payload, { onConflict: 'id' });
 if (error) {
 btn.disabled = false;
@@ -9419,7 +9496,7 @@ const senderPhone = document.getElementById('vodafoneSenderPhone').value.trim();
 const screenshot = getScreenshotPreviewSrc('vodafoneUploadZone');
 const msg = document.getElementById('vodafoneMsg');
 msg.className = 'profile-msg'; msg.innerText = '';
-if (!amount || amount < 50) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى 50 جنيه'; return; }
+if (!amount || amount < window.pmMin('vodafone', 50)) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى ' + window.pmMin('vodafone', 50) + ' جنيه'; return; }
 if (!senderPhone || senderPhone.length < 8) { msg.className = 'profile-msg err'; msg.innerText = 'رقم الهاتف غير صحيح'; return; }
 if (!screenshot) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ من فضلك ارفق لقطة شاشة للتحويل'; return; }
 msg.innerText = '⏳ جاري ضغط الصورة...';
@@ -9447,7 +9524,7 @@ const tx = document.getElementById('binanceTransaction').value.trim();
 const screenshot = getScreenshotPreviewSrc('binanceUploadZone');
 const msg = document.getElementById('binanceMsg');
 msg.className = 'profile-msg'; msg.innerText = '';
-if (!amount || amount < 2) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى 2 دولار'; return; }
+if (!amount || amount < window.pmMin('binance', 2)) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى ' + window.pmMin('binance', 2) + ' دولار'; return; }
 if (!tx || tx.length < 5) { msg.className = 'profile-msg err'; msg.innerText = 'معرف العملية غير صحيح'; return; }
 if (!screenshot) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ من فضلك ارفق لقطة شاشة للتحويل'; return; }
 msg.innerText = '⏳ جاري ضغط الصورة...';
@@ -9474,7 +9551,7 @@ const tx = document.getElementById('usdtTransaction').value.trim();
 const screenshot = getScreenshotPreviewSrc('usdtUploadZone');
 const msg = document.getElementById('usdtMsg');
 msg.className = 'profile-msg'; msg.innerText = '';
-if (!amount || amount < 2) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى 2 دولار'; return; }
+if (!amount || amount < window.pmMin('usdt', 2)) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى ' + window.pmMin('usdt', 2) + ' دولار'; return; }
 if (!tx || tx.length < 5) { msg.className = 'profile-msg err'; msg.innerText = 'معرف العملية (TXID) غير صحيح'; return; }
 if (!screenshot) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ من فضلك ارفق لقطة شاشة للتحويل'; return; }
 msg.innerText = '⏳ جاري ضغط الصورة...';
@@ -9501,7 +9578,7 @@ const senderPhone = document.getElementById('instapaySenderPhone').value.trim();
 const screenshot = getScreenshotPreviewSrc('instapayUploadZone');
 const msg = document.getElementById('instapayMsg');
 msg.className = 'profile-msg'; msg.innerText = '';
-if (!amount || amount < 50) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى 50 جنيه'; return; }
+if (!amount || amount < window.pmMin('instapay', 50)) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى ' + window.pmMin('instapay', 50) + ' جنيه'; return; }
 if (!senderPhone || senderPhone.length < 8) { msg.className = 'profile-msg err'; msg.innerText = 'رقم الهاتف غير صحيح'; return; }
 if (!screenshot) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ من فضلك ارفق لقطة شاشة للتحويل'; return; }
 msg.innerText = '⏳ جاري ضغط الصورة...';
@@ -9529,7 +9606,7 @@ const tx = document.getElementById('redotTransaction').value.trim();
 const screenshot = getScreenshotPreviewSrc('redotUploadZone');
 const msg = document.getElementById('redotMsg');
 msg.className = 'profile-msg'; msg.innerText = '';
-if (!amount || amount < 2) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى 2 دولار'; return; }
+if (!amount || amount < window.pmMin('redot', 2)) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى ' + window.pmMin('redot', 2) + ' دولار'; return; }
 if (!tx || tx.length < 5) { msg.className = 'profile-msg err'; msg.innerText = 'معرف العملية غير صحيح'; return; }
 if (!screenshot) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ من فضلك ارفق لقطة شاشة للتحويل'; return; }
 msg.innerText = '⏳ جاري ضغط الصورة...';
@@ -9929,7 +10006,7 @@ const card = document.getElementById('kashierCard'), modal = document.getElement
 if (!card || !modal) return;
 document.body.appendChild(modal); // فوق كل الصفحات
 const $ = (id) => document.getElementById(id);
-let kcfg = { enabled: false, min: 800, max: 50000 };
+let kcfg = { enabled: false, min: 1000, max: 50000 };
 const invoke = async (body) => {
 const r = await sb.functions.invoke('smm-api', { body });
 let d = r.data;
@@ -9939,7 +10016,8 @@ return d || {};
 // الكارت بيظهر بس لما الأدمن يفعّل كاشير (المفاتيح موجودة في Supabase)
 setTimeout(() => invoke({ action: 'kashier_status' }).then(d => {
 if (d && d.enabled) {
-kcfg = d; card.style.display = ''; $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min;
+kcfg = d; window.__kashierEnabled = true; if (window.applyPaymentMethods) window.applyPaymentMethods(); else card.style.display = '';
+$('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min;
 $('kpayMinNote').innerHTML = 'أقل مبلغ للشحن بالكارت <b>' + Number(d.min).toLocaleString('en-US') + ' جنيه</b>';
 // زراير المبالغ السريعة: اللي أقل من الحد الأدنى بتختفي
 modal.querySelectorAll('.kpay-chips [data-amt]').forEach(b => { b.style.display = Number(b.dataset.amt) < d.min ? 'none' : ''; });

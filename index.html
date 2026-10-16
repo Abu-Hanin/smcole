@@ -870,6 +870,11 @@ input, textarea, select { user-select: text; }
 .admin-pill { display: inline-block; font-size: .65rem; padding: 2px 8px; border-radius: 20px; background: linear-gradient(135deg,#F59E0B,#EC4899); color: #fff; vertical-align: middle; margin-right: 4px; }
 .drawer-close { width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,0.06) !important; color: #fff; display: flex; align-items: center; justify-content: center; }
 .drawer-close:hover { background: rgba(239,68,68,0.25) !important; }
+.drawer-sal { width: 38px; height: 38px; flex-shrink: 0; border-radius: 12px; border: 1px solid rgba(34,197,94,.35); background: rgba(34,197,94,.12); color: #4ADE80; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .95rem; transition: .2s; margin-inline-start: auto; }
+.drawer-sal.off { border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.05); color: #8B84B5; }
+.drawer-sal:hover { transform: scale(1.06); }
+.drawer-sal + .drawer-close { margin-inline-start: 6px !important; }
+.drawer-links a[hidden] { display: none !important; }
 .dropdown-menu .user-balance-chip { margin: 0 !important; border-radius: 18px !important; background: rgba(255,255,255,0.04) !important; }
 .user-balance-chip .b-val { color: #fff !important; }
 .user-balance-chip .b-icon { color: #fff !important; background: var(--grad) !important; }
@@ -2478,6 +2483,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="drawer-user-name" id="drawerUserName">مرحباً بك</div>
 <div class="drawer-user-sub" id="drawerUserSub" dir="ltr"></div>
 </div>
+<button type="button" class="drawer-sal" id="salawatToggleLink" aria-label="صوت صلي على النبي" title="صوت &quot;صلي على النبي&quot; — اضغط للتشغيل/الإيقاف"><i class="fas fa-volume-high"></i></button>
 <button type="button" class="drawer-close" id="drawerCloseBtn" aria-label="إغلاق"><i class="fas fa-times"></i></button>
 </div>
 <div class="user-balance-chip" id="userBalanceChip" style="display:none;">
@@ -2500,9 +2506,8 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <a href="#" id="affiliateLink" class="drawer-aff-link user-only"><span class="dl-ico"><i class="fas fa-handshake"></i></span><span class="dl-txt">التسويق بالعمولة<small>اربح 10% من كل إيداع</small></span><b class="dl-new">جديد</b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="apiMenuLink"><span class="dl-ico"><i class="fas fa-plug"></i></span><span class="dl-txt">الـ API — اربط خدماتنا بموقعك<small>مفتاح الـ API والربط بلوحتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="supportDropdownLink"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="notifMenuLink" class="user-only"><span class="dl-ico"><i class="fas fa-bell"></i></span><span class="dl-txt">الإشعارات<small>تحديثات طلباتك وإيداعاتك</small></span><b class="dl-badge" id="drawerNotifBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="salawatToggleLink"><span class="dl-ico"><i class="fas fa-volume-high"></i></span><span class="dl-txt">صوت "صلي على النبي"<small id="salawatToggleSub">شغال — أول ما تدخل الموقع</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="termsLink"><span class="dl-ico"><i class="fas fa-file-alt"></i></span><span class="dl-txt">شروط الخدمة<small>السياسات والأحكام</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="notifMenuLink" class="user-only" hidden><span class="dl-ico"><i class="fas fa-bell"></i></span><span class="dl-txt">الإشعارات<small>تحديثات طلباتك وإيداعاتك</small></span><b class="dl-badge" id="drawerNotifBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="termsLink" hidden><span class="dl-ico"><i class="fas fa-file-alt"></i></span><span class="dl-txt">شروط الخدمة<small>السياسات والأحكام</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="profileMenuLink"><span class="dl-ico"><i class="fas fa-user-circle"></i></span><span class="dl-txt">الملف الشخصي<small>بياناتك ورصيدك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" class="drawer-login-link guest-only" data-auth-open="login"><span class="dl-ico"><i class="fas fa-right-to-bracket"></i></span><span class="dl-txt">تسجيل الدخول<small>ادخل لحسابك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" class="drawer-login-link guest-only" data-auth-open="register"><span class="dl-ico"><i class="fas fa-user-plus"></i></span><span class="dl-txt">إنشاء حساب جديد<small>سجّل مجاناً في أقل من دقيقة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
@@ -4192,6 +4197,21 @@ if (!_supabaseClient) {
 // ⚡ إصلاح "الموقع بيهنّج لما ترجعله": لما الموبايل يقفل الصفحة في الخلفية وترجع، قفل الجلسة الداخلي
 // (navigator.locks) ساعات بيعلق وكل الطلبات (شراء/تحميل/أزرار) تفضل مستنية للأبد → بنلغيه
 // + أي طلب للسيرفر ليه حد أقصى للانتظار بدل ما الزرار يفضل واقف
+// 🔐 قفل بين التابات/التطبيق: تجديد الجلسة بيحصل في مكان واحد بس في نفس الوقت
+// (من غيره تابين بيجددوا مع بعض → Supabase بيلغي واحد → تسجيل خروج/دخول لوحده)
+// ولو القفل علق أكتر من 5 ثواني بنكمل من غيره (عشان الموقع ميهنجش زي زمان)
+const smAuthLock = async (name, acquireTimeout, fn) => {
+if (!(navigator.locks && navigator.locks.request)) return await fn();
+const ctrl = new AbortController();
+const t = setTimeout(() => ctrl.abort(), 5000);
+try {
+return await navigator.locks.request(name, { mode: 'exclusive', signal: ctrl.signal }, async () => { clearTimeout(t); return await fn(); });
+} catch (e) {
+clearTimeout(t);
+if (e && e.name === 'AbortError') return await fn();
+throw e;
+}
+};
 const smFetch = (url, opts) => {
 const ms = /\/functions\/v1\//.test(String(url)) ? 120000 : 25000;
 const ctrl = new AbortController();
@@ -4200,7 +4220,7 @@ if (opts && opts.signal) { try { opts.signal.addEventListener('abort', () => ctr
 return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
 };
 _supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce', storage: window.localStorage, lock: async (name, acquireTimeout, fn) => await fn() },
+auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce', storage: window.localStorage, lock: smAuthLock },
 global: { fetch: smFetch }
 });
 // لما العميل يرجع للموقع: نجدد الجلسة والاتصال اللحظي فوراً (من غير ما الصفحة تعلق)
@@ -5797,7 +5817,7 @@ document.getElementById('adminLoginPassword').addEventListener('keypress', e => 
 if (e.key === 'Enter') document.getElementById('adminLoginBtn').click();
 });
 document.getElementById('adminLogoutBtn').addEventListener('click', async () => {
-await supabase.auth.signOut();
+await supabase.auth.signOut({ scope: 'local' });
 sessionStorage.removeItem('smcole_admin_mode');
 document.getElementById('adminPanelPage').classList.remove('active');
 document.getElementById('adminLoginPage').classList.remove('active');
@@ -7295,11 +7315,29 @@ function startAdminMoneyRealtime() {
 if (adminMoneyChannel || !window.isAdminUser) return;
 let t1 = null, t2 = null;
 adminMoneyChannel = supabase.channel('admin-money')
-.on('postgres_changes', { event: '*', schema: 'public', table: 'deposit_requests' }, () => { clearTimeout(t1); t1 = setTimeout(() => loadAdminDeposits(), 600); })
-.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, () => { clearTimeout(t2); t2 = setTimeout(() => loadAdminOrders(), 800); })
+.on('postgres_changes', { event: '*', schema: 'public', table: 'deposit_requests' }, () => {
+const sec = document.getElementById('adminSectionDeposits');
+if (sec && !sec.classList.contains('active')) { window.__adminDepositsDirty = true; if (window.refreshAdminBadges) window.refreshAdminBadges(); return; }
+clearTimeout(t1); t1 = setTimeout(() => loadAdminDeposits(), 600);
+})
+.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, (p) => {
+// ⚡ منعيدش تحميل الطلبات كلها غير لو حالة طلب اتغيرت فعلاً — وبس لو صفحة الطلبات مفتوحة
+const n = p && p.new; if (!n) return;
+const old = allOrdersData.find(o => String(o.id) === String(n.id));
+if (old && old.status === n.status && Number(old.refunded || 0) === Number(n.refunded || 0)) { Object.assign(old, n); return; }
+const sec = document.getElementById('adminSectionOrders');
+if (!sec || !sec.classList.contains('active') || document.visibilityState !== 'visible') { window.__adminOrdersDirty = true; return; }
+clearTimeout(t2); t2 = setTimeout(() => loadAdminOrders(), 800);
+})
 .subscribe();
 }
 window.__startAdminMoneyRealtime = startAdminMoneyRealtime;
+// رجعت للصفحة وكان فيه تغيير مستني → نحدّث مرة واحدة بس
+document.addEventListener('visibilitychange', () => {
+if (document.visibilityState !== 'visible' || !window.isAdminUser) return;
+const os = document.getElementById('adminSectionOrders');
+if (window.__adminOrdersDirty && os && os.classList.contains('active')) { window.__adminOrdersDirty = false; loadAdminOrders(); }
+});
 
 // ==================== TRANSACTIONS ====================
 let allTxData = [];
@@ -8088,7 +8126,11 @@ return window.__ruiBusy;
 }
 async function refreshUserUIOnce() {
 try {
-const { data: { session } } = await sb.auth.getSession();
+let { data: { session } } = await sb.auth.getSession();
+// الجلسة قربت تخلص (رجعت للموقع بعد فترة) → نجددها الأول، عشان الطلب ميرجعش فاضي ونفتكر الحساب مش موجود
+if (session && session.expires_at && session.expires_at * 1000 < Date.now() + 30000) {
+try { const r = await sb.auth.refreshSession(); if (r && r.data && r.data.session) session = r.data.session; } catch (e) {}
+}
 if (!session || !session.user) {
 currentUser = null; currentProfile = null; window.currentProfile = null;
 window.isAdminUser = false;
@@ -8133,20 +8175,36 @@ window.__oauthTried = true;
 let res = null;
 try { const r = await sb.functions.invoke('smm-api', { body: { action: 'oauth_profile' } }); res = r.data; if (r.error) { try { res = await r.error.context.json(); } catch (er) {} } } catch (er) {}
 if (res && res.ok) { if (res.created) userToast('🎉 تم إنشاء حسابك بجوجل! مرحباً بك', 'ok'); window.__oauthTried = false; window.__oauthJustIn = true; return refreshUserUIOnce(); }
-try { await sb.auth.signOut(); } catch(e) {}
+try { await sb.auth.signOut({ scope: 'local' }); } catch(e) {}
 window.__oauthTried = false;
 userToast('❌ ' + ((res && res.message) || 'تعذر الدخول بجوجل — حاول تاني'), 'err');
 return;
 }
-// الحساب اتمسح فعلاً من قاعدة البيانات
-try { await sb.auth.signOut(); } catch(e) {}
+// قبل ما نقول "الحساب اتمسح" نتأكد من السيرفر نفسه — ولو فيه أي شك (نت/جلسة) نحاول تاني بدل تسجيل الخروج
+let confirmedGone = false;
+try {
+const { data: gu, error: guErr } = await sb.auth.getUser();
+if (!guErr && gu && gu.user && gu.user.id === session.user.id) {
+const { data: again, error: aErr } = await sb.from('users').select('id').eq('auth_id', session.user.id).maybeSingle();
+if (!aErr && again) { clearTimeout(window.__profileRetry); window.__profileRetry = setTimeout(refreshUserUI, 300); return; }
+confirmedGone = !aErr && !again;
+}
+} catch (e) {}
+if (!confirmedGone) {
+applyRoleUI();
+clearTimeout(window.__profileRetry);
+window.__profileRetry = setTimeout(refreshUserUI, 5000);
+return;
+}
+// الحساب اتمسح فعلاً من قاعدة البيانات (السيرفر أكد)
+try { await sb.auth.signOut({ scope: 'local' }); } catch(e) {}
 currentProfile = null; window.currentProfile = null;
 const chip = document.getElementById('userBalanceChip');
 if (chip) chip.style.display = 'none';
 return;
 }
 if (profile.is_banned) {
-try { await sb.auth.signOut(); } catch(e) {}
+try { await sb.auth.signOut({ scope: 'local' }); } catch(e) {}
 userToast('🚫 هذا الحساب محظور', 'err');
 currentProfile = null; window.currentProfile = null;
 const chip = document.getElementById('userBalanceChip');
@@ -8355,15 +8413,22 @@ await refreshUserUI();
 setTimeout(() => { afterAuthSuccess(); }, 400);
 return;
 }
-const { data: profile, error: profErr } = await sb.from('users').select('*').eq('auth_id', data.user.id).single();
-if (profErr || !profile) {
-await sb.auth.signOut();
+const { data: profile, error: profErr } = await sb.from('users').select('*').eq('auth_id', data.user.id).maybeSingle();
+if (profErr) {
+// خطأ مؤقت (نت/سيرفر) — الدخول نفسه نجح، منطلعوش برا: نكمل والحساب هيتحمل لوحده
+msg.className = 'auth-msg ok'; msg.innerText = '✅ تم تسجيل الدخول';
+await refreshUserUI();
+setTimeout(() => { afterAuthSuccess(); }, 400);
+return;
+}
+if (!profile) {
+await sb.auth.signOut({ scope: 'local' });
 msg.className = 'auth-msg err'; msg.innerText = '🚫 لا يوجد حساب مسجل بهذا البريد';
 userToast('🚫 هذا الحساب غير موجود أو تم حذفه', 'err');
 return;
 }
 if (profile.is_banned) {
-await sb.auth.signOut();
+await sb.auth.signOut({ scope: 'local' });
 msg.className = 'auth-msg err'; msg.innerText = '🚫 هذا الحساب محظور، تواصل مع الدعم';
 userToast('🚫 حسابك محظور من قبل الإدارة', 'err');
 return;
@@ -8499,7 +8564,7 @@ async function doLogout() {
 if (!confirm('هل تريد تسجيل الخروج؟')) return;
 // الجهاز ده يبطل يستقبل إشعارات الحساب ده
 if (window.__unsubscribeDeviceRow) await window.__unsubscribeDeviceRow();
-await sb.auth.signOut();
+await sb.auth.signOut({ scope: 'local' });
 currentUser = null; currentProfile = null; window.currentProfile = null;
 window.isAdminUser = false;
 sessionStorage.removeItem('smcole_admin_mode');
@@ -9488,7 +9553,7 @@ if (currentProfile) openProfilePage(); else showAuthModal();
 // 🔊 تشغيل/إيقاف صوت "صلي على النبي"
 (function () {
 const link = document.getElementById('salawatToggleLink'); if (!link || !window.smSound) return;
-const paint = () => { const on = window.smSound.salOn(); document.getElementById('salawatToggleSub').textContent = on ? 'شغال — أول ما تدخل الموقع' : 'متوقف — اضغط عشان تشغله'; link.querySelector('.dl-ico i').className = 'fas ' + (on ? 'fa-volume-high' : 'fa-volume-xmark'); };
+const paint = () => { const on = window.smSound.salOn(); link.classList.toggle('off', !on); link.querySelector('i').className = 'fas ' + (on ? 'fa-volume-high' : 'fa-volume-xmark'); link.title = on ? 'صوت "صلي على النبي" شغال — اضغط لإيقافه' : 'صوت "صلي على النبي" متوقف — اضغط لتشغيله'; };
 paint();
 link.addEventListener('click', (e) => {
 e.preventDefault();
@@ -10416,7 +10481,12 @@ sb.auth.onAuthStateChange((event, session) => {
 if (event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED') return; // أول تحميل بيتعمل من initUserSystem
 if (event === 'SIGNED_IN' && session && session.user && currentUser && currentUser.id === session.user.id && (currentProfile || window.isAdminUser)) return;
 clearTimeout(__authRefreshTimer);
-__authRefreshTimer = setTimeout(() => { refreshUserUI(); }, 50);
+__authRefreshTimer = setTimeout(async () => {
+// لو فيه تحديث شغال (زي اللي بيعمله زرار الدخول نفسه) نستناه — ولو جاب نفس الحساب منعيدش تاني
+if (window.__ruiBusy) { try { await window.__ruiBusy; } catch (e) {} }
+if (event === 'SIGNED_IN' && session && session.user && currentUser && currentUser.id === session.user.id && (currentProfile || window.isAdminUser)) return;
+refreshUserUI();
+}, 50);
 });
 })();
 </script>

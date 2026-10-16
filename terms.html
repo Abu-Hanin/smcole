@@ -37,7 +37,8 @@ a{color:#C4B5FD}
 .crumb{font-size:.8rem;color:var(--muted);margin-bottom:10px}
 .crumb a{color:var(--muted)}
 h1{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:900;margin-bottom:6px;display:flex;align-items:center;gap:12px}
-h1 i{width:52px;height:52px;flex-shrink:0;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:1.3rem;background:linear-gradient(135deg,#7C3AED,#A855F7);color:#fff;box-shadow:0 10px 26px rgba(124,58,237,.45)}
+.h1-ico{width:52px;height:52px;flex-shrink:0;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7C3AED,#A855F7);box-shadow:0 10px 26px rgba(124,58,237,.45)}
+.h1-ico i{display:block;font-size:1.35rem;line-height:1;color:#fff;margin:0}
 .upd{color:var(--muted);font-size:.8rem;margin-bottom:22px}
 article{background:linear-gradient(160deg,rgba(30,18,64,.7),rgba(11,6,25,.9));border:1px solid var(--line);border-radius:22px;padding:24px 22px}
 .lead{font-size:1.05rem;color:#fff;margin-bottom:10px}
@@ -54,6 +55,10 @@ td:first-child{direction:ltr;text-align:left;font-family:ui-monospace,Consolas,m
 .kv{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0}
 .kv span{font-weight:800;color:#C4B5FD;min-width:110px}
 .kv code{word-break:break-all}
+.alert{display:flex;gap:12px;align-items:flex-start;margin:12px 0 6px;padding:14px 16px;border-radius:16px;background:rgba(251,191,36,.09);border:1px solid rgba(251,191,36,.45);color:#FDE68A;line-height:1.9}
+.alert>i{color:#FBBF24;font-size:1.2rem;margin-top:5px;flex-shrink:0}
+.alert b{color:#fff}
+.alert a{color:#FCD34D}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
 .ccard{display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line);text-decoration:none;color:#fff;transition:.2s}
 .ccard:hover{transform:translateY(-3px);border-color:#A855F7}
@@ -74,7 +79,7 @@ footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:v
 </header>
 <div class="wrap">
 <div class="crumb"><a href="/">SMCOLE</a> ‹ شروط الاستخدام</div>
-<h1><i class="fas fa-file-contract"></i>شروط الاستخدام</h1>
+<h1><span class="h1-ico" aria-hidden="true"><i class="fas fa-file-contract"></i></span><span>شروط الاستخدام</span></h1>
 <div class="upd">آخر تحديث: 16 أكتوبر 2026</div>
 <main><article>
 <p class="lead">باستخدامك لموقع SMCOLE (smcole.com) أو أي من خدماته، إنت بتوافق على الشروط دي. لو مش موافق عليها من فضلك متستخدمش الموقع.</p>
@@ -83,7 +88,7 @@ footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:v
 <h2>2. الخدمات والطلبات</h2>
 <ul><li>الخدمات بتقدم زيادة في الأرقام الظاهرة (متابعين، لايكات، مشاهدات...) ولا نضمن أي نتايج تجارية أو تفاعل معين.</li><li>لازم الحساب أو المنشور يكون <b>عام</b> طول فترة التنفيذ، وما تغيّرش اسم المستخدم أو الرابط.</li><li>ممنوع تعمل أكتر من طلب لنفس الرابط ونفس الخدمة في نفس الوقت.</li><li>مواعيد البدء والسرعة المكتوبة تقديرية وممكن تتأثر بضغط الطلبات أو تحديثات المنصات.</li><li>إنت مسؤول عن التزامك بسياسات المنصات اللي بتطلب لها الخدمة.</li></ul>
 <h2>3. الرصيد والدفع</h2>
-<ul><li>الرصيد بيستخدم لشراء الخدمات داخل الموقع فقط ولا يتحوّل لفلوس كاش (راجع <a href="/refund-policy.html">سياسة الاسترجاع</a>).</li><li>الدفع بالكارت بيتم عن طريق بوابة دفع مرخّصة (Kashier)، والرصيد بيتضاف بعد التأكد من نجاح العملية.</li><li>أي محاولة احتيال في الدفع (كارت مسروق، استرجاع مبلغ بعد استخدام الرصيد...) بتعرّض الحساب للإيقاف واتخاذ الإجراءات القانونية.</li></ul>
+<ul><li>الرصيد بيستخدم لشراء الخدمات داخل الموقع فقط ولا يتحوّل لفلوس كاش، و<b>كل مبالغ الإيداع نهائية وغير قابلة للاسترداد</b> تحت أي ظرف (راجع <a href="/refund-policy.html">سياسة الاسترجاع</a>).</li><li>الدفع بالكارت بيتم عن طريق بوابة دفع مرخّصة (Kashier)، والرصيد بيتضاف بعد التأكد من نجاح العملية.</li><li>أي محاولة احتيال في الدفع (كارت مسروق، استرجاع مبلغ بعد استخدام الرصيد...) بتعرّض الحساب للإيقاف واتخاذ الإجراءات القانونية.</li></ul>
 <h2>4. الضمان</h2>
 <p>الخدمات اللي عليها ضمان (30 أو 365 يوم) بيتعوض النقص فيها خلال مدة الضمان طالما الشروط متحققة. الخدمات اللي من غير ضمان مفيش تعويض على النقص فيها.</p>
 <h2>5. الـ API</h2>

@@ -392,6 +392,8 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .profile-msg { color:#7C3AED; font-size:0.85rem; margin-top:0.5rem; min-height:18px; }
 .profile-msg.err { color:#e83e5c; }
 /* 🔌 الـ API في صفحة حسابي */
+.api-section { scroll-margin-top: 90px; transition: box-shadow .4s, border-color .4s; }
+.api-section.api-focus { border-color: #A855F7 !important; box-shadow: 0 0 0 3px rgba(168,85,247,.35), 0 14px 40px rgba(124,58,237,.35) !important; }
 .api-lead { color:var(--muted); font-size:.85rem; line-height:1.8; margin:0 0 .9rem; }
 .api-row { display:flex; flex-direction:column; gap:6px; margin-bottom:.8rem; }
 .api-lbl { font-size:.8rem; font-weight:700; color:#C4B5FD; }
@@ -2282,6 +2284,7 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <a href="#" id="myOrdersLink"><span class="dl-ico"><i class="fas fa-receipt"></i></span><span class="dl-txt">الطلبات<small>تابع حالة طلباتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="favoritesLink"><span class="dl-ico"><i class="fas fa-heart"></i></span><span class="dl-txt">المفضلة<small>خدماتك المحفوظة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="affiliateLink" class="drawer-aff-link user-only"><span class="dl-ico"><i class="fas fa-handshake"></i></span><span class="dl-txt">التسويق بالعمولة<small>اربح 10% من كل إيداع</small></span><b class="dl-new">جديد</b><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="apiMenuLink"><span class="dl-ico"><i class="fas fa-plug"></i></span><span class="dl-txt">الـ API — اربط خدماتنا بموقعك<small>مفتاح الـ API والربط بلوحتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="supportDropdownLink"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="notifMenuLink" class="user-only"><span class="dl-ico"><i class="fas fa-bell"></i></span><span class="dl-txt">الإشعارات<small>تحديثات طلباتك وإيداعاتك</small></span><b class="dl-badge" id="drawerNotifBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="termsLink"><span class="dl-ico"><i class="fas fa-file-alt"></i></span><span class="dl-txt">شروط الخدمة<small>السياسات والأحكام</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
@@ -9149,6 +9152,19 @@ document.getElementById('profileMenuLink').addEventListener('click', (e) => {
 e.preventDefault();
 document.getElementById('dropdownMenu').classList.remove('show-dropdown');
 if (currentProfile) openProfilePage(); else showAuthModal();
+});
+// 🔌 الـ API: اختصار من القايمة → حسابي (قسم الـ API) — للزوار بيفتح صفحة الشرح
+document.getElementById('apiMenuLink').addEventListener('click', async (e) => {
+e.preventDefault();
+document.getElementById('dropdownMenu').classList.remove('show-dropdown');
+if (!currentProfile) { window.open('/api.html', '_blank', 'noopener'); return; }
+await openProfilePage();
+setTimeout(() => {
+const sec = document.getElementById('apiSection');
+if (!sec) return;
+sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+sec.classList.add('api-focus'); setTimeout(() => sec.classList.remove('api-focus'), 1800);
+}, 350);
 });
 
 

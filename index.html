@@ -39,9 +39,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SMCOLE">
-<link rel="icon" type="image/png" sizes="192x192" href="/app-icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/app-icon-512.png">
-<link rel="shortcut icon" href="/app-icon-192.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <!-- بيانات منظمة لجوجل: الموقع + الخدمات + الأسئلة المتكررة -->
 <script type="application/ld+json">
@@ -390,6 +391,45 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .profile-save-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124, 58, 237,0.3); }
 .profile-msg { color:#7C3AED; font-size:0.85rem; margin-top:0.5rem; min-height:18px; }
 .profile-msg.err { color:#e83e5c; }
+/* 🔌 الـ API في صفحة حسابي */
+.api-lead { color:var(--muted); font-size:.85rem; line-height:1.8; margin:0 0 .9rem; }
+.api-row { display:flex; flex-direction:column; gap:6px; margin-bottom:.8rem; }
+.api-lbl { font-size:.8rem; font-weight:700; color:#C4B5FD; }
+.api-val { display:flex; align-items:center; gap:8px; background:#07040F; border:1px solid rgba(168,85,247,.3); border-radius:12px; padding:8px 10px; }
+.api-val code { flex:1; min-width:0; font-family:ui-monospace,Consolas,monospace; font-size:.8rem; color:#E9D5FF; word-break:break-all; direction:ltr; text-align:left; }
+.api-copy { flex-shrink:0; width:34px; height:34px; border-radius:10px; border:1px solid rgba(168,85,247,.35); background:rgba(168,85,247,.12); color:#E9D5FF; cursor:pointer; }
+.api-copy.copied { background:#16a34a; color:#fff; border-color:transparent; }
+.api-note { font-size:.8rem; line-height:1.7; color:#FCD34D; min-height:0; margin-bottom:.4rem; }
+.api-note:empty { display:none; }
+.api-actions { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.api-docs-btn { display:inline-flex; align-items:center; gap:8px; padding:12px 18px; margin-top:.5rem; border-radius:14px; border:1px solid rgba(168,85,247,.4); color:#E9D5FF; text-decoration:none; font-weight:700; font-size:.9rem; }
+/* 💳 كاشير */
+.psc-logo.kashier { background:linear-gradient(135deg,#0EA5E9 0%,#1D4ED8 100%); color:#fff; font-size:1.05rem; }
+.payment-selector-card.kashier-card { border-color:rgba(56,189,248,.45); background:linear-gradient(135deg,#0B1830,#0E0919); }
+.kashier-badges { display:flex; gap:5px; flex-wrap:wrap; margin-top:6px; }
+.kashier-badges span { font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:6px; background:rgba(255,255,255,.08); color:#E0F2FE; letter-spacing:.02em; }
+.kpay-bg { position:fixed; inset:0; z-index:10050; background:rgba(5,3,12,.78); backdrop-filter:blur(6px); display:none; align-items:center; justify-content:center; padding:16px; }
+.kpay-bg.show { display:flex; }
+.kpay-box { width:100%; max-width:420px; background:linear-gradient(160deg,#141033,#0A0718); border:1px solid rgba(56,189,248,.35); border-radius:22px; padding:1.4rem; box-shadow:0 30px 70px rgba(0,0,0,.6); position:relative; }
+.kpay-close { position:absolute; top:12px; left:12px; width:34px; height:34px; border-radius:50%; border:none; background:rgba(255,255,255,.08); color:#fff; cursor:pointer; }
+.kpay-box h3 { margin:0 0 .3rem; font-size:1.15rem; color:#fff; display:flex; align-items:center; gap:8px; }
+.kpay-box h3 i { color:#38BDF8; }
+.kpay-sub { color:var(--muted); font-size:.82rem; margin:0 0 1rem; line-height:1.7; }
+.kpay-amount { display:flex; align-items:center; background:#07040F; border:1px solid rgba(56,189,248,.4); border-radius:14px; overflow:hidden; }
+.kpay-amount input { flex:1; min-width:0; background:transparent; border:none; outline:none; color:#fff; font-family:inherit; font-size:1.3rem; font-weight:800; padding:12px 14px; direction:ltr; text-align:left; }
+.kpay-amount span { padding:0 14px; color:#7DD3FC; font-weight:800; }
+.kpay-chips { display:flex; gap:6px; flex-wrap:wrap; margin:.7rem 0 1rem; }
+.kpay-chips button { flex:1; min-width:60px; padding:8px 6px; border-radius:10px; border:1px solid rgba(56,189,248,.35); background:rgba(56,189,248,.08); color:#E0F2FE; font-family:inherit; font-weight:700; cursor:pointer; }
+.kpay-chips button:hover { background:rgba(56,189,248,.2); }
+.kpay-go { width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:14px; border:none; border-radius:14px; background:linear-gradient(135deg,#0EA5E9,#2563EB); color:#fff; font-family:inherit; font-weight:800; font-size:1rem; cursor:pointer; box-shadow:0 12px 28px rgba(14,165,233,.35); }
+.kpay-go:disabled { opacity:.7; cursor:wait; }
+.kpay-secure { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:.8rem; font-size:.75rem; color:var(--muted); }
+.kpay-secure i { color:#4ADE80; }
+.kpay-msg { font-size:.82rem; margin-top:.6rem; text-align:center; min-height:1em; color:#FCA5A5; }
+.kpay-state { text-align:center; padding:.6rem 0; }
+.kpay-state .big { font-size:3rem; margin-bottom:.4rem; }
+.kpay-state h4 { margin:0 0 .4rem; color:#fff; font-size:1.1rem; }
+.kpay-state p { margin:0; color:var(--muted); font-size:.85rem; line-height:1.7; }
 .deposit-tabs { display:none !important; }
 .deposit-panel { display:none; }
 .deposit-panel.active { display:block; }
@@ -971,6 +1011,11 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .sm-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 10px; max-width: 820px; margin: 0 auto 16px; }
 .sm-footer-links a { color: #CFC6F2; text-decoration: none; font-size: .78rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.2); transition: .2s; }
 .sm-footer-links a:hover { color: #fff; background: rgba(168,85,247,0.22); }
+.sm-footer-info { max-width: 820px; margin: 0 auto 18px; text-align: center; }
+.sm-footer-info h4 { margin: 0 0 10px; color: #FBBF24; font-size: .95rem; font-weight: 800; }
+.sm-footer-info .sfi-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; }
+.sm-footer-info a { color: #E9E4FF; text-decoration: none; font-size: .85rem; font-weight: 600; }
+.sm-footer-info a:hover { color: #FBBF24; }
 .sm-footer .footer { border: none; margin: 0; padding: 0; font-size: .82rem; color: var(--muted); }
 .sm-footer .footer span { color: #D8B4FE; font-weight: 800; }
 
@@ -2468,6 +2513,11 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <p>نوفر في <span data-site-name>SMCOLE</span> مجموعة متنوعة من وسائل الدفع الآمنة والمرنة لتسهيل إتمام طلباتك بكل سرعة وراحة. اختر وسيلة الدفع المناسبة:</p>
 
 <div class="payment-selector-grid">
+<div class="payment-selector-card kashier-card" id="kashierCard" data-pay="kashier" style="display:none;">
+<div class="psc-logo kashier"><i class="fas fa-credit-card"></i></div>
+<div class="psc-info"><h3>فيزا / ماستركارد / ميزة ⚡</h3><p>ادفع بالكارت أو المحفظة — الرصيد بيتضاف تلقائياً في ثواني</p><div class="kashier-badges"><span>VISA</span><span>Mastercard</span><span>Meeza</span><span>محافظ</span></div></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
 <div class="payment-selector-card" data-method="vodafone">
 <div class="psc-logo vodafone" id="pscLogoVodafone">
 <img id="pscLogoVodafoneImg" style="display:none;" alt="Vodafone">
@@ -2727,6 +2777,18 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <a href="/egyptian-followers.html">متابعين مصريين</a>
 <a href="/smm-panel-egypt.html">أرخص موقع تزويد متابعين</a>
 </nav>
+<nav class="sm-footer-info" aria-label="معلومات">
+<h4>معلومات</h4>
+<div class="sfi-links">
+<a href="/about.html">من نحن</a>
+<a href="/terms.html">شروط الاستخدام</a>
+<a href="/privacy-policy.html">سياسة الخصوصية</a>
+<a href="/refund-policy.html">سياسة الاسترجاع</a>
+<a href="/contact.html">تواصل معنا</a>
+<a href="/smm-guide.html">دليلك لاستخدام خدمات SMM</a>
+<a href="/api.html">الـ API للمطورين</a>
+</div>
+</nav>
 <div class="footer">© <span id="footerYear">2026</span> حقوق الطبع والنشر. كل الحقوق محفوظة لموقع <span id="footerSiteName" data-site-name>smcole</span></div>
 </footer>
 </main>
@@ -2819,6 +2881,23 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 </div>
 </div>
 
+<!-- ============ 💳 الدفع بالفيزا (كاشير) ============ -->
+<div class="kpay-bg" id="kpayModal" role="dialog" aria-modal="true" aria-labelledby="kpayTitle">
+<div class="kpay-box">
+<button type="button" class="kpay-close" id="kpayClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
+<div id="kpayForm">
+<h3 id="kpayTitle"><i class="fas fa-credit-card"></i> شحن الرصيد بالكارت</h3>
+<p class="kpay-sub">فيزا • ماستركارد • ميزة • المحافظ الإلكترونية — الدفع بيتم على صفحة كاشير الآمنة، والرصيد بيتضاف لحسابك أول ما الدفع يتأكد.</p>
+<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="10" step="1" placeholder="0"><span>جنيه</span></div>
+<div class="kpay-chips"><button type="button" data-amt="100">100</button><button type="button" data-amt="250">250</button><button type="button" data-amt="500">500</button><button type="button" data-amt="1000">1000</button></div>
+<button type="button" class="kpay-go" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
+<div class="kpay-msg" id="kpayMsg"></div>
+<div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
+</div>
+<div id="kpayState" class="kpay-state" style="display:none;"></div>
+</div>
+</div>
+
 <!-- ============ PROFILE PAGE ============ -->
 <div id="profilePage" class="overlay-page" style="padding:1.5rem 1rem;">
 <div class="page-container">
@@ -2852,6 +2931,17 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="profile-field"><label>رقم الهاتف</label><input type="tel" id="profilePhone" placeholder="رقم الهاتف"></div>
 <button class="profile-save-btn" id="profileSaveBtn" type="button"><i class="fas fa-save"></i> حفظ التعديلات</button>
 <div class="profile-msg" id="profileMsg"></div>
+</div>
+<div class="profile-section api-section" id="apiSection">
+<h3><i class="fas fa-plug"></i> الـ API — اربط خدماتنا بموقعك</h3>
+<p class="api-lead">لو عندك موقع أو لوحة SMM، تقدر تسحب كل خدماتنا وتطلب منها تلقائياً من موقعك برصيد حسابك — بنفس النظام القياسي (API v2) اللي بتستخدمه كل اللوحات.</p>
+<div class="api-row"><span class="api-lbl">رابط الـ API</span><div class="api-val"><code id="apiUrlVal">—</code><button type="button" class="api-copy" data-copy-from="apiUrlVal"><i class="far fa-copy"></i></button></div></div>
+<div class="api-row"><span class="api-lbl">مفتاح الـ API</span><div class="api-val"><code id="apiKeyVal">لسه معملتش مفتاح</code><button type="button" class="api-copy" id="apiKeyCopy" data-copy-from="apiKeyVal" style="display:none;"><i class="far fa-copy"></i></button></div></div>
+<div class="api-note" id="apiKeyNote"></div>
+<div class="api-actions">
+<button type="button" class="profile-save-btn" id="apiKeyNewBtn"><i class="fas fa-key"></i> <span>إنشاء مفتاح API</span></button>
+<a class="api-docs-btn" href="/api.html" target="_blank" rel="noopener"><i class="fas fa-book"></i> شرح الـ API والأوامر</a>
+</div>
 </div>
 <div class="profile-section">
 <h3><i class="fas fa-lock"></i> تغيير كلمة المرور</h3>
@@ -7956,6 +8046,7 @@ updateProfileAvatarUI();
 window.refreshBalanceUI();
 window.refreshCurrencyButtons();
 document.getElementById('profileMsg').innerText = '';
+if (window.__loadApiKeyInfo) window.__loadApiKeyInfo();
 document.getElementById('profilePasswordMsg').innerText = '';
 document.getElementById('profileCurrentPassword').value = '';
 document.getElementById('profileNewPassword').value = '';
@@ -9810,6 +9901,136 @@ document.getElementById('acResultSub').textContent = 'يعني في السنة �
 }
 ['acFriends', 'acDep'].forEach(id => document.getElementById(id).addEventListener('input', updateAffCalc));
 updateAffCalc();
+
+// ===================== 💳 الدفع بالفيزا — كاشير =====================
+// الرصيد مبيتضافش من هنا أبداً: السيرفر هو اللي بيسأل كاشير ويتأكد إن الفلوس اتدفعت فعلاً
+(function kashierUI() {
+const card = document.getElementById('kashierCard'), modal = document.getElementById('kpayModal');
+if (!card || !modal) return;
+document.body.appendChild(modal); // فوق كل الصفحات
+const $ = (id) => document.getElementById(id);
+let kcfg = { enabled: false, min: 10, max: 50000 };
+const invoke = async (body) => {
+const r = await sb.functions.invoke('smm-api', { body });
+let d = r.data;
+if (r.error) { try { d = await r.error.context.json(); } catch (e) { d = null; } }
+return d || {};
+};
+// الكارت بيظهر بس لما الأدمن يفعّل كاشير (المفاتيح موجودة في Supabase)
+setTimeout(() => invoke({ action: 'kashier_status' }).then(d => {
+if (d && d.enabled) { kcfg = d; card.style.display = ''; $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min; }
+}).catch(() => {}), 1500);
+const show = (mode) => { modal.classList.add('show'); $('kpayForm').style.display = mode === 'form' ? '' : 'none'; $('kpayState').style.display = mode === 'form' ? 'none' : ''; };
+const hide = () => modal.classList.remove('show');
+const state = (icon, title, text) => { $('kpayState').innerHTML = '<div class="big">' + icon + '</div><h4>' + title + '</h4><p>' + text + '</p>'; show('state'); };
+$('kpayClose').addEventListener('click', hide);
+modal.addEventListener('click', (e) => { if (e.target === modal) hide(); });
+card.addEventListener('click', () => {
+if (!window.currentProfile) { if (typeof window.showAuthModal === 'function') window.showAuthModal(); return; }
+$('kpayMsg').textContent = ''; show('form');
+setTimeout(() => { try { $('kpayAmount').focus(); } catch (e) {} }, 100);
+});
+modal.querySelectorAll('.kpay-chips [data-amt]').forEach(b => b.addEventListener('click', () => { $('kpayAmount').value = b.dataset.amt; }));
+$('kpayGo').addEventListener('click', async () => {
+const btn = $('kpayGo'), msg = $('kpayMsg');
+const amount = Math.round(parseFloat($('kpayAmount').value) * 100) / 100;
+if (!(amount >= kcfg.min)) { msg.textContent = 'أقل مبلغ للشحن ' + kcfg.min + ' جنيه'; return; }
+if (amount > kcfg.max) { msg.textContent = 'أقصى مبلغ في المرة ' + kcfg.max + ' جنيه'; return; }
+if (btn.disabled) return;
+btn.disabled = true; btn.querySelector('span').textContent = 'جاري فتح صفحة الدفع...'; msg.textContent = '';
+try {
+const d = await invoke({ action: 'kashier_init', amount, origin: location.origin });
+if (d && d.ok && d.url && /^https:\/\/([a-z0-9-]+\.)*kashier\.io\//i.test(d.url)) {
+try { sessionStorage.setItem('smcole_kpay', d.ref); } catch (e) {}
+location.href = d.url;
+return;
+}
+msg.textContent = (d && d.message) || 'تعذر فتح صفحة الدفع — حاول تاني';
+} catch (e) { msg.textContent = 'تعذر الاتصال — حاول تاني'; }
+btn.disabled = false; btn.querySelector('span').textContent = 'ادفع الآن';
+});
+
+// العميل رجع من صفحة الدفع → نتحقق من السيرفر (اللي بيتحقق من كاشير)
+let ref = '';
+try {
+const q = new URLSearchParams(location.search);
+ref = q.get('kpay') || '';
+if (ref) { sessionStorage.setItem('smcole_kpay', ref); history.replaceState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); }
+else ref = sessionStorage.getItem('smcole_kpay_pending') || '';
+} catch (e) {}
+if (!/^SMC\d+-[A-Z0-9a-f]+$/.test(ref)) return;
+try { sessionStorage.setItem('smcole_kpay_pending', ref); } catch (e) {}
+(async () => {
+// نستنى بيانات الحساب تتحمل
+for (let i = 0; i < 40 && !window.currentProfile; i++) await new Promise(r => setTimeout(r, 250));
+if (!window.currentProfile) return;
+state('⏳', 'بنتحقق من الدفع...', 'ثواني وهنتأكد من كاشير إن الفلوس وصلت.');
+let d = null;
+for (let i = 0; i < 8; i++) {
+try { d = await invoke({ action: 'kashier_check', ref }); } catch (e) { d = null; }
+if (d && (d.state === 'paid' || d.state === 'failed' || d.state === 'not_found' || d.state === 'mismatch')) break;
+await new Promise(r => setTimeout(r, 3000));
+}
+const done = () => { try { sessionStorage.removeItem('smcole_kpay_pending'); sessionStorage.removeItem('smcole_kpay'); } catch (e) {} };
+if (d && d.state === 'paid') {
+done();
+state('✅', 'تم شحن رصيدك بنجاح', 'اتضاف <b>' + Number(d.amount || 0).toLocaleString('en-US') + ' جنيه</b> لرصيدك — تقدر تطلب خدماتك دلوقتي 🚀');
+userToast('✅ تم إضافة ' + d.amount + ' جنيه لرصيدك', 'ok');
+if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
+if (window.loadUserTransactions) window.loadUserTransactions();
+} else if (d && d.state === 'failed') {
+done();
+state('❌', 'الدفع ما تمش', 'مفيش أي فلوس اتخصمت من الرصيد عندنا. لو اتخصم مبلغ من الكارت هيرجعلك تلقائياً من البنك — أو تواصل مع الدعم الفني.');
+} else if (d && (d.state === 'not_found' || d.state === 'mismatch')) {
+done();
+state('⚠️', 'محتاجين نراجع العملية', 'تواصل مع الدعم الفني وابعتلنا رقم العملية: <b dir="ltr">' + ref + '</b>');
+} else {
+state('⏳', 'الدفع لسه بيتأكد', 'أول ما كاشير يأكد الدفع الرصيد هيتضاف لحسابك تلقائياً ويوصلك إشعار — مش محتاج تعمل حاجة.');
+}
+})();
+})();
+
+// ===================== 🔌 مفتاح الـ API (صفحة حسابي) =====================
+(function apiKeyUI() {
+const $ = (id) => document.getElementById(id);
+if (!$('apiSection')) return;
+$('apiUrlVal').textContent = SUPABASE_URL + '/functions/v1/api';
+document.querySelectorAll('#apiSection .api-copy').forEach(b => b.addEventListener('click', async () => {
+const v = ($(b.dataset.copyFrom) || {}).textContent || '';
+try { await navigator.clipboard.writeText(v); } catch (e) { const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (x) {} t.remove(); }
+b.classList.add('copied'); setTimeout(() => b.classList.remove('copied'), 1200);
+userToast('📋 تم النسخ', 'ok');
+}));
+let hasKey = false;
+const setBtn = () => { $('apiKeyNewBtn').querySelector('span').textContent = hasKey ? 'تغيير المفتاح' : 'إنشاء مفتاح API'; };
+window.__loadApiKeyInfo = async function () {
+try {
+const { data, error } = await sb.rpc('smcole_api_key_info');
+if (error) { $('apiKeyVal').textContent = 'الـ API هيتفعل قريب'; $('apiKeyNewBtn').disabled = true; return; }
+$('apiKeyNewBtn').disabled = false;
+hasKey = !!(data && data.has_key);
+$('apiKeyCopy').style.display = 'none';
+$('apiKeyVal').textContent = hasKey ? data.hint : 'لسه معملتش مفتاح';
+$('apiKeyNote').textContent = hasKey ? ('المفتاح شغال' + (data.last_used_at ? ' — آخر استخدام: ' + new Date(data.last_used_at).toLocaleString('ar-EG') : '') + '. المفتاح الكامل بيظهر مرة واحدة بس وقت إنشائه — لو ضاع منك اعمل مفتاح جديد.') : '';
+setBtn();
+} catch (e) {}
+};
+$('apiKeyNewBtn').addEventListener('click', async () => {
+const btn = $('apiKeyNewBtn');
+if (btn.disabled) return;
+if (hasKey && !confirm('هيتعمل مفتاح جديد والمفتاح القديم هيتوقف فوراً — أي موقع مربوط بيه لازم تحدّثه. تكمل؟')) return;
+btn.disabled = true;
+try {
+const { data, error } = await sb.rpc('smcole_api_key_new');
+if (error || !data || !data.key) throw new Error(error ? error.message : 'تعذر إنشاء المفتاح');
+hasKey = true; setBtn();
+$('apiKeyVal').textContent = data.key;
+$('apiKeyCopy').style.display = '';
+$('apiKeyNote').textContent = '⚠️ انسخ المفتاح دلوقتي واحفظه في مكان آمن — مش هيظهر كامل تاني. ومتديهوش لحد: أي حد معاه المفتاح يقدر يطلب برصيدك.';
+} catch (e) { userToast('❌ ' + e.message, 'err'); }
+finally { btn.disabled = false; }
+});
+})();
 
 initUserSystem();
 

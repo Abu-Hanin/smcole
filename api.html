@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMM Panel API — اربط خدمات SMCOLE بموقعك | API v2</title>
+<meta name="description" content="SMCOLE API v2: اربط آلاف خدمات السوشيال ميديا بموقعك أو لوحة الـ SMM بتاعتك — services, add, status, balance — متوافق مع كل لوحات SMM.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://smcole.com/api.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SMCOLE">
+<meta property="og:locale" content="ar_EG">
+<meta property="og:url" content="https://smcole.com/api.html">
+<meta property="og:title" content="SMM Panel API — اربط خدمات SMCOLE بموقعك | API v2">
+<meta property="og:description" content="SMCOLE API v2: اربط آلاف خدمات السوشيال ميديا بموقعك أو لوحة الـ SMM بتاعتك — services, add, status, balance — متوافق مع كل لوحات SMM.">
+<meta property="og:image" content="https://smcole.com/app-icon-512.png">
+<meta name="theme-color" content="#07040F">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","name":"الـ API للمطورين وأصحاب اللوحات","url":"https://smcole.com/api.html","description":"SMCOLE API v2: اربط آلاف خدمات السوشيال ميديا بموقعك أو لوحة الـ SMM بتاعتك — services, add, status, balance — متوافق مع كل لوحات SMM.","inLanguage":"ar","dateModified":"2026-10-16","headline":"الـ API للمطورين وأصحاب اللوحات","author":{"@type":"Organization","name":"SMCOLE"},"publisher":{"@type":"Organization","name":"SMCOLE","logo":{"@type":"ImageObject","url":"https://smcole.com/app-icon-512.png"}}},{"@type":"Organization","name":"SMCOLE","url":"https://smcole.com/","logo":"https://smcole.com/app-icon-512.png"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"SMCOLE","item":"https://smcole.com/"},{"@type":"ListItem","position":2,"name":"الـ API للمطورين وأصحاب اللوحات","item":"https://smcole.com/api.html"}]}]}</script>
+<style>
+:root{--line:rgba(168,85,247,.22);--muted:#A59CC9}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(900px 500px at 85% -10%,rgba(124,58,237,.25),transparent 60%),#07040F;color:#EAE6FF;font-family:Cairo,system-ui,sans-serif;line-height:1.95;overflow-x:hidden}
+a{color:#C4B5FD}
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:rgba(7,4,15,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:900;font-size:1.2rem;color:#fff}
+.brand img{width:38px;height:38px;border-radius:11px}
+.nav-links{display:flex;gap:8px}
+.nav-links a{text-decoration:none;font-weight:800;font-size:.85rem;padding:8px 14px;border-radius:12px;color:#E9D5FF;border:1px solid var(--line)}
+.nav-links a.cta{background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;border:none}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 60px}
+.crumb{font-size:.8rem;color:var(--muted);margin-bottom:10px}
+.crumb a{color:var(--muted)}
+h1{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:900;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+h1 i{width:52px;height:52px;flex-shrink:0;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:1.3rem;background:linear-gradient(135deg,#7C3AED,#A855F7);color:#fff;box-shadow:0 10px 26px rgba(124,58,237,.45)}
+.upd{color:var(--muted);font-size:.8rem;margin-bottom:22px}
+article{background:linear-gradient(160deg,rgba(30,18,64,.7),rgba(11,6,25,.9));border:1px solid var(--line);border-radius:22px;padding:24px 22px}
+.lead{font-size:1.05rem;color:#fff;margin-bottom:10px}
+h2{font-size:1.2rem;font-weight:900;margin:22px 0 8px;color:#fff;border-right:4px solid #A855F7;padding-right:10px}
+p{margin-bottom:8px;color:#D9D2F5}
+ul,ol{padding-right:22px;margin-bottom:8px;color:#D9D2F5}
+li{margin-bottom:5px}
+code{font-family:ui-monospace,Consolas,monospace;background:rgba(168,85,247,.14);padding:2px 7px;border-radius:6px;font-size:.85em;color:#F5D0FE;direction:ltr;unicode-bidi:embed}
+pre{direction:ltr;text-align:left;background:#05030C;border:1px solid var(--line);border-radius:14px;padding:14px;overflow-x:auto;font-family:ui-monospace,Consolas,monospace;font-size:.8rem;line-height:1.6;color:#E9D5FF;margin:8px 0 12px;white-space:pre}
+table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:right}
+th{background:rgba(168,85,247,.12);color:#fff}
+td:first-child{direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace;color:#F5D0FE;width:30%}
+.kv{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0}
+.kv span{font-weight:800;color:#C4B5FD;min-width:110px}
+.kv code{word-break:break-all}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.ccard{display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line);text-decoration:none;color:#fff;transition:.2s}
+.ccard:hover{transform:translateY(-3px);border-color:#A855F7}
+.ccard i{font-size:1.4rem;color:#C084FC}
+.ccard small{color:var(--muted)}
+.more{margin-top:26px}
+.more h3{font-size:1rem;margin-bottom:10px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{padding:7px 14px;border-radius:20px;background:rgba(168,85,247,.1);border:1px solid var(--line);text-decoration:none;font-size:.85rem;font-weight:700;color:#E9D5FF}
+footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;text-align:center}
+@media(max-width:640px){.nav-links a:not(.cta){display:none}article{padding:18px 14px}}
+</style>
+</head>
+<body>
+<header class="nav">
+<a class="brand" href="/"><img src="/app-icon-192.png" alt="SMCOLE" width="38" height="38">SMCOLE</a>
+<nav class="nav-links"><a href="/">الرئيسية</a><a href="/#services">الخدمات</a><a class="cta" href="/#services"><i class="fas fa-bolt"></i> اطلب الآن</a></nav>
+</header>
+<div class="wrap">
+<div class="crumb"><a href="/">SMCOLE</a> ‹ الـ API للمطورين وأصحاب اللوحات</div>
+<h1><i class="fas fa-plug"></i>الـ API للمطورين وأصحاب اللوحات</h1>
+<div class="upd">آخر تحديث: 16 أكتوبر 2026</div>
+<main><article>
+<p class="lead">الـ API بتاعنا متوافق مع النظام القياسي (API v2) اللي بتستخدمه كل لوحات الـ SMM — يعني تقدر تضيفنا كمزود في لوحتك في دقيقة.</p>
+<h2>البداية</h2>
+<ol><li>سجّل دخولك وافتح <b>حسابي ← الـ API</b> واعمل مفتاح.</li><li>ضيف الرابط والمفتاح في لوحتك كمزود جديد (Provider).</li><li>اشحن رصيدك — كل الطلبات بتتخصم من رصيد حسابك.</li></ol>
+<div class="kv"><span>API URL</span><code>https://bqiryyoanqleobzlztbl.supabase.co/functions/v1/api</code></div>
+<div class="kv"><span>HTTP Method</span><code>POST</code></div>
+<div class="kv"><span>Response</span><code>JSON</code></div>
+<div class="kv"><span>Currency</span><code>EGP</code></div>
+<h2>قائمة الخدمات — services</h2>
+<table><tr><th>Parameter</th><th>Description</th></tr><tr><td>key</td><td>مفتاح الـ API</td></tr><tr><td>action</td><td>services</td></tr></table>
+<pre>[
+  { "service": 1, "name": "Instagram Followers", "type": "Default", "category": "Instagram",
+    "rate": "45.5000", "min": "50", "max": "100000", "refill": true, "cancel": false, "dripfeed": false }
+]</pre>
+<h2>طلب جديد — add</h2>
+<table><tr><th>Parameter</th><th>Description</th></tr><tr><td>key</td><td>مفتاح الـ API</td></tr><tr><td>action</td><td>add</td></tr><tr><td>service</td><td>رقم الخدمة</td></tr><tr><td>link</td><td>الرابط</td></tr><tr><td>quantity</td><td>الكمية (للخدمات العادية)</td></tr><tr><td>comments</td><td>التعليقات — كل تعليق في سطر (لخدمات Custom Comments)</td></tr></table>
+<pre>{ "order": 23501 }</pre>
+<h2>حالة طلب — status</h2>
+<table><tr><th>Parameter</th><th>Description</th></tr><tr><td>key</td><td>مفتاح الـ API</td></tr><tr><td>action</td><td>status</td></tr><tr><td>order</td><td>رقم الطلب</td></tr></table>
+<pre>{ "charge": "4.5500", "start_count": "3572", "status": "In progress", "remains": "157", "currency": "EGP" }</pre>
+<p>الحالات: <code>Pending</code> · <code>In progress</code> · <code>Completed</code> · <code>Partial</code> · <code>Canceled</code></p>
+<h2>حالة أكتر من طلب — status</h2>
+<table><tr><th>Parameter</th><th>Description</th></tr><tr><td>key</td><td>مفتاح الـ API</td></tr><tr><td>action</td><td>status</td></tr><tr><td>orders</td><td>أرقام الطلبات مفصولة بفاصلة (لحد 100)</td></tr></table>
+<pre>{
+  "1": { "charge": "0.2700", "start_count": "3572", "status": "Partial", "remains": "157", "currency": "EGP" },
+  "10": { "error": "Incorrect order ID" }
+}</pre>
+<h2>الرصيد — balance</h2>
+<table><tr><th>Parameter</th><th>Description</th></tr><tr><td>key</td><td>مفتاح الـ API</td></tr><tr><td>action</td><td>balance</td></tr></table>
+<pre>{ "balance": "100.8429", "currency": "EGP" }</pre>
+<h2>مثال PHP</h2>
+<pre>$ch = curl_init('https://bqiryyoanqleobzlztbl.supabase.co/functions/v1/api');
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  'key' =&gt; 'YOUR_API_KEY', 'action' =&gt; 'add',
+  'service' =&gt; 1, 'link' =&gt; 'https://instagram.com/username', 'quantity' =&gt; 1000
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$result = json_decode(curl_exec($ch));</pre>
+<h2>مثال cURL</h2>
+<pre>curl -X POST https://bqiryyoanqleobzlztbl.supabase.co/functions/v1/api \
+  -d key=YOUR_API_KEY -d action=balance</pre>
+<h2>ملاحظات</h2>
+<ul><li>الأسعار بالجنيه المصري لكل 1000 (والباقات Package سعر للباقة الواحدة).</li><li>الحد الأقصى 120 طلب في الدقيقة لكل مفتاح.</li><li>لو الطلب فشل عند التنفيذ، المبلغ بيرجع لرصيدك تلقائياً.</li><li>متشاركش مفتاحك مع حد — ولو اتسرب اعمل مفتاح جديد من حسابي والقديم هيتوقف فوراً.</li></ul>
+</article></main>
+<section class="more"><h3>صفحات مهمة</h3><nav class="links"><a href="/about.html">من نحن</a><a href="/terms.html">شروط الاستخدام</a><a href="/privacy-policy.html">سياسة الخصوصية</a><a href="/refund-policy.html">سياسة الاسترجاع والإلغاء</a><a href="/contact.html">تواصل معنا</a><a href="/smm-guide.html">دليلك لاستخدام خدمات SMM</a></nav></section>
+<footer>© 2026 SMCOLE — كل الحقوق محفوظة · <a href="/">smcole.com</a></footer>
+</div>
+</body>
+</html>

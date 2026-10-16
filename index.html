@@ -418,6 +418,8 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .kpay-amount { display:flex; align-items:center; background:#07040F; border:1px solid rgba(56,189,248,.4); border-radius:14px; overflow:hidden; }
 .kpay-amount input { flex:1; min-width:0; background:transparent; border:none; outline:none; color:#fff; font-family:inherit; font-size:1.3rem; font-weight:800; padding:12px 14px; direction:ltr; text-align:left; }
 .kpay-amount span { padding:0 14px; color:#7DD3FC; font-weight:800; }
+.kpay-min { font-size:.78rem; color:#7DD3FC; margin-top:6px; }
+.kpay-min b { color:#fff; }
 .kpay-chips { display:flex; gap:6px; flex-wrap:wrap; margin:.7rem 0 1rem; }
 .kpay-chips button { flex:1; min-width:60px; padding:8px 6px; border-radius:10px; border:1px solid rgba(56,189,248,.35); background:rgba(56,189,248,.08); color:#E0F2FE; font-family:inherit; font-weight:700; cursor:pointer; }
 .kpay-chips button:hover { background:rgba(56,189,248,.2); }
@@ -2513,17 +2515,21 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <p>نوفر في <span data-site-name>SMCOLE</span> مجموعة متنوعة من وسائل الدفع الآمنة والمرنة لتسهيل إتمام طلباتك بكل سرعة وراحة. اختر وسيلة الدفع المناسبة:</p>
 
 <div class="payment-selector-grid">
-<div class="payment-selector-card kashier-card" id="kashierCard" data-pay="kashier" style="display:none;">
-<div class="psc-logo kashier"><i class="fas fa-credit-card"></i></div>
-<div class="psc-info"><h3>فيزا / ماستركارد / ميزة ⚡</h3><p>ادفع بالكارت أو المحفظة — الرصيد بيتضاف تلقائياً في ثواني</p><div class="kashier-badges"><span>VISA</span><span>Mastercard</span><span>Meeza</span><span>محافظ</span></div></div>
-<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
-</div>
 <div class="payment-selector-card" data-method="vodafone">
 <div class="psc-logo vodafone" id="pscLogoVodafone">
 <img id="pscLogoVodafoneImg" style="display:none;" alt="Vodafone">
 <span class="psc-logo-text">V</span>
 </div>
 <div class="psc-info"><h3>محافظ الكاش</h3><p>فودافون كاش / اتصالات كاش / أورنج كاش / وي كاش</p></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
+<div class="payment-selector-card" data-method="instapay">
+<div class="psc-logo instapay" id="pscLogoInstapay">
+<img id="pscLogoInstapayImg" style="display:none;" alt="InstaPay">
+<span class="psc-logo-text">IP</span>
+</div>
+<div class="psc-info"><h3>إنستا باي</h3><p>الدفع عبر خدمة إنستا باي المصرية</p></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
@@ -2536,21 +2542,18 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
+<div class="payment-selector-card kashier-card" id="kashierCard" data-pay="kashier" style="display:none;">
+<div class="psc-logo kashier"><i class="fas fa-credit-card"></i></div>
+<div class="psc-info"><h3>فيزا / ماستركارد / ميزة ⚡</h3><p>ادفع بالكارت أو المحفظة — الرصيد بيتضاف تلقائياً في ثواني</p><div class="kashier-badges"><span>VISA</span><span>Mastercard</span><span>Meeza</span><span>محافظ</span></div></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
 <div class="payment-selector-card" data-method="usdt">
 <div class="psc-logo usdt" id="pscLogoUsdt">
 <img id="pscLogoUsdtImg" style="display:none;" alt="USDT">
 <span class="psc-logo-text">₮</span>
 </div>
 <div class="psc-info"><h3>العملات الرقمية</h3><p>USDT عبر شبكة Tron (TRC20)</p></div>
-<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
-</div>
-
-<div class="payment-selector-card" data-method="instapay">
-<div class="psc-logo instapay" id="pscLogoInstapay">
-<img id="pscLogoInstapayImg" style="display:none;" alt="InstaPay">
-<span class="psc-logo-text">IP</span>
-</div>
-<div class="psc-info"><h3>إنستا باي</h3><p>الدفع عبر خدمة إنستا باي المصرية</p></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
@@ -2888,8 +2891,9 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div id="kpayForm">
 <h3 id="kpayTitle"><i class="fas fa-credit-card"></i> شحن الرصيد بالكارت</h3>
 <p class="kpay-sub">فيزا • ماستركارد • ميزة • المحافظ الإلكترونية — الدفع بيتم على صفحة كاشير الآمنة، والرصيد بيتضاف لحسابك أول ما الدفع يتأكد.</p>
-<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="10" step="1" placeholder="0"><span>جنيه</span></div>
-<div class="kpay-chips"><button type="button" data-amt="100">100</button><button type="button" data-amt="250">250</button><button type="button" data-amt="500">500</button><button type="button" data-amt="1000">1000</button></div>
+<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="800" step="1" placeholder="أقل مبلغ 800"><span>جنيه</span></div>
+<div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>800 جنيه</b></div>
+<div class="kpay-chips"><button type="button" data-amt="800">800</button><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="5000">5000</button></div>
 <button type="button" class="kpay-go" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
 <div class="kpay-msg" id="kpayMsg"></div>
 <div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
@@ -9909,7 +9913,7 @@ const card = document.getElementById('kashierCard'), modal = document.getElement
 if (!card || !modal) return;
 document.body.appendChild(modal); // فوق كل الصفحات
 const $ = (id) => document.getElementById(id);
-let kcfg = { enabled: false, min: 10, max: 50000 };
+let kcfg = { enabled: false, min: 800, max: 50000 };
 const invoke = async (body) => {
 const r = await sb.functions.invoke('smm-api', { body });
 let d = r.data;
@@ -9918,7 +9922,12 @@ return d || {};
 };
 // الكارت بيظهر بس لما الأدمن يفعّل كاشير (المفاتيح موجودة في Supabase)
 setTimeout(() => invoke({ action: 'kashier_status' }).then(d => {
-if (d && d.enabled) { kcfg = d; card.style.display = ''; $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min; }
+if (d && d.enabled) {
+kcfg = d; card.style.display = ''; $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min;
+$('kpayMinNote').innerHTML = 'أقل مبلغ للشحن بالكارت <b>' + Number(d.min).toLocaleString('en-US') + ' جنيه</b>';
+// زراير المبالغ السريعة: اللي أقل من الحد الأدنى بتختفي
+modal.querySelectorAll('.kpay-chips [data-amt]').forEach(b => { b.style.display = Number(b.dataset.amt) < d.min ? 'none' : ''; });
+}
 }).catch(() => {}), 1500);
 const show = (mode) => { modal.classList.add('show'); $('kpayForm').style.display = mode === 'form' ? '' : 'none'; $('kpayState').style.display = mode === 'form' ? 'none' : ''; };
 const hide = () => modal.classList.remove('show');

@@ -1191,6 +1191,73 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .pfm-val { color: #fff; font-weight: 900; font-size: 1.35rem; direction: ltr; text-align: right; margin-bottom: 6px; }
 .pfm-val small { font-size: .7rem; color: #A7C4B5; }
 .pfm-sub { color: #8B84B5; font-size: .66rem; margin-top: 6px; line-height: 1.6; }
+/* 💰 كارت الشهر الحالي (تصميم 3) */
+.profit-card.pf3 { display: block; padding: 18px; background: radial-gradient(420px 200px at 100% 0%, rgba(34,197,94,.18), transparent 70%), radial-gradient(300px 160px at 0% 100%, rgba(124,58,237,.18), transparent 70%), linear-gradient(160deg, #101a17, #0c0818 75%); border: 1px solid rgba(34,197,94,.3); box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+.pf3-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.pf3-month { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 30px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: #E5E7EB; font-weight: 800; font-size: .85rem; }
+.pf3-month i { color: #4ADE80; }
+.pf3-all { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 30px; border: 1px solid rgba(168,85,247,.45); background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(168,85,247,.15)); color: #fff; font-family: inherit; font-weight: 800; font-size: .85rem; cursor: pointer; transition: .2s; }
+.pf3-all:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124,58,237,.35); }
+.pf3-main { display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; align-items: stretch; }
+.pf3-hero { padding: 16px 18px; border-radius: 18px; background: linear-gradient(160deg, rgba(34,197,94,.16), rgba(34,197,94,.04)); border: 1px solid rgba(34,197,94,.35); display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+.pf3-lbl { color: #86EFAC; font-weight: 800; font-size: .85rem; display: flex; align-items: center; gap: 8px; }
+.pf3-val { font-size: 2.3rem; font-weight: 900; color: #4ADE80; direction: ltr; text-align: right; line-height: 1.15; letter-spacing: -.5px; text-shadow: 0 0 30px rgba(74,222,128,.25); }
+.pf3-val.neg { color: #F87171; }
+.pf3-trend { align-self: flex-start; font-size: .75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; }
+.pf3-trend:empty { display: none; }
+.pf3-trend.up { background: rgba(34,197,94,.15); color: #4ADE80; }
+.pf3-trend.down { background: rgba(248,113,113,.14); color: #FCA5A5; }
+.pf3-trend.same { background: rgba(255,255,255,.07); color: #CBD5E1; }
+.pf3-stats { display: flex; flex-direction: column; gap: 8px; }
+.pf3-stat { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); flex: 1; }
+.pf3-stat .ic { width: 38px; height: 38px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.pf3-stat.cost .ic { background: rgba(251,146,60,.15); color: #FDBA74; }
+.pf3-stat.orders .ic { background: rgba(168,85,247,.18); color: #D8B4FE; }
+.pf3-stat.sales .ic { background: rgba(59,130,246,.15); color: #93C5FD; }
+.pf3-stat small { display: block; color: #A59CC9; font-size: .72rem; font-weight: 700; }
+.pf3-stat b { display: block; color: #fff; font-size: 1.1rem; font-weight: 900; direction: ltr; text-align: right; }
+.pf3-split { margin-top: 14px; }
+.pf3-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,.06); }
+.pf3-bar span { display: block; height: 100%; transition: width .6s ease; }
+.pf3-bar .me { background: linear-gradient(90deg, #16a34a, #4ADE80); }
+.pf3-bar .prov { background: linear-gradient(90deg, #F97316, #FDBA74); }
+.pf3-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: .75rem; color: #A59CC9; font-weight: 700; }
+.pf3-legend b { color: #fff; }
+.pf3-legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-left: 4px; vertical-align: middle; }
+.pf3-legend .dot.me { background: #4ADE80; } .pf3-legend .dot.prov { background: #FDBA74; }
+.pf3-legend .sub { margin-inline-start: auto; }
+@media (max-width: 760px) { .pf3-main { grid-template-columns: 1fr; } .pf3-val { font-size: 2rem; } }
+/* 📅 كل الشهور (تصميم 3) */
+.pfm3-list { display: flex; flex-direction: column; gap: 12px; }
+.pfm3 { position: relative; padding: 16px; border-radius: 20px; background: linear-gradient(160deg, rgba(30,20,60,.9), rgba(12,8,24,.95)); border: 1px solid rgba(168,85,247,.22); overflow: hidden; }
+.pfm3::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 4px; background: rgba(168,85,247,.5); }
+.pfm3.now { border-color: rgba(34,197,94,.55); } .pfm3.now::before { background: #22c55e; }
+.pfm3.best { border-color: rgba(251,191,36,.6); box-shadow: 0 0 0 1px rgba(251,191,36,.2), 0 12px 30px rgba(251,191,36,.08); } .pfm3.best::before { background: #FBBF24; }
+.pfm3.worst::before { background: #F87171; }
+.pfm3-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.pfm3-cal { width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; flex-shrink: 0; }
+.pfm3-cal b { font-size: 1.05rem; color: #fff; } .pfm3-cal small { font-size: .58rem; color: #A59CC9; font-weight: 700; }
+.pfm3-name { font-weight: 900; color: #fff; font-size: 1.05rem; }
+.pfm3-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.pfm3-tags em { font-style: normal; font-size: .68rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+.pfm3-tags .now { background: rgba(34,197,94,.16); color: #86EFAC; }
+.pfm3-tags .best { background: rgba(251,191,36,.16); color: #FCD34D; }
+.pfm3-tags .worst { background: rgba(248,113,113,.14); color: #FCA5A5; }
+.pfm3-tags .first { background: rgba(168,85,247,.18); color: #E9D5FF; }
+.pfm3-tags .r-great { background: rgba(34,197,94,.14); color: #4ADE80; }
+.pfm3-tags .r-good { background: rgba(59,130,246,.14); color: #93C5FD; }
+.pfm3-tags .r-ok { background: rgba(250,204,21,.12); color: #FDE68A; }
+.pfm3-tags .r-low { background: rgba(248,113,113,.12); color: #FCA5A5; }
+.pfm3-chg { margin-inline-start: auto; font-size: .75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+.pfm3-chg.up { background: rgba(34,197,94,.12); color: #4ADE80; } .pfm3-chg.down { background: rgba(248,113,113,.12); color: #F87171; }
+.pfm3-vals { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; }
+.pfm3-vals > div { padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); }
+.pfm3-vals small { display: flex; align-items: center; gap: 6px; font-size: .7rem; color: #A59CC9; font-weight: 700; margin-bottom: 2px; }
+.pfm3-vals b { display: block; font-size: 1.05rem; font-weight: 900; color: #fff; direction: ltr; text-align: right; }
+.pfm3-vals .me { background: rgba(34,197,94,.08); border-color: rgba(34,197,94,.25); }
+.pfm3-vals .me b { color: #4ADE80; font-size: 1.25rem; } .pfm3-vals .me b.neg { color: #F87171; }
+.pfm3-vals .me small i { color: #4ADE80; } .pfm3-vals .prov small i { color: #FDBA74; } .pfm3-vals .ord small i { color: #D8B4FE; }
+@media (max-width: 560px) { .pfm3-vals { grid-template-columns: 1fr 1fr; } .pfm3-vals .me { grid-column: 1 / -1; } .pfm3-chg { margin-inline-start: 0; } }
 /* 💰 تقرير الربح الجديد */
 .profit-card.pf2 { display: block; }
 .pf2-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -2354,23 +2421,24 @@ if (!salOn() || speaking || document.visibilityState !== 'visible') return false
 speaking = true;
 try {
 if (await hasFile()) {
-const a = new Audio('/salawat.wav'); a.volume = 0.75;
+const a = new Audio('/salawat.wav'); a.volume = 0.55; // الملف متسجل عالي — 55% بتخليه متوسط
 await a.play(); return true;
 }
 return await speakTTS();
 } catch (e) { return false; }
 finally { setTimeout(() => { speaking = false; }, 3000); }
 }
-// أول ما يفتح الموقع: المتصفحات مش بتسمح بالصوت غير بعد أول لمسة/ضغطة → بنشغله مع أول تفاعل لو اتمنع
-let firstDone = false, lastSal = 0;
+// مرة واحدة بس أول ما العميل يدخل الموقع/التطبيق (مع بطاقة "صلي على النبي") — ولو قفل ورجع تاني بيتقال تاني
+// المتصفحات مش بتسمح بالصوت قبل أول لمسة/ضغطة → لو اتمنع بيتشغل مع أول تفاعل (برضه مرة واحدة)
+let firstDone = false;
+const playedThisVisit = () => { try { return sessionStorage.getItem('smcole_sal_played') === '1'; } catch (e) { return false; } };
 async function first() {
-if (firstDone) return; firstDone = true;
-const ok = await salawat(); if (ok) lastSal = Date.now(); else firstDone = false;
+if (firstDone || playedThisVisit()) return; firstDone = true;
+const ok = await salawat();
+if (ok) { try { sessionStorage.setItem('smcole_sal_played', '1'); } catch (e) {} } else firstDone = false;
 }
 ['pointerdown', 'keydown', 'touchstart'].forEach(ev => window.addEventListener(ev, () => { ac(); first(); }, { passive: true }));
-window.addEventListener('load', () => { setTimeout(first, 1200); try { speechSynthesis.getVoices(); } catch (e) {} });
-// كل 5 دقايق والموقع مفتوح قدام العميل
-setInterval(async () => { if (Date.now() - lastSal >= 290000 && await salawat()) lastSal = Date.now(); }, 30000);
+window.addEventListener('load', () => { setTimeout(first, 600); try { speechSynthesis.getVoices(); } catch (e) {} });
 return { purchase, payment, salawat, setSfx: (on) => { try { localStorage.setItem('smcole_sfx', on ? 'on' : 'off'); } catch (e) {} },
 setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : 'off'); } catch (e) {} }, sfxOn, salOn };
 })();
@@ -2433,7 +2501,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <a href="#" id="apiMenuLink"><span class="dl-ico"><i class="fas fa-plug"></i></span><span class="dl-txt">الـ API — اربط خدماتنا بموقعك<small>مفتاح الـ API والربط بلوحتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="supportDropdownLink"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="notifMenuLink" class="user-only"><span class="dl-ico"><i class="fas fa-bell"></i></span><span class="dl-txt">الإشعارات<small>تحديثات طلباتك وإيداعاتك</small></span><b class="dl-badge" id="drawerNotifBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="salawatToggleLink"><span class="dl-ico"><i class="fas fa-volume-high"></i></span><span class="dl-txt">صوت "صلي على النبي"<small id="salawatToggleSub">شغال — كل 5 دقايق</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#" id="salawatToggleLink"><span class="dl-ico"><i class="fas fa-volume-high"></i></span><span class="dl-txt">صوت "صلي على النبي"<small id="salawatToggleSub">شغال — أول ما تدخل الموقع</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="termsLink"><span class="dl-ico"><i class="fas fa-file-alt"></i></span><span class="dl-txt">شروط الخدمة<small>السياسات والأحكام</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="profileMenuLink"><span class="dl-ico"><i class="fas fa-user-circle"></i></span><span class="dl-txt">الملف الشخصي<small>بياناتك ورصيدك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" class="drawer-login-link guest-only" data-auth-open="login"><span class="dl-ico"><i class="fas fa-right-to-bracket"></i></span><span class="dl-txt">تسجيل الدخول<small>ادخل لحسابك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
@@ -3487,17 +3555,26 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <!-- TAB 3: ORDERS -->
 <div class="admin-section" id="adminSectionOrders">
 <!-- 💰 ربح الموقع -->
-<div class="profit-card pf2" id="profitCard">
-<div class="pf2-head">
-<div class="pf2-title"><span class="pf-ico"><i class="fas fa-sack-dollar"></i></span><div><b>تقرير الشهر الحالي</b><small id="profitMonthName"></small></div></div>
-<div class="pf2-trend" id="profitTrend"></div>
-<button type="button" class="admin-btn ghost pf-btn" id="profitHistoryBtn"><i class="fas fa-calendar-days"></i> كل الشهور</button>
+<div class="profit-card pf3" id="profitCard">
+<div class="pf3-top">
+<div class="pf3-month"><i class="fas fa-calendar-check"></i> <span id="profitMonthName">الشهر الحالي</span></div>
+<button type="button" class="pf3-all" id="profitHistoryBtn"><i class="fas fa-layer-group"></i> كل الشهور</button>
 </div>
-<div class="pf2-grid">
-<div class="pf2-tile profit"><span><i class="fas fa-crown"></i> ربحك (صافي اللوحة)</span><b id="profitThisMonth">—</b><small id="profitMargin"></small></div>
-<div class="pf2-tile cost"><span><i class="fas fa-plug"></i> اللي راح للمزود</span><b id="profitCost">—</b><small>تكلفة تنفيذ الطلبات</small></div>
-<div class="pf2-tile sales"><span><i class="fas fa-cart-shopping"></i> إجمالي المبيعات</span><b id="profitSales">—</b><small>اللي العملاء دفعوه</small></div>
-<div class="pf2-tile orders"><span><i class="fas fa-box"></i> عدد الطلبات</span><b id="profitOrders">—</b><small id="profitThisMonthSub">جاري الحساب...</small></div>
+<div class="pf3-main">
+<div class="pf3-hero">
+<div class="pf3-lbl"><i class="fas fa-crown"></i> صافي ربحك الشهر ده</div>
+<div class="pf3-val" id="profitThisMonth">—</div>
+<div class="pf3-trend" id="profitTrend"></div>
+</div>
+<div class="pf3-stats">
+<div class="pf3-stat cost"><span class="ic"><i class="fas fa-plug"></i></span><div><small>اللي راح للمزود</small><b id="profitCost">—</b></div></div>
+<div class="pf3-stat orders"><span class="ic"><i class="fas fa-box"></i></span><div><small>عدد الطلبات</small><b id="profitOrders">—</b></div></div>
+<div class="pf3-stat sales"><span class="ic"><i class="fas fa-cart-shopping"></i></span><div><small>إجمالي المبيعات</small><b id="profitSales">—</b></div></div>
+</div>
+</div>
+<div class="pf3-split">
+<div class="pf3-bar"><span class="me" id="profitBarMe" style="width:0%"></span><span class="prov" id="profitBarProv" style="width:0%"></span></div>
+<div class="pf3-legend"><span><i class="dot me"></i> ربحك <b id="profitMargin">0%</b></span><span><i class="dot prov"></i> المزود <b id="profitProvPct">0%</b></span><span class="sub" id="profitThisMonthSub"></span></div>
 </div>
 </div>
 <div class="admin-stats admin-stats-click" id="adminOrderStats">
@@ -6943,14 +7020,18 @@ v.classList.toggle('neg', p < 0);
 document.getElementById('profitCost').textContent = fmtMoney(cur.cost) + ' ج';
 document.getElementById('profitSales').textContent = fmtMoney(rev) + ' ج';
 document.getElementById('profitOrders').textContent = (Number(cur.orders) || 0).toLocaleString('en-US');
-document.getElementById('profitMargin').textContent = rev > 0 ? 'هامش الربح ' + Math.round(p / rev * 100) + '% من المبيعات' : 'لسه مفيش مبيعات الشهر ده';
-sub.textContent = rev > 0 && cur.orders ? 'متوسط الطلب ' + fmtMoney(rev / cur.orders) + ' ج' : 'الطلبات المكتملة والجارية (من غير الملغي)';
+const mePct = rev > 0 ? Math.max(0, Math.min(100, Math.round(p / rev * 100))) : 0;
+document.getElementById('profitMargin').textContent = mePct + '%';
+document.getElementById('profitProvPct').textContent = (rev > 0 ? 100 - mePct : 0) + '%';
+document.getElementById('profitBarMe').style.width = mePct + '%';
+document.getElementById('profitBarProv').style.width = (rev > 0 ? 100 - mePct : 0) + '%';
+sub.textContent = rev > 0 && cur.orders ? 'متوسط الطلب ' + fmtMoney(rev / cur.orders) + ' ج' : 'لسه مفيش مبيعات الشهر ده';
 const tr = document.getElementById('profitTrend');
 if (prev) {
 const pc = pfPct(p, Number(prev.profit) || 0);
-tr.className = 'pf2-trend ' + (pc > 0.5 ? 'up' : pc < -0.5 ? 'down' : 'same');
+tr.className = 'pf3-trend ' + (pc > 0.5 ? 'up' : pc < -0.5 ? 'down' : 'same');
 tr.textContent = (pc > 0.5 ? '▲ ' : pc < -0.5 ? '▼ ' : '● ') + Math.abs(Math.round(pc)) + '% عن ' + AR_MONTHS[(Number(prev.m) || 1) - 1] + ' (لحد دلوقتي)';
-} else { tr.className = 'pf2-trend same'; tr.textContent = '🚀 أول شهر في الموقع'; }
+} else { tr.className = 'pf3-trend same'; tr.textContent = '🚀 أول شهر في الموقع'; }
 } catch (e) { v.textContent = '—'; sub.textContent = '⚠️ ' + e.message; }
 }
 document.getElementById('profitHistoryBtn').addEventListener('click', async () => {
@@ -6967,43 +7048,37 @@ const ref = done.length ? done : rows;
 const avg = ref.reduce((s, r) => s + r.profit, 0) / Math.max(1, ref.length);
 const best = rows.reduce((b, r) => (!b || r.profit > b.profit ? r : b), null);
 const worst = done.length >= 2 ? done.reduce((b, r) => (!b || r.profit < b.profit ? r : b), null) : null;
-const max = Math.max(1, ...rows.map(r => Math.abs(r.profit)));
-const T = rows.reduce((t, r) => ({ p: t.p + r.profit, c: t.c + r.cost, s: t.s + r.revenue, o: t.o + r.orders }), { p: 0, c: 0, s: 0, o: 0 });
 const rate = (r) => {
 if (r.isNow) return '';
 if (!(avg > 0)) return r.profit > 0 ? '<em class="r-good">👍 كويس</em>' : '';
 const k = r.profit / avg;
 return k >= 1.25 ? '<em class="r-great">🔥 ممتاز</em>' : k >= 0.9 ? '<em class="r-good">👍 كويس</em>' : k >= 0.6 ? '<em class="r-ok">🙂 معقول</em>' : '<em class="r-low">⚠️ أقل من المتوسط</em>';
 };
-body.innerHTML =
-'<div class="pfx-sum">' +
-'<div class="p"><small>💰 ربحك من أول يوم</small><b>' + fmtMoney(T.p) + ' ج</b></div>' +
-'<div><small>🔌 اللي راح للمزود</small><b>' + fmtMoney(T.c) + ' ج</b></div>' +
-'<div><small>🛒 إجمالي المبيعات</small><b>' + fmtMoney(T.s) + ' ج</b></div>' +
-'<div><small>📦 إجمالي الطلبات</small><b>' + T.o.toLocaleString('en-US') + '</b></div>' +
-'</div>' +
-'<div class="pfx-list">' + rows.map((r, i) => {
+// الأحدث فوق — وكل شهر بيتقارن باللي قبله
+body.innerHTML = '<div class="pfm3-list">' + rows.map((r, i) => {
 const prev = i > 0 ? rows[i - 1] : null;
 const pc = prev ? pfPct(r.profit, prev.profit) : null;
 const isBest = best === r && r.profit > 0 && rows.length > 1, isWorst = worst === r && worst !== best;
 const cls = r.isNow ? ' now' : isBest ? ' best' : isWorst ? ' worst' : '';
-return '<div class="pfx-m' + cls + '">' +
-'<div class="pfx-top"><span class="n">' + (i + 1) + '</span><span class="t">' + AR_MONTHS[r.m - 1] + ' ' + r.y + '</span>' +
-(i === 0 ? '<em class="now">🚀 أول شهر</em>' : '') +
+return '<div class="pfm3' + cls + '">' +
+'<div class="pfm3-head">' +
+'<div class="pfm3-cal"><b>' + r.m + '</b><small>' + r.y + '</small></div>' +
+'<div><div class="pfm3-name">' + AR_MONTHS[r.m - 1] + ' ' + r.y + '</div>' +
+'<div class="pfm3-tags">' +
 (r.isNow ? '<em class="now">⏳ الشهر الحالي</em>' : '') +
 (isBest ? '<em class="best">🏆 أعلى شهر</em>' : '') +
-(isWorst ? '<em class="worst">📉 أقل شهر</em>' : '') + rate(r) +
-(pc !== null ? '<span class="chg ' + (pc >= 0 ? 'up' : 'down') + '">' + (pc >= 0 ? '▲ ' : '▼ ') + Math.abs(Math.round(pc)) + '% عن الشهر اللي قبله</span>' : '') +
+(isWorst ? '<em class="worst">📉 أقل شهر</em>' : '') +
+(i === 0 ? '<em class="first">🚀 أول شهر في الموقع</em>' : '') + rate(r) +
+'</div></div>' +
+(pc !== null ? '<span class="pfm3-chg ' + (pc >= 0 ? 'up' : 'down') + '">' + (pc >= 0 ? '▲ ' : '▼ ') + Math.abs(Math.round(pc)) + '% عن ' + AR_MONTHS[prev.m - 1] + '</span>' : '') +
 '</div>' +
-'<div class="pfx-vals">' +
-'<div class="p"><small>💰 ربحك</small><b' + (r.profit < 0 ? ' class="neg"' : '') + '>' + fmtMoney(r.profit) + ' ج</b></div>' +
-'<div><small>🔌 المزود</small><b>' + fmtMoney(r.cost) + ' ج</b></div>' +
-'<div><small>🛒 المبيعات</small><b>' + fmtMoney(r.revenue) + ' ج</b></div>' +
-'<div><small>📦 الطلبات</small><b>' + r.orders.toLocaleString('en-US') + '</b></div>' +
+'<div class="pfm3-vals">' +
+'<div class="me"><small><i class="fas fa-crown"></i> ربحك</small><b' + (r.profit < 0 ? ' class="neg"' : '') + '>' + fmtMoney(r.profit) + ' ج</b></div>' +
+'<div class="prov"><small><i class="fas fa-plug"></i> المزود خد</small><b>' + fmtMoney(r.cost) + ' ج</b></div>' +
+'<div class="ord"><small><i class="fas fa-box"></i> الطلبات</small><b>' + r.orders.toLocaleString('en-US') + '</b></div>' +
 '</div>' +
-'<div class="pfx-bar"><span style="width:' + Math.max(0, Math.round(r.profit / max * 100)) + '%"></span></div>' +
 '</div>';
-}).join('') + '</div>';
+}).reverse().join('') + '</div>';
 });
 document.getElementById('profitModalClose').addEventListener('click', () => document.getElementById('profitModalBg').classList.remove('show'));
 document.getElementById('profitModalBg').addEventListener('click', (e) => { if (e.target.id === 'profitModalBg') e.currentTarget.classList.remove('show'); });
@@ -9413,7 +9488,7 @@ if (currentProfile) openProfilePage(); else showAuthModal();
 // 🔊 تشغيل/إيقاف صوت "صلي على النبي"
 (function () {
 const link = document.getElementById('salawatToggleLink'); if (!link || !window.smSound) return;
-const paint = () => { const on = window.smSound.salOn(); document.getElementById('salawatToggleSub').textContent = on ? 'شغال — كل 5 دقايق' : 'متوقف — اضغط عشان تشغله'; link.querySelector('.dl-ico i').className = 'fas ' + (on ? 'fa-volume-high' : 'fa-volume-xmark'); };
+const paint = () => { const on = window.smSound.salOn(); document.getElementById('salawatToggleSub').textContent = on ? 'شغال — أول ما تدخل الموقع' : 'متوقف — اضغط عشان تشغله'; link.querySelector('.dl-ico i').className = 'fas ' + (on ? 'fa-volume-high' : 'fa-volume-xmark'); };
 paint();
 link.addEventListener('click', (e) => {
 e.preventDefault();

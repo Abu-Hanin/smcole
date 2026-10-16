@@ -535,6 +535,17 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .admin-section.active { display:block; }
 .user-search-input { width:100%; padding:12px 20px; border-radius:40px; background:#07040F; border:1px solid rgba(168, 85, 247,0.3); color:#fff; font-family:inherit; font-size:0.95rem; outline:none; margin-bottom:1rem; transition:0.2s; }
 .user-search-input:focus { border-color:#A855F7; box-shadow:0 0 0 2px rgba(168, 85, 247,0.15); }
+.au-toolbar { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; margin-bottom:1rem; }
+.au-toolbar .user-search-input { flex:1 1 260px; margin-bottom:0; }
+.au-sort { display:flex; gap:6px; flex-wrap:wrap; }
+.au-sort-btn { display:inline-flex; align-items:center; gap:6px; padding:10px 14px; border-radius:40px; background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.3); color:#DDD6FE; font-family:inherit; font-weight:700; font-size:.85rem; cursor:pointer; transition:.2s; white-space:nowrap; }
+.au-sort-btn:hover { background:rgba(168,85,247,0.18); }
+.au-sort-btn.active { background:linear-gradient(135deg,#7C3AED,#A855F7); color:#fff; border-color:transparent; box-shadow:0 6px 18px rgba(124,58,237,.4); }
+.au-sort-btn .au-dir { font-size:.8rem; opacity:.9; }
+.au-money-box .val { color:#4ADE80 !important; font-size:1.25rem; }
+.au-money-sub { font-size:.72rem; color:var(--muted); margin-top:4px; line-height:1.6; }
+.au-rank { display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px; padding:0 6px; border-radius:13px; background:rgba(74,222,128,.14); color:#4ADE80; font-weight:800; font-size:.78rem; }
+.au-rank.top { background:linear-gradient(135deg,#F59E0B,#FBBF24); color:#1a1033; }
 .user-row-actions { display:flex; gap:5px; flex-wrap:wrap; }
 .user-row-actions button { padding:6px 10px; border-radius:10px; font-size:0.7rem; border:none; cursor:pointer; font-family:inherit; font-weight:600; display:inline-flex; align-items:center; gap:4px; transition:0.15s; }
 .user-add-balance-btn { background:rgba(124, 58, 237,0.15); color:#7C3AED; }
@@ -3177,9 +3188,15 @@ try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\
 <div class="admin-stat-box"><div class="lbl">إجمالي المستخدمين</div><div class="val" id="adminTotalUsers">0</div></div>
 <div class="admin-stat-box"><div class="lbl">نشطين</div><div class="val" id="adminActiveUsers">0</div></div>
 <div class="admin-stat-box"><div class="lbl">محظورين</div><div class="val" id="adminBannedUsers">0</div></div>
+<div class="admin-stat-box au-money-box"><div class="lbl">💰 الفلوس اللي مع العملاء دلوقتي</div><div class="val" id="adminUsersMoney">—</div><div class="au-money-sub" id="adminUsersMoneySub"></div></div>
 </div>
-<div style="margin-bottom:1rem;">
+<div class="au-toolbar">
 <input type="text" id="adminUserSearch" class="user-search-input" placeholder="🔍 ابحث بالاسم أو اليوزر أو الإيميل...">
+<div class="au-sort" role="group" aria-label="ترتيب المستخدمين">
+<button type="button" class="au-sort-btn active" data-sort="new"><i class="fas fa-clock"></i> الأحدث</button>
+<button type="button" class="au-sort-btn" data-sort="money"><i class="fas fa-coins"></i> حسب الرصيد <i class="fas fa-arrow-down-wide-short au-dir"></i></button>
+<button type="button" class="au-sort-btn au-refresh" id="adminUsersRefresh" title="تحديث القايمة"><i class="fas fa-rotate"></i></button>
+</div>
 </div>
 <div class="admin-table-wrap">
 <div id="adminUsersLoader" class="admin-loader" style="display:none;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
@@ -5981,29 +5998,83 @@ else if (target === 'affiliate') { if (window.__loadAdminAffiliates) window.__lo
 // ==================== USERS ====================
 let allUsersData = [];
 let usersSearchTerm = '';
+// ترتيب المستخدمين: 'new' = الأحدث | 'desc' = الأكتر رصيداً ⬇ | 'asc' = الأقل رصيداً ⬆
+let usersSort = 'new';
+const auMoney = (n) => Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
+// 💰 إجمالي الفلوس اللي مع كل العملاء دلوقتي (الرصيد الحالي بس — مش الإيداعات)
+function renderUsersMoney(t) {
+const box = document.getElementById('adminUsersMoney'), sub = document.getElementById('adminUsersMoneySub');
+if (!box || !t) return;
+const fx = Number(t.fx) || window.exchangeRate || 50;
+const egp = Number(t.egp) || 0, usd = Number(t.usd) || 0;
+const allEgp = egp + usd * fx;
+box.innerText = auMoney(allEgp) + ' ج';
+sub.innerHTML = '≈ ' + auMoney(allEgp / fx) + ' $' +
+'<br>' + auMoney(egp) + ' ج + ' + auMoney(usd) + ' $ — مع ' + (t.holders || 0) + ' عميل' + (t.approx ? '<br><small>من آخر 50 بس — شغّل update_v15.sql للإجمالي الكامل</small>' : '');
+if (t.users != null) document.getElementById('adminTotalUsers').innerText = auMoney(t.users);
+if (t.users != null) document.getElementById('adminActiveUsers').innerText = auMoney(t.users - (t.banned || 0));
+if (t.banned != null) document.getElementById('adminBannedUsers').innerText = auMoney(t.banned);
+}
 async function loadAdminUsers() {
 const loader = document.getElementById('adminUsersLoader');
 const table = document.getElementById('adminUsersTable');
 const empty = document.getElementById('adminUsersEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
-const { data, error } = await supabase.from('users')
+// الإجمالي الحقيقي لكل العملاء + (لو الترتيب بالرصيد) القايمة مترتبة من السيرفر
+const { data: bal, error: balErr } = await supabase.rpc('smcole_admin_balances', { p_order: usersSort === 'asc' ? 'asc' : 'desc', p_limit: usersSort === 'new' ? 1 : 300 });
+const balOk = !balErr && bal && bal.ok;
+let data, error;
+if (usersSort !== 'new' && balOk) { data = bal.items || []; }
+else {
+({ data, error } = await supabase.from('users')
 .select('id,username,name,email,phone,balance_egp,balance_usd,is_banned,created_at')
 .order('created_at', { ascending: false })
-.limit(50);
+.limit(50));
+}
 loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 allUsersData = data || [];
+// احتياطي لو update_v15.sql لسه متشغلش: نرتب ونحسب من القايمة اللي اتحملت
+if (!balOk) {
+const fx = window.exchangeRate || 50, sc = (u) => (parseFloat(u.balance_egp) || 0) + (parseFloat(u.balance_usd) || 0) * fx;
+if (usersSort !== 'new') allUsersData = allUsersData.filter(u => sc(u) > 0).sort((a, b) => usersSort === 'asc' ? sc(a) - sc(b) : sc(b) - sc(a));
+renderUsersMoney({ approx: true, fx, egp: allUsersData.reduce((s, u) => s + Math.max(parseFloat(u.balance_egp) || 0, 0), 0), usd: allUsersData.reduce((s, u) => s + Math.max(parseFloat(u.balance_usd) || 0, 0), 0), holders: allUsersData.filter(u => sc(u) > 0).length });
 document.getElementById('adminTotalUsers').innerText = allUsersData.length + '+';
 document.getElementById('adminActiveUsers').innerText = allUsersData.filter(u => !u.is_banned).length;
 document.getElementById('adminBannedUsers').innerText = allUsersData.filter(u => u.is_banned).length;
+} else renderUsersMoney(bal.totals);
 renderUsersTable();
 loadUsersDepositTotals();
+watchNewUsers();
 } catch(e) {
 loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
 }
 }
 window.loadAdminUsers = loadAdminUsers;
+// أزرار الترتيب: "حسب الرصيد" كل ضغطة بتقلب بين الأكتر ⬇ والأقل ⬆
+document.querySelectorAll('.au-sort-btn[data-sort]').forEach(btn => btn.addEventListener('click', () => {
+if (btn.dataset.sort === 'money') usersSort = usersSort === 'desc' ? 'asc' : 'desc';
+else usersSort = 'new';
+document.querySelectorAll('.au-sort-btn[data-sort]').forEach(b => b.classList.toggle('active', b === btn));
+const dir = document.querySelector('.au-sort-btn[data-sort="money"] .au-dir');
+if (dir) dir.className = 'fas ' + (usersSort === 'asc' ? 'fa-arrow-up-short-wide' : 'fa-arrow-down-wide-short') + ' au-dir';
+const s = document.getElementById('adminUserSearch'); if (s) s.value = ''; usersSearchTerm = '';
+loadAdminUsers();
+}));
+document.getElementById('adminUsersRefresh').addEventListener('click', () => loadAdminUsers());
+// 🆕 أي عميل جديد يسجل (بالإيميل أو بجوجل) → القايمة بتتحدث لوحدها
+let __newUsersCh = null, __newUsersT = null;
+function watchNewUsers() {
+if (__newUsersCh) return;
+try {
+__newUsersCh = supabase.channel('admin-new-users-' + Date.now())
+.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'users' }, () => {
+clearTimeout(__newUsersT);
+__newUsersT = setTimeout(() => { if (!usersSearchTerm) loadAdminUsers(); }, 1200);
+}).subscribe();
+} catch (e) {}
+}
 
 const uEsc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // 🔐 أي كلام كتبه العميل (اسم/يوزر/رابط/وصف) بيتعرض كنص بس — عمره ما يتنفذ كأكواد في لوحة الأدمن
@@ -6035,7 +6106,7 @@ const banBtn = u.is_banned
 ? '<button class="user-unban-btn" onclick="__adminUnbanUser(' + u.id + ')"><i class="fas fa-check"></i> إلغاء الحظر</button>'
 : '<button class="user-ban-btn" onclick="__adminBanUser(' + u.id + ')"><i class="fas fa-ban"></i> حظر</button>';
 const dep = usersDepositTotals[String(u.id)];
-tr.innerHTML = '<td>' + (i + 1) + '</td>' +
+tr.innerHTML = '<td>' + (usersSort !== 'new' && !term ? '<span class="au-rank' + (usersSort === 'desc' && i < 3 ? ' top' : '') + '">' + (i + 1) + '</span>' : (i + 1)) + '</td>' +
 '<td>' + (u.username ? '<button type="button" class="user-copy" data-copy="' + uEsc(u.username) + '" title="اضغط للنسخ"><i class="far fa-copy"></i> ' + uEsc(u.username) + '</button>' : '-') + '</td>' +
 '<td>' + uEsc(u.name || '-') + '</td>' +
 '<td style="font-size:0.75rem;">' + uEsc(u.email || '-') + '</td>' +
@@ -7698,10 +7769,13 @@ setTimeout(() => userToast('❌ الدخول بجوجل: ' + decodeURIComponent(
 function subscribeToUserRealtime() {
 try {
 if (!currentProfile || !currentProfile.id) return;
+// نفس الحساب ومتوصل بالفعل → منقفلش ونفتح الاتصال من جديد (كان بيعمل تقطيع)
+if (window.__userRealtimeChannel && window.__userRealtimeFor === currentProfile.id) return;
 if (window.__userRealtimeChannel) {
 try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
 window.__userRealtimeChannel = null;
 }
+window.__userRealtimeFor = currentProfile.id;
 window.__userRealtimeChannel = sb.channel('user-profile-' + currentProfile.id + '-' + Date.now())
 .on('postgres_changes', {
 event: 'UPDATE', schema: 'public', table: 'users',
@@ -9743,6 +9817,10 @@ initUserSystem();
 // → بنأجل التحديث لحظة لحد ما Supabase يخلص، ولو جه كذا إشعار ورا بعض بنعمل تحديث واحد بس
 let __authRefreshTimer = null;
 sb.auth.onAuthStateChange((event, session) => {
+// Supabase بيبعت "SIGNED_IN" مع كل تحديث للصفحة وكل رجوع للموقع حتى لو مفيش حاجة اتغيرت
+// → منعيدش تحميل كل حاجة إلا لو الحساب نفسه اتغير (دخول جديد / خروج / تعديل)
+if (event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED') return; // أول تحميل بيتعمل من initUserSystem
+if (event === 'SIGNED_IN' && session && session.user && currentUser && currentUser.id === session.user.id && (currentProfile || window.isAdminUser)) return;
 clearTimeout(__authRefreshTimer);
 __authRefreshTimer = setTimeout(() => { refreshUserUI(); }, 50);
 });

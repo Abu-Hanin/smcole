@@ -102,10 +102,15 @@
   ]
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
+<!-- 🌍 الخطوط والأيقونات بتتحمّل من غير ما توقف ظهور الصفحة (لو اتأخرت في أي بلد الموقع يظهر عادي) -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
+<!-- 🌍 المكتبات من على الموقع نفسه (عشان يشتغل في كل الدول حتى لو مواقع الـ CDN محجوبة) + احتياطي من الـ CDN -->
+<script src="/lib-three.min.js"></script>
+<script>window.THREE || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');</script>
+<script src="/lib-CSS3DRenderer.js"></script>
+<script>(window.THREE && window.THREE.CSS3DRenderer) || document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"><\/script>');</script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 body { background-color: #07040F; font-family: 'Cairo', sans-serif; color: #EAECEF; line-height: 1.5; overflow-x: hidden; position: relative; }
@@ -335,6 +340,9 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .pmt-name { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .88rem; color: #fff; }
 .pmt-name i { color: #C084FC; width: 18px; text-align: center; }
 .pmt-sw input { display: none; }
+.pid-copy-all { margin-inline-start: 6px; padding: 2px 8px; border-radius: 8px; border: 1px solid rgba(168,85,247,.4); background: rgba(168,85,247,.12); color: #E9D5FF; font-family: inherit; font-size: .68rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.pid-copy-all:hover { background: rgba(168,85,247,.25); }
+.user-copy.pid-copy { direction: ltr; font-family: ui-monospace, Consolas, monospace; }
 .pmt-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; border-radius: 12px; background: #3b2f5c; transition: .25s; }
 .pmt-switch::after { content: ''; position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: .25s; }
 .pm-toggle input:checked + .pmt-switch { background: linear-gradient(135deg, #22c55e, #16a34a); }
@@ -2370,8 +2378,31 @@ body { background-attachment: scroll !important; }
 <script>
 // "صلوا على النبي" بتظهر مرة واحدة بس أول ما العميل يفتح الموقع — مش مع كل تنقل أو تحديث
 try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('welcomeOverlay').style.display = 'none'; else sessionStorage.setItem('smcole_welcomed', '1'); } catch (e) {}
+// 🌍 أمان: البطاقة بتختفي لوحدها مهما حصل (حتى لو أي مكتبة اتأخرت في بلد تاني) — الموقع عمره ما يفضل واقف وراها
+setTimeout(function () { var o = document.getElementById('welcomeOverlay'); if (o && o.style.display !== 'none') { o.style.transition = 'opacity .6s ease'; o.style.opacity = '0'; setTimeout(function () { o.style.display = 'none'; }, 650); } }, 2500);
 // 🤝 رابط إحالة (?ref=USERNAME) → بيتحفظ لحد ما الزائر يعمل حساب
 try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\w.\-]{2,40}$/.test(rf)) localStorage.setItem('smcole_ref', JSON.stringify({ code: rf, at: Date.now() })); } catch (e) {}
+
+// 🔗 تنضيف الرابط: العميل ساعات بيلصق الرابط ومعاه كلام زيادة (زي "السعر الإجمالي... شراء الآن")
+// → المزود بيرفض الطلب. بناخد الرابط بس ونشيل أي كلام قبله أو بعده
+window.smCleanLink = function (raw) {
+let s = String(raw == null ? '' : raw).replace(/[​-‏‪-‮⁦-⁩﻿]/g, '').trim();
+if (!s) return '';
+let m = s.match(/https?:\/\/[^\s"'<>،؛]+/i);
+if (!m) { const d = s.match(/(?:^|\s)((?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}\/[^\s"'<>،؛]*)/i); if (d) m = ['https://' + d[1]]; }
+if (m) return m[0].replace(/[)\]}>.,!؟?،؛:]+$/, '');
+return s.split(/\s+/)[0];
+};
+document.addEventListener('paste', function (e) {
+const t = e.target;
+if (!t || !t.classList || !t.classList.contains('url-input')) return;
+setTimeout(function () { const c = window.smCleanLink(t.value); if (c && c !== t.value) t.value = c; }, 0);
+}, true);
+document.addEventListener('change', function (e) {
+const t = e.target;
+if (!t || !t.classList || !t.classList.contains('url-input')) return;
+const c = window.smCleanLink(t.value); if (c && c !== t.value) t.value = c;
+}, true);
 
 // 🔊 أصوات الموقع: الشراء — الدفع — "صلوا على النبي" (أول ما تفتح + كل 5 دقايق)
 window.smSound = (function () {
@@ -3595,7 +3626,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="admin-table-wrap">
 <div id="adminOrdersLoader" class="admin-loader" style="display:none;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
 <table class="admin-table" id="adminOrdersTable" style="display:none;">
-<thead><tr><th>#</th><th>اليوزر</th><th>الخدمة</th><th>الكمية</th><th>الإجمالي</th><th>الرابط</th><th>الحالة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+<thead><tr><th>#</th><th>اليوزر</th><th>الخدمة</th><th>الكمية</th><th>الإجمالي</th><th>الرابط</th><th>الحالة</th><th>معرف طلب المزود <button type="button" class="pid-copy-all" id="pidCopyAll" title="نسخ كل معرفات المزود اللي ظاهرة"><i class="far fa-copy"></i> الكل</button></th><th>التاريخ</th><th>إجراءات</th></tr></thead>
 <tbody id="adminOrdersBody"></tbody>
 </table>
 <div id="adminOrdersEmpty" class="admin-empty" style="display:none;"><i class="fas fa-shopping-cart" style="font-size:2.5rem; color:#A855F7; margin-bottom:1rem;"></i><p>لا توجد طلبات بعد.</p></div>
@@ -4178,7 +4209,9 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 
 <div class="admin-toast" id="adminToast"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="/lib-supabase.min.js"></script>
+<script>window.supabase || document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
+<script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 window.SMCOLE_BOT = {
   admin_chat_id: '6242313550',
@@ -6810,7 +6843,8 @@ if (term) {
 list = list.filter(o =>
 (o.user_username || '').toLowerCase().includes(term) ||
 (o.service_name || '').toLowerCase().includes(term) ||
-String(o.id).includes(term)
+String(o.id).includes(term) ||
+String(o.provider_order_id || '').includes(term)
 );
 }
 if (list.length === 0) { table.style.display = 'none'; empty.style.display = 'block'; return; }
@@ -6845,6 +6879,7 @@ tr.innerHTML = '<td>#' + o.id + '</td>' +
 '<td style="color:#7C3AED; font-weight:700;">' + parseFloat(o.total || 0).toFixed(2) + ' ' + cur + '</td>' +
 '<td><a href="' + __safeUrl(o.link) + '" target="_blank" rel="noopener noreferrer" style="color:#A855F7;font-size:0.7rem;" title="' + __esc(o.link || '') + '">🔗 فتح</a></td>' +
 '<td><span class="status-badge ' + st[0] + '">' + st[1] + '</span>' + apiInfo + '</td>' +
+'<td>' + (o.provider_order_id ? '<button type="button" class="user-copy pid-copy" data-copy="' + __esc(o.provider_order_id) + '" data-label="معرف طلب المزود" title="اضغط للنسخ"><i class="far fa-copy"></i> ' + __esc(o.provider_order_id) + '</button>' : '<span style="color:#6B6490;font-size:.75rem;">—</span>') + '</td>' +
 '<td style="font-size:0.7rem;">' + dateStr + '</td>' +
 '<td class="admin-actions-cell">' + actBtns + '</td>';
 tbody.appendChild(tr);
@@ -6868,8 +6903,17 @@ const cp = e.target.closest('.user-copy'); if (!cp) return;
 const v = cp.dataset.copy || '';
 try { await navigator.clipboard.writeText(v); } catch (er) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
 cp.classList.add('copied'); setTimeout(() => cp.classList.remove('copied'), 1200);
-toast('📋 تم نسخ اليوزر: ' + v);
+toast('📋 تم نسخ ' + (cp.dataset.label || 'اليوزر') + ': ' + v);
 };
+// 📋 نسخ كل معرفات المزود اللي ظاهرة في الجدول (حسب الفلتر والبحث) — سطر لكل طلب
+document.getElementById('pidCopyAll').addEventListener('click', async (e) => {
+e.stopPropagation();
+const ids = Array.from(document.querySelectorAll('#adminOrdersBody .pid-copy')).map(b => b.dataset.copy).filter(Boolean);
+if (!ids.length) { toast('مفيش معرفات مزود في الطلبات الظاهرة', true); return; }
+const v = ids.join('\n');
+try { await navigator.clipboard.writeText(v); } catch (er) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
+toast('📋 تم نسخ ' + ids.length + ' معرف طلب للمزود');
+});
 document.getElementById('adminOrdersBody').addEventListener('click', copyUserHandler);
 document.getElementById('adminDepositsBody').addEventListener('click', copyUserHandler);
 
@@ -10065,7 +10109,8 @@ const serviceNumber = card.getAttribute('data-service-number') || '?';
 const serviceName = card.querySelector('.service-name') ? card.querySelector('.service-name').innerText : 'غير معروف';
 const quantityInput = card.querySelector('.quantity-input');
 const urlInput = card.querySelector('.url-input');
-const link = urlInput ? urlInput.value.trim() : '';
+const link = urlInput ? window.smCleanLink(urlInput.value) : '';
+if (urlInput && link && urlInput.value !== link) urlInput.value = link;
 const quantity = quantityInput ? parseInt(quantityInput.value.trim()) : NaN;
 const minLimit = parseInt(card.getAttribute('data-min-limit')) || 1000;
 const maxLimit = parseInt(card.getAttribute('data-max-limit')) || 0;

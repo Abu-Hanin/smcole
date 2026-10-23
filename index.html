@@ -340,6 +340,14 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .pmt-name { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .88rem; color: #fff; }
 .pmt-name i { color: #C084FC; width: 18px; text-align: center; }
 .pmt-sw input { display: none; }
+.as-copy { display: inline-flex; align-items: center; gap: 5px; margin: 2px 0; padding: 2px 9px; border-radius: 8px; background: rgba(168,85,247,.14); border: 1px solid rgba(168,85,247,.35); color: #E9D5FF; font-size: .72rem; font-weight: 700; cursor: pointer; direction: ltr; width: fit-content; transition: .2s; }
+.as-copy:hover { background: rgba(168,85,247,.28); }
+.as-copy.copied { background: #16a34a; border-color: transparent; color: #fff; }
+.dep-limit-box { display: flex; gap: 12px; align-items: flex-start; text-align: right; padding: 14px 16px; border-radius: 16px; background: linear-gradient(160deg, rgba(251,191,36,.12), rgba(251,191,36,.04)); border: 1px solid rgba(251,191,36,.45); color: #FDE68A; line-height: 1.75; }
+.dep-limit-box > i { font-size: 1.4rem; color: #FBBF24; margin-top: 4px; flex-shrink: 0; }
+.dep-limit-box b { display: block; color: #fff; font-size: .95rem; margin-bottom: 2px; }
+.dep-limit-box span { display: block; font-size: .84rem; color: #FDE68A; }
+.dep-limit-box small { display: block; margin-top: 6px; font-size: .78rem; color: #A7F3D0; }
 .pid-copy-all { margin-inline-start: 6px; padding: 2px 8px; border-radius: 8px; border: 1px solid rgba(168,85,247,.4); background: rgba(168,85,247,.12); color: #E9D5FF; font-family: inherit; font-size: .68rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .pid-copy-all:hover { background: rgba(168,85,247,.25); }
 .user-copy.pid-copy { direction: ltr; font-family: ui-monospace, Consolas, monospace; }
@@ -610,8 +618,19 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .au-sort-btn:hover { background:rgba(168,85,247,0.18); }
 .au-sort-btn.active { background:linear-gradient(135deg,#7C3AED,#A855F7); color:#fff; border-color:transparent; box-shadow:0 6px 18px rgba(124,58,237,.4); }
 .au-sort-btn .au-dir { font-size:.8rem; opacity:.9; }
-.au-money-box .val { color:#4ADE80 !important; font-size:1.25rem; }
-.au-money-sub { font-size:.72rem; color:var(--muted); margin-top:4px; line-height:1.6; }
+.admin-stats .admin-stat-box.au-money-box { grid-column: 1 / -1; text-align: right !important; padding: 16px 18px !important; background: radial-gradient(320px 140px at 0% 0%, rgba(34,197,94,.18), transparent 70%), linear-gradient(160deg, #10221a, #0c0818 80%) !important; border: 1px solid rgba(34,197,94,.4) !important; }
+.aum-head { display: flex; align-items: center; gap: 12px; }
+.aum-ico { width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; background: linear-gradient(135deg, #16a34a, #22c55e); box-shadow: 0 8px 20px rgba(34,197,94,.35); }
+.aum-head .lbl { color: #fff !important; font-weight: 800; font-size: .95rem; }
+.aum-head small { color: #8FB9A4; font-size: .72rem; }
+.aum-main { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin: 10px 0 8px; }
+.admin-stats .admin-stat-box.au-money-box .val { color:#4ADE80 !important; -webkit-text-fill-color:#4ADE80 !important; background:none !important; font-size:2rem !important; font-weight: 900; direction: ltr; text-shadow: 0 0 24px rgba(74,222,128,.25); }
+.au-money-box .val span { font-size: .95rem; color: #86EFAC; font-weight: 800; }
+.aum-usd { color: #CBD5E1; font-size: .9rem; } .aum-usd b { color: #fff; }
+.au-money-sub { display: flex; flex-wrap: wrap; gap: 6px; font-size:.75rem; color:var(--muted); line-height:1.6; }
+.aum-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: #CBD5E1; }
+.aum-chip i { color: #4ADE80; } .aum-chip b { color: #fff; }
+.aum-chip.warn { border-color: rgba(251,191,36,.4); color: #FDE68A; }
 .au-rank { display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px; padding:0 6px; border-radius:13px; background:rgba(74,222,128,.14); color:#4ADE80; font-weight:800; font-size:.78rem; }
 .au-rank.top { background:linear-gradient(135deg,#F59E0B,#FBBF24); color:#1a1033; }
 .user-row-actions { display:flex; gap:5px; flex-wrap:wrap; }
@@ -2129,6 +2148,9 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .oc3d::before { content: ''; position: absolute; top: 0; right: 18px; left: 18px; height: 3px; border-radius: 0 0 6px 6px; background: var(--st); box-shadow: 0 0 16px var(--st); }
 .oc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .oc-id { font-weight: 900; color: #E9D5FF; background: rgba(168,85,247,0.15); padding: 4px 12px; border-radius: 20px; font-size: .8rem; direction: ltr; }
+.oc-copy { border: 1px solid rgba(168,85,247,0.35); font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: .2s; }
+.oc-copy:hover { background: rgba(168,85,247,0.3); }
+.oc-copy.copied { background: #16a34a; color: #fff; border-color: transparent; }
 .oc-top-r { display: inline-flex; align-items: center; gap: 8px; }
 .oc-again { width: 34px; height: 34px; border-radius: 11px; border: 1px solid rgba(168,85,247,0.45); background: linear-gradient(135deg, rgba(124,58,237,0.35), rgba(236,72,153,0.22)); color: #fff; font-size: .85rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .2s, box-shadow .2s; }
 .oc-again:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(124,58,237,0.45); }
@@ -3042,6 +3064,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <a href="/privacy-policy.html">سياسة الخصوصية</a>
 <a href="/refund-policy.html">سياسة الاسترجاع</a>
 <a href="/contact.html">تواصل معنا</a>
+<a href="/blog.html">📚 المدونة</a>
 <a href="/smm-guide.html">دليلك لاستخدام خدمات SMM</a>
 <a href="/api.html">الـ API للمطورين</a>
 </div>
@@ -3536,7 +3559,11 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="admin-stat-box"><div class="lbl">إجمالي المستخدمين</div><div class="val" id="adminTotalUsers">0</div></div>
 <div class="admin-stat-box"><div class="lbl">نشطين</div><div class="val" id="adminActiveUsers">0</div></div>
 <div class="admin-stat-box"><div class="lbl">محظورين</div><div class="val" id="adminBannedUsers">0</div></div>
-<div class="admin-stat-box au-money-box"><div class="lbl">💰 الفلوس اللي مع العملاء دلوقتي</div><div class="val" id="adminUsersMoney">—</div><div class="au-money-sub" id="adminUsersMoneySub"></div></div>
+<div class="admin-stat-box au-money-box">
+<div class="aum-head"><span class="aum-ico"><i class="fas fa-vault"></i></span><div><div class="lbl">إجمالي أرصدة العملاء دلوقتي</div><small>الفلوس الموجودة في حسابات العملاء (مش الإيداعات)</small></div></div>
+<div class="aum-main"><div class="val" id="adminUsersMoney">—</div><div class="aum-usd" id="adminUsersMoneyUsd"></div></div>
+<div class="au-money-sub" id="adminUsersMoneySub"></div>
+</div>
 </div>
 <div class="au-toolbar">
 <input type="text" id="adminUserSearch" class="user-search-input" placeholder="🔍 ابحث بالاسم أو اليوزر أو الإيميل...">
@@ -3549,7 +3576,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="admin-table-wrap">
 <div id="adminUsersLoader" class="admin-loader" style="display:none;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
 <table class="admin-table" id="adminUsersTable" style="display:none;">
-<thead><tr><th>#</th><th>اليوزر</th><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th>رصيد EGP</th><th>رصيد USD</th><th>إجمالي الإيداع</th><th>الحالة</th><th>الرسائل</th><th>إجراءات</th></tr></thead>
+<thead><tr><th>#</th><th>اليوزر</th><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th>الرصيد (جنيه)</th><th>الرصيد (دولار)</th><th>إجمالي الإيداع</th><th>الحالة</th><th>الرسائل</th><th>إجراءات</th></tr></thead>
 <tbody id="adminUsersBody"></tbody>
 </table>
 <div id="adminUsersEmpty" class="admin-empty" style="display:none;"><i class="fas fa-users" style="font-size:2.5rem; color:#A855F7; margin-bottom:1rem;"></i><p>لا يوجد مستخدمون بعد.</p></div>
@@ -4686,6 +4713,19 @@ if (!payload.new) return;
 siteSettings.maintenance = payload.new.maintenance === true;
 siteSettings.maintenance_message = payload.new.maintenance_message || '';
 if (payload.new.last_fx) siteSettings.last_fx = parseFloat(payload.new.last_fx);
+// 💵 الأدمن غيّر سعر الدولار → أسعار خدمات المزود والرصيد بيتحدثوا فوراً عند الكل (نفس اللي حصل في السيرفر)
+const nFx = parseFloat(payload.new.exchange_rate);
+if (nFx > 0 && nFx !== parseFloat(siteSettings.exchange_rate)) {
+const oFx = parseFloat(siteSettings.exchange_rate) || exchangeRate;
+siteSettings.exchange_rate = nFx;
+if (oFx > 0) document.querySelectorAll('.service-card[data-api="1"]').forEach(c => {
+const p = parseFloat(c.getAttribute('data-price-per-thousand'));
+if (p > 0) c.setAttribute('data-price-per-thousand', String(Math.round(p * nFx / oFx * 1e6) / 1e6));
+});
+exchangeRate = nFx;
+try { updateAllPrices(); } catch (e) {}
+if (window.refreshBalanceUI) window.refreshBalanceUI();
+}
 if (payload.new.payment_methods && typeof payload.new.payment_methods === 'object') siteSettings.payment_methods = payload.new.payment_methods;
 if (payload.new.payment_min && typeof payload.new.payment_min === 'object') siteSettings.payment_min = payload.new.payment_min;
 if (window.applyPaymentMethods) window.applyPaymentMethods();
@@ -6446,10 +6486,14 @@ const box = document.getElementById('adminUsersMoney'), sub = document.getElemen
 if (!box || !t) return;
 const fx = Number(t.fx) || window.exchangeRate || 50;
 const egp = Number(t.egp) || 0, usd = Number(t.usd) || 0;
-const allEgp = egp + usd * fx;
-box.innerText = auMoney(allEgp) + ' ج';
-sub.innerHTML = '≈ ' + auMoney(allEgp / fx) + ' $' +
-'<br>' + auMoney(egp) + ' ج + ' + auMoney(usd) + ' $ — مع ' + (t.holders || 0) + ' عميل' + (t.approx ? '<br><small>من آخر 50 بس — شغّل update_v15.sql للإجمالي الكامل</small>' : '');
+const allEgp = egp + usd * fx, allUsd = allEgp / fx, holders = Number(t.holders) || 0;
+box.innerHTML = auMoney(allEgp) + ' <span>جنيه</span>';
+const ue = document.getElementById('adminUsersMoneyUsd'); if (ue) ue.innerHTML = '≈ <b>$' + auMoney(allUsd) + '</b> دولار';
+sub.innerHTML =
+'<span class="aum-chip"><i class="fas fa-users"></i> مع <b>' + holders + '</b> عميل</span>' +
+'<span class="aum-chip"><i class="fas fa-scale-balanced"></i> متوسط <b>' + auMoney(holders ? allEgp / holders : 0) + '</b> ج للعميل</span>' +
+'<span class="aum-chip"><i class="fas fa-dollar-sign"></i> سعر الدولار <b>' + auMoney(fx) + '</b> ج</span>' +
+(t.approx ? '<span class="aum-chip warn">من آخر 50 عميل بس</span>' : '');
 if (t.users != null) document.getElementById('adminTotalUsers').innerText = auMoney(t.users);
 if (t.users != null) document.getElementById('adminActiveUsers').innerText = auMoney(t.users - (t.banned || 0));
 if (t.banned != null) document.getElementById('adminBannedUsers').innerText = auMoney(t.banned);
@@ -6519,6 +6563,12 @@ const uEsc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': 
 // 🔐 أي كلام كتبه العميل (اسم/يوزر/رابط/وصف) بيتعرض كنص بس — عمره ما يتنفذ كأكواد في لوحة الأدمن
 window.__esc = uEsc;
 window.__safeUrl = (u) => /^https?:\/\//i.test(String(u || '').trim()) ? uEsc(String(u).trim()) : '#';
+// 💵 الرصيد الكامل للعميل (العملة الأساسية دولار): بالجنيه بسعر الموقع + بالدولار
+function auFx() { const s = window.siteSettings || {}; return parseFloat(s.exchange_rate) || parseFloat(s.last_fx) || 50; }
+function auBal(u) {
+const fx = auFx(), usd = (parseFloat(u.balance_usd) || 0) + (parseFloat(u.balance_egp) || 0) / fx;
+return { usd: usd, egp: usd * fx };
+}
 function renderUsersTable() {
 const table = document.getElementById('adminUsersTable');
 const empty = document.getElementById('adminUsersEmpty');
@@ -6550,8 +6600,8 @@ tr.innerHTML = '<td>' + (usersSort !== 'new' && !term ? '<span class="au-rank' +
 '<td>' + uEsc(u.name || '-') + '</td>' +
 '<td style="font-size:0.75rem;">' + uEsc(u.email || '-') + '</td>' +
 '<td>' + uEsc(u.phone || '-') + '</td>' +
-'<td style="color:#7C3AED; font-weight:700;">' + parseFloat(u.balance_egp || 0).toFixed(2) + '</td>' +
-'<td style="color:#A855F7; font-weight:700;">' + parseFloat(u.balance_usd || 0).toFixed(2) + '</td>' +
+'<td style="color:#4ADE80; font-weight:800;">' + auBal(u).egp.toFixed(2) + '</td>' +
+'<td style="color:#A855F7; font-weight:700;">' + auBal(u).usd.toFixed(2) + '</td>' +
 '<td class="user-dep-total" data-uid="' + u.id + '">' + depTotalHtml(dep) + '</td>' +
 '<td>' + statusBadge + '</td>' +
 '<td><button type="button" class="user-msg-btn" data-uid="' + u.id + '"><i class="fas fa-comments"></i> الرسائل</button></td>' +
@@ -6756,11 +6806,17 @@ if (!balanceModalUser) return;
 const amount = parseFloat(document.getElementById('balanceAmount').value);
 const currency = document.getElementById('balanceCurrency').value;
 if (isNaN(amount) || amount <= 0) { toast('المبلغ غير صحيح', true); return; }
+const saveBtn = document.getElementById('balanceSaveBtn');
+if (saveBtn.disabled) return; // منع الضغط مرتين (عشان ميتضافش مرتين)
+saveBtn.disabled = true; const saveHtml = saveBtn.innerHTML; saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التنفيذ...';
 // 🔒 على الرصيد الحقيقي وقت التنفيذ (مش الرقم القديم اللي في الصفحة) — في خطوة واحدة مقفولة
-const { data: r, error } = await supabase.rpc('smcole_admin_adjust', { p_user: String(balanceModalUser.id), p_amount: amount, p_currency: currency, p_add: balanceModalAction === 'add' });
-if (error) { toast(/function|schema cache/i.test(error.message) ? 'شغّل ملف money_v8.sql في Supabase الأول' : 'خطأ: ' + error.message, true); return; }
-if (!r || !r.ok) { toast('الرصيد الحالي (' + (r && r.balance) + ') أقل من المبلغ المطلوب خصمه', true); return; }
-toast('✅ تم — الرصيد الجديد: ' + r.balance + ' ' + (r.currency === 'USD' ? 'دولار' : 'جنيه'));
+let r = null, error = null;
+try { ({ data: r, error } = await supabase.rpc('smcole_admin_adjust', { p_user: String(balanceModalUser.id), p_amount: amount, p_currency: currency, p_add: balanceModalAction === 'add' })); }
+catch (er) { error = er; }
+finally { saveBtn.disabled = false; saveBtn.innerHTML = saveHtml; }
+if (error) { toast(/function|schema cache/i.test(error.message || '') ? 'شغّل ملف update_v20.sql في Supabase الأول' : 'خطأ: ' + (error.message || error), true); return; }
+if (!r || !r.ok) { toast('❌ رصيد العميل (' + (r && r.balance) + ' ' + (currency === 'USD' ? 'دولار' : 'جنيه') + ') أقل من المبلغ المطلوب خصمه', true); return; }
+toast('✅ تم ' + (balanceModalAction === 'add' ? 'إضافة ' : 'خصم ') + amount + ' ' + (currency === 'USD' ? 'دولار' : 'جنيه') + ' — رصيد العميل دلوقتي: ' + r.balance + ' ' + (r.currency === 'USD' ? 'دولار' : 'جنيه'));
 document.getElementById('adminBalanceModalBg').classList.remove('show');
 await loadAdminUsers();
 });
@@ -9156,15 +9212,33 @@ const name = u.name || u.username || ('عميل #' + c.user_id);
 const av = u.avatar ? '<img src="' + escHtml(u.avatar) + '" alt="">' : escHtml(name.trim().charAt(0).toUpperCase());
 const prev = (c.last.sender === 'admin' ? 'أنت: ' : '') + (c.last.body ? c.last.body.slice(0, 60) : '📷 صورة');
 return '<button type="button" class="as-conv' + (String(adminThreadUser) === String(c.user_id) ? ' active' : '') + (c.unread ? ' unread' : '') + '" data-uid="' + escHtml(c.user_id) + '">' +
-'<span class="as-av">' + av + '</span><span class="as-info"><b>' + escHtml(name) + '</b><small>' + escHtml(prev) + '</small></span>' +
+'<span class="as-av">' + av + '</span><span class="as-info"><b>' + escHtml(name) + '</b>' + (u.username ? '<span class="as-copy" role="button" tabindex="0" data-copy="' + escHtml(u.username) + '" title="اضغط لنسخ اسم المستخدم"><i class="far fa-copy"></i> ' + escHtml(u.username) + '</span>' : '') + '<small>' + escHtml(prev) + '</small></span>' +
 '<span class="as-side"><em>' + timeAgo(c.last.created_at) + '</em>' + (c.unread ? '<i>' + c.unread + '</i>' : '') + '</span></button>';
 }).join('');
-listEl.querySelectorAll('.as-conv').forEach(b => b.addEventListener('click', () => openAdminThread(b.dataset.uid)));
+listEl.querySelectorAll('.as-conv').forEach(b => b.addEventListener('click', (e) => { if (e.target.closest('.as-copy')) return; openAdminThread(b.dataset.uid); }));
 }
+// 📋 نسخ رقم الطلب بنقرة واحدة (صفحة "طلباتي")
+document.addEventListener('click', async (e) => {
+const c = e.target.closest('.oc-copy'); if (!c) return;
+e.preventDefault(); e.stopPropagation();
+const v = String(c.dataset.copy || '');
+try { await navigator.clipboard.writeText(v); } catch (er) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
+c.classList.add('copied'); setTimeout(() => c.classList.remove('copied'), 1200);
+userToast('📋 تم نسخ رقم الطلب: ' + v, 'ok');
+}, true);
+// 📋 نسخ اسم المستخدم بنقرة واحدة (من غير @) — في قايمة المحادثات وفي رأس المحادثة
+document.addEventListener('click', async (e) => {
+const c = e.target.closest('.as-copy'); if (!c) return;
+e.preventDefault(); e.stopPropagation();
+const v = String(c.dataset.copy || '').replace(/^@+/, '');
+try { await navigator.clipboard.writeText(v); } catch (er) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
+c.classList.add('copied'); setTimeout(() => c.classList.remove('copied'), 1200);
+userToast('📋 تم نسخ اسم المستخدم: ' + v, 'ok');
+}, true);
 async function openAdminThread(uid) {
 adminThreadUser = uid;
 const u = adminUsersMap[String(uid)] || {};
-document.getElementById('adminSupportThreadHead').innerHTML = '<i class="fas fa-user"></i> ' + escHtml(u.name || ('عميل #' + uid)) + (u.username ? ' <small dir="ltr">@' + escHtml(u.username) + '</small>' : '') + (u.phone ? ' <small dir="ltr">' + escHtml(u.phone) + '</small>' : '');
+document.getElementById('adminSupportThreadHead').innerHTML = '<i class="fas fa-user"></i> ' + escHtml(u.name || ('عميل #' + uid)) + (u.username ? ' <span class="as-copy" role="button" tabindex="0" data-copy="' + escHtml(u.username) + '" title="اضغط لنسخ اسم المستخدم"><i class="far fa-copy"></i> ' + escHtml(u.username) + '</span>' : '') + (u.phone ? ' <small dir="ltr">' + escHtml(u.phone) + '</small>' : '');
 document.getElementById('adminChatForm').style.display = 'flex';
 document.querySelector('.admin-support-wrap').classList.add('thread-open');
 const { data } = await sb.from('support_messages').select('*').eq('user_id', uid).order('created_at', { ascending: true }).limit(500);
@@ -9462,7 +9536,7 @@ if (o.remains !== null && o.remains !== undefined && (st.key === 'processing' ||
 const refunded = parseFloat(o.refunded || 0);
 const safeLink = /^https?:\/\//i.test(o.link || '') ? o.link : '';
 return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st.pct + '%;animation-delay:' + Math.min(i, 8) * 60 + 'ms">' +
-'<div class="oc-top"><span class="oc-id">#' + o.id + '</span><span class="oc-top-r"><span class="oc-badge">' + st.label + '</span>' +
+'<div class="oc-top"><button type="button" class="oc-id oc-copy" data-copy="' + o.id + '" title="اضغط لنسخ رقم الطلب"><i class="far fa-copy"></i> #' + o.id + '</button><span class="oc-top-r"><span class="oc-badge">' + st.label + '</span>' +
 '<button type="button" class="oc-again" data-svc="' + escHtml(String(o.service_id || '')) + '" title="اطلب نفس الخدمة تاني" aria-label="اطلب نفس الخدمة تاني"><i class="fas fa-right-left"></i></button></span></div>' +
 '<div class="oc-main"><div class="oc-ico"><i class="' + icon + '"></i></div><div class="oc-name">' + escHtml(o.service_name || '-') + '</div></div>' +
 '<div class="oc-prog-head"><span><i class="fas fa-chart-line"></i> مراحل الطلب</span><b class="oc-pct">' + (st.key === 'partial' && st.partPct !== null ? st.partPct + '% اتنفذ' : st.key === 'cancelled' ? 'اتلغى' : st.pct + '%') + '</b></div>' +
@@ -9764,6 +9838,14 @@ return null;
 // ============================================================
 // ✅ Helper: إرسال طلب إيداع (مع tx_log_id)
 // ============================================================
+// رسالة احترافية: عنده طلبين إيداع لسه بيتراجعوا
+function showPendingLimit(msgEl) {
+if (msgEl) {
+msgEl.className = 'profile-msg';
+msgEl.innerHTML = '<div class="dep-limit-box"><i class="fas fa-hourglass-half"></i><div><b>عندك طلبين إيداع لسه بيتراجعوا ⏳</b><span>عشان نراجع طلباتك بسرعة ومن غير تكرار، تقدر تعمل إيداع جديد أول ما الإدارة تأكد طلباتك الحالية. هيوصلك إشعار أول ما يتأكدوا.</span><small>💡 عايز تشحن فوراً من غير انتظار؟ ادفع بالفيزا / ماستركارد وهيتضاف لرصيدك تلقائياً.</small></div></div>';
+}
+userToast('⏳ عندك طلبين إيداع قيد المراجعة — استنى تأكيدهم الأول', 'warn');
+}
 async function submitDepositRequest({ method, amount, currency, transactionId, senderPhone, screenshotDataURL, tgTitle, tgExtra }) {
 const msgEl = document.getElementById(method + 'Msg');
 const setMsg = (text, isErr) => {
@@ -9772,6 +9854,12 @@ msgEl.className = 'profile-msg' + (isErr ? ' err' : '');
 msgEl.innerText = text;
 };
 
+// 🚫 حد أقصى طلبين إيداع "قيد المراجعة" (قاعدة البيانات كمان بترفض لو حد تحايل)
+try {
+const { count: pend } = await sb.from('deposit_requests').select('id', { count: 'exact', head: true })
+.eq('user_id', currentProfile.id).eq('status', 'pending').neq('method', 'kashier');
+if ((pend || 0) >= 2) { showPendingLimit(msgEl); return; }
+} catch (e) {}
 // ✅ الخطوة 1: نضيف سجل المعاملة أولاً وناخد الـ ID
 setMsg('جاري حفظ الطلب...');
 let txLogId = null;
@@ -9807,7 +9895,10 @@ tx_log_id: txLogId
 if (senderPhone) insertPayload.sender_phone = senderPhone;
 
 const { error } = await sb.from('deposit_requests').insert(insertPayload);
-if (error) { setMsg('خطأ: ' + error.message, true); return; }
+if (error) {
+if (/SMC_PENDING_LIMIT/.test(error.message || '')) { showPendingLimit(msgEl); return; }
+setMsg('خطأ: ' + String(error.message || '').replace(/^.*?:\s*/, ''), true); return;
+}
 try { window.smSound && window.smSound.payment(); } catch (e) {}
 
 // جيب الـ ID بتاع deposit_requests

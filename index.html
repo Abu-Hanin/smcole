@@ -2217,6 +2217,35 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .oc-stats span i { color: #D8B4FE; }
 .oc-stats b { color: #fff; direction: ltr; }
 .oc-refund { font-size: .78rem; color: #4ADE80; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 6px 10px; border-radius: 10px; margin-bottom: 10px; }
+/* 💬 كارت التأكيد / التنبيه بتصميم الموقع */
+.smd-bg { position: fixed; inset: 0; z-index: 2147483000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(5,2,14,0.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity .2s ease; direction: rtl; font-family: 'Cairo', sans-serif; }
+.smd-bg.show { opacity: 1; }
+.smd-card { --smd: #A855F7; width: 100%; max-width: 400px; max-height: 86vh; overflow: auto; padding: 22px 20px 18px; border-radius: 24px; text-align: center; color: #EDE9FE;
+  background: radial-gradient(320px 160px at 50% -10%, color-mix(in srgb, var(--smd) 30%, transparent), transparent 70%), linear-gradient(160deg, rgba(34,22,68,0.98), rgba(11,6,25,0.98));
+  border: 1px solid color-mix(in srgb, var(--smd) 45%, rgba(255,255,255,0.08)); box-shadow: 0 30px 70px rgba(0,0,0,0.6), 0 0 40px color-mix(in srgb, var(--smd) 22%, transparent);
+  transform: translateY(18px) scale(.96); transition: transform .25s cubic-bezier(.2,1.2,.3,1); }
+.smd-bg.show .smd-card { transform: none; }
+.smd-danger .smd-card { --smd: #EF4444; }
+.smd-alert .smd-card { --smd: #22D3EE; }
+.smd-ico { width: 58px; height: 58px; margin: 0 auto 12px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff;
+  background: linear-gradient(135deg, var(--smd), color-mix(in srgb, var(--smd) 45%, #2A1160)); box-shadow: 0 12px 26px color-mix(in srgb, var(--smd) 45%, transparent); }
+.smd-title { font-weight: 900; font-size: 1.05rem; color: #fff; line-height: 1.6; margin-bottom: 10px; }
+.smd-rows { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 12px; text-align: right; }
+.smd-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07); font-size: .85rem; }
+.smd-row span { color: #B8AEE0; font-weight: 700; flex-shrink: 0; }
+.smd-row b { color: #fff; font-weight: 800; text-align: left; word-break: break-word; }
+.smd-text { white-space: pre-line; font-size: .86rem; line-height: 1.75; color: #CFC6F2; margin-bottom: 12px; text-align: center; word-break: break-word; }
+.smd-title + .smd-text { color: #fff; font-weight: 700; padding: 10px 12px; border-radius: 14px; background: color-mix(in srgb, var(--smd) 14%, transparent); border: 1px solid color-mix(in srgb, var(--smd) 30%, transparent); }
+.smd-btns { display: flex; gap: 10px; margin-top: 6px; }
+.smd-btns button { flex: 1; padding: 12px 14px; border-radius: 14px; font: inherit; font-weight: 800; font-size: .92rem; cursor: pointer; transition: transform .15s, box-shadow .2s, background .2s; }
+.smd-ok { border: 0; color: #fff; background: linear-gradient(135deg, #7C3AED, #A855F7, #EC4899); box-shadow: 0 10px 24px rgba(124,58,237,0.45); }
+.smd-danger .smd-ok { background: linear-gradient(135deg, #DC2626, #EF4444); box-shadow: 0 10px 24px rgba(239,68,68,0.4); }
+.smd-alert .smd-ok { background: linear-gradient(135deg, #0891B2, #22D3EE); box-shadow: 0 10px 24px rgba(34,211,238,0.35); }
+.smd-ok:hover { transform: translateY(-2px); }
+.smd-ok:active, .smd-cancel:active { transform: scale(.97); }
+.smd-cancel { border: 1px solid rgba(255,255,255,0.14); color: #E9D5FF; background: rgba(255,255,255,0.06); }
+.smd-cancel:hover { background: rgba(255,255,255,0.1); }
+.smd-btns button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .oc-refill-row { margin: 0 0 10px; }
 .oc-refill { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; border-radius: 13px; border: 1px solid rgba(34,197,94,0.45); background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(16,185,129,0.12)); color: #BBF7D0; font: inherit; font-weight: 800; font-size: .85rem; cursor: pointer; transition: transform .2s, box-shadow .2s; }
 .oc-refill small { font-weight: 600; font-size: .7rem; color: #86EFAC; opacity: .85; }
@@ -2425,6 +2454,72 @@ try { if (sessionStorage.getItem('smcole_welcomed')) document.getElementById('we
 setTimeout(function () { var o = document.getElementById('welcomeOverlay'); if (o && o.style.display !== 'none') { o.style.transition = 'opacity .6s ease'; o.style.opacity = '0'; setTimeout(function () { o.style.display = 'none'; }, 650); } }, 2500);
 // 🤝 رابط إحالة (?ref=USERNAME) → بيتحفظ لحد ما الزائر يعمل حساب
 try { const rf = new URLSearchParams(location.search).get('ref'); if (rf && /^[\w.\-]{2,40}$/.test(rf)) localStorage.setItem('smcole_ref', JSON.stringify({ code: rf, at: Date.now() })); } catch (e) {}
+
+// 💬 كروت التأكيد والتنبيه بتصميم الموقع (بدل نافذة المتصفح العادية)
+// smConfirm(رسالة) → Promise<true/false> | smAlert(رسالة) → Promise
+(function () {
+let open = false;
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function build(msg, kind) {
+const text = String(msg == null ? '' : msg).trim();
+const parts = text.split(/\n\s*\n/);
+let title = '', body = text;
+if (parts.length > 1 && parts[0].length <= 70 && parts[0].indexOf('\n') < 0) { title = parts[0]; body = parts.slice(1).join('\n\n'); }
+else if (text.indexOf('\n') < 0 && text.length <= 70) { title = text; body = ''; }
+else { const nl = text.indexOf('\n'); if (nl > 0 && nl <= 70) { title = text.slice(0, nl); body = text.slice(nl + 1); } }
+if (!title) title = kind === 'alert' ? 'تنبيه' : 'تأكيد';
+const danger = kind === 'confirm' && /حذف|حظر|رفض|إلغاء|تمسح|إيقاف|تسجيل الخروج|هيتوقف/.test(text);
+// السطور اللي على شكل "الكمية: 10" بتظهر كصفوف منظمة
+// المحتوى بنفس ترتيب الرسالة: سطور عادية = نص — والسطور المتتالية "عنوان: قيمة" = صفوف
+const blocks = []; let rowBuf = [], txtBuf = [];
+const flushRows = () => { if (rowBuf.length) { blocks.push('<div class="smd-rows">' + rowBuf.join('') + '</div>'); rowBuf = []; } };
+const flushTxt = () => { const t = txtBuf.join('\n').trim(); if (t) blocks.push('<div class="smd-text">' + t + '</div>'); txtBuf = []; };
+body.split('\n').forEach((ln) => {
+const m = ln.match(/^\s*([^:\n]{1,22}):\s+(.+)$/);
+if (m && !/https?$/i.test(m[1])) { flushTxt(); rowBuf.push('<div class="smd-row"><span>' + esc(m[1]) + '</span><b>' + esc(m[2]) + '</b></div>'); }
+else { flushRows(); txtBuf.push(esc(ln)); }
+});
+flushRows(); flushTxt();
+const icon = kind === 'alert' ? 'fa-circle-info' : danger ? 'fa-triangle-exclamation' : 'fa-circle-check';
+return { title, blocks, danger, icon };
+}
+function show(msg, kind) {
+return new Promise((resolve) => {
+if (open) { resolve(kind === 'alert' ? undefined : false); return; }
+open = true;
+const d = build(msg, kind);
+const bg = document.createElement('div');
+bg.className = 'smd-bg' + (d.danger ? ' smd-danger' : '') + (kind === 'alert' ? ' smd-alert' : '');
+bg.setAttribute('role', 'dialog'); bg.setAttribute('aria-modal', 'true');
+bg.innerHTML = '<div class="smd-card"><div class="smd-ico"><i class="fas ' + d.icon + '"></i></div>' +
+'<div class="smd-title">' + esc(d.title) + '</div>' +
+d.blocks.join('') +
+'<div class="smd-btns">' + (kind === 'alert' ? '<button type="button" class="smd-ok">تمام</button>'
+: '<button type="button" class="smd-ok">' + (d.danger ? 'أيوه، كمّل' : 'تأكيد') + '</button><button type="button" class="smd-cancel">إلغاء</button>') + '</div></div>';
+document.body.appendChild(bg);
+requestAnimationFrame(() => bg.classList.add('show'));
+const prevFocus = document.activeElement;
+const done = (v) => {
+document.removeEventListener('keydown', onKey, true);
+bg.classList.remove('show'); open = false;
+setTimeout(() => bg.remove(), 220);
+try { if (prevFocus && prevFocus.focus) prevFocus.focus({ preventScroll: true }); } catch (e) {}
+resolve(kind === 'alert' ? undefined : v);
+};
+const onKey = (e) => {
+if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); done(false); }
+else if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); done(true); }
+};
+document.addEventListener('keydown', onKey, true);
+bg.querySelector('.smd-ok').addEventListener('click', () => done(true));
+const c = bg.querySelector('.smd-cancel'); if (c) c.addEventListener('click', () => done(false));
+bg.addEventListener('click', (e) => { if (e.target === bg) done(false); });
+setTimeout(() => { try { bg.querySelector('.smd-ok').focus({ preventScroll: true }); } catch (e) {} }, 30);
+});
+}
+window.smConfirm = (msg) => show(msg, 'confirm');
+window.smAlert = (msg) => show(msg, 'alert');
+})();
 
 // 🔗 تنضيف الرابط: العميل ساعات بيلصق الرابط ومعاه كلام زيادة (زي "السعر الإجمالي... شراء الآن")
 // → المزود بيرفض الطلب. بناخد الرابط بس ونشيل أي كلام قبله أو بعده
@@ -5735,7 +5830,7 @@ let msg = '';
 if (isIOS) msg = '📱 لتثبيت التطبيق على الآيفون:\n\n1. افتح الموقع في Safari\n2. اضغط زر المشاركة 📤\n3. اختار "إضافة إلى الشاشة الرئيسية" ➕\n4. اضغط "إضافة"';
 else if (isAndroid) msg = '📱 لتثبيت التطبيق على الأندرويد:\n\n1. افتح الموقع في Chrome\n2. اضغط النقاط الثلاث ⋮\n3. اختار "تثبيت التطبيق"\n4. اضغط "تثبيت"';
 else msg = '💻 لتثبيت التطبيق على الكمبيوتر:\n\n1. افتح الموقع في Chrome أو Edge\n2. اضغط أيقونة التثبيت ⊕ في شريط العنوان\n3. أو من قائمة ⋮ اختار "تثبيت smcole"';
-alert(msg);
+await smAlert(msg);
 }
 };
 document.getElementById('installPwaBtn')?.addEventListener('click', () => window.__installApp());
@@ -6077,7 +6172,7 @@ const act = b.dataset.bulk;
 if (act === 'clear') { svcSelected.clear(); renderAdminTable(); return; }
 const ids = Array.from(svcSelected);
 if (!ids.length) return;
-if (act === 'delete' && !confirm('⚠️ حذف ' + ids.length + ' خدمة نهائياً؟\nالطلبات القديمة مش هتتمسح.')) return;
+if (act === 'delete' && !await smConfirm('⚠️ حذف ' + ids.length + ' خدمة نهائياً؟\nالطلبات القديمة مش هتتمسح.')) return;
 const btns = document.querySelectorAll('#svcBulkActions button'); btns.forEach(x => x.disabled = true);
 const old = b.innerHTML; b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التنفيذ...';
 let done = 0, failed = 0;
@@ -6267,7 +6362,7 @@ if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.b
 window.__adminDelete = async function(id) {
 const s = allServices.find(x => x.id === id);
 if (!s) return;
-if (!confirm('هل أنت متأكد من حذف الخدمة:\n"' + s.name + '"؟')) return;
+if (!await smConfirm('هل أنت متأكد من حذف الخدمة:\n"' + s.name + '"؟')) return;
 try {
 const { data: ls } = await supabase.from('api_service_links').select('provider_id,provider_service_id').eq('service_id', id);
 if (ls && ls.length) await supabase.from('api_ignored_services').upsert(ls.map(l => ({ provider_id: l.provider_id, provider_service_id: String(l.provider_service_id) })), { onConflict: 'provider_id,provider_service_id', ignoreDuplicates: true });
@@ -6738,7 +6833,7 @@ loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
 });
 
 window.__adminBanUser = async function(id) {
-if (!confirm('هل تريد حظر هذا المستخدم؟')) return;
+if (!await smConfirm('هل تريد حظر هذا المستخدم؟')) return;
 const { error } = await supabase.from('users').update({ is_banned: true }).eq('id', id);
 if (error) { toast('خطأ: ' + error.message, true); return; }
 await loadAdminUsers();
@@ -6749,7 +6844,7 @@ if (error) { toast('خطأ: ' + error.message, true); return; }
 await loadAdminUsers();
 };
 window.__adminDeleteUser = async function(id) {
-if (!confirm('⚠️ حذف المستخدم نهائياً؟ مش هيقدر يسجل دخول تاني بنفس الإيميل.')) return;
+if (!await smConfirm('⚠️ حذف المستخدم نهائياً؟ مش هيقدر يسجل دخول تاني بنفس الإيميل.')) return;
 const { error } = await supabase.from('users').delete().eq('id', id);
 if (error) { toast('خطأ: ' + error.message, true); return; }
 toast('تم حذف المستخدم بنجاح ✅');
@@ -7086,7 +7181,7 @@ const cp = e.target.closest('.user-copy'); if (cp) { copyUserHandler(e); return;
 const pay = e.target.closest('[data-pay]');
 if (pay) {
 const m = pay.dataset.pay, amt = affM(pay.dataset.amt), u = pay.dataset.uname;
-if (!confirm(m === 'cash' ? 'تأكيد إنك هتصرف ' + amt + ' جنيه كاش لـ ' + u + '؟\nأرباحه هتتصفر وهيوصله إشعار.' : 'إضافة ' + amt + ' جنيه لرصيد ' + u + '؟\nيقدر يستخدمها في الطلبات على طول.')) return;
+if (!await smConfirm(m === 'cash' ? 'تأكيد إنك هتصرف ' + amt + ' جنيه كاش لـ ' + u + '؟\nأرباحه هتتصفر وهيوصله إشعار.' : 'إضافة ' + amt + ' جنيه لرصيد ' + u + '؟\nيقدر يستخدمها في الطلبات على طول.')) return;
 pay.disabled = true;
 const { data, error } = await supabase.rpc('smcole_admin_affiliate_payout', { p_user: String(pay.dataset.id), p_method: m });
 if (error || !data || !data.ok) { toast('❌ ' + (error ? error.message : 'مفيش أرباح للصرف'), true); pay.disabled = false; return; }
@@ -7096,7 +7191,7 @@ return;
 }
 const done = e.target.closest('[data-wd-done]');
 if (done) {
-if (!confirm('تأكيد إنك حوّلت المبلغ للعميل؟ هيوصله إشعار.')) return;
+if (!await smConfirm('تأكيد إنك حوّلت المبلغ للعميل؟ هيوصله إشعار.')) return;
 done.disabled = true;
 const { data, error } = await supabase.rpc('smcole_admin_withdrawal_done', { p_id: Number(done.dataset.wdDone) });
 if (error || !data || !data.ok) { toast('❌ ' + (error ? error.message : 'الطلب ده اتقفل قبل كده'), true); done.disabled = false; return; }
@@ -7109,7 +7204,7 @@ if (refs) {
 const { data, error } = await supabase.rpc('smcole_admin_referrals', { p_user: String(refs.dataset.refs) });
 if (error) { toast('❌ ' + error.message, true); return; }
 const rows = (data || []).map(r => '• ' + (r.username || '-') + ' (' + (r.name || '') + ') — عمولته منه: ' + affM(r.earned) + ' ج').join('\n');
-alert('👥 اللي سجّلوا من رابط ' + refs.dataset.uname + ' (' + (data || []).length + '):\n\n' + (rows || 'مفيش'));
+await smAlert('👥 اللي سجّلوا من رابط ' + refs.dataset.uname + ' (' + (data || []).length + '):\n\n' + (rows || 'مفيش'));
 }
 });
 
@@ -7266,7 +7361,7 @@ toast(r && r.message ? r.message : '❌ حصل خطأ', !(r && r.ok));
 await loadAdminOrders();
 };
 window.__adminRefillOrder = async function(id, btn) {
-if (!confirm('♻️ تبعت طلب إعادة تعبئة للمزود للطلب #' + id + '؟')) return;
+if (!await smConfirm('♻️ تبعت طلب إعادة تعبئة للمزود للطلب #' + id + '؟')) return;
 if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...'; }
 try {
 const { data, error } = await supabase.functions.invoke('smm-api', { body: { action: 'admin_refill_order', order_id: id } });
@@ -7285,7 +7380,7 @@ toast('لا يمكن تعديل طلب ملغي أو مكتمل', true);
 return;
 }
 
-if (status === 'cancelled' && !confirm('إلغاء هذا الطلب؟ سيتم إرجاع ' + parseFloat(orderData.total || 0).toFixed(2) + ' للعميل تلقائياً.')) return;
+if (status === 'cancelled' && !await smConfirm('إلغاء هذا الطلب؟ سيتم إرجاع ' + parseFloat(orderData.total || 0).toFixed(2) + ' للعميل تلقائياً.')) return;
 
 if (status === 'cancelled') {
 // 🔒 إلغاء + إرجاع الفلوس في خطوة واحدة مقفولة في قاعدة البيانات (مرة واحدة بس — حتى لو اتلغى من التليجرام أو المزود)
@@ -7498,13 +7593,13 @@ await loadAdminDeposits();
 window.__adminApproveDeposit = async function(id) {
 const d = depFind(id);
 if (!d || d.status !== 'pending') { await loadAdminDeposits(); return; }
-if (!confirm('تأكيد الإيداع وإضافة ' + d.amount + ' ' + (d.currency === 'USD' ? 'دولار' : 'جنيه') + ' لرصيد العميل؟')) return;
+if (!await smConfirm('تأكيد الإيداع وإضافة ' + d.amount + ' ' + (d.currency === 'USD' ? 'دولار' : 'جنيه') + ' لرصيد العميل؟')) return;
 await reviewDepositFromSite(id, true);
 };
 window.__adminRejectDeposit = async function(id) {
 const d = depFind(id);
 if (!d || d.status !== 'pending') { await loadAdminDeposits(); return; }
-if (!confirm('رفض طلب الإيداع؟')) return;
+if (!await smConfirm('رفض طلب الإيداع؟')) return;
 await reviewDepositFromSite(id, false);
 };
 
@@ -7737,7 +7832,7 @@ msg += '\n📋 أسعار أول خدمات زي ما الـ API بيبعتها 
 r.sample.forEach(s => { msg += '#' + s.service + ' — ' + String(s.name).slice(0, 45) + ' ← ' + s.rate + ' ' + r.configured + '\n'; });
 msg += '\n✅ قارن الأرقام دي بسعر نفس الخدمات في موقع المزود: لو نفس الرقم ونفس العملة يبقى الإعدادات مظبوطة.';
 }
-alert(msg);
+await smAlert(msg);
 await loadProviders();
 } else if (act === 'sync') {
 busy(btn, true, 'جاري التحديث');
@@ -7752,7 +7847,7 @@ toast(p.is_active ? 'تم إيقاف المزود' : 'تم تشغيل المزو
 await loadProviders();
 } else if (act === 'delete') {
 const c = linkCounts[String(id)] || { n: 0 };
-if (!confirm('حذف المزود "' + p.name + '"' + (c.n ? ' و ' + c.n + ' خدمة مستوردة منه' : '') + '؟\n(الطلبات القديمة مش هتتمسح)')) return;
+if (!await smConfirm('حذف المزود "' + p.name + '"' + (c.n ? ' و ' + c.n + ' خدمة مستوردة منه' : '') + '؟\n(الطلبات القديمة مش هتتمسح)')) return;
 const { data: links } = await supabase.from('api_service_links').select('service_id').eq('provider_id', id);
 const ids = (links || []).map(l => l.service_id);
 for (let i = 0; i < ids.length; i += 200) await supabase.from('services').delete().in('id', ids.slice(i, i + 200));
@@ -7823,7 +7918,7 @@ toast('✅ تم الحفظ — جاري اختبار الاتصال...');
 try {
 const r = await smm('admin_balance', { provider_id: Number(pid) });
 toast('✅ الاتصال شغال — رصيدك: ' + Number(r.balance).toFixed(2) + ' ' + (r.currency || ''));
-if (r.mismatch) alert('⚠️ حسابك عند المزود بالـ ' + r.mismatch.account + ' لكن انت مسجل عملة الأسعار ' + r.mismatch.configured + '.\n\nلو أسعار الخدمات في موقع المزود بالـ ' + r.mismatch.account + ' (زي 10.1000 ' + r.mismatch.account + ')، افتح "تعديل" وغيّر "عملة أسعار المزود" لـ ' + r.mismatch.account + '، وبعدين اضغط "تحديث الأسعار".');
+if (r.mismatch) await smAlert('⚠️ حسابك عند المزود بالـ ' + r.mismatch.account + ' لكن انت مسجل عملة الأسعار ' + r.mismatch.configured + '.\n\nلو أسعار الخدمات في موقع المزود بالـ ' + r.mismatch.account + ' (زي 10.1000 ' + r.mismatch.account + ')، افتح "تعديل" وغيّر "عملة أسعار المزود" لـ ' + r.mismatch.account + '، وبعدين اضغط "تحديث الأسعار".');
 } catch (er) { toast('⚠️ اتحفظ بس الاتصال فشل: ' + er.message, true); }
 await loadProviders();
 } catch (er) { toast('❌ ' + er.message, true); }
@@ -7876,7 +7971,7 @@ document.getElementById('adminAffMenuLink').addEventListener('click', (e) => { e
 // ---------- 🗑️ حذف كل الخدمات ----------
 document.getElementById('deleteAllServicesBtn').addEventListener('click', async (e) => {
 const btn = e.currentTarget;
-if (!confirm('⚠️ متأكد إنك عايز تمسح كل الخدمات من الموقع؟\n\nالموقع هيبقى فاضي لحد ما تستورد خدمات جديدة.\n(الطلبات القديمة وأرصدة العملاء مش هتتأثر)')) return;
+if (!await smConfirm('⚠️ متأكد إنك عايز تمسح كل الخدمات من الموقع؟\n\nالموقع هيبقى فاضي لحد ما تستورد خدمات جديدة.\n(الطلبات القديمة وأرصدة العملاء مش هتتأثر)')) return;
 const typed = prompt('للتأكيد النهائي اكتب كلمة: حذف');
 if (typed === null) return;
 if (typed.trim() !== 'حذف') { toast('❌ اتلغى — الكلمة مش مطابقة', true); return; }
@@ -7907,7 +8002,7 @@ let message = null;
 if (turnOn) {
 message = prompt('🛠️ تشغيل وضع الصيانة — مفيش أي عميل هيقدر يعمل طلبات.\n\nالرسالة اللي هتظهر للعملاء (تقدر تسيبها زي ما هي):', 'بنحدّث الأسعار والخدمات — الطلبات متوقفة مؤقتاً وهترجع خلال وقت قصير');
 if (message === null) return;
-} else if (!confirm('إيقاف وضع الصيانة؟ العملاء هيقدروا يطلبوا تاني.')) return;
+} else if (!await smConfirm('إيقاف وضع الصيانة؟ العملاء هيقدروا يطلبوا تاني.')) return;
 busy(btn, true);
 try {
 const { error } = await supabase.from('site_settings').update({ maintenance: turnOn, maintenance_message: turnOn ? message : null }).eq('id', 1);
@@ -7994,7 +8089,7 @@ e.preventDefault();
 const title = document.getElementById('bcTitle').value.trim();
 const body = document.getElementById('bcBody').value.trim();
 if (!title) { toast('⚠️ اكتب عنوان الإشعار', true); return; }
-if (!confirm('إرسال الإشعار ده لكل المستخدمين؟\n\n' + title + (body ? '\n' + body : ''))) return;
+if (!await smConfirm('إرسال الإشعار ده لكل المستخدمين؟\n\n' + title + (body ? '\n' + body : ''))) return;
 const btn = document.getElementById('bcSendBtn');
 busy(btn, true, 'جاري الإرسال');
 try {
@@ -8794,7 +8889,7 @@ window.refreshCurrencyButtons();
 });
 
 async function doLogout() {
-if (!confirm('هل تريد تسجيل الخروج؟')) return;
+if (!await smConfirm('هل تريد تسجيل الخروج؟')) return;
 // الجهاز ده يبطل يستقبل إشعارات الحساب ده
 if (window.__unsubscribeDeviceRow) await window.__unsubscribeDeviceRow();
 await sb.auth.signOut({ scope: 'local' });
@@ -9185,7 +9280,7 @@ if (!('Notification' in window)) { userToast('⚠️ المتصفح ده مش ب
 let p = Notification.permission;
 if (p === 'denied') {
 const standalone = window.matchMedia('(display-mode: standalone)').matches;
-alert('🔔 عشان تفعّل الإشعارات:\n\n' + (standalone
+await smAlert('🔔 عشان تفعّل الإشعارات:\n\n' + (standalone
 ? '1. اضغط ضغطة طويلة على أيقونة التطبيق\n2. اختار "معلومات التطبيق" (App info)\n3. الإشعارات ← تشغيل'
 : '1. اضغط على علامة القفل 🔒 جنب رابط الموقع فوق\n2. اختار "الأذونات" أو "الإشعارات"\n3. خليها "سماح" (Allow)\n4. حدّث الصفحة'));
 return;
@@ -9725,7 +9820,7 @@ if (next.length !== oldList.children.length || next.some((n, i) => oldList.child
 }
 // ♻️ العميل بيطلب إعادة تعبئة بنفسه — السيرفر بيتأكد من كل حاجة ويبعتها للمزود
 window.__refillMyOrder = async function (id, btn) {
-if (!confirm('♻️ إعادة تعبئة الطلب #' + id + '؟\nاستخدمها لو العدد نقص بعد ما الطلب كمل.')) return;
+if (!await smConfirm('♻️ إعادة تعبئة الطلب #' + id + '؟\nاستخدمها لو العدد نقص بعد ما الطلب كمل.')) return;
 const old = btn.innerHTML;
 btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
 let r = null;
@@ -10419,7 +10514,7 @@ if (totalAvailable < totalToPay) {
 showInsufficientModal(totalAvailable, totalToPay);
 return;
 }
-if (!confirm('هل تريد تأكيد الطلب؟\n\n' + serviceName + '\nالكمية: ' + quantity + ' ' + unit + '\nالإجمالي: ' + formatNumberNoCommas(totalToPay, currencySymbol === 'USD') + ' ' + currencyName + '\n\nسيتم خصم المبلغ من رصيدك.')) return;
+if (!await smConfirm('هل تريد تأكيد الطلب؟\n\n' + serviceName + '\nالكمية: ' + quantity + ' ' + unit + '\nالإجمالي: ' + formatNumberNoCommas(totalToPay, currencySymbol === 'USD') + ' ' + currencyName + '\n\nسيتم خصم المبلغ من رصيدك.')) return;
 buyBtn.dataset.processing = '1';
 buyBtn.disabled = true;
 const oldHTML = buyBtn.innerHTML;
@@ -10628,7 +10723,7 @@ window.open(map[b.dataset.share], '_blank', 'noopener');
 // 💳 تحويل الأرباح لرصيد الحساب (فوري)
 async function affToBalance() {
 const bal = affStats ? Number(affStats.balance) || 0 : 0;
-if (!confirm('تحويل ' + affMoney(bal) + ' جنيه من أرباحك لرصيد حسابك؟\nتقدر تستخدمها في الطلبات على طول.')) return;
+if (!await smConfirm('تحويل ' + affMoney(bal) + ' جنيه من أرباحك لرصيد حسابك؟\nتقدر تستخدمها في الطلبات على طول.')) return;
 const btn = document.getElementById('affToBalanceBtn'); btn.disabled = true;
 try {
 let { data, error } = await sb.rpc('smcole_affiliate_withdraw_to', { p_method: 'balance', p_pay_method: null, p_account: null });
@@ -10817,7 +10912,7 @@ setBtn();
 $('apiKeyNewBtn').addEventListener('click', async () => {
 const btn = $('apiKeyNewBtn');
 if (btn.disabled) return;
-if (hasKey && !confirm('هيتعمل مفتاح جديد والمفتاح القديم هيتوقف فوراً — أي موقع مربوط بيه لازم تحدّثه. تكمل؟')) return;
+if (hasKey && !await smConfirm('هيتعمل مفتاح جديد والمفتاح القديم هيتوقف فوراً — أي موقع مربوط بيه لازم تحدّثه. تكمل؟')) return;
 btn.disabled = true;
 try {
 const { data, error } = await sb.rpc('smcole_api_key_new');

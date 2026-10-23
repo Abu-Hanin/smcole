@@ -2209,6 +2209,11 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .oc-stats span i { color: #D8B4FE; }
 .oc-stats b { color: #fff; direction: ltr; }
 .oc-refund { font-size: .78rem; color: #4ADE80; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 6px 10px; border-radius: 10px; margin-bottom: 10px; }
+.oc-refill-row { margin: 0 0 10px; }
+.oc-refill { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; border-radius: 13px; border: 1px solid rgba(34,197,94,0.45); background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(16,185,129,0.12)); color: #BBF7D0; font: inherit; font-weight: 800; font-size: .85rem; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.oc-refill small { font-weight: 600; font-size: .7rem; color: #86EFAC; opacity: .85; }
+.oc-refill:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(34,197,94,0.3); }
+.oc-refill:disabled { cursor: default; opacity: .6; border-style: dashed; }
 .oc-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.08); }
 .oc-link { color: #E9D5FF; font-size: .78rem; font-weight: 700; text-decoration: none; padding: 5px 12px; border-radius: 10px; background: rgba(168,85,247,0.14); }
 .oc-date { font-size: .7rem; color: #8B84B5; }
@@ -6885,9 +6890,10 @@ const empty = document.getElementById('adminOrdersEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
 let res = await supabase.from('orders')
-.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error')
+.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error,refill_allowed,last_refill_at,refill_count')
 .order('created_at', { ascending: false })
 .limit(300);
+if (res.error) res = await supabase.from('orders').select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error').order('created_at', { ascending: false }).limit(300);
 if (res.error) res = await supabase.from('orders').select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name').order('created_at', { ascending: false }).limit(300);
 const { data, error } = res;
 loader.style.display = 'none';
@@ -6943,6 +6949,9 @@ actBtns = '<button class="admin-edit-btn" onclick="__adminSetOrder(' + o.id + ',
 } else if (o.status === 'processing') {
 actBtns = '<button class="admin-edit-btn" onclick="__adminSetOrder(' + o.id + ',\'completed\')"><i class="fas fa-check"></i> إكمال</button>' +
 '<button class="admin-del-btn" onclick="__adminSetOrder(' + o.id + ',\'cancelled\')"><i class="fas fa-times"></i> إلغاء</button>';
+} else if (o.status === 'completed' && o.refill_allowed && o.provider_order_id) {
+// ♻️ الخدمة عليها إعادة تعبئة عند المزود
+actBtns = '<button class="admin-edit-btn refill-btn" onclick="__adminRefillOrder(' + o.id + ', this)" title="' + (o.refill_count ? 'اتعمل ' + o.refill_count + ' مرة' : '') + '"><i class="fas fa-recycle"></i> إعادة تعبئة' + (o.refill_count ? ' (' + o.refill_count + ')' : '') + '</button>';
 }
 tr.innerHTML = '<td>#' + o.id + '</td>' +
 '<td>' + (o.user_username ? '<button type="button" class="user-copy" data-copy="' + __esc(o.user_username) + '" title="اضغط للنسخ"><i class="far fa-copy"></i> ' + __esc(o.user_username) + '</button>' : '-') + '</td>' +
@@ -7222,6 +7231,17 @@ window.__adminRetryOrder = async function(id, btn) {
 if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...'; }
 try {
 const { data, error } = await supabase.functions.invoke('smm-api', { body: { action: 'admin_retry_order', order_id: id } });
+let r = data;
+if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (e) { r = null; } }
+toast(r && r.message ? r.message : '❌ حصل خطأ', !(r && r.ok));
+} catch (e) { toast('❌ ' + e.message, true); }
+await loadAdminOrders();
+};
+window.__adminRefillOrder = async function(id, btn) {
+if (!confirm('♻️ تبعت طلب إعادة تعبئة للمزود للطلب #' + id + '؟')) return;
+if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...'; }
+try {
+const { data, error } = await supabase.functions.invoke('smm-api', { body: { action: 'admin_refill_order', order_id: id } });
 let r = data;
 if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (e) { r = null; } }
 toast(r && r.message ? r.message : '❌ حصل خطأ', !(r && r.ok));
@@ -9551,6 +9571,14 @@ if (st.delivered !== null && st.delivered !== undefined && st.key !== 'pending')
 if (o.remains !== null && o.remains !== undefined && (st.key === 'processing' || st.key === 'partial')) chips.push('<span><i class="fas fa-hourglass-half"></i> المتبقي <b>' + Number(o.remains).toLocaleString('en-US') + '</b></span>');
 const refunded = parseFloat(o.refunded || 0);
 const safeLink = /^https?:\/\//i.test(o.link || '') ? o.link : '';
+// ♻️ إعادة التعبئة: بتظهر بس لو خدمة المزود عليها إعادة تعبئة والطلب مكتمل
+let refillHtml = '';
+if (o.refill_allowed && o.provider_order_id && (st.key === 'completed' || st.key === 'partial')) {
+const waitH = o.last_refill_at ? Math.ceil((new Date(o.last_refill_at).getTime() + 24 * 3600000 - Date.now()) / 3600000) : 0;
+refillHtml = waitH > 0
+? '<div class="oc-refill-row"><button type="button" class="oc-refill" disabled><i class="fas fa-recycle"></i> اتبعت طلب إعادة تعبئة — متاحة تاني بعد ' + waitH + ' ساعة</button></div>'
+: '<div class="oc-refill-row"><button type="button" class="oc-refill" data-refill="' + o.id + '"><i class="fas fa-recycle"></i> إعادة تعبئة <small>لو حصل نقص في الطلب</small></button></div>';
+}
 return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st.pct + '%;animation-delay:' + Math.min(i, 8) * 60 + 'ms">' +
 '<div class="oc-top"><button type="button" class="oc-id oc-copy" data-copy="' + o.id + '" title="اضغط لنسخ رقم الطلب"><i class="far fa-copy"></i> #' + o.id + '</button><span class="oc-top-r"><span class="oc-badge">' + st.label + '</span>' +
 '<button type="button" class="oc-again" data-svc="' + escHtml(String(o.service_id || '')) + '" title="اطلب نفس الخدمة تاني" aria-label="اطلب نفس الخدمة تاني"><i class="fas fa-right-left"></i></button></span></div>' +
@@ -9559,6 +9587,7 @@ return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st
 '<div class="oc-track" style="--fill:' + railFill + '%"><div class="oc-rail"><span class="oc-rail-fill"></span></div><div class="oc-steps">' + stepHtml + '</div></div>' +
 '<div class="oc-stats">' + chips.join('') + '</div>' +
 (refunded > 0 ? '<div class="oc-refund"><i class="fas fa-rotate-left"></i> اترجعلك ' + refunded.toFixed(2) + ' ' + cur + ' في رصيدك</div>' : '') +
+refillHtml +
 '<div class="oc-foot">' + (safeLink ? '<a href="' + escHtml(safeLink) + '" target="_blank" rel="noopener" class="oc-link"><i class="fas fa-link"></i> الرابط</a>' : '<span></span>') +
 '<span class="oc-date"><i class="far fa-clock"></i> ' + dateStr + '</span>' +
 '<span class="oc-total">' + parseFloat(o.total || 0).toFixed(2) + ' ' + cur + '</span></div>' +
@@ -9567,7 +9596,24 @@ return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st
 container.innerHTML = html;
 container.querySelectorAll('.oc-filter').forEach(b => b.addEventListener('click', () => { myOrdersFilter = b.dataset.f; renderMyOrders(); }));
 container.querySelectorAll('.oc-again').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); window.__reorderService(b.dataset.svc); }));
+container.querySelectorAll('.oc-refill[data-refill]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); window.__refillMyOrder(Number(b.dataset.refill), b); }));
 }
+// ♻️ العميل بيطلب إعادة تعبئة بنفسه — السيرفر بيتأكد من كل حاجة ويبعتها للمزود
+window.__refillMyOrder = async function (id, btn) {
+if (!confirm('♻️ إعادة تعبئة الطلب #' + id + '؟\nاستخدمها لو العدد نقص بعد ما الطلب كمل.')) return;
+const old = btn.innerHTML;
+btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+let r = null;
+try {
+const sb = getSupabase();
+const { data, error } = await sb.functions.invoke('smm-api', { body: { action: 'refill_order', order_id: id } });
+r = data;
+if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { r = null; } }
+} catch (e) { r = null; }
+userToast(r && r.message ? r.message : '❌ حصل خطأ — حاول تاني', r && r.ok ? 'ok' : 'err');
+if (r && r.ok) { const o = myOrdersData.find(x => x.id === id); if (o) { o.last_refill_at = new Date().toISOString(); o.refill_count = (o.refill_count || 0) + 1; } renderMyOrders(); }
+else { btn.disabled = false; btn.innerHTML = old; if (r && r.error === 'no_refill') { const o = myOrdersData.find(x => x.id === id); if (o) { o.refill_allowed = false; renderMyOrders(); } } }
+};
 // 🔁 اطلب تاني: يفتح صفحة الخدمات على نفس الخدمة بالظبط (من غير بحث) — والعميل يكتب الرابط والكمية الجديدة
 window.__reorderService = function (svcId) {
 const svc = (window.__svcAll || []).find(s => String(s.dbId) === String(svcId));

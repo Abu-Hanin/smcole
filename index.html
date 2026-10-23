@@ -1427,6 +1427,9 @@ body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
   .svc-stat b { font-size: .76rem !important; }
 }
 .os-partial { background: rgba(245,158,11,0.14) !important; color: #FBBF24 !important; border: 1px solid rgba(245,158,11,0.35) !important; }
+.ord-counts { margin-top: 4px; display: flex; flex-direction: column; gap: 3px; align-items: center; font-size: .66rem; color: #CFC6F2; white-space: nowrap; }
+.ord-counts span { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25); padding: 2px 8px; border-radius: 10px; }
+.ord-counts b { color: #fff; direction: ltr; display: inline-block; }
 .api-order-chip { margin-top: 4px; font-size: .64rem; color: #A5F3FC; background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.3); padding: 2px 8px; border-radius: 10px; display: inline-flex; gap: 4px; align-items: center; white-space: nowrap; direction: ltr; }
 .api-order-chip.err { color: #FCA5A5; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); direction: rtl; }
 .api-svc-badge { font-size: .62rem; font-weight: 900; color: #A5F3FC; background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.35); padding: 1px 6px; border-radius: 8px; }
@@ -2513,7 +2516,9 @@ if (firstDone || playedThisVisit()) return; firstDone = true;
 const ok = await salawat();
 if (ok) { try { sessionStorage.setItem('smcole_sal_played', '1'); } catch (e) {} } else firstDone = false;
 }
-['pointerdown', 'keydown', 'touchstart'].forEach(ev => window.addEventListener(ev, () => { ac(); first(); }, { passive: true }));
+// الصوت بيتجهّز بعد تفاعل حقيقي بس (اللي المتصفح بيسمح بيه) — من غير تحذيرات في الكونسول
+const realGesture = () => !navigator.userActivation || navigator.userActivation.isActive;
+['pointerup', 'keyup', 'touchend', 'click'].forEach(ev => window.addEventListener(ev, () => { if (!realGesture()) return; ac(); first(); }, { passive: true }));
 window.addEventListener('load', () => { setTimeout(first, 600); try { speechSynthesis.getVoices(); } catch (e) {} });
 return { purchase, payment, salawat, setSfx: (on) => { try { localStorage.setItem('smcole_sfx', on ? 'on' : 'off'); } catch (e) {} },
 setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : 'off'); } catch (e) {} }, sfxOn, salOn };
@@ -6901,7 +6906,7 @@ const empty = document.getElementById('adminOrdersEmpty');
 if (!allOrdersData.length) { loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none'; }
 try {
 let res = await supabase.from('orders')
-.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error,refill_allowed,last_refill_at,refill_count')
+.select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error,refill_allowed,last_refill_at,refill_count,start_count')
 .order('created_at', { ascending: false })
 .limit(300);
 if (res.error) res = await supabase.from('orders').select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error').order('created_at', { ascending: false }).limit(300);
@@ -6950,8 +6955,15 @@ if (o.status === 'completed' && parseFloat(o.refunded || 0) > 0) st = ['status-c
 const cur = o.currency === 'USD' ? '$' : 'ج';
 const dateStr = o.created_at ? new Date(o.created_at).toLocaleDateString('ar-EG') : '-';
 const apiInfo = o.provider_order_id
-? '<div class="api-order-chip" title="' + (o.provider_status || '') + '"><i class="fas fa-plug"></i> API #' + o.provider_order_id + (o.provider_status ? ' · ' + o.provider_status : '') + (o.remains != null ? ' · متبقي ' + o.remains : '') + '</div>'
+? '<div class="api-order-chip" title="' + (o.provider_status || '') + '"><i class="fas fa-plug"></i> API #' + o.provider_order_id + (o.provider_status ? ' · ' + o.provider_status : '') + '</div>'
 : (o.api_error ? '<div class="api-order-chip err" title="' + String(o.api_error).replace(/"/g, '&quot;') + '"><i class="fas fa-triangle-exclamation"></i> فشل الإرسال للمزود</div>' : '');
+// 🚩 بدأ العدد من كام + ⏳ المتبقي (من المزود) — المكتمل متبقيه صفر
+const hasNum = (v) => v !== null && v !== undefined && v !== '';
+const remainsShow = o.status === 'completed' && !(parseFloat(o.refunded || 0) > 0) ? 0 : (hasNum(o.remains) ? Number(o.remains) : null);
+const cntInfo = (hasNum(o.start_count) || (remainsShow !== null && o.provider_order_id))
+? '<div class="ord-counts">' + (hasNum(o.start_count) ? '<span>🚩 بدأ من <b>' + Number(o.start_count).toLocaleString('en-US') + '</b></span>' : '') +
+(remainsShow !== null && o.status !== 'cancelled' ? '<span>⏳ المتبقي <b>' + Number(remainsShow).toLocaleString('en-US') + '</b></span>' : '') + '</div>'
+: '';
 let actBtns = '';
 if (o.status === 'pending' && o.provider_id && !o.provider_order_id) {
 // طلب API متعلّق (غالباً رصيدك عند المزود مكانش كفاية) → إعادة إرسال بعد ما تشحن
@@ -6973,7 +6985,7 @@ tr.innerHTML = '<td>#' + o.id + '</td>' +
 '<td>' + __esc(o.quantity) + ' ' + __esc(o.unit || '') + '</td>' +
 '<td style="color:#7C3AED; font-weight:700;">' + parseFloat(o.total || 0).toFixed(2) + ' ' + cur + '</td>' +
 '<td><a href="' + __safeUrl(o.link) + '" target="_blank" rel="noopener noreferrer" style="color:#A855F7;font-size:0.7rem;" title="' + __esc(o.link || '') + '">🔗 فتح</a></td>' +
-'<td><span class="status-badge ' + st[0] + '">' + st[1] + '</span>' + apiInfo + '</td>' +
+'<td><span class="status-badge ' + st[0] + '">' + st[1] + '</span>' + apiInfo + cntInfo + '</td>' +
 '<td>' + (o.provider_order_id ? '<button type="button" class="user-copy pid-copy" data-copy="' + __esc(o.provider_order_id) + '" data-label="معرف طلب المزود" title="اضغط للنسخ"><i class="far fa-copy"></i> ' + __esc(o.provider_order_id) + '</button>' : '<span style="color:#6B6490;font-size:.75rem;">—</span>') + '</td>' +
 '<td style="font-size:0.7rem;">' + dateStr + '</td>' +
 '<td class="admin-actions-cell">' + actBtns + '</td>';
@@ -7116,7 +7128,7 @@ if (error) throw new Error(error.message);
 orders = orders.concat(data || []);
 if (!data || data.length < 1000) break;
 }
-const svcIds = [...new Set(orders.map(o => String(o.service_id)).filter(Boolean))];
+const svcIds = [...new Set(orders.map(o => o.service_id).filter(v => v !== null && v !== undefined && /^\d+$/.test(String(v))).map(String))];
 const links = new Map();
 for (let i = 0; i < svcIds.length; i += 300) {
 const { data } = await supabase.from('api_service_links').select('service_id,provider_id,provider_rate,provider_type').in('service_id', svcIds.slice(i, i + 300));
@@ -7295,6 +7307,7 @@ await loadAdminOrders();
 // ==================== DEPOSITS ====================
 let allDepositsData = [];
 let depositsSearchTerm = '';
+let depositsSearchRows = null, __depSearchSeq = 0, __depSearchT = null;
 async function loadAdminDeposits() {
 const loader = document.getElementById('adminDepositsLoader');
 const table = document.getElementById('adminDepositsTable');
@@ -7334,6 +7347,7 @@ const totalEGP = monthlyEGP + (monthlyUSD * exchangeRate);
 const revEl = document.getElementById('adminMonthlyRevenue');
 if (revEl) revEl.innerText = totalEGP.toFixed(2) + ' ج';
 renderDepositsTable();
+if (depositsSearchTerm) searchAdminDeposits(depositsSearchTerm);
 } catch(e) {
 loader.style.display = 'none'; toast('خطأ: ' + e.message, true);
 }
@@ -7344,7 +7358,9 @@ const empty = document.getElementById('adminDepositsEmpty');
 const tbody = document.getElementById('adminDepositsBody');
 const term = depositsSearchTerm.toLowerCase();
 let list = allDepositsData;
-if (term) {
+// نتيجة البحث من قاعدة البيانات نفسها (كل عمليات العميل مش آخر 50 بس)
+if (term && depositsSearchRows && depositsSearchRows.term === depositsSearchTerm) list = depositsSearchRows.rows;
+else if (term) {
 list = list.filter(d =>
 (d.transaction_id || '').toLowerCase().includes(term) ||
 (d.sender_phone || '').toLowerCase().includes(term) ||
@@ -7389,12 +7405,43 @@ tr.innerHTML = '<td>#' + d.id + '</td>' +
 tbody.appendChild(tr);
 });
 }
+// 🔍 البحث في كل طلبات الإيداع (باليوزر أو الاسم أو رقم العملية أو الرقم اللي حوّل منه)
+async function searchAdminDeposits(term) {
+const seq = ++__depSearchSeq;
+const clean = String(term || '').replace(/[%_,()*\\"']/g, '').trim();
+if (clean.length < 2) return;
+const like = '%' + clean + '%';
+try {
+const { data: us } = await supabase.from('users').select('id,username,name').or('username.ilike.' + like + ',name.ilike.' + like).limit(50);
+const ors = ['transaction_id.ilike.' + like, 'sender_phone.ilike.' + like];
+const ids = (us || []).map(u => u.id).filter(v => v !== null && v !== undefined);
+if (ids.length) ors.push('user_id.in.(' + ids.join(',') + ')');
+const { data, error } = await supabase.from('deposit_requests')
+.select('id,user_id,method,amount,currency,transaction_id,sender_phone,screenshot,status,created_at,tx_log_id')
+.or(ors.join(','))
+.order('created_at', { ascending: false })
+.limit(1000);
+if (seq !== __depSearchSeq) return;
+if (error) { toast('خطأ في البحث: ' + error.message, true); return; }
+const um = {}; (us || []).forEach(u => um[u.id] = u);
+const missing = [...new Set((data || []).map(d => d.user_id).filter(id => id && !um[id]))];
+if (missing.length) { const { data: more } = await supabase.from('users').select('id,username,name').in('id', missing); (more || []).forEach(u => um[u.id] = u); }
+if (seq !== __depSearchSeq) return;
+(data || []).forEach(d => { d._user = um[d.user_id] || null; });
+depositsSearchRows = { term: term, rows: data || [] };
+renderDepositsTable();
+} catch (e) { if (seq === __depSearchSeq) toast('خطأ في البحث: ' + e.message, true); }
+}
+const depFind = (id) => allDepositsData.find(x => x.id === id) || (depositsSearchRows ? depositsSearchRows.rows.find(x => x.id === id) : undefined);
 document.getElementById('adminDepositSearch').addEventListener('input', (e) => {
 depositsSearchTerm = e.target.value.trim();
 renderDepositsTable();
+clearTimeout(__depSearchT);
+if (depositsSearchTerm) __depSearchT = setTimeout(() => searchAdminDeposits(depositsSearchTerm), 400);
+else { depositsSearchRows = null; ++__depSearchSeq; }
 });
 window.__adminViewScreenshot = function(id) {
-const d = allDepositsData.find(x => x.id === id);
+const d = depFind(id);
 if (!d || !d.screenshot) return;
 const img = document.getElementById('screenshotModalImg');
 const bg = document.getElementById('screenshotModalBg');
@@ -7428,7 +7475,7 @@ if (error) throw new Error(/function|schema cache/i.test(error.message) ? 'شغ�
 res = data;
 }
 if (res && res.ok) {
-const d = allDepositsData.find(x => x.id === id);
+const d = depFind(id);
 if (d && !d.tx_log_id) {
 const st = approve ? 'approved' : 'rejected';
 const updated = await updateTransactionStatus(d.user_id, d.method, parseFloat(d.amount), d.currency, st, '', null);
@@ -7449,13 +7496,13 @@ await loadAdminDeposits();
 }
 }
 window.__adminApproveDeposit = async function(id) {
-const d = allDepositsData.find(x => x.id === id);
+const d = depFind(id);
 if (!d || d.status !== 'pending') { await loadAdminDeposits(); return; }
 if (!confirm('تأكيد الإيداع وإضافة ' + d.amount + ' ' + (d.currency === 'USD' ? 'دولار' : 'جنيه') + ' لرصيد العميل؟')) return;
 await reviewDepositFromSite(id, true);
 };
 window.__adminRejectDeposit = async function(id) {
-const d = allDepositsData.find(x => x.id === id);
+const d = depFind(id);
 if (!d || d.status !== 'pending') { await loadAdminDeposits(); return; }
 if (!confirm('رفض طلب الإيداع؟')) return;
 await reviewDepositFromSite(id, false);
@@ -7476,7 +7523,13 @@ clearTimeout(t1); t1 = setTimeout(() => loadAdminDeposits(), 600);
 // ⚡ منعيدش تحميل الطلبات كلها غير لو حالة طلب اتغيرت فعلاً — وبس لو صفحة الطلبات مفتوحة
 const n = p && p.new; if (!n) return;
 const old = allOrdersData.find(o => String(o.id) === String(n.id));
-if (old && old.status === n.status && Number(old.refunded || 0) === Number(n.refunded || 0)) { Object.assign(old, n); return; }
+if (old && old.status === n.status && Number(old.refunded || 0) === Number(n.refunded || 0)) {
+Object.assign(old, n);
+// المتبقي / عدد البدء اتغيروا → نحدّث الصف ده بس في مكانه (الجدول مش بيترسم من الأول)
+const os = document.getElementById('adminSectionOrders');
+if (os && os.classList.contains('active') && document.visibilityState === 'visible') { clearTimeout(t2); t2 = setTimeout(() => renderOrdersTable(), 800); }
+return;
+}
 const sec = document.getElementById('adminSectionOrders');
 if (!sec || !sec.classList.contains('active') || document.visibilityState !== 'visible') { window.__adminOrdersDirty = true; return; }
 clearTimeout(t2); t2 = setTimeout(() => loadAdminOrders(), 800);
@@ -9610,9 +9663,11 @@ return '<div class="oc-step ' + cls + '"><span><i class="fas ' + s[0] + '"></i><
 const railFill = ((Math.min(4, Math.max(1, st.step)) - 1) / 3 * 100).toFixed(3);
 const chips = [];
 chips.push('<span><i class="fas fa-layer-group"></i> الكمية <b>' + qty.toLocaleString('en-US') + '</b></span>');
-if (o.start_count !== null && o.start_count !== undefined) chips.push('<span><i class="fas fa-flag"></i> البداية <b>' + Number(o.start_count).toLocaleString('en-US') + '</b></span>');
+if (o.start_count !== null && o.start_count !== undefined && o.start_count !== '') chips.push('<span><i class="fas fa-flag"></i> بدأ من <b>' + Number(o.start_count).toLocaleString('en-US') + '</b></span>');
 if (st.delivered !== null && st.delivered !== undefined && st.key !== 'pending') chips.push('<span><i class="fas fa-circle-check"></i> اتنفذ <b>' + Number(st.delivered).toLocaleString('en-US') + '</b></span>');
-if (o.remains !== null && o.remains !== undefined && (st.key === 'processing' || st.key === 'partial')) chips.push('<span><i class="fas fa-hourglass-half"></i> المتبقي <b>' + Number(o.remains).toLocaleString('en-US') + '</b></span>');
+// ⏳ المتبقي: بيقل لحد ما يوصل صفر = الطلب كمل
+const remN = st.key === 'completed' ? 0 : (o.remains !== null && o.remains !== undefined && o.remains !== '' ? Number(o.remains) : null);
+if (remN !== null && st.key !== 'cancelled' && st.key !== 'pending') chips.push('<span><i class="fas fa-hourglass-half"></i> المتبقي <b>' + remN.toLocaleString('en-US') + '</b></span>');
 const refunded = parseFloat(o.refunded || 0);
 const safeLink = /^https?:\/\//i.test(o.link || '') ? o.link : '';
 // ♻️ إعادة التعبئة: بتظهر بس لو خدمة المزود عليها إعادة تعبئة والطلب مكتمل

@@ -2398,6 +2398,11 @@ body { background-attachment: scroll !important; }
 </style>
 </head>
 <body class="is-guest">
+<script>
+// 🔐 بعد الريفريش: لو الجلسة محفوظة على الجهاز نفتح الموقع وهو مسجل على طول (من غير ما يبان كأنه سجل خروج ورجع)
+window.__smHasToken = function () { try { const v = JSON.parse(localStorage.getItem('sb-bqiryyoanqleobzlztbl-auth-token') || 'null'); return !!(v && (v.refresh_token || (v.currentSession && v.currentSession.refresh_token))); } catch (e) { return false; } };
+if (window.__smHasToken()) document.body.classList.remove('is-guest');
+</script>
 
 <div id="welcomeOverlay" class="welcome-overlay">
 <div class="welcome-card">
@@ -8268,6 +8273,13 @@ if (session && session.expires_at && session.expires_at * 1000 < Date.now() + 30
 try { const r = await sb.auth.refreshSession(); if (r && r.data && r.data.session) session = r.data.session; } catch (e) {}
 }
 if (!session || !session.user) {
+// الجلسة لسه محفوظة على الجهاز (التجديد اتأخر / نت ضعيف) → دي مش خروج: نفضل مسجلين ونحاول تاني
+if (window.__smHasToken && window.__smHasToken() && (window.__noSessTries = (window.__noSessTries || 0) + 1) <= 6) {
+clearTimeout(window.__profileRetry);
+window.__profileRetry = setTimeout(refreshUserUI, 2500);
+return;
+}
+window.__noSessTries = 0;
 currentUser = null; currentProfile = null; window.currentProfile = null;
 window.isAdminUser = false;
 const chip = document.getElementById('userBalanceChip');
@@ -8279,6 +8291,7 @@ window.__userRealtimeChannel = null;
 applyRoleUI();
 return;
 }
+window.__noSessTries = 0;
 currentUser = session.user;
 window.isAdminUser = isAdminEmail(session.user.email);
 const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', session.user.id).maybeSingle();
@@ -10676,6 +10689,8 @@ let __authRefreshTimer = null;
 sb.auth.onAuthStateChange((event, session) => {
 // Supabase بيبعت "SIGNED_IN" مع كل تحديث للصفحة وكل رجوع للموقع حتى لو مفيش حاجة اتغيرت
 // → منعيدش تحميل كل حاجة إلا لو الحساب نفسه اتغير (دخول جديد / خروج / تعديل)
+// التجديد خلص بعد ما الصفحة فتحت والحساب لسه مش ظاهر → نحمّله فوراً
+if (event === 'TOKEN_REFRESHED' && session && session.user && !currentUser) { refreshUserUI(); return; }
 if (event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED') return; // أول تحميل بيتعمل من initUserSystem
 if (event === 'SIGNED_IN' && session && session.user && currentUser && currentUser.id === session.user.id && (currentProfile || window.isAdminUser)) return;
 clearTimeout(__authRefreshTimer);

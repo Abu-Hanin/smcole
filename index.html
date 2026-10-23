@@ -343,6 +343,9 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .as-copy { display: inline-flex; align-items: center; gap: 5px; margin: 2px 0; padding: 2px 9px; border-radius: 8px; background: rgba(168,85,247,.14); border: 1px solid rgba(168,85,247,.35); color: #E9D5FF; font-size: .72rem; font-weight: 700; cursor: pointer; direction: ltr; width: fit-content; transition: .2s; }
 .as-copy:hover { background: rgba(168,85,247,.28); }
 .as-copy.copied { background: #16a34a; border-color: transparent; color: #fff; }
+.au-cur { display: inline-flex; border-radius: 40px; overflow: hidden; border: 1px solid rgba(34,197,94,.45); }
+.au-cur-btn { padding: 9px 14px; border: none; background: rgba(34,197,94,.06); color: #A7F3D0; font-family: inherit; font-weight: 800; font-size: .85rem; cursor: pointer; }
+.au-cur-btn.active { background: linear-gradient(135deg, #16a34a, #22c55e); color: #fff; }
 .dep-limit-box { display: flex; gap: 12px; align-items: flex-start; text-align: right; padding: 14px 16px; border-radius: 16px; background: linear-gradient(160deg, rgba(251,191,36,.12), rgba(251,191,36,.04)); border: 1px solid rgba(251,191,36,.45); color: #FDE68A; line-height: 1.75; }
 .dep-limit-box > i { font-size: 1.4rem; color: #FBBF24; margin-top: 4px; flex-shrink: 0; }
 .dep-limit-box b { display: block; color: #fff; font-size: .95rem; margin-bottom: 2px; }
@@ -3570,13 +3573,14 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="au-sort" role="group" aria-label="ترتيب المستخدمين">
 <button type="button" class="au-sort-btn active" data-sort="new"><i class="fas fa-clock"></i> الأحدث</button>
 <button type="button" class="au-sort-btn" data-sort="money"><i class="fas fa-coins"></i> حسب الرصيد <i class="fas fa-arrow-down-wide-short au-dir"></i></button>
+<span class="au-cur" role="group" aria-label="عملة العرض"><button type="button" class="au-cur-btn active" data-cur="EGP">ج جنيه</button><button type="button" class="au-cur-btn" data-cur="USD">$ دولار</button></span>
 <button type="button" class="au-sort-btn au-refresh" id="adminUsersRefresh" title="تحديث القايمة"><i class="fas fa-rotate"></i></button>
 </div>
 </div>
 <div class="admin-table-wrap">
 <div id="adminUsersLoader" class="admin-loader" style="display:none;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
 <table class="admin-table" id="adminUsersTable" style="display:none;">
-<thead><tr><th>#</th><th>اليوزر</th><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th>الرصيد (جنيه)</th><th>الرصيد (دولار)</th><th>إجمالي الإيداع</th><th>الحالة</th><th>الرسائل</th><th>إجراءات</th></tr></thead>
+<thead><tr><th>#</th><th>اليوزر</th><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th id="auBalHead">الرصيد (جنيه)</th><th>إجمالي الإيداع</th><th>الحالة</th><th>الرسائل</th><th>إجراءات</th></tr></thead>
 <tbody id="adminUsersBody"></tbody>
 </table>
 <div id="adminUsersEmpty" class="admin-empty" style="display:none;"><i class="fas fa-users" style="font-size:2.5rem; color:#A855F7; margin-bottom:1rem;"></i><p>لا يوجد مستخدمون بعد.</p></div>
@@ -6487,11 +6491,14 @@ if (!box || !t) return;
 const fx = Number(t.fx) || window.exchangeRate || 50;
 const egp = Number(t.egp) || 0, usd = Number(t.usd) || 0;
 const allEgp = egp + usd * fx, allUsd = allEgp / fx, holders = Number(t.holders) || 0;
-box.innerHTML = auMoney(allEgp) + ' <span>جنيه</span>';
-const ue = document.getElementById('adminUsersMoneyUsd'); if (ue) ue.innerHTML = '≈ <b>$' + auMoney(allUsd) + '</b> دولار';
+try { __auLastTotals = t; } catch (e) {}
+const inUsd = window.__auCur === 'USD';
+box.innerHTML = inUsd ? '$' + auMoney(allUsd) + ' <span>دولار</span>' : auMoney(allEgp) + ' <span>جنيه</span>';
+const ue = document.getElementById('adminUsersMoneyUsd'); if (ue) ue.innerHTML = inUsd ? '≈ <b>' + auMoney(allEgp) + '</b> جنيه' : '≈ <b>$' + auMoney(allUsd) + '</b> دولار';
 sub.innerHTML =
 '<span class="aum-chip"><i class="fas fa-users"></i> مع <b>' + holders + '</b> عميل</span>' +
-'<span class="aum-chip"><i class="fas fa-scale-balanced"></i> متوسط <b>' + auMoney(holders ? allEgp / holders : 0) + '</b> ج للعميل</span>' +
+'<span class="aum-chip"><i class="fas fa-scale-balanced"></i> متوسط <b>' + (inUsd ? '$' + auMoney(holders ? allUsd / holders : 0) : auMoney(holders ? allEgp / holders : 0) + '</b> ج') + (inUsd ? '</b>' : '') + ' للعميل</span>' +
+'<span class="aum-chip"><i class="fas fa-coins"></i> منهم <b>' + auMoney(egp) + '</b> ج + <b>$' + auMoney(usd) + '</b></span>' +
 '<span class="aum-chip"><i class="fas fa-dollar-sign"></i> سعر الدولار <b>' + auMoney(fx) + '</b> ج</span>' +
 (t.approx ? '<span class="aum-chip warn">من آخر 50 عميل بس</span>' : '');
 if (t.users != null) document.getElementById('adminTotalUsers').innerText = auMoney(t.users);
@@ -6546,6 +6553,16 @@ const s = document.getElementById('adminUserSearch'); if (s) s.value = ''; users
 loadAdminUsers();
 }));
 document.getElementById('adminUsersRefresh').addEventListener('click', () => loadAdminUsers());
+// 💱 عرض أرصدة العملاء بالجنيه أو بالدولار (عرض بس — الأرصدة نفسها مبتتغيرش)
+window.__auCur = 'EGP';
+let __auLastTotals = null;
+document.querySelectorAll('.au-cur-btn').forEach(b => b.addEventListener('click', () => {
+window.__auCur = b.dataset.cur;
+document.querySelectorAll('.au-cur-btn').forEach(x => x.classList.toggle('active', x === b));
+document.getElementById('auBalHead').textContent = window.__auCur === 'USD' ? 'الرصيد (دولار)' : 'الرصيد (جنيه)';
+renderUsersTable();
+if (__auLastTotals) renderUsersMoney(__auLastTotals);
+}));
 // 🆕 أي عميل جديد يسجل (بالإيميل أو بجوجل) → القايمة بتتحدث لوحدها
 let __newUsersCh = null, __newUsersT = null;
 function watchNewUsers() {
@@ -6600,8 +6617,7 @@ tr.innerHTML = '<td>' + (usersSort !== 'new' && !term ? '<span class="au-rank' +
 '<td>' + uEsc(u.name || '-') + '</td>' +
 '<td style="font-size:0.75rem;">' + uEsc(u.email || '-') + '</td>' +
 '<td>' + uEsc(u.phone || '-') + '</td>' +
-'<td style="color:#4ADE80; font-weight:800;">' + auBal(u).egp.toFixed(2) + '</td>' +
-'<td style="color:#A855F7; font-weight:700;">' + auBal(u).usd.toFixed(2) + '</td>' +
+'<td style="color:#4ADE80; font-weight:800; direction:ltr;">' + (window.__auCur === 'USD' ? '$' + auBal(u).usd.toFixed(2) : auBal(u).egp.toFixed(2) + ' ج') + '</td>' +
 '<td class="user-dep-total" data-uid="' + u.id + '">' + depTotalHtml(dep) + '</td>' +
 '<td>' + statusBadge + '</td>' +
 '<td><button type="button" class="user-msg-btn" data-uid="' + u.id + '"><i class="fas fa-comments"></i> الرسائل</button></td>' +

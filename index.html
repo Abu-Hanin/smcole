@@ -2198,6 +2198,11 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .st-completed .oc-rail-fill, .st-partial .oc-rail-fill { animation: ocRailIn 1.3s cubic-bezier(.2,.9,.3,1) both, ocRailStripes 2.2s linear infinite; }
 .st-cancelled .oc-rail-fill { background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.25) 0 6px, transparent 6px 12px), linear-gradient(270deg, #F87171, #DC2626); }
 @keyframes ocRailIn { from { width: 0; } }
+/* البطاقة اللي بتتحدّث وهي ظاهرة: من غير حركة الدخول من الأول */
+.oc3d.oc-noanim { animation: none; }
+.oc3d.oc-noanim .oc-rail-fill { animation: ocRailStripes .7s linear infinite; transition: width .6s ease; }
+.oc3d.oc-noanim.st-completed .oc-rail-fill, .oc3d.oc-noanim.st-partial .oc-rail-fill { animation: ocRailStripes 2.2s linear infinite; }
+.oc3d.oc-noanim .oc-fill { animation: none; }
 @keyframes ocRailStripes { to { background-position: 20px 0, 0 0; } }
 .oc-track .oc-step { min-width: var(--stepw); width: var(--stepw); }
 .oc-track .oc-step span { position: relative; }
@@ -6892,7 +6897,8 @@ async function loadAdminOrders() {
 const loader = document.getElementById('adminOrdersLoader');
 const table = document.getElementById('adminOrdersTable');
 const empty = document.getElementById('adminOrdersEmpty');
-loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
+// أول تحميل بس اللي بيظهر فيه "جاري التحميل" — بعد كده التحديث بيحصل جوه الجدول من غير ما يختفي أو يتحرك
+if (!allOrdersData.length) { loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none'; }
 try {
 let res = await supabase.from('orders')
 .select('id,user_username,service_name,quantity,unit,total,currency,link,status,created_at,user_id,service_number,price,user_name,refunded,remains,provider_id,provider_order_id,provider_status,api_error,refill_allowed,last_refill_at,refill_count')
@@ -6932,9 +6938,12 @@ String(o.provider_order_id || '').includes(term)
 }
 if (list.length === 0) { table.style.display = 'none'; empty.style.display = 'block'; return; }
 table.style.display = 'table'; empty.style.display = 'none';
-tbody.innerHTML = '';
+// الصفوف اللي متغيرتش بتفضل زي ما هي (من غير ما الجدول يترسم من الأول)
+const prevRows = new Map([...tbody.children].map(r => [r.dataset.oid, r]));
+const nextRows = [];
 list.forEach((o, i) => {
 const tr = document.createElement('tr');
+tr.dataset.oid = String(o.id);
 const stMap = { pending: ['status-pending','⏳ قيد الانتظار'], processing: ['status-processing','🔄 جاري التنفيذ'], completed: ['status-completed','✅ تم التنفيذ'], cancelled: ['status-cancelled','❌ ملغي'] };
 let st = stMap[o.status] || ['status-pending','—'];
 if (o.status === 'completed' && parseFloat(o.refunded || 0) > 0) st = ['status-completed','⚠️ جزئي'];
@@ -6968,8 +6977,10 @@ tr.innerHTML = '<td>#' + o.id + '</td>' +
 '<td>' + (o.provider_order_id ? '<button type="button" class="user-copy pid-copy" data-copy="' + __esc(o.provider_order_id) + '" data-label="معرف طلب المزود" title="اضغط للنسخ"><i class="far fa-copy"></i> ' + __esc(o.provider_order_id) + '</button>' : '<span style="color:#6B6490;font-size:.75rem;">—</span>') + '</td>' +
 '<td style="font-size:0.7rem;">' + dateStr + '</td>' +
 '<td class="admin-actions-cell">' + actBtns + '</td>';
-tbody.appendChild(tr);
+const prev = prevRows.get(tr.dataset.oid);
+nextRows.push(prev && prev.innerHTML === tr.innerHTML ? prev : tr);
 });
+tbody.replaceChildren(...nextRows);
 }
 document.getElementById('adminOrderSearch').addEventListener('input', (e) => {
 ordersSearchTerm = e.target.value.trim();
@@ -8159,7 +8170,7 @@ if (currentProfile) {
 if (nameEl) nameEl.innerText = currentProfile.name || currentProfile.username || 'مستخدم';
 if (subEl) subEl.innerText = '@' + (currentProfile.username || '');
 if (avEl) {
-if (currentProfile.avatar) avEl.innerHTML = '<img src="' + currentProfile.avatar + '" alt="">';
+if (currentProfile.avatar) avEl.innerHTML = '<img src="' + String(currentProfile.avatar).replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" alt="">';
 else avEl.innerText = (currentProfile.name || currentProfile.username || '?').trim().charAt(0).toUpperCase();
 }
 } else if (currentUser) {
@@ -8234,6 +8245,20 @@ const valEl = document.getElementById('dropdownBalance');
 if (valEl) valEl.innerText = formatBalance(unified) + ' ' + (currentCurrency === 'USD' ? '$' : 'ج');
 const pbVal = document.getElementById('profileBalanceVal');
 if (pbVal) pbVal.innerHTML = formatBalance(unified) + ' <span class="pb-cur">' + getCurrencyLabel() + '</span>';
+// نسخة على الجهاز: بعد الريفريش الاسم والرصيد بيظهروا فوراً لحد ما البيانات الحقيقية توصل
+try { localStorage.setItem('smcole_ui', JSON.stringify({ n: currentProfile.name || currentProfile.username || '', u: currentProfile.username || '', b: valEl ? valEl.innerText : '' })); } catch (e) {}
+};
+// عرض الاسم والرصيد المحفوظين فوراً بعد الريفريش (لو الجلسة محفوظة)
+window.__smShowCachedUser = function () {
+try {
+if (currentProfile || !(window.__smHasToken && window.__smHasToken())) return;
+const c = JSON.parse(localStorage.getItem('smcole_ui') || 'null'); if (!c) return;
+const n = document.getElementById('drawerUserName'); if (n && c.n) n.innerText = c.n;
+const s = document.getElementById('drawerUserSub'); if (s && c.u) s.innerText = '@' + c.u;
+const a = document.getElementById('drawerAvatar'); if (a && c.n) a.innerText = String(c.n).trim().charAt(0).toUpperCase();
+const v = document.getElementById('dropdownBalance'); if (v && c.b) v.innerText = c.b;
+const chip = document.getElementById('userBalanceChip'); if (chip && c.b) chip.style.display = 'flex';
+} catch (e) {}
 };
 
 window.refreshCurrencyButtons = function() {
@@ -8280,6 +8305,8 @@ window.__profileRetry = setTimeout(refreshUserUI, 2500);
 return;
 }
 window.__noSessTries = 0;
+window.__authGaveUp = true;
+try { localStorage.removeItem('smcole_ui'); } catch (e) {}
 currentUser = null; currentProfile = null; window.currentProfile = null;
 window.isAdminUser = false;
 const chip = document.getElementById('userBalanceChip');
@@ -8289,6 +8316,7 @@ try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
 window.__userRealtimeChannel = null;
 }
 applyRoleUI();
+if (!window.__routeRestored && window.__restoreRoute && window.__userSystemReady) window.__restoreRoute();
 return;
 }
 window.__noSessTries = 0;
@@ -8304,6 +8332,7 @@ if (chip) chip.style.display = currentProfile ? 'flex' : 'none';
 if (currentProfile) { window.refreshBalanceUI(); window.refreshCurrencyButtons(); subscribeToUserRealtime(); }
 applyRoleUI();
 hideAuthModal();
+if (!window.__routeRestored && window.__restoreRoute && window.__userSystemReady) window.__restoreRoute();
 return;
 }
 if (error) {
@@ -8369,6 +8398,8 @@ window.refreshCurrencyButtons();
 subscribeToUserRealtime();
 applyRoleUI();
 hideAuthModal();
+// الحساب حمّل متأخر (بعد الريفريش) → نكمّل فتح الصفحة اللي كان فيها
+if (!window.__routeRestored && window.__restoreRoute && window.__userSystemReady) window.__restoreRoute();
 if (window.__oauthJustIn || /[#&?](access_token|code)=/.test(location.href)) {
 window.__oauthJustIn = false;
 try { history.replaceState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
@@ -8628,7 +8659,7 @@ if (nameEl) nameEl.innerText = currentProfile.name || 'مستخدم';
 if (usernameEl) usernameEl.innerText = '@' + (currentProfile.username || 'user');
 if (avatarEl) {
 if (currentProfile.avatar) {
-avatarEl.innerHTML = '<img src="' + currentProfile.avatar + '" alt="avatar">';
+avatarEl.innerHTML = '<img src="' + String(currentProfile.avatar).replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" alt="avatar">';
 } else {
 avatarEl.innerHTML = (currentProfile.name || currentProfile.username || '?').trim().charAt(0).toUpperCase();
 }
@@ -9213,7 +9244,7 @@ renderNotifs();
 if (!n.is_read) { userToast('🔔 ' + n.title, 'ok'); ringBell(); }
 showSystemNotif(n);
 // تحديث الصفحات المفتوحة
-if (n.link === 'orders' && window.__currentRoute === 'orders' && window.loadMyOrders) window.loadMyOrders();
+if (n.link === 'orders' && window.__currentRoute === 'orders' && window.loadMyOrders) window.loadMyOrders(true);
 if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
 })
 .subscribe();
@@ -9592,7 +9623,7 @@ refillHtml = waitH > 0
 ? '<div class="oc-refill-row"><button type="button" class="oc-refill" disabled><i class="fas fa-recycle"></i> اتبعت طلب إعادة تعبئة — متاحة تاني بعد ' + waitH + ' ساعة</button></div>'
 : '<div class="oc-refill-row"><button type="button" class="oc-refill" data-refill="' + o.id + '"><i class="fas fa-recycle"></i> إعادة تعبئة <small>لو حصل نقص في الطلب</small></button></div>';
 }
-return '<div class="oc3d st-' + st.key + '" style="--pc:' + color + ';--p:' + st.pct + '%;animation-delay:' + Math.min(i, 8) * 60 + 'ms">' +
+return '<div class="oc3d st-' + st.key + '" data-oid="' + o.id + '" style="--pc:' + color + ';--p:' + st.pct + '%;animation-delay:' + Math.min(i, 8) * 60 + 'ms">' +
 '<div class="oc-top"><button type="button" class="oc-id oc-copy" data-copy="' + o.id + '" title="اضغط لنسخ رقم الطلب"><i class="far fa-copy"></i> #' + o.id + '</button><span class="oc-top-r"><span class="oc-badge">' + st.label + '</span>' +
 '<button type="button" class="oc-again" data-svc="' + escHtml(String(o.service_id || '')) + '" title="اطلب نفس الخدمة تاني" aria-label="اطلب نفس الخدمة تاني"><i class="fas fa-right-left"></i></button></span></div>' +
 '<div class="oc-main"><div class="oc-ico"><i class="' + icon + '"></i></div><div class="oc-name">' + escHtml(o.service_name || '-') + '</div></div>' +
@@ -9606,10 +9637,36 @@ refillHtml +
 '<span class="oc-total">' + parseFloat(o.total || 0).toFixed(2) + ' ' + cur + '</span></div>' +
 '</div>';
 }).join('') + '</div>';
-container.innerHTML = html;
-container.querySelectorAll('.oc-filter').forEach(b => b.addEventListener('click', () => { myOrdersFilter = b.dataset.f; renderMyOrders(); }));
-container.querySelectorAll('.oc-again').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); window.__reorderService(b.dataset.svc); }));
-container.querySelectorAll('.oc-refill[data-refill]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); window.__refillMyOrder(Number(b.dataset.refill), b); }));
+smMorphOrders(container, html);
+if (!container.__ocBound) {
+container.__ocBound = true;
+container.addEventListener('click', (e) => {
+const f = e.target.closest('.oc-filter'); if (f) { myOrdersFilter = f.dataset.f; renderMyOrders(); return; }
+const a = e.target.closest('.oc-again'); if (a) { e.stopPropagation(); window.__reorderService(a.dataset.svc); return; }
+const r = e.target.closest('.oc-refill[data-refill]'); if (r && !r.disabled) { e.stopPropagation(); window.__refillMyOrder(Number(r.dataset.refill), r); }
+});
+}
+}
+// 🔄 تحديث هادي: البطايق بتفضل ثابتة مكانها — اللي اتغير فيها الأرقام/الحالة بس هو اللي بيتحدّث (من غير ما الصفحة ترمش)
+function smMorphOrders(container, html) {
+const tmp = document.createElement('div'); tmp.innerHTML = html;
+const oldList = container.querySelector('.oc-list'), newList = tmp.querySelector('.oc-list');
+if (!oldList || !newList) { container.innerHTML = html; return; }
+const oldF = container.querySelector('.oc-filters'), newF = tmp.querySelector('.oc-filters');
+if (oldF && newF && oldF.innerHTML !== newF.innerHTML) oldF.innerHTML = newF.innerHTML;
+const oldE = container.querySelector('.empty-orders'), newE = tmp.querySelector('.empty-orders');
+if (oldE && !newE) oldE.remove(); else if (!oldE && newE) oldList.before(newE); else if (oldE && newE && oldE.innerHTML !== newE.innerHTML) oldE.innerHTML = newE.innerHTML;
+const prev = new Map([...oldList.children].map(c => [c.dataset.oid, c]));
+const st = (el) => (el.getAttribute('style') || '').replace(/animation-delay:[^;]*;?/, '');
+const cls = (el) => el.className.replace(/\s*oc-noanim/, '');
+const next = [...newList.children].map(c => {
+const p = prev.get(c.dataset.oid);
+if (!p) return c;
+if (cls(p) !== cls(c) || st(p) !== st(c)) { p.className = c.className + ' oc-noanim'; p.setAttribute('style', c.getAttribute('style') || ''); }
+if (p.innerHTML !== c.innerHTML) { p.innerHTML = c.innerHTML; p.classList.add('oc-noanim'); }
+return p;
+});
+if (next.length !== oldList.children.length || next.some((n, i) => oldList.children[i] !== n)) oldList.replaceChildren(...next);
 }
 // ♻️ العميل بيطلب إعادة تعبئة بنفسه — السيرفر بيتأكد من كل حاجة ويبعتها للمزود
 window.__refillMyOrder = async function (id, btn) {
@@ -9658,7 +9715,8 @@ page.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
 async function loadMyOrders(silent) {
 if (!currentProfile) return;
 const container = document.getElementById('myOrdersContainer');
-if (!silent) container.innerHTML = '<div style="text-align:center;padding:3rem;"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#A855F7;"></i></div>';
+// علامة التحميل بتظهر أول مرة بس — بعد كده البطايق بتفضل ظاهرة وبتتحدّث في مكانها
+if (!silent && !container.querySelector('.oc-list')) container.innerHTML = '<div style="text-align:center;padding:3rem;"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#A855F7;"></i></div>';
 try {
 const { data, error } = await sb.from('orders').select('*').eq('user_id', currentProfile.id).order('created_at', { ascending: false }).limit(300);
 if (error) throw error;
@@ -10366,6 +10424,9 @@ window.__navigateTo('payment', document.getElementById('paymentPage'), true);
 }, 500);
 
 async function initUserSystem() {
+// الصفحة اللي كان فيها العميل بتظهر فوراً (من غير ما الشاشة تسمرّ لحد ما الحساب يحمّل)
+try { window.__restoreRoute('early'); } catch (e) {}
+if (window.__smShowCachedUser) window.__smShowCachedUser();
 await refreshUserUI();
 const origOpenPanel = window.openAdminPanel;
 if (typeof origOpenPanel === 'function') {
@@ -10374,16 +10435,50 @@ origOpenPanel(user);
 setTimeout(() => { if (window.loadAdminUsers) window.loadAdminUsers(); }, 300);
 };
 }
+window.__userSystemReady = true;
 window.__restoreRoute();
 }
 // 🔄 بعد التحديث: نرجّع العميل لنفس الصفحة اللي كان فيها بالظبط
 window.__routeRestored = false;
-window.__restoreRoute = function (fallback) {
+// mode: 'early' = أول ما الصفحة تفتح (قبل ما الحساب يحمّل) | true = احتياطي بعد 4 ثواني | فاضي = بعد ما الحساب حمّل
+window.__restoreRoute = function (mode) {
 if (window.__routeRestored) return;
-window.__routeRestored = true;
+const fallback = mode === true;
 const h = window.__initialHash || '';
 const nav = (r, id) => window.__navigateTo(r, document.getElementById(id), false);
 const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot)$/.test(h);
+const USER_PAGES = { 'admin-panel': null, affiliate: 'affiliatePage', support: 'supportPage', profile: 'profilePage', orders: 'myOrdersPage' };
+const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, h);
+const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
+// ⚡ الصفحات العامة بتفتح فوراً — من غير ما الشاشة تفضل فاضية لحد ما الحساب يحمّل
+if (mode === 'early') {
+if (needsUser) {
+// صفحة محتاجة الحساب: نعرض مكانها على طول، وبياناتها بتتحمّل أول ما الحساب يجهز
+const pid = isDeposit ? 'depositPage' : USER_PAGES[h];
+if (hasToken && pid) {
+window.__setPageVisibility(document.getElementById(pid));
+document.body.setAttribute('data-route', h);
+if (isDeposit && window.__showDepositView) window.__showDepositView(h.replace('deposit-', ''));
+document.body.classList.remove('route-restoring');
+}
+return;
+}
+window.__routeRestored = true;
+try {
+if (!h) { if (hasToken) nav('services', 'servicesPage'); } // فتح الموقع وهو مسجل → الخدمات
+else if (h === 'services') nav('services', 'servicesPage');
+else if (h === 'terms') nav('terms', 'termsPage');
+else if (h === 'payment') nav('payment', 'paymentPage');
+else if (h === 'favorites') nav('favorites', 'favoritesPage');
+} catch (e) { console.warn('restore route:', e); }
+document.body.classList.remove('route-restoring');
+return;
+}
+// الاحتياطي: لو الجلسة لسه محفوظة والحساب بيحمّل، منرجعش العميل للرئيسية
+if (fallback && needsUser && hasToken && !currentProfile) return;
+// الحساب لسه بيحمّل (التجديد اتأخر) → نستنى، وأول ما يحمّل الصفحة بتكمل لوحدها
+if (!fallback && needsUser && hasToken && !currentProfile && !window.isAdminUser) return;
+window.__routeRestored = true;
 try {
 if (h === 'admin-panel' && window.isAdminUser) adminGoTab('users');
 else if (!h) { if (currentUser && !fallback) nav('services', 'servicesPage'); } // فتح الموقع من جديد وهو مسجل → الخدمات

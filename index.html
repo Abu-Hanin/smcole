@@ -2246,6 +2246,16 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .smd-cancel { border: 1px solid rgba(255,255,255,0.14); color: #E9D5FF; background: rgba(255,255,255,0.06); }
 .smd-cancel:hover { background: rgba(255,255,255,0.1); }
 .smd-btns button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* ⚡ Binance Pay تلقائي */
+.bn-auto-pill { display: inline-flex; align-items: center; gap: 4px; margin-inline-start: 6px; padding: 2px 10px; border-radius: 20px; font-size: .7rem; font-weight: 800; color: #111; background: linear-gradient(135deg, #F0B90B, #FCD535); vertical-align: middle; box-shadow: 0 4px 12px rgba(240,185,11,0.35); }
+.bn-auto-note { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(240,185,11,0.08); border: 1px solid rgba(240,185,11,0.3); color: #F5E6B0; font-size: .82rem; line-height: 1.7; }
+.bn-auto-note i { color: #F0B90B; margin-top: 4px; }
+.bn-auto-form h3 i { color: #F0B90B; }
+.bn-auto-form input { letter-spacing: .5px; font-weight: 700; }
+.bn-ok { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 14px; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.4); color: #BBF7D0; text-align: right; }
+.bn-ok i { font-size: 1.5rem; color: #22C55E; }
+.bn-ok b { display: block; color: #fff; }
+.bn-ok span { font-size: .78rem; }
 .oc-refill-row { margin: 0 0 10px; }
 .oc-refill { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; border-radius: 13px; border: 1px solid rgba(34,197,94,0.45); background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(16,185,129,0.12)); color: #BBF7D0; font: inherit; font-weight: 800; font-size: .85rem; cursor: pointer; transition: transform .2s, box-shadow .2s; }
 .oc-refill small { font-weight: 600; font-size: .7rem; color: #86EFAC; opacity: .85; }
@@ -2932,7 +2942,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <img id="pscLogoBinanceImg" style="display:none;" alt="Binance">
 <span class="psc-logo-text">₿</span>
 </div>
-<div class="psc-info"><h3>باينانس باي</h3><p>الدفع عن طريق منصة Binance العالمية</p></div>
+<div class="psc-info"><h3>باينانس باي <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>الرصيد بيتضاف فوراً — بدون حد أدنى</p></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
@@ -3112,7 +3122,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </button>
 <button type="button" class="pay-card3d" data-goto="payment" style="--c1:#F0B90B;--c2:#9A7400">
 <span class="pc3-logo dark"><img data-pay-logo="binance" alt="" hidden><i class="fab fa-bitcoin"></i></span>
-<b>باينانس باي</b><small>Binance Pay ID</small><em><i class="fas fa-globe"></i> عالمي</em>
+<b>باينانس باي</b><small>Binance Pay ID</small><em><i class="fas fa-bolt"></i> تلقائي فوراً</em>
 </button>
 <button type="button" class="pay-card3d" data-goto="payment" style="--c1:#26A17B;--c2:#0F5A43">
 <span class="pc3-logo"><img data-pay-logo="usdt" alt="" hidden><i class="fas fa-coins"></i></span>
@@ -3426,9 +3436,9 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="deposit-info">
 <div class="deposit-brand-header">
 <div class="deposit-brand-logo binance">₿</div>
-<div class="deposit-brand-title"><h2>Binance Pay</h2><p>الدفع عن طريق منصة بينانس العالمية</p></div>
+<div class="deposit-brand-title"><h2>Binance Pay <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>الرصيد بيتضاف لحسابك فوراً بعد التحويل — من غير مراجعة</p></div>
 </div>
-<p>قم بالتحويل عن طريق Binance Pay إلى معرف Binance التالي:</p>
+<p>حوّل أي مبلغ <b>USDT</b> عن طريق Binance Pay إلى المعرف ده:</p>
 <div class="deposit-number-row">
 <div class="deposit-number" id="binanceNumber">746211155</div>
 <button class="deposit-copy-btn" type="button" id="binanceCopyBtn" data-copy="746211155"><i class="fas fa-copy"></i> نسخ</button>
@@ -3436,27 +3446,17 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="deposit-steps">
 <div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق Binance → اختر "Pay"</span></div>
 <div class="step-item"><span class="step-num">2</span><span class="step-text">اختر "Send" واكتب المعرف: <b id="binanceIdStep2">746211155</b></span></div>
-<div class="step-item"><span class="step-num">3</span><span class="step-text">أدخل المبلغ بالدولار وأكد</span></div>
-<div class="step-item"><span class="step-num">4</span><span class="step-text">احتفظ بلقطة الشاشة</span></div>
-<div class="step-item"><span class="step-num">5</span><span class="step-text">ارجع هنا واملأ البيانات</span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب أي مبلغ <b>USDT</b> وأكد التحويل</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">افتح تفاصيل التحويل وانسخ <b>رقم الطلب (Order ID)</b></span></div>
+<div class="step-item"><span class="step-num">5</span><span class="step-text">الصقه هنا تحت — والرصيد يتضاف فوراً ⚡</span></div>
 </div>
-<p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="binance">2</span> دولار</p>
+<div class="bn-auto-note"><i class="fas fa-shield-halved"></i><span>بنتأكد من Binance نفسه إن الفلوس وصلت قبل ما نضيف الرصيد — <b>بدون حد أدنى</b>، أي مبلغ يتضاف بالدولار بالظبط.</span></div>
 </div>
-<form class="deposit-form" id="binanceForm">
-<h3><i class="fas fa-check-circle"></i> تأكيد عملية Binance</h3>
-<label>المبلغ (بالدولار الأمريكي)</label>
-<input type="number" id="binanceAmount" placeholder="مثال: 5" min="2" step="0.01" required>
-<label>معرف العملية (Order ID)</label>
-<input type="text" id="binanceTransaction" placeholder="مثال: 450955449269067776" required>
-<label>لقطة شاشة للتحويل (إثبات)</label>
-<div class="deposit-upload-zone" id="binanceUploadZone" onclick="document.getElementById('binanceScreenshot').click();">
-<i class="fas fa-cloud-upload-alt u-icon"></i>
-<div class="u-title">اضغط لاختيار صورة التحويل</div>
-<div class="u-hint">JPG / PNG / WEBP</div>
-<img class="deposit-upload-preview" id="binancePreview">
-</div>
-<input type="file" id="binanceScreenshot" accept="image/*" style="display:none;">
-<button type="submit" class="deposit-submit-btn"><i class="fas fa-paper-plane"></i> تأكيد وإرسال للإدارة</button>
+<form class="deposit-form bn-auto-form" id="binanceForm">
+<h3><i class="fas fa-bolt"></i> تأكيد الدفع تلقائياً</h3>
+<label>رقم الطلب (Order ID) من تفاصيل التحويل</label>
+<input type="text" id="binanceTransaction" placeholder="مثال: 450955449269067776" inputmode="numeric" autocomplete="off" dir="ltr" required>
+<button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
 <div class="profile-msg" id="binanceMsg"></div>
 </form>
 </div>
@@ -10267,28 +10267,38 @@ tgExtra: '📱 رقم المُحوِّل: ' + senderPhone
 // ============================================================
 // BINANCE SUBMIT
 // ============================================================
+// ⚡ Binance Pay تلقائي: العميل بيكتب رقم العملية بس → السيرفر بيتأكد من Binance ويضيف الرصيد
 document.getElementById('binanceForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 if (!currentProfile) { showAuthModal(); return; }
-const amount = parseFloat(document.getElementById('binanceAmount').value);
-const tx = document.getElementById('binanceTransaction').value.trim();
-const screenshot = getScreenshotPreviewSrc('binanceUploadZone');
+const input = document.getElementById('binanceTransaction');
+const tx = input.value.replace(/\s+/g, '').trim();
 const msg = document.getElementById('binanceMsg');
+const btn = e.target.querySelector('.deposit-submit-btn');
 msg.className = 'profile-msg'; msg.innerText = '';
-if (!amount || amount < window.pmMin('binance', 2)) { msg.className = 'profile-msg err'; msg.innerText = 'الحد الأدنى ' + window.pmMin('binance', 2) + ' دولار'; return; }
-if (!tx || tx.length < 5) { msg.className = 'profile-msg err'; msg.innerText = 'معرف العملية غير صحيح'; return; }
-if (!screenshot) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ من فضلك ارفق لقطة شاشة للتحويل'; return; }
-msg.innerText = '⏳ جاري ضغط الصورة...';
-const compressed = await compressImage(screenshot, 1200, 0.75);
-await submitDepositRequest({
-method: 'binance',
-amount: amount,
-currency: 'USD',
-transactionId: tx,
-screenshotDataURL: compressed,
-tgTitle: '💳 طلب إيداع Binance Pay',
-tgExtra: '🔢 معرف العملية: ' + tx
-});
+if (!/^[A-Za-z0-9_-]{6,64}$/.test(tx)) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ رقم العملية غير صحيح — انسخه من تفاصيل التحويل في Binance'; return; }
+if (btn.disabled) return;
+const old = btn.innerHTML;
+btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> بنتأكد من Binance...';
+msg.innerText = '⏳ بنتأكد إن التحويل وصل...';
+let r = null;
+try {
+const { data, error } = await sb.functions.invoke('smm-api', { body: { action: 'binance_verify', tx: tx } });
+r = data;
+if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { r = null; } }
+} catch (er) { r = null; }
+btn.disabled = false; btn.innerHTML = old;
+if (r && r.ok) {
+msg.className = 'profile-msg'; msg.innerHTML = '<div class="bn-ok"><i class="fas fa-circle-check"></i><div><b>' + String(r.message || '✅ تم').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])) + '</b><span>رصيدك اتحدّث — تقدر تطلب على طول</span></div></div>';
+input.value = '';
+try { if (window.smSound) window.smSound.payment(); } catch (er) {}
+userToast(r.message || '✅ تم', 'ok');
+if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
+if (window.loadUserTransactions) window.loadUserTransactions();
+} else {
+msg.className = 'profile-msg err';
+msg.innerText = (r && r.message) || '❌ حصل خطأ — جرّب تاني';
+}
 });
 
 // ============================================================

@@ -2247,9 +2247,18 @@ transform-style: preserve-3d; animation: ocIn .6s cubic-bezier(.2,1.1,.3,1) back
 .smd-cancel:hover { background: rgba(255,255,255,0.1); }
 .smd-btns button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 /* ⚡ Binance Pay تلقائي */
-.bn-auto-pill { display: inline-flex; align-items: center; gap: 4px; margin-inline-start: 6px; padding: 2px 10px; border-radius: 20px; font-size: .7rem; font-weight: 800; color: #111; background: linear-gradient(135deg, #F0B90B, #FCD535); vertical-align: middle; box-shadow: 0 4px 12px rgba(240,185,11,0.35); }
-.bn-auto-note { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(240,185,11,0.08); border: 1px solid rgba(240,185,11,0.3); color: #F5E6B0; font-size: .82rem; line-height: 1.7; }
-.bn-auto-note i { color: #F0B90B; margin-top: 4px; }
+/* ⚡ علامة "تلقائي" الخضرا: الطرق اللي الرصيد فيها بيتضاف فوراً */
+.bn-auto-pill { display: inline-flex; align-items: center; gap: 4px; margin-inline-start: 6px; padding: 2px 10px; border-radius: 20px; font-size: .7rem; font-weight: 800; color: #fff; background: linear-gradient(135deg, #16A34A, #22C55E); vertical-align: middle; box-shadow: 0 4px 12px rgba(34,197,94,0.4); border: 1px solid rgba(187,247,208,0.35); animation: bnPulse 2.4s ease-in-out infinite; }
+.bn-auto-pill i { font-size: .65rem; }
+@keyframes bnPulse { 0%, 100% { box-shadow: 0 4px 12px rgba(34,197,94,0.35); } 50% { box-shadow: 0 4px 18px rgba(34,197,94,0.7); } }
+/* QR كود Binance Pay */
+.bn-qr { margin: 14px auto 4px; max-width: 260px; text-align: center; }
+.bn-qr-frame { padding: 12px; border-radius: 20px; background: #fff; box-shadow: 0 14px 34px rgba(0,0,0,0.45), 0 0 0 3px rgba(240,185,11,0.55); }
+.bn-qr-frame img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.bn-qr small { display: block; margin-top: 10px; color: #F5E6B0; font-weight: 700; font-size: .8rem; }
+.bn-qr small i { color: #F0B90B; }
+.bnqr-admin { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.bnqr-admin img { width: 74px; height: 74px; object-fit: contain; border-radius: 10px; background: #fff; padding: 4px; }
 .bn-auto-form h3 i { color: #F0B90B; }
 .bn-auto-form input { letter-spacing: .5px; font-weight: 700; }
 .bn-ok { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 14px; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.4); color: #BBF7D0; text-align: right; }
@@ -2942,13 +2951,13 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <img id="pscLogoBinanceImg" style="display:none;" alt="Binance">
 <span class="psc-logo-text">₿</span>
 </div>
-<div class="psc-info"><h3>باينانس باي <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>الرصيد بيتضاف فوراً — بدون حد أدنى</p></div>
+<div class="psc-info"><h3>باينانس باي <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>الرصيد بيتضاف لحسابك فوراً بعد التحويل</p></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
 <div class="payment-selector-card kashier-card" id="kashierCard" data-pay="kashier" style="display:none;">
 <div class="psc-logo kashier"><i class="fas fa-credit-card"></i></div>
-<div class="psc-info"><h3>فيزا / ماستركارد / ميزة ⚡</h3><p>ادفع بالكارت أو المحفظة — الرصيد بيتضاف تلقائياً في ثواني</p><div class="kashier-badges"><span>VISA</span><span>Mastercard</span><span>Meeza</span><span>محافظ</span></div></div>
+<div class="psc-info"><h3>فيزا / ماستركارد / ميزة <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>ادفع بالكارت أو المحفظة — الرصيد بيتضاف تلقائياً في ثواني</p><div class="kashier-badges"><span>VISA</span><span>Mastercard</span><span>Meeza</span><span>محافظ</span></div></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
@@ -3438,22 +3447,27 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="deposit-brand-logo binance">₿</div>
 <div class="deposit-brand-title"><h2>Binance Pay <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>الرصيد بيتضاف لحسابك فوراً بعد التحويل — من غير مراجعة</p></div>
 </div>
-<p>حوّل أي مبلغ <b>USDT</b> عن طريق Binance Pay إلى المعرف ده:</p>
+<p>حوّل المبلغ <b>USDT</b> عن طريق Binance Pay — امسح الكود أو اكتب المعرف:</p>
+<div class="bn-qr" id="binanceQrBox" hidden>
+<div class="bn-qr-frame"><img id="binanceQrImg" alt="Binance Pay QR"></div>
+<small><i class="fas fa-qrcode"></i> امسح الكود من تطبيق Binance ← Pay ← Scan</small>
+</div>
 <div class="deposit-number-row">
 <div class="deposit-number" id="binanceNumber">746211155</div>
 <button class="deposit-copy-btn" type="button" id="binanceCopyBtn" data-copy="746211155"><i class="fas fa-copy"></i> نسخ</button>
 </div>
 <div class="deposit-steps">
 <div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق Binance → اختر "Pay"</span></div>
-<div class="step-item"><span class="step-num">2</span><span class="step-text">اختر "Send" واكتب المعرف: <b id="binanceIdStep2">746211155</b></span></div>
-<div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب أي مبلغ <b>USDT</b> وأكد التحويل</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">امسح الكود أو اختر "Send" واكتب المعرف: <b id="binanceIdStep2">746211155</b></span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب المبلغ <b>USDT</b> وأكد التحويل</span></div>
 <div class="step-item"><span class="step-num">4</span><span class="step-text">افتح تفاصيل التحويل وانسخ <b>رقم الطلب (Order ID)</b></span></div>
-<div class="step-item"><span class="step-num">5</span><span class="step-text">الصقه هنا تحت — والرصيد يتضاف فوراً ⚡</span></div>
+<div class="step-item"><span class="step-num">5</span><span class="step-text">اكتب المبلغ ورقم الطلب هنا تحت — والرصيد يتضاف فوراً ⚡</span></div>
 </div>
-<div class="bn-auto-note"><i class="fas fa-shield-halved"></i><span>بنتأكد من Binance نفسه إن الفلوس وصلت قبل ما نضيف الرصيد — <b>بدون حد أدنى</b>، أي مبلغ يتضاف بالدولار بالظبط.</span></div>
 </div>
 <form class="deposit-form bn-auto-form" id="binanceForm">
 <h3><i class="fas fa-bolt"></i> تأكيد الدفع تلقائياً</h3>
+<label>المبلغ اللي حوّلته (USDT)</label>
+<input type="number" id="binanceAmount" placeholder="مثال: 5" min="0.01" step="any" inputmode="decimal" dir="ltr" required>
 <label>رقم الطلب (Order ID) من تفاصيل التحويل</label>
 <input type="text" id="binanceTransaction" placeholder="مثال: 450955449269067776" inputmode="numeric" autocomplete="off" dir="ltr" required>
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
@@ -4127,6 +4141,11 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="admin-field"><label>رقم محفظة الكاش</label><input type="text" id="settingsVodafoneNumber" placeholder="01001606298" dir="ltr"></div>
 <div class="admin-field"><label>معرف Binance Pay</label><input type="text" id="settingsBinanceId" placeholder="746211155" dir="ltr"></div>
 </div>
+<div class="admin-field"><label>QR كود Binance Pay (من تطبيق Binance ← Pay ← Receive) — بيتحفظ على طول</label>
+<div class="bnqr-admin"><img id="bnQrPreview" alt="" hidden>
+<button type="button" class="logo-upload-btn" id="bnQrUploadBtn"><i class="fas fa-qrcode"></i> رفع صورة الـ QR</button>
+<button type="button" class="logo-remove-btn" id="bnQrRemoveBtn" hidden><i class="fas fa-trash"></i></button>
+<input type="file" id="bnQrInput" accept="image/*" style="display:none;"></div></div>
 <div class="admin-field"><label>عنوان محفظة USDT (TRC20)</label><input type="text" id="settingsUsdtAddress" placeholder="TKBAMK8gPsZnVnW8PU8XSteExbidVFPU4D" dir="ltr"></div>
 <div class="admin-grid-2">
 <div class="admin-field"><label>رقم إنستا باي</label><input type="text" id="settingsInstapayNumber" placeholder="01001606298" dir="ltr"></div>
@@ -4677,6 +4696,13 @@ if (vStep2) vStep2.innerText = siteSettings.vodafone_number;
 const bNumEl = document.getElementById('binanceNumber');
 const bCopyBtn = document.getElementById('binanceCopyBtn');
 const bStep2 = document.getElementById('binanceIdStep2');
+// QR كود Binance Pay (الأدمن بيرفعه من الإعدادات)
+const bQrBox = document.getElementById('binanceQrBox'), bQrImg = document.getElementById('binanceQrImg');
+if (bQrBox && bQrImg) {
+const okQr = typeof siteSettings.binance_qr === 'string' && /^(data:image\/|https:\/\/)/.test(siteSettings.binance_qr);
+if (okQr) { if (bQrImg.getAttribute('src') !== siteSettings.binance_qr) bQrImg.src = siteSettings.binance_qr; bQrBox.hidden = false; }
+else bQrBox.hidden = true;
+}
 if (siteSettings.binance_id) {
 if (bNumEl) bNumEl.innerText = siteSettings.binance_id;
 if (bCopyBtn) bCopyBtn.setAttribute('data-copy', siteSettings.binance_id);
@@ -4744,6 +4770,7 @@ siteSettings.instapay_number = data.instapay_number || siteSettings.instapay_num
 siteSettings.redot_number = data.redot_number || siteSettings.redot_number;
 siteSettings.logo_vodafone = data.logo_vodafone || null;
 siteSettings.logo_binance = data.logo_binance || null;
+siteSettings.binance_qr = data.binance_qr || null;
 siteSettings.logo_usdt = data.logo_usdt || null;
 siteSettings.logo_instapay = data.logo_instapay || null;
 siteSettings.logo_redot = data.logo_redot || null;
@@ -6436,10 +6463,45 @@ reader.readAsDataURL(file);
 });
 });
 
+// 📷 QR كود Binance Pay: بيتصغّر (أقصى 600px) ويتحفظ في الإعدادات على طول
+const bnQrSet = (src) => {
+const p = document.getElementById('bnQrPreview'), rm = document.getElementById('bnQrRemoveBtn');
+if (src) { p.src = src; p.hidden = false; rm.hidden = false; } else { p.removeAttribute('src'); p.hidden = true; rm.hidden = true; }
+};
+async function bnQrSave(val) {
+const { error } = await supabase.from('site_settings').update({ binance_qr: val, updated_at: new Date().toISOString() }).eq('id', 1);
+if (error) { toast('خطأ في حفظ الـ QR: ' + error.message, true); return false; }
+siteSettings.binance_qr = val; bnQrSet(val);
+try { if (window.applySiteSettings) window.applySiteSettings(); } catch (e) {}
+toast(val ? '✅ اتحفظ QR كود Binance — ظاهر للعملاء في صفحة الدفع' : 'اتشال QR كود Binance');
+return true;
+}
+document.getElementById('bnQrUploadBtn').addEventListener('click', () => document.getElementById('bnQrInput').click());
+document.getElementById('bnQrRemoveBtn').addEventListener('click', async () => { if (await smConfirm('حذف QR كود Binance من صفحة الدفع؟')) bnQrSave(null); });
+document.getElementById('bnQrInput').addEventListener('change', (e) => {
+const file = e.target.files && e.target.files[0]; e.target.value = '';
+if (!file || !/^image\//.test(file.type)) return;
+const reader = new FileReader();
+reader.onload = (ev) => {
+const img = new Image();
+img.onload = () => {
+const k = Math.min(1, 600 / Math.max(img.width, img.height));
+const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(img, 0, 0, c.width, c.height);
+let out = c.toDataURL('image/png'); if (out.length > 400000) out = c.toDataURL('image/jpeg', 0.92);
+bnQrSave(out);
+};
+img.onerror = () => toast('فشل تحميل الصورة', true);
+img.src = ev.target.result;
+};
+reader.readAsDataURL(file);
+});
+
 async function loadSettingsIntoForm() {
 try {
 const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
 if (error) { console.warn(error); return; }
+bnQrSet(data.binance_qr || null);
 if (!data) return;
 document.getElementById('settingsSiteName').value = data.site_name || '';
 document.getElementById('settingsSiteDescription').value = data.site_description || '';
@@ -10272,10 +10334,13 @@ document.getElementById('binanceForm').addEventListener('submit', async (e) => {
 e.preventDefault();
 if (!currentProfile) { showAuthModal(); return; }
 const input = document.getElementById('binanceTransaction');
+const amtInput = document.getElementById('binanceAmount');
 const tx = input.value.replace(/\s+/g, '').trim();
+const amt = parseFloat(String(amtInput.value).replace(',', '.'));
 const msg = document.getElementById('binanceMsg');
 const btn = e.target.querySelector('.deposit-submit-btn');
 msg.className = 'profile-msg'; msg.innerText = '';
+if (!(amt > 0)) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ اكتب المبلغ اللي حوّلته بالـ USDT'; return; }
 if (!/^[A-Za-z0-9_-]{6,64}$/.test(tx)) { msg.className = 'profile-msg err'; msg.innerText = '⚠️ رقم العملية غير صحيح — انسخه من تفاصيل التحويل في Binance'; return; }
 if (btn.disabled) return;
 const old = btn.innerHTML;
@@ -10283,14 +10348,14 @@ btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ب�
 msg.innerText = '⏳ بنتأكد إن التحويل وصل...';
 let r = null;
 try {
-const { data, error } = await sb.functions.invoke('smm-api', { body: { action: 'binance_verify', tx: tx } });
+const { data, error } = await sb.functions.invoke('smm-api', { body: { action: 'binance_verify', tx: tx, amount: amt } });
 r = data;
 if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { r = null; } }
 } catch (er) { r = null; }
 btn.disabled = false; btn.innerHTML = old;
 if (r && r.ok) {
 msg.className = 'profile-msg'; msg.innerHTML = '<div class="bn-ok"><i class="fas fa-circle-check"></i><div><b>' + String(r.message || '✅ تم').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])) + '</b><span>رصيدك اتحدّث — تقدر تطلب على طول</span></div></div>';
-input.value = '';
+input.value = ''; amtInput.value = '';
 try { if (window.smSound) window.smSound.payment(); } catch (er) {}
 userToast(r.message || '✅ تم', 'ok');
 if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();

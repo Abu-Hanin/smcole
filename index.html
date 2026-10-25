@@ -10881,15 +10881,26 @@ if (r.error) { try { d = await r.error.context.json(); } catch (e) { d = null; }
 return d || {};
 };
 // الكارت بيظهر بس لما الأدمن يفعّل كاشير (المفاتيح موجودة في Supabase)
+// ⚡ آخر حالة بتتحفظ على الجهاز → بعد الريفريش الكارت بيظهر على طول من غير ما يختفي ثانية ويرجع
+try {
+const kc = JSON.parse(localStorage.getItem('smcole_kashier') || 'null');
+if (kc && kc.enabled) { kcfg = Object.assign(kcfg, kc); window.__kashierEnabled = true; if (window.applyPaymentMethods) window.applyPaymentMethods(); else card.style.display = ''; }
+} catch (e) {}
 setTimeout(() => invoke({ action: 'kashier_status' }).then(d => {
+if (d && d.ok !== undefined && !d.enabled) {
+// الأدمن قفل كاشير → الكارت يختفي وننسى الحالة القديمة
+try { localStorage.removeItem('smcole_kashier'); } catch (e) {}
+window.__kashierEnabled = false; if (window.applyPaymentMethods) window.applyPaymentMethods(); else card.style.display = 'none';
+}
 if (d && d.enabled) {
+try { localStorage.setItem('smcole_kashier', JSON.stringify({ enabled: true, min: d.min, max: d.max })); } catch (e) {}
 kcfg = d; window.__kashierEnabled = true; if (window.applyPaymentMethods) window.applyPaymentMethods(); else card.style.display = '';
 $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min;
 $('kpayMinNote').innerHTML = 'أقل مبلغ للشحن بالكارت <b>' + Number(d.min).toLocaleString('en-US') + ' جنيه</b>';
 // زراير المبالغ السريعة: اللي أقل من الحد الأدنى بتختفي
 modal.querySelectorAll('.kpay-chips [data-amt]').forEach(b => { b.style.display = Number(b.dataset.amt) < d.min ? 'none' : ''; });
 }
-}).catch(() => {}), 1500);
+}).catch(() => {}), 400);
 const show = (mode) => { modal.classList.add('show'); $('kpayForm').style.display = mode === 'form' ? '' : 'none'; $('kpayState').style.display = mode === 'form' ? 'none' : ''; };
 const hide = () => modal.classList.remove('show');
 const state = (icon, title, text) => { $('kpayState').innerHTML = '<div class="big">' + icon + '</div><h4>' + title + '</h4><p>' + text + '</p>'; show('state'); };

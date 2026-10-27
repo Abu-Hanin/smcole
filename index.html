@@ -465,6 +465,15 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .kpay-secure { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:.8rem; font-size:.75rem; color:var(--muted); }
 .kpay-secure i { color:#4ADE80; }
 .kpay-msg { font-size:.82rem; margin-top:.6rem; text-align:center; min-height:1em; color:#FCA5A5; }
+/* ⚡ فودافون كاش تلقائي */
+.vfa-box { border-color: rgba(230,0,0,.4); }
+.vfa-box h3 i { color: #F87171; }
+.vfa-number { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; margin-bottom:.9rem; border-radius:14px; background:rgba(230,0,0,.1); border:1px solid rgba(230,0,0,.35); }
+.vfa-number b { font-size:1.3rem; font-weight:900; color:#fff; letter-spacing:.5px; }
+.vfa-copy { padding:7px 12px; border-radius:10px; border:none; background:linear-gradient(135deg,#E60000,#B91C1C); color:#fff; font-family:inherit; font-weight:800; cursor:pointer; }
+.vfa-label { display:block; font-size:.82rem; font-weight:700; color:#E9D5FF; margin:.2rem 0 .35rem; }
+.vfa-input { margin-bottom:.8rem; border-color:rgba(230,0,0,.35); }
+.vfa-go { background:linear-gradient(135deg,#16A34A,#22C55E); box-shadow:0 12px 28px rgba(34,197,94,.35); }
 .kpay-state { text-align:center; padding:.6rem 0; }
 .kpay-state .big { font-size:3rem; margin-bottom:.4rem; }
 .kpay-state h4 { margin:0 0 .4rem; color:#fff; font-size:1.1rem; }
@@ -2939,6 +2948,13 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
+<!-- ⚡ بوابة محافظ الكاش التلقائية (جديدة — بتظهر بس لما الأدمن يفتحها من الإعدادات) -->
+<div class="payment-selector-card vfa-card" id="vfaCard" data-pay="vfauto" style="display:none;">
+<div class="psc-logo vodafone"><i class="fas fa-bolt"></i></div>
+<div class="psc-info"><h3>فودافون كاش <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>حوّل واكتب رقمك والمبلغ — الرصيد بيتضاف فوراً</p></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
 <div class="payment-selector-card" data-method="instapay">
 <div class="psc-logo instapay" id="pscLogoInstapay">
 <img id="pscLogoInstapayImg" style="display:none;" alt="InstaPay">
@@ -3315,6 +3331,26 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
 </div>
 <div id="kpayState" class="kpay-state" style="display:none;"></div>
+</div>
+</div>
+
+<!-- ============ ⚡ فودافون كاش تلقائي ============ -->
+<div class="kpay-bg vfa-bg" id="vfaModal" role="dialog" aria-modal="true" aria-labelledby="vfaTitle">
+<div class="kpay-box vfa-box">
+<button type="button" class="kpay-close" id="vfaClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
+<div id="vfaForm">
+<h3 id="vfaTitle"><i class="fas fa-bolt"></i> فودافون كاش <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3>
+<p class="kpay-sub">حوّل المبلغ من محفظتك على الرقم ده، وبعدين اكتب رقمك والمبلغ — بنتأكد من وصول التحويل ونضيف الرصيد على طول.</p>
+<div class="vfa-number"><b dir="ltr" id="vfaWallet">01001606298</b><button type="button" class="vfa-copy" id="vfaCopy"><i class="far fa-copy"></i> نسخ</button></div>
+<label class="vfa-label" for="vfaPhone">رقم الموبايل اللي حوّلت منه</label>
+<div class="kpay-amount vfa-input"><input type="tel" id="vfaPhone" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="01xxxxxxxxx"></div>
+<label class="vfa-label" for="vfaAmount">المبلغ اللي حوّلته بالظبط</label>
+<div class="kpay-amount vfa-input"><input type="text" id="vfaAmount" inputmode="decimal" placeholder="مثال: 150"><span>جنيه</span></div>
+<button type="button" class="kpay-go vfa-go" id="vfaGo"><i class="fas fa-bolt"></i> <span>تأكيد وإضافة الرصيد</span></button>
+<div class="kpay-msg" id="vfaMsg"></div>
+<div class="kpay-secure"><i class="fas fa-shield-halved"></i> لازم الرقم والمبلغ يطابقوا التحويل بالظبط — وكل تحويل بيتضاف مرة واحدة بس</div>
+</div>
+<div id="vfaState" class="kpay-state" style="display:none;"></div>
 </div>
 </div>
 
@@ -4129,6 +4165,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="admin-hint" style="margin-bottom:.7rem;">💡 زرار الإظهار/الإخفاء بيتطبق فوراً عند كل العملاء، والحد الأدنى بيتحفظ مع "حفظ الإعدادات" تحت. الاتنين بيتقفلوا على السيرفر كمان — محدش يقدر يتحايل عليهم.</div>
 <div class="pm-toggles" id="pmToggles">
 <div class="pm-toggle" data-pm="vodafone" data-def="50"><span class="pmt-name"><i class="fas fa-mobile-screen"></i> محافظ الكاش</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="vfcash_auto" data-def="1" data-defoff="1"><span class="pmt-name"><i class="fas fa-bolt"></i> فودافون كاش ⚡ تلقائي (تجريبي)</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="1"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox"><span class="pmt-switch"></span></label></div>
 <div class="pm-toggle" data-pm="instapay" data-def="50"><span class="pmt-name"><i class="fas fa-building-columns"></i> إنستا باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
 <div class="pm-toggle" data-pm="binance" data-def="2"><span class="pmt-name"><i class="fab fa-bitcoin"></i> باينانس باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0.1" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
 <div class="pm-toggle" data-pm="kashier" data-def="1000"><span class="pmt-name"><i class="fas fa-credit-card"></i> فيزا / ماستركارد / ميزة</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="10" step="any" dir="ltr" placeholder="1000"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
@@ -4795,6 +4832,9 @@ const pm = siteSettings.payment_methods || {};
 document.querySelectorAll('.payment-selector-card[data-method]').forEach(c => { c.style.display = pm[c.dataset.method] === false ? 'none' : ''; });
 const k = document.getElementById('kashierCard');
 if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' : 'none';
+// ⚡ فودافون كاش تلقائي: مقفول افتراضياً — بيظهر بس لما الأدمن يفتحه
+const vfa = document.getElementById('vfaCard');
+if (vfa) vfa.style.display = pm.vfcash_auto === true ? '' : 'none';
 document.querySelectorAll('.pm-min-label[data-pm]').forEach(s => { const d = Number(s.dataset.def || s.textContent) || 0; if (!s.dataset.def) s.dataset.def = d; s.textContent = Number(window.pmMin(s.dataset.pm, d)).toLocaleString('en-US'); });
 };
 
@@ -6522,7 +6562,7 @@ document.getElementById('settingsCompletedOrders').value = (data.completed_order
 const pmNow = (data.payment_methods && typeof data.payment_methods === 'object') ? data.payment_methods : {};
 const pmMinNow = (data.payment_min && typeof data.payment_min === 'object') ? data.payment_min : {};
 document.querySelectorAll('#pmToggles .pm-toggle').forEach(l => {
-const on = pmNow[l.dataset.pm] !== false;
+const on = l.dataset.defoff ? pmNow[l.dataset.pm] === true : pmNow[l.dataset.pm] !== false;
 l.querySelector('input[type=checkbox]').checked = on; l.classList.toggle('off', !on);
 const v = Number(pmMinNow[l.dataset.pm]);
 l.querySelector('.pmt-min input').value = v > 0 ? v : l.dataset.def;
@@ -7537,6 +7577,7 @@ else if (d.method === 'binance') methodLabel = '🪙 باينانس باي';
 else if (d.method === 'usdt') methodLabel = '💎 عملات رقمية USDT';
 else if (d.method === 'instapay') methodLabel = '🏦 إنستا باي';
 else if (d.method === 'redot') methodLabel = '💳 ريدوت باي';
+else if (d.method === 'vfcash_auto') methodLabel = '⚡ فودافون كاش تلقائي';
 const cur = d.currency === 'USD' ? 'دولار' : 'جنيه';
 const stMap = { pending: ['status-pending','⏳ قيد المراجعة'], approved: ['status-completed','✅ تم التأكيد'], rejected: ['status-cancelled','❌ مرفوض'] };
 const st = stMap[d.status] || ['status-pending','—'];
@@ -8292,7 +8333,8 @@ usdt: 'USDT',
 instapay: 'إنستا باي',
 redot: 'ريدوت باي',
 admin_manual: 'الإدارة',
-order_refund: 'استرجاع طلب'
+order_refund: 'استرجاع طلب',
+vfcash_auto: 'فودافون كاش (تلقائي)'
 };
 
 function userToast(msg, type) {
@@ -10865,6 +10907,59 @@ document.getElementById('acResultSub').textContent = 'يعني في السنة �
 }
 ['acFriends', 'acDep'].forEach(id => document.getElementById(id).addEventListener('input', updateAffCalc));
 updateAffCalc();
+
+// ===================== ⚡ فودافون كاش تلقائي (بوابة جديدة) =====================
+// العميل بيحوّل ويكتب رقمه والمبلغ → السيرفر (sms-gateway) بيدوّر على رسالة VF-Cash مؤكدة مطابقة → يضيف مرة واحدة بس
+(function () {
+const card = document.getElementById('vfaCard'), modal = document.getElementById('vfaModal');
+if (!card || !modal) return;
+const $v = (id) => document.getElementById(id);
+const show = (mode) => { modal.classList.add('show'); $v('vfaForm').style.display = mode === 'form' ? '' : 'none'; $v('vfaState').style.display = mode === 'form' ? 'none' : ''; };
+const hide = () => modal.classList.remove('show');
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const state = (icon, title, text) => { $v('vfaState').innerHTML = '<div class="big">' + icon + '</div><h4>' + esc(title) + '</h4><p>' + esc(text) + '</p><button type="button" class="kpay-go vfa-go" id="vfaBack" style="margin-top:1rem"><span>تمام</span></button>'; show('state'); $v('vfaBack').addEventListener('click', hide); };
+$v('vfaClose').addEventListener('click', hide);
+modal.addEventListener('click', (e) => { if (e.target === modal) hide(); });
+$v('vfaCopy').addEventListener('click', async () => {
+const n = $v('vfaWallet').textContent.trim();
+try { await navigator.clipboard.writeText(n); userToast('✅ تم نسخ الرقم: ' + n, 'ok'); } catch (e) { userToast('الرقم: ' + n); }
+});
+card.addEventListener('click', () => {
+if (!window.currentProfile) { if (typeof window.showAuthModal === 'function') window.showAuthModal(); return; }
+const num = (window.siteSettings && window.siteSettings.vodafone_number) || '01001606298';
+$v('vfaWallet').textContent = num;
+$v('vfaMsg').textContent = ''; show('form');
+});
+$v('vfaGo').addEventListener('click', async () => {
+const btn = $v('vfaGo'), msg = $v('vfaMsg');
+const phone = String($v('vfaPhone').value).replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/\D/g, '');
+const amount = String($v('vfaAmount').value).replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[٫,]/g, '.').trim();
+msg.textContent = '';
+if (!/^01[0125]\d{8}$/.test(phone)) { msg.textContent = '⚠️ اكتب رقم الموبايل اللي حوّلت منه (11 رقم يبدأ بـ 01)'; return; }
+if (!/^\d{1,9}(\.\d{1,2})?$/.test(amount) || !(Number(amount) > 0)) { msg.textContent = '⚠️ اكتب المبلغ بالظبط (زي 150 أو 150.50)'; return; }
+if (btn.disabled) return;
+btn.disabled = true; btn.querySelector('span').textContent = 'بنتأكد من التحويل...';
+let r = null;
+try {
+const { data, error } = await getSupabase().functions.invoke('sms-gateway', { body: { action: 'claim', phone: phone, amount: amount } });
+r = data;
+if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { r = null; } }
+} catch (e) { r = null; }
+btn.disabled = false; btn.querySelector('span').textContent = 'تأكيد وإضافة الرصيد';
+if (r && r.ok) {
+$v('vfaPhone').value = ''; $v('vfaAmount').value = '';
+try { window.smSound && window.smSound.payment(); } catch (e) {}
+state('✅', 'تم شحن رصيدك بنجاح', r.message || 'اتضاف المبلغ لرصيدك');
+userToast(r.message || '✅ تم', 'ok');
+if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
+if (window.loadUserTransactions) window.loadUserTransactions();
+} else if (r && r.error === 'review') {
+state('⏳', 'التحويل وصل وبيتراجع', r.message || 'اضغط تأكيد تاني بعد شوية');
+} else {
+msg.textContent = (r && r.message) || '❌ حصل خطأ — جرّب تاني';
+}
+});
+})();
 
 // ===================== 💳 الدفع بالفيزا — كاشير =====================
 // الرصيد مبيتضافش من هنا أبداً: السيرفر هو اللي بيسأل كاشير ويتأكد إن الفلوس اتدفعت فعلاً

@@ -4529,7 +4529,7 @@ document.getElementById('adminPanelPage').classList.remove('active');
 };
 window.openAdminPanel = function(user) {
 if (!window.isAdminUser) return;
-try { history.pushState({ __sm: true, route: 'admin-panel' }, '', '#admin-panel'); } catch(e) {}
+if (window.__histGo) window.__histGo('admin-panel');
 window.__currentRoute = 'admin-panel';
 var mc = document.getElementById('mainContent'); if (mc) mc.style.display = 'none';
 document.querySelectorAll('.overlay-page').forEach(function(p) { p.style.display = 'none'; });
@@ -5003,6 +5003,45 @@ const paymentMethodBtn = document.getElementById('paymentMethodBtn');
 window.__currentRoute = 'home';
 window.__routeHistory = ['home'];
 
+// 🔙 ترتيب الصفحات: الرئيسية ← الخدمات ← (أي صفحة داخلية) ← وصفحات الإيداع جوه طرق الدفع
+// زرار الرجوع بيمشي خطوة لورا في الترتيب ده (مش بيرمي العميل على الرئيسية)
+window.__routeChain = function (r) {
+if (r === 'home') return ['home'];
+if (r === 'services') return ['home', 'services'];
+if (r === 'admin-panel') return ['home', 'admin-panel'];
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|kashier)$/.test(r)) return ['home', 'services', 'payment', r];
+if (/^(terms|affiliate|payment|favorites|support|profile|orders)$/.test(r)) return ['home', 'services', r];
+return null;
+};
+window.__histPending = null;
+window.__histGo = function (route) {
+try {
+const target = window.__routeChain(route);
+if (!target) return;
+// لسه راجعين لورا ومستنيين المتصفح → نكمّل على آخر طلب لما يوصل
+if (window.__histPending) { window.__histPending = route; return; }
+const st = history.state;
+const url = r => r === 'home' ? location.pathname : '#' + r;
+const cur = (st && st.__sm && st.d !== undefined) ? window.__routeChain(st.route) : null;
+if (!cur || cur.length - 1 !== st.d) {
+// الخانة الحالية مش من النظام الجديد → نبدأ منها الترتيب من أوله
+history.replaceState({ __sm: true, route: 'home', d: 0 }, '', url('home'));
+for (let i = 1; i < target.length; i++) history.pushState({ __sm: true, route: target[i], d: i }, '', url(target[i]));
+return;
+}
+let c = 0;
+while (c + 1 < cur.length && c + 1 < target.length && cur[c + 1] === target[c + 1]) c++;
+if (st.d > c) {
+// نرجع لآخر صفحة مشتركة الأول (بيمسح اللي قدام)، وبعدين نكمّل للصفحة الجديدة
+window.__histPending = route;
+setTimeout(() => { if (window.__histPending) { const r = window.__histPending; window.__histPending = null; window.__histGo(r); } }, 1500);
+history.go(c - st.d);
+return;
+}
+for (let i = c + 1; i < target.length; i++) history.pushState({ __sm: true, route: target[i], d: i }, '', url(target[i]));
+} catch (e) {}
+};
+
 // عند التحديث (Refresh): نحفظ الصفحة اللي العميل كان فيها ونرجعه لها بالظبط
 // (قبل كده الرابط كان بيتمسح ويترجع للرئيسية → الصفحة كانت بتتلخبط)
 (function initHistoryGuard() {
@@ -5011,8 +5050,15 @@ let h = (location.hash || '').replace('#', '');
 // 🔵 راجع من الدخول بجوجل: بيانات الدخول في الرابط مش اسم صفحة → نفتح الرئيسية ونسيب Supabase يقراها
 if (/(^|&)(access_token|refresh_token|error|error_description)=/.test(h)) h = '';
 window.__initialHash = h;
-if (!history.state || !history.state.__sm) {
-history.replaceState({ __sm: true, route: h || 'home' }, '', location.pathname + location.search + (h && h !== 'home' ? '#' + h : '')); // الرئيسية من غير #home
+if (!history.state || !history.state.__sm || history.state.d === undefined) {
+if (h && h !== 'home' && window.__routeChain(h)) {
+// فاتح صفحة داخلية على طول → نبني الترتيب وراها (الرئيسية ← الخدمات ← ...) عشان الرجوع يمشي صح
+history.replaceState({ __sm: true, route: 'home', d: 0 }, '', location.pathname + location.search);
+const ch = window.__routeChain(h);
+for (let i = 1; i < ch.length; i++) history.pushState({ __sm: true, route: ch[i], d: i }, '', '#' + ch[i]);
+} else {
+history.replaceState({ __sm: true, route: h || 'home', d: (h && h !== 'home') ? undefined : 0 }, '', location.pathname + location.search + (h && h !== 'home' ? '#' + h : '')); // الرئيسية من غير #home
+}
 }
 // لحد ما الصفحة ترجع، الرئيسية متظهرش (عشان متبانش إنها بتنط)
 if (h && h !== 'home') document.body.classList.add('route-restoring');
@@ -5119,12 +5165,9 @@ if (routeName === 'profile' && window.__refreshProfileFromDB) window.__refreshPr
 window.scrollTo(0, 0);
 return;
 }
-if (pushState) {
-try {
-history.pushState({ __sm: true, route: routeName, idx: history.length }, '', routeName === 'home' ? location.pathname : '#' + routeName); // الرئيسية = smcole.com بس
+// السجل بيتظبط على ترتيب الصفحات (الرئيسية = smcole.com بس)
+window.__histGo(routeName);
 window.__routeHistory.push(routeName);
-} catch(e) {}
-}
 routeToPage(routeName);
 };
 
@@ -5139,8 +5182,10 @@ window.__navigateTo('home', null, true);
 window.addEventListener('popstate', function(event) {
 const state = event.state;
 const route = (state && state.route) ? state.route : 'home';
+// رجعنا لورا عشان نروح لصفحة تانية → نكمّل الطريق ليها (الصفحة نفسها اتفتحت خلاص)
+if (window.__histPending) { const r = window.__histPending; window.__histPending = null; window.__histGo(r); return; }
 if (!state || !state.__sm) {
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
+try { history.pushState({ __sm: true, route: 'home', d: 0 }, '', location.pathname); } catch(e) {}
 routeToPage('home');
 return;
 }
@@ -6117,7 +6162,7 @@ priceBaseSelect.addEventListener('change', applyDefaultsByType);
 document.getElementById('adminBackHome').addEventListener('click', () => {
 document.getElementById('adminLoginPage').classList.remove('active');
 sessionStorage.removeItem('smcole_admin_mode');
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
+if (window.__histGo) window.__histGo('home');
 if (window.routeToPage) window.routeToPage('home');
 else window.showHomePage();
 });
@@ -6143,7 +6188,7 @@ await supabase.auth.signOut({ scope: 'local' });
 sessionStorage.removeItem('smcole_admin_mode');
 document.getElementById('adminPanelPage').classList.remove('active');
 document.getElementById('adminLoginPage').classList.remove('active');
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
+if (window.__histGo) window.__histGo('home');
 if (window.routeToPage) window.routeToPage('home');
 else window.showHomePage();
 });
@@ -8731,7 +8776,7 @@ hideAuthModal();
 if (!window.__routeRestored && window.__restoreRoute && window.__userSystemReady) window.__restoreRoute();
 if (window.__oauthJustIn || /[#&?](access_token|code)=/.test(location.href)) {
 window.__oauthJustIn = false;
-try { history.replaceState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
+try { history.replaceState({ __sm: true, route: 'home', d: 0 }, '', location.pathname); } catch(e) {}
 setTimeout(() => { afterAuthSuccess(); }, 300);
 }
 } catch(e) { console.warn(e); }
@@ -9085,7 +9130,7 @@ try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
 window.__userRealtimeChannel = null;
 }
 document.getElementById('dropdownMenu').classList.remove('show-dropdown');
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
+if (window.__histGo) window.__histGo('home');
 if (window.routeToPage) window.routeToPage('home');
 else if (window.__setPageVisibility) window.__setPageVisibility(null);
 window.__currentRoute = 'home';
@@ -11123,7 +11168,7 @@ let ref = '';
 try {
 const q = new URLSearchParams(location.search);
 ref = q.get('kpay') || '';
-if (ref) { sessionStorage.setItem('smcole_kpay', ref); history.replaceState({ __sm: true, route: 'home' }, '', location.pathname); }
+if (ref) { sessionStorage.setItem('smcole_kpay', ref); history.replaceState({ __sm: true, route: 'home', d: 0 }, '', location.pathname); }
 else ref = sessionStorage.getItem('smcole_kpay_pending') || '';
 } catch (e) {}
 if (!/^SMC\d+-[A-Z0-9a-f]+$/.test(ref)) return;

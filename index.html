@@ -465,6 +465,11 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .kpay-secure { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:.8rem; font-size:.75rem; color:var(--muted); }
 .kpay-secure i { color:#4ADE80; }
 .kpay-msg { font-size:.82rem; margin-top:.6rem; text-align:center; min-height:1em; color:#FCA5A5; }
+/* 💳 صفحة الفيزا (بنفس شكل صفحات الإيداع) */
+.deposit-brand-logo.kashier-logo { background: linear-gradient(135deg,#0EA5E9,#2563EB) !important; color:#fff !important; display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+.kpay-page-form .kpay-amount { margin-bottom:.2rem; }
+.kpay-page-form .kpay-amount input { border:none !important; background:transparent !important; margin:0 !important; box-shadow:none !important; padding:12px 14px !important; }
+.kpay-page-form .kpay-chips { margin:.7rem 0 .9rem; }
 /* ⚡ فودافون كاش تلقائي */
 .vfa-box { border-color: rgba(230,0,0,.4); }
 .vfa-box h3 i { color: #F87171; }
@@ -2950,7 +2955,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 
 <!-- ⚡ بوابة محافظ الكاش التلقائية (جديدة — بتظهر بس لما الأدمن يفتحها من الإعدادات) -->
 <div class="payment-selector-card vfa-card" id="vfaCard" data-pay="vfauto" style="display:none;">
-<div class="psc-logo vodafone"><i class="fas fa-bolt"></i></div>
+<div class="psc-logo vodafone pay-mark pm-vodafone" data-mark="1"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="21" fill="#fff"/><path d="M35.6 15.6c-8.9 1.1-14.6 8-14.6 16.4 0 7.3 5.5 12.6 12 12.6 5.8 0 10.2-4.4 10.2-9.9 0-6.4-5.1-9.3-9.5-9.2-.2-4.8 3.1-8.5 6.9-9.9-1.5-.2-3.3-.2-5 0z" fill="#E60000"/></svg></div>
 <div class="psc-info"><h3>فودافون كاش <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>حوّل واكتب رقمك والمبلغ — الرصيد بيتضاف فوراً</p></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
@@ -3320,37 +3325,8 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="kpay-bg" id="kpayModal" role="dialog" aria-modal="true" aria-labelledby="kpayTitle">
 <div class="kpay-box">
 <button type="button" class="kpay-close" id="kpayClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
-<div id="kpayForm">
-<h3 id="kpayTitle"><i class="fas fa-credit-card"></i> شحن الرصيد بالكارت</h3>
-<p class="kpay-sub">فيزا • ماستركارد • ميزة • المحافظ الإلكترونية — الدفع بيتم على صفحة كاشير الآمنة، والرصيد بيتضاف لحسابك أول ما الدفع يتأكد.</p>
-<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="1000" step="1" placeholder="أقل مبلغ 1000"><span>جنيه</span></div>
-<div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>1,000 جنيه</b></div>
-<div class="kpay-chips"><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="3000">3000</button><button type="button" data-amt="5000">5000</button></div>
-<button type="button" class="kpay-go" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
-<div class="kpay-msg" id="kpayMsg"></div>
-<div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
-</div>
+<div id="kpayForm" style="display:none;"><h3 id="kpayTitle"><i class="fas fa-credit-card"></i> الدفع بالكارت</h3></div>
 <div id="kpayState" class="kpay-state" style="display:none;"></div>
-</div>
-</div>
-
-<!-- ============ ⚡ فودافون كاش تلقائي ============ -->
-<div class="kpay-bg vfa-bg" id="vfaModal" role="dialog" aria-modal="true" aria-labelledby="vfaTitle">
-<div class="kpay-box vfa-box">
-<button type="button" class="kpay-close" id="vfaClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
-<div id="vfaForm">
-<h3 id="vfaTitle"><i class="fas fa-bolt"></i> فودافون كاش <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3>
-<p class="kpay-sub">حوّل المبلغ من محفظتك على الرقم ده، وبعدين اكتب رقمك والمبلغ — بنتأكد من وصول التحويل ونضيف الرصيد على طول.</p>
-<div class="vfa-number"><b dir="ltr" id="vfaWallet">01001606298</b><button type="button" class="vfa-copy" id="vfaCopy"><i class="far fa-copy"></i> نسخ</button></div>
-<label class="vfa-label" for="vfaPhone">رقم الموبايل اللي حوّلت منه</label>
-<div class="kpay-amount vfa-input"><input type="tel" id="vfaPhone" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="01xxxxxxxxx"></div>
-<label class="vfa-label" for="vfaAmount">المبلغ اللي حوّلته بالظبط</label>
-<div class="kpay-amount vfa-input"><input type="text" id="vfaAmount" inputmode="decimal" placeholder="مثال: 150"><span>جنيه</span></div>
-<button type="button" class="kpay-go vfa-go" id="vfaGo"><i class="fas fa-bolt"></i> <span>تأكيد وإضافة الرصيد</span></button>
-<div class="kpay-msg" id="vfaMsg"></div>
-<div class="kpay-secure"><i class="fas fa-shield-halved"></i> لازم الرقم والمبلغ يطابقوا التحويل بالظبط — وكل تحويل بيتضاف مرة واحدة بس</div>
-</div>
-<div id="vfaState" class="kpay-state" style="display:none;"></div>
 </div>
 </div>
 
@@ -3431,6 +3407,76 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <!-- ============ DEPOSIT PAGE ============ -->
 <div id="depositPage" class="overlay-page" style="padding:1.5rem 1rem;">
 <div class="page-container">
+
+<!-- 💳 فيزا / ماستركارد / ميزة (كاشير) -->
+<div id="depositKashierView" style="display:none;">
+<div class="deposit-info">
+<div class="deposit-brand-header">
+<div class="deposit-brand-logo kashier-logo"><i class="fas fa-credit-card"></i></div>
+<div class="deposit-brand-title"><h2>فيزا / ماستركارد / ميزة <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>ادفع بالكارت أو المحفظة — الرصيد بيتضاف تلقائياً في ثواني</p></div>
+</div>
+<p>طرق الدفع المتاحة على صفحة كاشير الآمنة:</p>
+<div class="deposit-wallet-logos">
+<span class="wallet-logo-chip"><i class="fab fa-cc-visa"></i> فيزا</span>
+<span class="wallet-logo-chip"><i class="fab fa-cc-mastercard"></i> ماستركارد</span>
+<span class="wallet-logo-chip"><i class="fas fa-credit-card"></i> ميزة</span>
+<span class="wallet-logo-chip"><i class="fas fa-mobile-alt"></i> المحافظ الإلكترونية</span>
+</div>
+<div class="deposit-steps">
+<div class="step-item"><span class="step-num">1</span><span class="step-text">اكتب المبلغ اللي عايز تشحنه تحت</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع الآن</b> — هتفتح صفحة كاشير الآمنة</span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب بيانات الكارت وأكد بكود البنك (OTP)</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">هترجع للموقع لوحدك — والرصيد يتضاف تلقائياً ⚡</span></div>
+</div>
+</div>
+<div class="deposit-form kpay-page-form">
+<h3><i class="fas fa-lock"></i> شحن الرصيد بالكارت</h3>
+<label for="kpayAmount">المبلغ (بالجنيه المصري)</label>
+<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="1000" step="1" placeholder="أقل مبلغ 1000"><span>جنيه</span></div>
+<div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>1,000 جنيه</b></div>
+<div class="kpay-chips"><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="3000">3000</button><button type="button" data-amt="5000">5000</button></div>
+<button type="button" class="deposit-submit-btn" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
+<div class="profile-msg err" id="kpayMsg"></div>
+<div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
+</div>
+</div>
+
+<!-- ⚡ فودافون كاش تلقائي (بوابة جديدة) -->
+<div id="depositVfautoView" style="display:none;">
+<div class="deposit-info">
+<div class="deposit-brand-header">
+<div class="deposit-brand-logo vodafone">V</div>
+<div class="deposit-brand-title"><h2>فودافون كاش ومحافظ الكاش <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>حوّل واكتب رقمك والمبلغ — الرصيد بيتضاف فوراً</p></div>
+</div>
+<p>حوّل أي مبلغ بالجنيه المصري على رقم المحفظة ده من أي محفظة كاش:</p>
+<div class="deposit-wallet-logos">
+<span class="wallet-logo-chip"><i class="fas fa-mobile-alt"></i> فودافون كاش</span>
+<span class="wallet-logo-chip"><i class="fas fa-mobile-alt"></i> اتصالات كاش</span>
+<span class="wallet-logo-chip"><i class="fas fa-mobile-alt"></i> أورنج كاش</span>
+<span class="wallet-logo-chip"><i class="fas fa-mobile-alt"></i> وي كاش</span>
+</div>
+<div class="deposit-number-row">
+<div class="deposit-number" id="vfaNumber">01001606298</div>
+<button class="deposit-copy-btn" type="button" id="vfaCopyBtn" data-copy="01001606298"><i class="fas fa-copy"></i> نسخ</button>
+</div>
+<div class="deposit-steps">
+<div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق المحفظة بتاعتك (فودافون / اتصالات / أورنج / وي)</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اختر "تحويل أموال" واكتب الرقم: <b id="vfaNumberStep2">01001606298</b></span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب أي مبلغ بالجنيه وأكد التحويل</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">ارجع هنا واكتب <b>الرقم اللي حوّلت منه</b> و<b>المبلغ بالظبط</b></span></div>
+<div class="step-item"><span class="step-num">5</span><span class="step-text">اضغط تأكيد — والرصيد يتضاف لحسابك على طول ⚡</span></div>
+</div>
+</div>
+<form class="deposit-form" id="vfaPageForm" novalidate>
+<h3><i class="fas fa-bolt"></i> تأكيد الإيداع تلقائياً</h3>
+<label for="vfaPagePhone">رقم الموبايل اللي حوّلت منه</label>
+<input type="tel" id="vfaPagePhone" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="مثال: 01012345678" dir="ltr">
+<label for="vfaPageAmount">المبلغ اللي حوّلته بالظبط (بالجنيه)</label>
+<input type="text" id="vfaPageAmount" inputmode="decimal" placeholder="مثال: 150" dir="ltr">
+<button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
+<div class="profile-msg" id="vfaPageMsg"></div>
+</form>
+</div>
 
 <!-- VODAFONE -->
 <div id="depositVodafoneView" style="display:none;">
@@ -4164,13 +4210,13 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <h3><i class="fas fa-toggle-on"></i> وسائل الدفع — إظهار / إخفاء والحد الأدنى</h3>
 <div class="admin-hint" style="margin-bottom:.7rem;">💡 زرار الإظهار/الإخفاء بيتطبق فوراً عند كل العملاء، والحد الأدنى بيتحفظ مع "حفظ الإعدادات" تحت. الاتنين بيتقفلوا على السيرفر كمان — محدش يقدر يتحايل عليهم.</div>
 <div class="pm-toggles" id="pmToggles">
-<div class="pm-toggle" data-pm="vodafone" data-def="50"><span class="pmt-name"><i class="fas fa-mobile-screen"></i> محافظ الكاش</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
-<div class="pm-toggle" data-pm="vfcash_auto" data-def="1" data-defoff="1"><span class="pmt-name"><i class="fas fa-bolt"></i> فودافون كاش ⚡ تلقائي (تجريبي)</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="1"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox"><span class="pmt-switch"></span></label></div>
-<div class="pm-toggle" data-pm="instapay" data-def="50"><span class="pmt-name"><i class="fas fa-building-columns"></i> إنستا باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="1" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
-<div class="pm-toggle" data-pm="binance" data-def="2"><span class="pmt-name"><i class="fab fa-bitcoin"></i> باينانس باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0.1" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
-<div class="pm-toggle" data-pm="kashier" data-def="1000"><span class="pmt-name"><i class="fas fa-credit-card"></i> فيزا / ماستركارد / ميزة</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="10" step="any" dir="ltr" placeholder="1000"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
-<div class="pm-toggle" data-pm="usdt" data-def="2"><span class="pmt-name"><i class="fas fa-coins"></i> العملات الرقمية USDT</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0.1" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
-<div class="pm-toggle" data-pm="redot" data-def="2"><span class="pmt-name"><i class="fas fa-globe"></i> ريدوت باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0.1" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="vodafone" data-def="50"><span class="pmt-name"><i class="fas fa-mobile-screen"></i> محافظ الكاش</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="vfcash_auto" data-def="1" data-defoff="1"><span class="pmt-name"><i class="fas fa-bolt"></i> فودافون كاش ⚡ تلقائي — بدون حد أدنى</span><div class="pmt-min" style="display:none"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="1"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox"><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="instapay" data-def="50"><span class="pmt-name"><i class="fas fa-building-columns"></i> إنستا باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="binance" data-def="2"><span class="pmt-name"><i class="fab fa-bitcoin"></i> باينانس باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="kashier" data-def="1000"><span class="pmt-name"><i class="fas fa-credit-card"></i> فيزا / ماستركارد / ميزة</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="1000"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="usdt" data-def="2"><span class="pmt-name"><i class="fas fa-coins"></i> العملات الرقمية USDT</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="redot" data-def="2"><span class="pmt-name"><i class="fas fa-globe"></i> ريدوت باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
 </div>
 </div>
 
@@ -4731,6 +4777,11 @@ if (siteSettings.vodafone_number) {
 if (vNumEl) vNumEl.innerText = siteSettings.vodafone_number;
 if (vCopyBtn) vCopyBtn.setAttribute('data-copy', siteSettings.vodafone_number);
 if (vStep2) vStep2.innerText = siteSettings.vodafone_number;
+// نفس الرقم في صفحة فودافون كاش التلقائي
+const aNum = document.getElementById('vfaNumber'), aCopy = document.getElementById('vfaCopyBtn'), aStep2 = document.getElementById('vfaNumberStep2');
+if (aNum) aNum.innerText = siteSettings.vodafone_number;
+if (aCopy) aCopy.setAttribute('data-copy', siteSettings.vodafone_number);
+if (aStep2) aStep2.innerText = siteSettings.vodafone_number;
 }
 const bNumEl = document.getElementById('binanceNumber');
 const bCopyBtn = document.getElementById('binanceCopyBtn');
@@ -4825,7 +4876,8 @@ siteSettings.payment_min = (data.payment_min && typeof data.payment_min === 'obj
 if (window.applyPaymentMethods) window.applyPaymentMethods();
 };
 // الحد الأدنى لكل وسيلة دفع (من إعدادات الأدمن — ولو مش متحدد بيرجع للقيمة الافتراضية)
-window.pmMin = function (m, def) { const v = Number(((window.siteSettings || {}).payment_min || {})[m]); return v > 0 ? v : def; };
+// الحد الأدنى لكل وسيلة دفع (صفر = مفيش حد أدنى — أي مبلغ أكبر من صفر)
+window.pmMin = function (m, def) { const raw = ((window.siteSettings || {}).payment_min || {})[m]; if (raw === undefined || raw === null || raw === '') return def; const v = Number(raw); return isFinite(v) && v >= 0 ? v : def; };
 // 💳 إظهار/إخفاء وسائل الدفع حسب اختيار الأدمن
 window.applyPaymentMethods = function () {
 const pm = siteSettings.payment_methods || {};
@@ -4977,6 +5029,10 @@ const bView = document.getElementById('depositBinanceView');
 const uView = document.getElementById('depositUsdtView');
 const iView = document.getElementById('depositInstapayView');
 const rView = document.getElementById('depositRedotView');
+const aView = document.getElementById('depositVfautoView');
+if (aView) aView.style.display = method === 'vfauto' ? 'block' : 'none';
+const kView = document.getElementById('depositKashierView');
+if (kView) kView.style.display = method === 'kashier' ? 'block' : 'none';
 if (vView) vView.style.display = 'none';
 if (bView) bView.style.display = 'none';
 if (uView) uView.style.display = 'none';
@@ -5019,6 +5075,8 @@ else if (routeName === 'deposit-vodafone' && window.currentProfile) { setPageVis
 else if (routeName === 'deposit-binance' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('binance'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-usdt' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('usdt'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-instapay' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-kashier' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('kashier'); }
+else if (routeName === 'deposit-vfauto' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('vfauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-redot' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('redot'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'orders' && window.currentProfile) { setPageVisibility(myOrdersPage); if (window.loadMyOrders) window.loadMyOrders(); }
 else if (routeName === 'admin-login') {
@@ -5961,13 +6019,10 @@ if (!cards || cards.length === 0) return;
 cards.forEach(card => {
 if (card.dataset.bound === '1') return;
 card.dataset.bound = '1';
-card.addEventListener('click', function() {
+card.addEventListener('click', async function() {
 const method = this.getAttribute('data-method');
 if (!method) return;
-if (!window.currentProfile) {
-if (typeof window.showAuthModal === 'function') window.showAuthModal();
-return;
-}
+if (!window.currentProfile && !(await window.__needProfile())) return;
 const route = 'deposit-' + method;
 window.__navigateTo(route, document.getElementById('depositPage'), true);
 });
@@ -6564,8 +6619,9 @@ const pmMinNow = (data.payment_min && typeof data.payment_min === 'object') ? da
 document.querySelectorAll('#pmToggles .pm-toggle').forEach(l => {
 const on = l.dataset.defoff ? pmNow[l.dataset.pm] === true : pmNow[l.dataset.pm] !== false;
 l.querySelector('input[type=checkbox]').checked = on; l.classList.toggle('off', !on);
+const has = pmMinNow[l.dataset.pm] !== undefined && pmMinNow[l.dataset.pm] !== null;
 const v = Number(pmMinNow[l.dataset.pm]);
-l.querySelector('.pmt-min input').value = v > 0 ? v : l.dataset.def;
+l.querySelector('.pmt-min input').value = has && v >= 0 ? v : l.dataset.def;
 });
 pendingLogos = {
 vodafone: data.logo_vodafone || '', binance: data.logo_binance || '',
@@ -6644,9 +6700,9 @@ updated_at: new Date().toISOString()
 const pmMin = {};
 document.querySelectorAll('#pmToggles .pm-toggle').forEach(l => {
 const v = parseFloat(l.querySelector('.pmt-min input').value);
-pmMin[l.dataset.pm] = v > 0 ? Math.round(v * 100) / 100 : Number(l.dataset.def);
+const rawMin = l.querySelector('.pmt-min input').value.trim();
+pmMin[l.dataset.pm] = rawMin === '' || !(v >= 0) ? Number(l.dataset.def) : Math.round(v * 100) / 100;
 });
-if (pmMin.kashier < 10) pmMin.kashier = 10;
 payload.payment_min = pmMin;
 const { error } = await supabase.from('site_settings').upsert(payload, { onConflict: 'id' });
 if (error) {
@@ -8380,10 +8436,21 @@ document.body.removeChild(ta);
 
 // ===== بوابة الدخول: الموقع لا يفتح إلا بعد تسجيل الدخول =====
 // ===== نافذة الدخول / إنشاء حساب (الصفحة الرئيسية تظهر للجميع أولاً) =====
+// قبل أي خطوة محتاجة الحساب (زي فتح وسيلة دفع): لو العميل مسجل وبياناته لسه بتحمّل → نستنى ثواني بدل ما نطلّع رسالة
+window.__needProfile = async function () {
+if (window.currentProfile) return true;
+if (!currentUser) { showAuthModal(); return false; }
+try { if (window.refreshUserUI) window.refreshUserUI(); } catch (e) {}
+for (let i = 0; i < 32 && !window.currentProfile; i++) await new Promise(r => setTimeout(r, 250));
+if (window.currentProfile) return true;
+userToast('⏳ بنجهّز حسابك — جرّب تاني بعد ثانية', 'warn');
+return false;
+};
 function showAuthModal(mode) {
 if (currentUser) {
-// مسجل دخول بالفعل (مثلاً أدمن بدون ملف مستخدم)
-userToast('⚠️ هذه الخاصية تحتاج حساب مستخدم مسجل في جدول المستخدمين', 'warn');
+// مسجل دخول بالفعل بس بيانات الحساب لسه بتحمّل → نحمّلها من غير أي رسالة تقنية
+userToast('⏳ ثواني، بنجهّز حسابك...', 'warn');
+try { if (window.refreshUserUI) window.refreshUserUI(); } catch (e) {}
 return;
 }
 const tabBtn = document.getElementById(mode === 'register' ? 'registerTabBtn' : 'loginTabBtn');
@@ -10909,54 +10976,47 @@ document.getElementById('acResultSub').textContent = 'يعني في السنة �
 updateAffCalc();
 
 // ===================== ⚡ فودافون كاش تلقائي (بوابة جديدة) =====================
-// العميل بيحوّل ويكتب رقمه والمبلغ → السيرفر (sms-gateway) بيدوّر على رسالة VF-Cash مؤكدة مطابقة → يضيف مرة واحدة بس
+// الكارت بيفتح صفحة بنفس شكل محافظ الكاش → العميل يكتب رقمه والمبلغ → السيرفر (sms-gateway) بيدوّر على رسالة VF-Cash مؤكدة مطابقة → يضيف مرة واحدة بس
 (function () {
-const card = document.getElementById('vfaCard'), modal = document.getElementById('vfaModal');
-if (!card || !modal) return;
-const $v = (id) => document.getElementById(id);
-const show = (mode) => { modal.classList.add('show'); $v('vfaForm').style.display = mode === 'form' ? '' : 'none'; $v('vfaState').style.display = mode === 'form' ? 'none' : ''; };
-const hide = () => modal.classList.remove('show');
-const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const state = (icon, title, text) => { $v('vfaState').innerHTML = '<div class="big">' + icon + '</div><h4>' + esc(title) + '</h4><p>' + esc(text) + '</p><button type="button" class="kpay-go vfa-go" id="vfaBack" style="margin-top:1rem"><span>تمام</span></button>'; show('state'); $v('vfaBack').addEventListener('click', hide); };
-$v('vfaClose').addEventListener('click', hide);
-modal.addEventListener('click', (e) => { if (e.target === modal) hide(); });
-$v('vfaCopy').addEventListener('click', async () => {
-const n = $v('vfaWallet').textContent.trim();
-try { await navigator.clipboard.writeText(n); userToast('✅ تم نسخ الرقم: ' + n, 'ok'); } catch (e) { userToast('الرقم: ' + n); }
+const card = document.getElementById('vfaCard'), form = document.getElementById('vfaPageForm');
+if (!card || !form) return;
+card.addEventListener('click', async () => {
+if (!window.currentProfile && !(await window.__needProfile())) return;
+window.__navigateTo('deposit-vfauto', document.getElementById('depositPage'), true);
 });
-card.addEventListener('click', () => {
-if (!window.currentProfile) { if (typeof window.showAuthModal === 'function') window.showAuthModal(); return; }
-const num = (window.siteSettings && window.siteSettings.vodafone_number) || '01001606298';
-$v('vfaWallet').textContent = num;
-$v('vfaMsg').textContent = ''; show('form');
-});
-$v('vfaGo').addEventListener('click', async () => {
-const btn = $v('vfaGo'), msg = $v('vfaMsg');
-const phone = String($v('vfaPhone').value).replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/\D/g, '');
-const amount = String($v('vfaAmount').value).replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[٫,]/g, '.').trim();
-msg.textContent = '';
-if (!/^01[0125]\d{8}$/.test(phone)) { msg.textContent = '⚠️ اكتب رقم الموبايل اللي حوّلت منه (11 رقم يبدأ بـ 01)'; return; }
-if (!/^\d{1,9}(\.\d{1,2})?$/.test(amount) || !(Number(amount) > 0)) { msg.textContent = '⚠️ اكتب المبلغ بالظبط (زي 150 أو 150.50)'; return; }
+const toLatin = (s) => String(s || '').replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0));
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+if (!window.currentProfile && !(await window.__needProfile())) return;
+const msg = document.getElementById('vfaPageMsg'), btn = form.querySelector('.deposit-submit-btn');
+const phone = toLatin(document.getElementById('vfaPagePhone').value).replace(/\D/g, '');
+const amount = toLatin(document.getElementById('vfaPageAmount').value).replace(/[٫,]/g, '.').replace(/\s/g, '');
+msg.className = 'profile-msg'; msg.textContent = '';
+if (!/^01[0125]\d{8}$/.test(phone)) { msg.className = 'profile-msg err'; msg.textContent = '⚠️ اكتب رقم الموبايل اللي حوّلت منه (11 رقم يبدأ بـ 01)'; return; }
+// مفيش حد أدنى — أي مبلغ بالجنيه، بس لازم يكون بالظبط زي التحويل (لحد قرشين بعد العلامة)
+if (!/^\d{1,9}(\.\d{1,2})?$/.test(amount) || !(Number(amount) > 0)) { msg.className = 'profile-msg err'; msg.textContent = '⚠️ اكتب المبلغ بالظبط (زي 150 أو 150.50)'; return; }
 if (btn.disabled) return;
-btn.disabled = true; btn.querySelector('span').textContent = 'بنتأكد من التحويل...';
+const old = btn.innerHTML;
+btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> بنتأكد من التحويل...';
 let r = null;
 try {
 const { data, error } = await getSupabase().functions.invoke('sms-gateway', { body: { action: 'claim', phone: phone, amount: amount } });
 r = data;
 if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { r = null; } }
-} catch (e) { r = null; }
-btn.disabled = false; btn.querySelector('span').textContent = 'تأكيد وإضافة الرصيد';
+} catch (er) { r = null; }
+btn.disabled = false; btn.innerHTML = old;
+const safe = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 if (r && r.ok) {
-$v('vfaPhone').value = ''; $v('vfaAmount').value = '';
-try { window.smSound && window.smSound.payment(); } catch (e) {}
-state('✅', 'تم شحن رصيدك بنجاح', r.message || 'اتضاف المبلغ لرصيدك');
+document.getElementById('vfaPagePhone').value = ''; document.getElementById('vfaPageAmount').value = '';
+msg.className = 'profile-msg'; msg.innerHTML = '<div class="bn-ok"><i class="fas fa-circle-check"></i><div><b>' + safe(r.message || '✅ تم') + '</b><span>رصيدك اتحدّث — تقدر تطلب على طول</span></div></div>';
+try { window.smSound && window.smSound.payment(); } catch (er) {}
 userToast(r.message || '✅ تم', 'ok');
 if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
 if (window.loadUserTransactions) window.loadUserTransactions();
 } else if (r && r.error === 'review') {
-state('⏳', 'التحويل وصل وبيتراجع', r.message || 'اضغط تأكيد تاني بعد شوية');
+msg.className = 'profile-msg'; msg.textContent = r.message || '⏳ التحويل وصل وبيتراجع — اضغط تأكيد تاني بعد شوية';
 } else {
-msg.textContent = (r && r.message) || '❌ حصل خطأ — جرّب تاني';
+msg.className = 'profile-msg err'; msg.textContent = (r && r.message) || '❌ حصل خطأ — جرّب تاني';
 }
 });
 })();
@@ -10993,7 +11053,8 @@ kcfg = d; window.__kashierEnabled = true; if (window.applyPaymentMethods) window
 $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min;
 $('kpayMinNote').innerHTML = 'أقل مبلغ للشحن بالكارت <b>' + Number(d.min).toLocaleString('en-US') + ' جنيه</b>';
 // زراير المبالغ السريعة: اللي أقل من الحد الأدنى بتختفي
-modal.querySelectorAll('.kpay-chips [data-amt]').forEach(b => { b.style.display = Number(b.dataset.amt) < d.min ? 'none' : ''; });
+document.querySelectorAll('#depositKashierView .kpay-chips [data-amt]').forEach(b => { b.style.display = Number(b.dataset.amt) < d.min ? 'none' : ''; });
+if (!(d.min > 0)) { $('kpayAmount').placeholder = 'اكتب المبلغ'; $('kpayMinNote').innerHTML = 'أي مبلغ بالجنيه — بدون حد أدنى'; }
 }
 }).catch(() => {}), 400);
 const show = (mode) => { modal.classList.add('show'); $('kpayForm').style.display = mode === 'form' ? '' : 'none'; $('kpayState').style.display = mode === 'form' ? 'none' : ''; };
@@ -11001,15 +11062,17 @@ const hide = () => modal.classList.remove('show');
 const state = (icon, title, text) => { $('kpayState').innerHTML = '<div class="big">' + icon + '</div><h4>' + title + '</h4><p>' + text + '</p>'; show('state'); };
 $('kpayClose').addEventListener('click', hide);
 modal.addEventListener('click', (e) => { if (e.target === modal) hide(); });
-card.addEventListener('click', () => {
-if (!window.currentProfile) { if (typeof window.showAuthModal === 'function') window.showAuthModal(); return; }
-$('kpayMsg').textContent = ''; show('form');
-setTimeout(() => { try { $('kpayAmount').focus(); } catch (e) {} }, 100);
+// الكارت بيفتح صفحة بنفس شكل محافظ الكاش (مش شباك صغير)
+card.addEventListener('click', async () => {
+if (!window.currentProfile && !(await window.__needProfile())) return;
+$('kpayMsg').textContent = '';
+window.__navigateTo('deposit-kashier', document.getElementById('depositPage'), true);
 });
-modal.querySelectorAll('.kpay-chips [data-amt]').forEach(b => b.addEventListener('click', () => { $('kpayAmount').value = b.dataset.amt; }));
+document.querySelectorAll('#depositKashierView .kpay-chips [data-amt]').forEach(b => b.addEventListener('click', () => { $('kpayAmount').value = b.dataset.amt; }));
 $('kpayGo').addEventListener('click', async () => {
 const btn = $('kpayGo'), msg = $('kpayMsg');
 const amount = Math.round(parseFloat($('kpayAmount').value) * 100) / 100;
+if (!(amount > 0)) { msg.textContent = 'اكتب المبلغ اللي عايز تشحنه'; return; }
 if (!(amount >= kcfg.min)) { msg.textContent = 'أقل مبلغ للشحن ' + kcfg.min + ' جنيه'; return; }
 if (amount > kcfg.max) { msg.textContent = 'أقصى مبلغ في المرة ' + kcfg.max + ' جنيه'; return; }
 if (btn.disabled) return;

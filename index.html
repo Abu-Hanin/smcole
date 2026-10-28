@@ -4859,16 +4859,63 @@ window.applyMaintenance();
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') window.__recheckMaintenance(); });
 window.addEventListener('online', () => window.__recheckMaintenance());
 setInterval(() => { if (siteSettings.maintenance === true && document.visibilityState === 'visible') window.__recheckMaintenance(); }, 15000);
+// ⚡ الإعدادات من غير الصور (اللوجوهات والـ QR كانوا مخليين الصف ~360KB وبياخد ثواني) — الصور بتيجي لوحدها في الخلفية
+window.SETTINGS_COLS = 'id,site_name,site_description,support_phone,purchase_phone,promo_text,updated_at,active_users_override,completed_orders_override,site_url,vodafone_number,binance_id,usdt_wallet,usdt_network,usdt_address,exchange_rate,instapay_number,redot_number,theme,profit_percent,last_price_sync,last_fx,maintenance,maintenance_message,payment_methods,payment_min';
+window.ASSET_KEYS = ['logo_vodafone', 'logo_binance', 'logo_usdt', 'logo_instapay', 'logo_redot', 'binance_qr'];
 window.loadSiteSettings = async function() {
 try {
 const sb = getSupabase();
-const { data, error } = await sb.from('site_settings').select('*').eq('id', 1).single();
+const { data, error } = await sb.from('site_settings').select(window.SETTINGS_COLS).eq('id', 1).single();
 if (error) { console.warn('Settings load error:', error.message); return false; }
 if (!data) return false;
 window.__fillSiteSettings(data);
 try { localStorage.setItem('smcole_settings_cache', JSON.stringify(data)); } catch (e) {}
+window.__loadSiteAssets();
 return true;
 } catch(e) { console.warn('Settings load failed:', e); return false; }
+};
+// 🖼️ صور الإعدادات (جدول site_assets): محفوظة على الجهاز، وبنحمّل من السيرفر اللي اتغير بس
+window.__applyCachedAssets = function () {
+try {
+const c = JSON.parse(localStorage.getItem('smcole_assets_cache') || 'null');
+if (c) window.ASSET_KEYS.forEach(k => { if (c[k] && c[k].d) siteSettings[k] = c[k].d; });
+} catch (e) {}
+};
+window.__loadSiteAssets = async function () {
+try {
+const sb = getSupabase();
+const { data: list, error } = await sb.from('site_assets').select('key,updated_at');
+if (error) {
+// الجدول لسه مش موجود → الصور من الإعدادات زي الأول
+window.__assetsTable = false;
+const { data: old } = await sb.from('site_settings').select(window.ASSET_KEYS.join(',')).eq('id', 1).maybeSingle();
+if (old) { window.ASSET_KEYS.forEach(k => { siteSettings[k] = old[k] || null; }); if (window.applySiteSettings) window.applySiteSettings(); }
+return;
+}
+window.__assetsTable = true;
+let c = {}; try { c = JSON.parse(localStorage.getItem('smcole_assets_cache') || '{}') || {}; } catch (e) {}
+const live = {}; (list || []).forEach(r => { live[r.key] = r.updated_at; });
+const need = Object.keys(live).filter(k => !c[k] || c[k].u !== live[k]);
+if (need.length) {
+const { data: rows, error: e2 } = await sb.from('site_assets').select('key,data,updated_at').in('key', need);
+if (e2) return;
+(rows || []).forEach(r => { c[r.key] = { d: r.data || null, u: r.updated_at }; });
+}
+Object.keys(c).forEach(k => { if (!live[k]) delete c[k]; });
+let changed = need.length > 0;
+window.ASSET_KEYS.forEach(k => { const v = (c[k] && c[k].d) || null; if ((siteSettings[k] || null) !== v) { siteSettings[k] = v; changed = true; } });
+try { localStorage.setItem('smcole_assets_cache', JSON.stringify(c)); } catch (e) {}
+if (changed && window.applySiteSettings) window.applySiteSettings();
+} catch (e) {}
+};
+// حفظ صورة واحدة (للأدمن) — null = شيلها
+window.__saveSiteAsset = async function (key, val) {
+const sb = getSupabase();
+if (window.__assetsTable === false) {
+const o = {}; o[key] = val;
+return await sb.from('site_settings').update(o).eq('id', 1);
+}
+return await sb.from('site_assets').upsert({ key: key, data: val, updated_at: new Date().toISOString() }, { onConflict: 'key' });
 };
 // ⚡ الإعدادات بتتحفظ على الجهاز → الموقع يفتح على طول من غير ما يستنى السيرفر
 window.__fillSiteSettings = function(data) {
@@ -4883,12 +4930,8 @@ siteSettings.binance_id = data.binance_id || siteSettings.binance_id;
 siteSettings.usdt_address = data.usdt_address || siteSettings.usdt_address;
 siteSettings.instapay_number = data.instapay_number || siteSettings.instapay_number;
 siteSettings.redot_number = data.redot_number || siteSettings.redot_number;
-siteSettings.logo_vodafone = data.logo_vodafone || null;
-siteSettings.logo_binance = data.logo_binance || null;
-siteSettings.binance_qr = data.binance_qr || null;
-siteSettings.logo_usdt = data.logo_usdt || null;
-siteSettings.logo_instapay = data.logo_instapay || null;
-siteSettings.logo_redot = data.logo_redot || null;
+// الصور بتيجي لوحدها (__loadSiteAssets) — منمسحهاش لو مش موجودة في البيانات دي
+window.ASSET_KEYS.forEach(k => { if (k in data) siteSettings[k] = data[k] || null; });
 siteSettings.active_users_override = (data.active_users_override !== null && data.active_users_override !== undefined) ? parseInt(data.active_users_override) : null;
 siteSettings.completed_orders_override = (data.completed_orders_override !== null && data.completed_orders_override !== undefined) ? parseInt(data.completed_orders_override) : null;
 siteSettings.exchange_rate = (data.exchange_rate !== null && data.exchange_rate !== undefined) ? parseFloat(data.exchange_rate) : null;
@@ -5956,7 +5999,7 @@ renderCategoryList();
 try {
 // 1) فوراً: آخر إعدادات وخدمات محفوظة على الجهاز (من غير ما نستنى النت)
 let cachedSettings = false, cachedSvc = false;
-try { const s = JSON.parse(localStorage.getItem('smcole_settings_cache') || 'null'); if (s) { s.maintenance = false; /* الصيانة بتتاخد من السيرفر بس — عشان متفضلش ظاهرة بعد ما الأدمن يشيلها */ window.__fillSiteSettings(s); cachedSettings = true; } } catch (e) {}
+try { const s = JSON.parse(localStorage.getItem('smcole_settings_cache') || 'null'); if (s) { s.maintenance = false; /* الصيانة بتتاخد من السيرفر بس — عشان متفضلش ظاهرة بعد ما الأدمن يشيلها */ window.__fillSiteSettings(s); window.__applyCachedAssets(); cachedSettings = true; } } catch (e) {}
 cachedSvc = window.__loadCachedServices();
 if (cachedSettings) { window.applySiteSettings(); fetchExchangeRate(); }
 if (cachedSvc) buildAllSections();
@@ -6638,7 +6681,7 @@ const p = document.getElementById('bnQrPreview'), rm = document.getElementById('
 if (src) { p.src = src; p.hidden = false; rm.hidden = false; } else { p.removeAttribute('src'); p.hidden = true; rm.hidden = true; }
 };
 async function bnQrSave(val) {
-const { error } = await supabase.from('site_settings').update({ binance_qr: val, updated_at: new Date().toISOString() }).eq('id', 1);
+const { error } = await window.__saveSiteAsset('binance_qr', val);
 if (error) { toast('خطأ في حفظ الـ QR: ' + error.message, true); return false; }
 siteSettings.binance_qr = val; bnQrSet(val);
 try { if (window.applySiteSettings) window.applySiteSettings(); } catch (e) {}
@@ -6668,10 +6711,12 @@ reader.readAsDataURL(file);
 
 async function loadSettingsIntoForm() {
 try {
-const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+// من غير الصور (أسرع بكتير) — الصور موجودة أصلاً في siteSettings
+const { data, error } = await supabase.from('site_settings').select(window.SETTINGS_COLS).eq('id', 1).single();
 if (error) { console.warn(error); return; }
-bnQrSet(data.binance_qr || null);
 if (!data) return;
+window.ASSET_KEYS.forEach(k => { data[k] = siteSettings[k] || null; });
+bnQrSet(data.binance_qr || null);
 document.getElementById('settingsSiteName').value = data.site_name || '';
 document.getElementById('settingsSiteDescription').value = data.site_description || '';
 document.getElementById('settingsSiteUrl').value = data.site_url || '';
@@ -6761,13 +6806,21 @@ redot_number: document.getElementById('settingsRedotNumber').value.trim() || '17
 exchange_rate: exchangeRateVal === '' ? null : parseFloat(exchangeRateVal),
 active_users_override: activeUsersVal === '' ? null : parseInt(activeUsersVal),
 completed_orders_override: completedOrdersVal === '' ? null : parseInt(completedOrdersVal),
+updated_at: new Date().toISOString()
+};
+// اللوجوهات بتتحفظ لوحدها في site_assets (اللي اتغير بس)
+const logoVals = {
 logo_vodafone: pendingLogos.vodafone === '' ? null : (pendingLogos.vodafone || null),
 logo_binance: pendingLogos.binance === '' ? null : (pendingLogos.binance || null),
 logo_usdt: pendingLogos.usdt === '' ? null : (pendingLogos.usdt || null),
 logo_instapay: pendingLogos.instapay === '' ? null : (pendingLogos.instapay || null),
-logo_redot: pendingLogos.redot === '' ? null : (pendingLogos.redot || null),
-updated_at: new Date().toISOString()
+logo_redot: pendingLogos.redot === '' ? null : (pendingLogos.redot || null)
 };
+for (const k of Object.keys(logoVals)) {
+if ((siteSettings[k] || null) === logoVals[k]) continue;
+const { error: lErr } = await window.__saveSiteAsset(k, logoVals[k]);
+if (lErr) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات'; toast('خطأ في حفظ اللوجو: ' + lErr.message, true); return; }
+}
 // الحد الأدنى لكل وسيلة دفع
 const pmMin = {};
 document.querySelectorAll('#pmToggles .pm-toggle').forEach(l => {
@@ -6797,7 +6850,7 @@ btn.innerHTML = '<i class="fas fa-save"></i> حفظ الإعدادات';
 toast('✅ تم حفظ الإعدادات بنجاح' + passwordMsg);
 settingsModalBg.classList.remove('show');
 if (window.siteSettings) {
-Object.assign(window.siteSettings, payload);
+Object.assign(window.siteSettings, payload, logoVals);
 window.siteSettings.active_users_override = payload.active_users_override;
 window.siteSettings.completed_orders_override = payload.completed_orders_override;
 window.siteSettings.exchange_rate = payload.exchange_rate;
@@ -7998,7 +8051,7 @@ if (window.loadServicesFromDB) { await window.loadServicesFromDB(); if (window.b
 async function loadProviders() {
 const box = document.getElementById('providersList');
 box.innerHTML = '<div class="admin-loader"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>';
-const { data: st } = await supabase.from('site_settings').select('*').eq('id', 1).maybeSingle();
+const { data: st } = await supabase.from('site_settings').select(window.SETTINGS_COLS).eq('id', 1).maybeSingle();
 settings = st || {};
 document.getElementById('profitPercentInput').value = settings.profit_percent != null ? settings.profit_percent : 100;
 updateProfitExample();

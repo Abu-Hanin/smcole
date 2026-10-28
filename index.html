@@ -9053,7 +9053,7 @@ if (isAdminEmail(data.user.email)) {
 msg.className = 'auth-msg ok'; msg.innerText = '✅ مرحباً بك يا أدمن';
 userToast('👑 تم تسجيل الدخول كأدمن', 'ok');
 await refreshUserUI();
-setTimeout(() => { afterAuthSuccess(); }, 400);
+afterAuthSuccess();
 return;
 }
 const { data: profile, error: profErr } = await sb.from('users').select('*').eq('auth_id', data.user.id).maybeSingle();
@@ -9078,8 +9078,10 @@ return;
 }
 msg.className = 'auth-msg ok'; msg.innerText = '✅ تم تسجيل الدخول';
 userToast('✅ تم تسجيل الدخول بنجاح', 'ok');
-await refreshUserUI();
-setTimeout(() => { afterAuthSuccess(); }, 400);
+// ⚡ الحساب اتجاب خلاص → الدخول بيكمل على طول، وباقي التحديث (الرصيد/الإشعارات) بيكمل في الخلفية
+currentUser = data.user; currentProfile = profile; window.currentProfile = profile;
+refreshUserUI();
+afterAuthSuccess();
 });
 
 async function openProfilePage() {
@@ -9205,9 +9207,11 @@ window.refreshCurrencyButtons();
 
 async function doLogout() {
 if (!await smConfirm('هل تريد تسجيل الخروج؟')) return;
-// الجهاز ده يبطل يستقبل إشعارات الحساب ده
-if (window.__unsubscribeDeviceRow) await window.__unsubscribeDeviceRow();
-await sb.auth.signOut({ scope: 'local' });
+// ⚡ الخروج بيظهر على طول — وإلغاء إشعارات الجهاز + إنهاء الجلسة بيكملوا في الخلفية (بالترتيب)
+(async () => {
+try { if (window.__unsubscribeDeviceRow) await window.__unsubscribeDeviceRow(); } catch (e) {}
+try { await sb.auth.signOut({ scope: 'local' }); } catch (e) {}
+})();
 currentUser = null; currentProfile = null; window.currentProfile = null;
 window.isAdminUser = false;
 sessionStorage.removeItem('smcole_admin_mode');

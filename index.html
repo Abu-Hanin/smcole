@@ -2662,7 +2662,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <header class="sm-topbar" id="smTopbar">
 <div class="sm-topbar-inner">
 <div class="menu-button" id="menuButton" aria-label="القائمة"><span></span><span></span><span></span></div>
-<a class="sm-brand" id="smBrandLink" href="#home"><span class="sm-brand-mark site-logo"><img src="/app-icon-192.png" alt="SMCOLE" width="38" height="38"></span><span class="sm-brand-name" data-site-name>SMCOLE</span></a>
+<a class="sm-brand" id="smBrandLink" href="/"><span class="sm-brand-mark site-logo"><img src="/app-icon-192.png" alt="SMCOLE" width="38" height="38"></span><span class="sm-brand-name" data-site-name>SMCOLE</span></a>
 <div class="sm-topbar-actions">
 <button type="button" class="sm-top-login guest-only" data-auth-open="login"><i class="fas fa-right-to-bracket"></i><span> تسجيل الدخول</span></button>
 <button type="button" class="sm-top-cta guest-only" data-auth-open="register"><i class="fas fa-user-plus"></i><span> إنشاء حساب</span></button>
@@ -5012,7 +5012,7 @@ let h = (location.hash || '').replace('#', '');
 if (/(^|&)(access_token|refresh_token|error|error_description)=/.test(h)) h = '';
 window.__initialHash = h;
 if (!history.state || !history.state.__sm) {
-history.replaceState({ __sm: true, route: h || 'home' }, '', location.pathname + location.search + '#' + (h || 'home'));
+history.replaceState({ __sm: true, route: h || 'home' }, '', location.pathname + location.search + (h && h !== 'home' ? '#' + h : '')); // الرئيسية من غير #home
 }
 // لحد ما الصفحة ترجع، الرئيسية متظهرش (عشان متبانش إنها بتنط)
 if (h && h !== 'home') document.body.classList.add('route-restoring');
@@ -5052,6 +5052,8 @@ window.__currentDepositMethod = method;
 
 function routeToPage(routeName) {
 document.body.setAttribute('data-route', routeName);
+// آخر صفحة في التاب ده (الرئيسية مالهاش # في الرابط — فبنفتكرها هنا عشان الريفريش يفضّلك عليها)
+try { sessionStorage.setItem('smcole_route', routeName); } catch (e) {}
 if (window.__btUpdate) setTimeout(window.__btUpdate, 60);
 if (routeName !== 'admin-login' && routeName !== 'admin-panel') {
 const al = document.getElementById('adminLoginPage');
@@ -5119,7 +5121,7 @@ return;
 }
 if (pushState) {
 try {
-history.pushState({ __sm: true, route: routeName, idx: history.length }, '', '#' + routeName);
+history.pushState({ __sm: true, route: routeName, idx: history.length }, '', routeName === 'home' ? location.pathname : '#' + routeName); // الرئيسية = smcole.com بس
 window.__routeHistory.push(routeName);
 } catch(e) {}
 }
@@ -5138,7 +5140,7 @@ window.addEventListener('popstate', function(event) {
 const state = event.state;
 const route = (state && state.route) ? state.route : 'home';
 if (!state || !state.__sm) {
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
+try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
 routeToPage('home');
 return;
 }
@@ -6115,7 +6117,7 @@ priceBaseSelect.addEventListener('change', applyDefaultsByType);
 document.getElementById('adminBackHome').addEventListener('click', () => {
 document.getElementById('adminLoginPage').classList.remove('active');
 sessionStorage.removeItem('smcole_admin_mode');
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
+try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
 if (window.routeToPage) window.routeToPage('home');
 else window.showHomePage();
 });
@@ -6141,7 +6143,7 @@ await supabase.auth.signOut({ scope: 'local' });
 sessionStorage.removeItem('smcole_admin_mode');
 document.getElementById('adminPanelPage').classList.remove('active');
 document.getElementById('adminLoginPage').classList.remove('active');
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
+try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
 if (window.routeToPage) window.routeToPage('home');
 else window.showHomePage();
 });
@@ -8729,7 +8731,7 @@ hideAuthModal();
 if (!window.__routeRestored && window.__restoreRoute && window.__userSystemReady) window.__restoreRoute();
 if (window.__oauthJustIn || /[#&?](access_token|code)=/.test(location.href)) {
 window.__oauthJustIn = false;
-try { history.replaceState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
+try { history.replaceState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
 setTimeout(() => { afterAuthSuccess(); }, 300);
 }
 } catch(e) { console.warn(e); }
@@ -8754,7 +8756,7 @@ try {
 const q = new URLSearchParams(location.search + '&' + (location.hash || '').replace(/^#/, ''));
 const err = q.get('error_description') || q.get('error');
 if (err) {
-history.replaceState(null, '', location.pathname + '#home');
+history.replaceState(null, '', location.pathname);
 setTimeout(() => userToast('❌ الدخول بجوجل: ' + decodeURIComponent(String(err).replace(/\+/g, ' ')).slice(0, 160), 'err'), 800);
 }
 } catch (e) {}
@@ -9083,7 +9085,7 @@ try { sb.removeChannel(window.__userRealtimeChannel); } catch(e) {}
 window.__userRealtimeChannel = null;
 }
 document.getElementById('dropdownMenu').classList.remove('show-dropdown');
-try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); } catch(e) {}
+try { history.pushState({ __sm: true, route: 'home' }, '', location.pathname); } catch(e) {}
 if (window.routeToPage) window.routeToPage('home');
 else if (window.__setPageVisibility) window.__setPageVisibility(null);
 window.__currentRoute = 'home';
@@ -10793,6 +10795,8 @@ const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|kashier
 const USER_PAGES = { 'admin-panel': null, affiliate: 'affiliatePage', support: 'supportPage', profile: 'profilePage', orders: 'myOrdersPage' };
 const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, h);
 const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
+// كان واقف على الرئيسية في نفس التاب وعمل ريفريش → يفضل عليها
+let stayHome = false; try { stayHome = !h && sessionStorage.getItem('smcole_route') === 'home'; } catch (e) {}
 // ⚡ الصفحات العامة بتفتح فوراً — من غير ما الشاشة تفضل فاضية لحد ما الحساب يحمّل
 if (mode === 'early') {
 // لوحة الأدمن: بتظهر على طول (لو آخر دخول على الجهاز ده كان أدمن) — والتبويب والبيانات بيكملوا أول ما الحساب يجهز
@@ -10823,7 +10827,7 @@ return;
 }
 window.__routeRestored = true;
 try {
-if (!h) { if (hasToken) nav('services', 'servicesPage'); } // فتح الموقع وهو مسجل → الخدمات
+if (!h) { if (hasToken && !stayHome) nav('services', 'servicesPage'); } // فتح الموقع وهو مسجل → الخدمات (إلا لو كان واقف على الرئيسية وعمل ريفريش)
 else if (h === 'services') nav('services', 'servicesPage');
 else if (h === 'terms') nav('terms', 'termsPage');
 else if (h === 'payment') nav('payment', 'paymentPage');
@@ -10842,7 +10846,7 @@ try {
 let adminTab = 'users'; try { adminTab = sessionStorage.getItem('smcole_admin_tab') || 'users'; } catch (e) {}
 const ok = window.__loggedIn();
 if (h === 'admin-panel' && window.isAdminUser) { const ap = document.getElementById('adminPanelPage'); if (ap) ap.classList.remove('active'); adminGoTab(adminTab); }
-else if (!h) { if (currentUser && !fallback) nav('services', 'servicesPage'); } // فتح الموقع من جديد وهو مسجل → الخدمات
+else if (!h) { if (currentUser && !fallback && !stayHome) nav('services', 'servicesPage'); } // فتح الموقع من جديد وهو مسجل → الخدمات
 else if (h === 'home') { /* يفضل على الرئيسية */ }
 else if (h === 'services') nav('services', 'servicesPage');
 else if (h === 'terms') nav('terms', 'termsPage');
@@ -11119,7 +11123,7 @@ let ref = '';
 try {
 const q = new URLSearchParams(location.search);
 ref = q.get('kpay') || '';
-if (ref) { sessionStorage.setItem('smcole_kpay', ref); history.replaceState({ __sm: true, route: 'home' }, '', location.pathname + '#home'); }
+if (ref) { sessionStorage.setItem('smcole_kpay', ref); history.replaceState({ __sm: true, route: 'home' }, '', location.pathname); }
 else ref = sessionStorage.getItem('smcole_kpay_pending') || '';
 } catch (e) {}
 if (!/^SMC\d+-[A-Z0-9a-f]+$/.test(ref)) return;

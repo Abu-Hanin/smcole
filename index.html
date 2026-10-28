@@ -8596,7 +8596,8 @@ else btn.classList.remove('active');
 window.__refreshProfileFromDB = async function() {
 if (!currentUser) return;
 try {
-const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', currentUser.id).single();
+// maybeSingle: لو الحساب ملوش صف (زي الأدمن) مبيطلعش خطأ في الكونسول
+const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', currentUser.id).maybeSingle();
 if (error || !profile) return;
 currentProfile = profile;
 window.currentProfile = profile;

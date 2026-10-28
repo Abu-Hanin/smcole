@@ -117,6 +117,8 @@ body { background-color: #07040F; font-family: 'Cairo', sans-serif; color: #EAEC
 ::-webkit-scrollbar { width: 6px; height: 4px; }
 ::-webkit-scrollbar-track { background: #120C22; }
 ::-webkit-scrollbar-thumb { background: #A855F7; border-radius: 10px; }
+/* الموبايل: من غير شريط التمرير الجانبي (الطولي) — الشرائط الأفقية زي ما هي */
+@media (hover: none) and (pointer: coarse), (max-width: 760px) { html, body, .overlay-page { scrollbar-width: none; } ::-webkit-scrollbar:vertical { width: 0; display: none; } }
 .menu-button { position: absolute; top: 25px; right: 25px; z-index: 1000; background: #120C22; border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; font-size: 1.5rem; color: #A855F7; }
 .menu-button:hover { background: #7C3AED; color: #07040F; transform: scale(1.05); }
 .currency-circle { position: absolute; top: 25px; left: 25px; z-index: 1000; background: #120C22; border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; font-size: 1.5rem; color: #A855F7; }
@@ -4838,6 +4840,22 @@ btn.classList.toggle('on', on);
 btn.innerHTML = on ? '<i class="fas fa-screwdriver-wrench"></i> الصيانة شغالة — اقفلها' : '<i class="fas fa-screwdriver-wrench"></i> وضع الصيانة';
 }
 };
+// الموبايل بيوقف الاتصال المباشر لما الصفحة تبقى في الخلفية → أول ما العميل يرجع (أو النت يرجع) نتأكد من حالة الصيانة من السيرفر
+// ولو الصيانة شغالة بنتأكد كل 15 ثانية، عشان أول ما تتشال تختفي عنده على طول
+window.__recheckMaintenance = async function () {
+try {
+const { data } = await getSupabase().from('site_settings').select('maintenance, maintenance_message').eq('id', 1).maybeSingle();
+if (!data) return;
+const on = data.maintenance === true;
+if (on === (siteSettings.maintenance === true) && (data.maintenance_message || '') === (siteSettings.maintenance_message || '')) return;
+siteSettings.maintenance = on;
+siteSettings.maintenance_message = data.maintenance_message || '';
+window.applyMaintenance();
+} catch (e) {}
+};
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') window.__recheckMaintenance(); });
+window.addEventListener('online', () => window.__recheckMaintenance());
+setInterval(() => { if (siteSettings.maintenance === true && document.visibilityState === 'visible') window.__recheckMaintenance(); }, 15000);
 window.loadSiteSettings = async function() {
 try {
 const sb = getSupabase();
@@ -5935,7 +5953,7 @@ renderCategoryList();
 try {
 // 1) فوراً: آخر إعدادات وخدمات محفوظة على الجهاز (من غير ما نستنى النت)
 let cachedSettings = false, cachedSvc = false;
-try { const s = JSON.parse(localStorage.getItem('smcole_settings_cache') || 'null'); if (s) { window.__fillSiteSettings(s); cachedSettings = true; } } catch (e) {}
+try { const s = JSON.parse(localStorage.getItem('smcole_settings_cache') || 'null'); if (s) { s.maintenance = false; /* الصيانة بتتاخد من السيرفر بس — عشان متفضلش ظاهرة بعد ما الأدمن يشيلها */ window.__fillSiteSettings(s); cachedSettings = true; } } catch (e) {}
 cachedSvc = window.__loadCachedServices();
 if (cachedSettings) { window.applySiteSettings(); fetchExchangeRate(); }
 if (cachedSvc) buildAllSections();
@@ -9289,8 +9307,13 @@ idle = setTimeout(() => fab.classList.remove('fab-hide'), 900);
 window.addEventListener('scroll', onScroll, { passive: true });
 document.querySelectorAll('.overlay-page').forEach(p => p.addEventListener('scroll', onScroll, { passive: true }));
 })();
-window.openSupportChat = function () {
-if (!currentProfile) { if (currentUser) userToast('⚠️ الدعم الفني متاح لحسابات العملاء', 'warn'); else showAuthModal('login'); return; }
+window.openSupportChat = async function () {
+// الحساب لسه بيحمّل (بعد فتح الموقع على طول) → نستناه ثواني بدل ما نطلع رسالة غلط
+if (!currentProfile && window.__loggedIn() && !window.isAdminUser) {
+if (window.refreshUserUI) window.refreshUserUI();
+for (let i = 0; i < 32 && !currentProfile; i++) await new Promise(r => setTimeout(r, 250));
+}
+if (!currentProfile) { if (currentUser && window.isAdminUser) userToast('⚠️ الدعم الفني متاح لحسابات العملاء', 'warn'); else if (!window.__loggedIn()) showAuthModal('login'); else userToast('⏳ ثواني، بنجهّز حسابك... جرّب تاني', 'warn'); return; }
 window.__navigateTo('support', document.getElementById('supportPage'), true);
 };
 window.__onSupportOpen = async function () {

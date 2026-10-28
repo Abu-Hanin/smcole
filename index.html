@@ -9325,6 +9325,9 @@ idle = setTimeout(() => fab.classList.remove('fab-hide'), 900);
 window.addEventListener('scroll', onScroll, { passive: true });
 document.querySelectorAll('.overlay-page').forEach(p => p.addEventListener('scroll', onScroll, { passive: true }));
 })();
+// 🔢 الأرقام في الإشعارات من غير أصفار زيادة بعد العلامة (10.000000 → 10 | 10.50 → 10.5) — عرض بس
+function smTrimNum(t) { return String(t == null ? '' : t).replace(/(\d+)\.(\d*?)0+(?!\d)/g, (m, a, b) => b ? a + '.' + b : a); }
+window.smTrimNum = smTrimNum;
 window.openSupportChat = async function () {
 // الحساب لسه بيحمّل (بعد فتح الموقع على طول) → نستناه ثواني بدل ما نطلع رسالة غلط
 if (!currentProfile && window.__loggedIn() && !window.isAdminUser) {
@@ -9438,7 +9441,7 @@ list.innerHTML = notifItems.map(n => {
 const ic = NOTIF_ICONS[n.type] || ['fa-bell', 'info'];
 return '<button type="button" class="np-item' + (n.is_read ? '' : ' unread') + '" data-id="' + n.id + '">' +
 '<span class="np-ico ' + ic[1] + '"><i class="fas ' + ic[0] + '"></i></span>' +
-'<span class="np-txt"><b>' + escHtml(n.title) + '</b>' + (n.body ? '<small>' + escHtml(n.body) + '</small>' : '') + '<em>' + timeAgo(n.created_at) + '</em></span>' +
+'<span class="np-txt"><b>' + escHtml(smTrimNum(n.title)) + '</b>' + (n.body ? '<small>' + escHtml(smTrimNum(n.body)) + '</small>' : '') + '<em>' + timeAgo(n.created_at) + '</em></span>' +
 (n.is_read ? '' : '<span class="np-dot"></span>') + '</button>';
 }).join('');
 list.querySelectorAll('.np-item').forEach(b => b.addEventListener('click', () => openNotif(b.dataset.id)));
@@ -9600,10 +9603,10 @@ function showSystemNotif(n, force) {
 if (!('Notification' in window) || Notification.permission !== 'granted') return;
 if (pushActive && !force) return; // السيرفر هيبعته للجهاز بنفسه — منعاً للتكرار
 if (!force && document.visibilityState === 'visible') return; // لو الموقع مفتوح قدامه، كفاية الإشعار اللي جوه الموقع
-const opts = { body: n.body || '', icon: '/app-icon-192.png', badge: '/app-icon-192.png', tag: 'smcole-' + n.id, data: { link: n.link || '' }, dir: 'rtl', lang: 'ar' };
+const opts = { body: smTrimNum(n.body || ''), icon: '/app-icon-192.png', badge: '/app-icon-192.png', tag: 'smcole-' + n.id, data: { link: n.link || '' }, dir: 'rtl', lang: 'ar' };
 if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-navigator.serviceWorker.ready.then(reg => reg.showNotification(n.title, opts)).catch(() => { try { new Notification(n.title, opts); } catch (e) {} });
-} else { try { new Notification(n.title, opts); } catch (e) {} }
+navigator.serviceWorker.ready.then(reg => reg.showNotification(smTrimNum(n.title), opts)).catch(() => { try { new Notification(smTrimNum(n.title), opts); } catch (e) {} });
+} else { try { new Notification(smTrimNum(n.title), opts); } catch (e) {} }
 }
 // لما العميل يضغط على إشعار الجهاز، الـ Service Worker بيفتح الموقع على الصفحة المطلوبة
 if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', (ev) => { if (ev.data && ev.data.type === 'smcole-open') goNotifLink(ev.data.link); });
@@ -9657,7 +9660,7 @@ const n = p.new; if (!n || notifItems.some(x => x.id === n.id)) return;
 if (n.link === 'support' && window.__currentRoute === 'support' && document.visibilityState === 'visible') { n.is_read = true; sb.from('notifications').update({ is_read: true }).eq('id', n.id).then(() => {}); }
 notifItems.unshift(n);
 renderNotifs();
-if (!n.is_read) { userToast('🔔 ' + n.title, 'ok'); ringBell(); }
+if (!n.is_read) { userToast('🔔 ' + smTrimNum(n.title), 'ok'); ringBell(); }
 showSystemNotif(n);
 // تحديث الصفحات المفتوحة
 if (n.link === 'orders' && window.__currentRoute === 'orders' && window.loadMyOrders) window.loadMyOrders(true);

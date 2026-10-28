@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smcole-v56'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+const CACHE_NAME = 'smcole-v57'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
@@ -63,7 +63,10 @@ self.addEventListener('fetch', event => {
 self.addEventListener('push', event => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; } catch (e) { data = { title: 'SMCOLE', body: event.data ? event.data.text() : '' }; }
-  const title = data.title || 'SMCOLE';
+  // الأرقام من غير أصفار زيادة بعد العلامة (10.000000 → 10)
+  const trimNum = t => String(t == null ? '' : t).replace(/(\d+)\.(\d*?)0+(?!\d)/g, (m, a, b) => b ? a + '.' + b : a);
+  data.body = trimNum(data.body || '');
+  const title = trimNum(data.title || 'SMCOLE');
   const link = data.link || '';
   // كل إشعار لوحده في كارت منفصل (مش بيتجمعوا ولا واحد بيمسح التاني)
   const isChat = link === 'support';

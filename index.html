@@ -2474,6 +2474,8 @@ body { background-attachment: scroll !important; }
 // 🔐 بعد الريفريش: لو الجلسة محفوظة على الجهاز نفتح الموقع وهو مسجل على طول (من غير ما يبان كأنه سجل خروج ورجع)
 window.__smHasToken = function () { try { const v = JSON.parse(localStorage.getItem('sb-bqiryyoanqleobzlztbl-auth-token') || 'null'); return !!(v && (v.refresh_token || (v.currentSession && v.currentSession.refresh_token))); } catch (e) { return false; } };
 if (window.__smHasToken()) document.body.classList.remove('is-guest');
+// العميل مسجل؟ (حسابه حمّل — أو أدمن — أو الجلسة محفوظة وبتحمّل) → الصفحات بتفتح على طول من غير ما تستنى
+window.__loggedIn = function () { return !!(window.currentProfile || window.isAdminUser || (!window.__authGaveUp && window.__smHasToken())); };
 </script>
 
 <div id="welcomeOverlay" class="welcome-overlay">
@@ -5057,7 +5059,7 @@ if (ap) ap.classList.remove('active');
 }
 if (routeName === 'home') setPageVisibility(null);
 else if (routeName === 'services') { setPageVisibility(servicesPage); if (window.__cfRefreshAll) setTimeout(() => window.__cfRefreshAll(), 30); }
-else if (routeName === 'support' && window.currentProfile) { setPageVisibility(supportPage); if (window.__onSupportOpen) window.__onSupportOpen(); }
+else if (routeName === 'support' && window.__loggedIn()) { setPageVisibility(supportPage); if (window.__onSupportOpen) window.__onSupportOpen(); }
 else if (routeName === 'terms') setPageVisibility(termsPage);
 else if (routeName === 'affiliate') { setPageVisibility(affiliatePage); if (window.__onAffiliateOpen) window.__onAffiliateOpen(); }
 else if (routeName === 'payment') {
@@ -5067,18 +5069,18 @@ if (txBox) txBox.style.display = window.currentProfile ? '' : 'none';
 if (window.currentProfile && window.loadUserTransactions) window.loadUserTransactions();
 }
 else if (routeName === 'favorites') { setPageVisibility(favoritesPage); renderFavoritesPage(); }
-else if (routeName === 'profile' && window.currentProfile) {
+else if (routeName === 'profile' && window.__loggedIn()) {
 setPageVisibility(profilePage);
 if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
 }
-else if (routeName === 'deposit-vodafone' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('vodafone'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
-else if (routeName === 'deposit-binance' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('binance'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
-else if (routeName === 'deposit-usdt' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('usdt'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
-else if (routeName === 'deposit-instapay' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
-else if (routeName === 'deposit-kashier' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('kashier'); }
-else if (routeName === 'deposit-vfauto' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('vfauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
-else if (routeName === 'deposit-redot' && window.currentProfile) { setPageVisibility(depositPage); window.__showDepositView('redot'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
-else if (routeName === 'orders' && window.currentProfile) { setPageVisibility(myOrdersPage); if (window.loadMyOrders) window.loadMyOrders(); }
+else if (routeName === 'deposit-vodafone' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('vodafone'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-binance' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('binance'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-usdt' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('usdt'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-instapay' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-kashier' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('kashier'); }
+else if (routeName === 'deposit-vfauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('vfauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-redot' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('redot'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'orders' && window.__loggedIn()) { setPageVisibility(myOrdersPage); if (window.loadMyOrders) window.loadMyOrders(); }
 else if (routeName === 'admin-login') {
 // تم إلغاء صفحة دخول الأدمن المنفصلة — الأدمن يسجل من نفس شاشة الدخول
 setPageVisibility(null);
@@ -6737,6 +6739,7 @@ if (window.fetchExchangeRate) { window.fetchExchangeRate(); }
 document.querySelectorAll('.admin-main-tab').forEach(tab => {
 tab.addEventListener('click', () => {
 const target = tab.getAttribute('data-admin-tab');
+try { sessionStorage.setItem('smcole_admin_tab', target); } catch (e) {} // بعد الريفريش يرجع لنفس التبويب
 document.querySelectorAll('.admin-main-tab').forEach(t => t.classList.remove('active'));
 tab.classList.add('active');
 document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
@@ -8437,13 +8440,11 @@ document.body.removeChild(ta);
 // ===== بوابة الدخول: الموقع لا يفتح إلا بعد تسجيل الدخول =====
 // ===== نافذة الدخول / إنشاء حساب (الصفحة الرئيسية تظهر للجميع أولاً) =====
 // قبل أي خطوة محتاجة الحساب (زي فتح وسيلة دفع): لو العميل مسجل وبياناته لسه بتحمّل → نستنى ثواني بدل ما نطلّع رسالة
+// ⚡ مسجل (عميل أو أدمن) → تفتح على طول من غير أي انتظار — والسيرفر بيتأكد من الحساب وقت الدفع نفسه
 window.__needProfile = async function () {
-if (window.currentProfile) return true;
-if (!currentUser) { showAuthModal(); return false; }
-try { if (window.refreshUserUI) window.refreshUserUI(); } catch (e) {}
-for (let i = 0; i < 32 && !window.currentProfile; i++) await new Promise(r => setTimeout(r, 250));
-if (window.currentProfile) return true;
-userToast('⏳ بنجهّز حسابك — جرّب تاني بعد ثانية', 'warn');
+if (window.currentProfile || window.isAdminUser || currentUser) return true;
+if (window.__loggedIn && window.__loggedIn()) return true;
+showAuthModal();
 return false;
 };
 function showAuthModal(mode) {
@@ -8826,7 +8827,7 @@ hideAuthModal();
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'profile') { setTimeout(() => openProfilePage(), 150); return; }
 if (hash === 'orders') { setTimeout(() => openMyOrdersPage(), 150); return; }
-if (hash === 'deposit-vodafone' || hash === 'deposit-binance' || hash === 'deposit-usdt' || hash === 'deposit-instapay' || hash === 'deposit-redot') {
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|kashier)$/.test(hash)) {
 setTimeout(() => { window.__navigateTo(hash, document.getElementById('depositPage'), true); }, 150);
 return;
 }
@@ -9107,6 +9108,7 @@ window.openAdminPanel(currentUser || { email: ADMIN_EMAIL });
 }
 const tabBtn = document.querySelector('.admin-main-tab[data-admin-tab="' + tab + '"]');
 if (tabBtn) tabBtn.click();
+try { sessionStorage.setItem('smcole_admin_tab', tab); } catch (e) {}
 setAdminNavActive(tab === 'transactions' ? 'deposits' : tab);
 window.scrollTo(0, 0);
 document.getElementById('adminPanelPage').scrollTop = 0;
@@ -10782,7 +10784,7 @@ if (window.__routeRestored) return;
 const fallback = mode === true;
 const h = window.__initialHash || '';
 const nav = (r, id) => window.__navigateTo(r, document.getElementById(id), false);
-const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot)$/.test(h);
+const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|kashier)$/.test(h);
 const USER_PAGES = { 'admin-panel': null, affiliate: 'affiliatePage', support: 'supportPage', profile: 'profilePage', orders: 'myOrdersPage' };
 const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, h);
 const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
@@ -10816,18 +10818,21 @@ if (fallback && needsUser && hasToken && !currentProfile) return;
 if (!fallback && needsUser && hasToken && !currentProfile && !window.isAdminUser) return;
 window.__routeRestored = true;
 try {
-if (h === 'admin-panel' && window.isAdminUser) adminGoTab('users');
+// لوحة الأدمن: بترجع لنفس التبويب اللي كان مفتوح (الطلبات / المستخدمين / الإيداعات...)
+let adminTab = 'users'; try { adminTab = sessionStorage.getItem('smcole_admin_tab') || 'users'; } catch (e) {}
+const ok = window.__loggedIn();
+if (h === 'admin-panel' && window.isAdminUser) adminGoTab(adminTab);
 else if (!h) { if (currentUser && !fallback) nav('services', 'servicesPage'); } // فتح الموقع من جديد وهو مسجل → الخدمات
 else if (h === 'home') { /* يفضل على الرئيسية */ }
 else if (h === 'services') nav('services', 'servicesPage');
 else if (h === 'terms') nav('terms', 'termsPage');
-else if (h === 'affiliate' && currentProfile) nav('affiliate', 'affiliatePage');
+else if (h === 'affiliate' && ok) nav('affiliate', 'affiliatePage');
 else if (h === 'payment') nav('payment', 'paymentPage');
 else if (h === 'favorites') nav('favorites', 'favoritesPage');
-else if (h === 'support' && currentProfile) nav('support', 'supportPage');
-else if (h === 'profile' && currentProfile) openProfilePage();
-else if (h === 'orders' && currentProfile) openMyOrdersPage();
-else if (isDeposit && currentProfile) nav(h, 'depositPage');
+else if (h === 'support' && ok) nav('support', 'supportPage');
+else if (h === 'profile' && ok) openProfilePage();
+else if (h === 'orders' && ok) openMyOrdersPage();
+else if (isDeposit && ok) nav(h, 'depositPage');
 else if (window.routeToPage) window.routeToPage('home');
 } catch (e) { console.warn('restore route:', e); }
 document.body.classList.remove('route-restoring');

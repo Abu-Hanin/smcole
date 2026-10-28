@@ -9010,12 +9010,14 @@ if (error) { try { res = error.context && typeof error.context.json === 'functio
 } catch (er) { res = null; }
 if (res && res.ok === false && res.message && res.error !== 'unknown action') { msg.className = 'auth-msg err'; msg.innerText = res.message; return; }
 if (res && res.ok) {
-const { error: inErr } = await sb.auth.signInWithPassword({ email, password });
+const { data: inData, error: inErr } = await sb.auth.signInWithPassword({ email, password });
 if (inErr) { msg.className = 'auth-msg err'; msg.innerText = 'تم إنشاء الحساب — سجّل دخول بالإيميل وكلمة المرور'; return; }
 msg.className = 'auth-msg ok'; msg.innerText = '✅ تم إنشاء الحساب بنجاح';
 userToast('🎉 تم إنشاء حسابك بنجاح! مرحباً بك', 'ok');
-await refreshUserUI();
-setTimeout(() => { afterAuthSuccess(); }, 500);
+// ⚡ الحساب بيفتح على طول — وبياناته (الرصيد/الإشعارات) بتكمل تتحمّل في الخلفية
+if (inData && inData.user) currentUser = inData.user;
+refreshUserUI();
+afterAuthSuccess();
 return;
 }
 } finally { if (btn) btn.disabled = false; }
@@ -9039,8 +9041,8 @@ if (insertErr) { msg.className = 'auth-msg err'; msg.innerText = 'خطأ: ' + in
 await sb.auth.signInWithPassword({ email, password });
 msg.className = 'auth-msg ok'; msg.innerText = '✅ تم إنشاء الحساب بنجاح';
 userToast('🎉 تم إنشاء حسابك بنجاح! مرحباً بك', 'ok');
-await refreshUserUI();
-setTimeout(() => { afterAuthSuccess(); }, 500);
+refreshUserUI();
+afterAuthSuccess();
 });
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -9055,7 +9057,11 @@ if (error) { msg.className = 'auth-msg err'; msg.innerText = '❌ ' + (error.mes
 if (isAdminEmail(data.user.email)) {
 msg.className = 'auth-msg ok'; msg.innerText = '✅ مرحباً بك يا أدمن';
 userToast('👑 تم تسجيل الدخول كأدمن', 'ok');
-await refreshUserUI();
+// ⚡ من غير ما نستنى تحميل الحساب — الصلاحيات بتتظبط على طول وباقي البيانات بتكمل في الخلفية
+currentUser = data.user; window.isAdminUser = true;
+try { localStorage.setItem('smcole_last_admin', '1'); } catch (er) {}
+applyRoleUI();
+refreshUserUI();
 afterAuthSuccess();
 return;
 }

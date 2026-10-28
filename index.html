@@ -2474,6 +2474,8 @@ body { background-attachment: scroll !important; }
 // 🔐 بعد الريفريش: لو الجلسة محفوظة على الجهاز نفتح الموقع وهو مسجل على طول (من غير ما يبان كأنه سجل خروج ورجع)
 window.__smHasToken = function () { try { const v = JSON.parse(localStorage.getItem('sb-bqiryyoanqleobzlztbl-auth-token') || 'null'); return !!(v && (v.refresh_token || (v.currentSession && v.currentSession.refresh_token))); } catch (e) { return false; } };
 if (window.__smHasToken()) document.body.classList.remove('is-guest');
+// 🔄 ريفريش وإنت في صفحة جوه الموقع → الرئيسية متترسمش خالص (من أول لحظة) لحد ما الصفحة اللي كنت فيها ترجع
+(function () { try { var h = (location.hash || '').replace('#', ''); if (h && h !== 'home' && !/(^|&)(access_token|refresh_token|error)=/.test(h)) document.body.classList.add('route-restoring'); } catch (e) {} })();
 // العميل مسجل؟ (حسابه حمّل — أو أدمن — أو الجلسة محفوظة وبتحمّل) → الصفحات بتفتح على طول من غير ما تستنى
 window.__loggedIn = function () { return !!(window.currentProfile || window.isAdminUser || (!window.__authGaveUp && window.__smHasToken())); };
 </script>
@@ -8644,6 +8646,8 @@ return;
 window.__noSessTries = 0;
 currentUser = session.user;
 window.isAdminUser = isAdminEmail(session.user.email);
+// علامة على الجهاز (شكل بس — البيانات نفسها محمية في قاعدة البيانات): بعد الريفريش لوحة الأدمن تظهر على طول
+try { if (window.isAdminUser) localStorage.setItem('smcole_last_admin', '1'); else localStorage.removeItem('smcole_last_admin'); } catch (e) {}
 const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', session.user.id).maybeSingle();
 if (window.isAdminUser) {
 // الأدمن يدخل حتى لو مالوش صف في جدول المستخدمين
@@ -10790,6 +10794,21 @@ const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, 
 const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
 // ⚡ الصفحات العامة بتفتح فوراً — من غير ما الشاشة تفضل فاضية لحد ما الحساب يحمّل
 if (mode === 'early') {
+// لوحة الأدمن: بتظهر على طول (لو آخر دخول على الجهاز ده كان أدمن) — والتبويب والبيانات بيكملوا أول ما الحساب يجهز
+if (h === 'admin-panel' && hasToken) {
+let wasAdmin = false; try { wasAdmin = localStorage.getItem('smcole_last_admin') === '1'; } catch (e) {}
+if (wasAdmin) {
+const mc = document.getElementById('mainContent'); if (mc) mc.style.display = 'none';
+document.querySelectorAll('.overlay-page').forEach(p => { p.style.display = 'none'; });
+const ap = document.getElementById('adminPanelPage'); if (ap) ap.classList.add('active');
+let tab = 'users'; try { tab = sessionStorage.getItem('smcole_admin_tab') || 'users'; } catch (e) {}
+document.querySelectorAll('.admin-main-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-admin-tab') === tab));
+const secId = 'adminSection' + tab.charAt(0).toUpperCase() + tab.slice(1);
+document.querySelectorAll('.admin-section').forEach(s => s.classList.toggle('active', s.id === secId));
+document.body.classList.remove('route-restoring');
+}
+return;
+}
 if (needsUser) {
 // صفحة محتاجة الحساب: نعرض مكانها على طول، وبياناتها بتتحمّل أول ما الحساب يجهز
 const pid = isDeposit ? 'depositPage' : USER_PAGES[h];
@@ -10821,7 +10840,7 @@ try {
 // لوحة الأدمن: بترجع لنفس التبويب اللي كان مفتوح (الطلبات / المستخدمين / الإيداعات...)
 let adminTab = 'users'; try { adminTab = sessionStorage.getItem('smcole_admin_tab') || 'users'; } catch (e) {}
 const ok = window.__loggedIn();
-if (h === 'admin-panel' && window.isAdminUser) adminGoTab(adminTab);
+if (h === 'admin-panel' && window.isAdminUser) { const ap = document.getElementById('adminPanelPage'); if (ap) ap.classList.remove('active'); adminGoTab(adminTab); }
 else if (!h) { if (currentUser && !fallback) nav('services', 'servicesPage'); } // فتح الموقع من جديد وهو مسجل → الخدمات
 else if (h === 'home') { /* يفضل على الرئيسية */ }
 else if (h === 'services') nav('services', 'servicesPage');

@@ -428,6 +428,9 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .profile-save-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124, 58, 237,0.3); }
 .profile-msg { color:#7C3AED; font-size:0.85rem; margin-top:0.5rem; min-height:18px; }
 .profile-msg.err { color:#e83e5c; }
+/* رسالة نتيجة الإيداع: بين كارت الشرح وكارت التأكيد — ومخفية وهي فاضية (الصفحة زي ما هي) */
+#kpayMsg, #vfaPageMsg, #vodafoneMsg, #binanceMsg, #usdtMsg, #instapayMsg, #redotMsg { margin: 0 0 1rem; min-height: 0; }
+#kpayMsg:empty, #vfaPageMsg:empty, #vodafoneMsg:empty, #binanceMsg:empty, #usdtMsg:empty, #instapayMsg:empty, #redotMsg:empty { display: none; }
 /* 🔌 الـ API في صفحة حسابي */
 .api-section { scroll-margin-top: 90px; transition: box-shadow .4s, border-color .4s; }
 .api-section.api-focus { border-color: #A855F7 !important; box-shadow: 0 0 0 3px rgba(168,85,247,.35), 0 14px 40px rgba(124,58,237,.35) !important; }
@@ -3435,6 +3438,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="step-item"><span class="step-num">4</span><span class="step-text">هترجع للموقع لوحدك — والرصيد يتضاف تلقائياً ⚡</span></div>
 </div>
 </div>
+<div class="profile-msg dep-msg-slot err" id="kpayMsg"></div>
 <div class="deposit-form kpay-page-form">
 <h3><i class="fas fa-lock"></i> شحن الرصيد بالكارت</h3>
 <label for="kpayAmount">المبلغ (بالجنيه المصري)</label>
@@ -3442,7 +3446,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>1,000 جنيه</b></div>
 <div class="kpay-chips"><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="3000">3000</button><button type="button" data-amt="5000">5000</button></div>
 <button type="button" class="deposit-submit-btn" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
-<div class="profile-msg err" id="kpayMsg"></div>
 <div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
 </div>
 </div>
@@ -3473,6 +3476,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="step-item"><span class="step-num">5</span><span class="step-text">اضغط تأكيد — والرصيد يتضاف لحسابك على طول ⚡</span></div>
 </div>
 </div>
+<div class="profile-msg dep-msg-slot" id="vfaPageMsg"></div>
 <form class="deposit-form" id="vfaPageForm" novalidate>
 <h3><i class="fas fa-bolt"></i> تأكيد الإيداع تلقائياً</h3>
 <label for="vfaPagePhone">رقم الموبايل اللي حوّلت منه</label>
@@ -3480,7 +3484,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <label for="vfaPageAmount">المبلغ اللي حوّلته بالظبط (بالجنيه)</label>
 <input type="text" id="vfaPageAmount" inputmode="decimal" placeholder="مثال: 150" dir="ltr">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
-<div class="profile-msg" id="vfaPageMsg"></div>
 </form>
 </div>
 
@@ -3511,6 +3514,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="vodafone">50</span> جنيه</p>
 </div>
+<div class="profile-msg dep-msg-slot" id="vodafoneMsg"></div>
 <form class="deposit-form" id="vodafoneForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية الإيداع</h3>
 <label>المبلغ (بالجنيه المصري)</label>
@@ -3526,7 +3530,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <input type="file" id="vodafoneScreenshot" accept="image/*" style="display:none;">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-paper-plane"></i> تأكيد وإرسال للإدارة</button>
-<div class="profile-msg" id="vodafoneMsg"></div>
 </form>
 </div>
 
@@ -3554,6 +3557,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="step-item"><span class="step-num">5</span><span class="step-text">اكتب المبلغ ورقم الطلب هنا تحت — والرصيد يتضاف فوراً ⚡</span></div>
 </div>
 </div>
+<div class="profile-msg dep-msg-slot" id="binanceMsg"></div>
 <form class="deposit-form bn-auto-form" id="binanceForm">
 <h3><i class="fas fa-bolt"></i> تأكيد الدفع تلقائياً</h3>
 <label>المبلغ اللي حوّلته (USDT)</label>
@@ -3561,7 +3565,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <label>رقم الطلب (Order ID) من تفاصيل التحويل</label>
 <input type="text" id="binanceTransaction" placeholder="مثال: 450955449269067776" inputmode="numeric" autocomplete="off" dir="ltr" required>
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
-<div class="profile-msg" id="binanceMsg"></div>
 </form>
 </div>
 
@@ -3588,6 +3591,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <p style="color:#e83e5c; font-weight:700;"><i class="fas fa-exclamation-triangle"></i> تنبيه: الإرسال على شبكة أخرى قد يؤدي لفقدان المبلغ</p>
 <p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="usdt">2</span> دولار</p>
 </div>
+<div class="profile-msg dep-msg-slot" id="usdtMsg"></div>
 <form class="deposit-form" id="usdtForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية USDT</h3>
 <label>المبلغ (بالدولار)</label>
@@ -3603,7 +3607,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <input type="file" id="usdtScreenshot" accept="image/*" style="display:none;">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-paper-plane"></i> تأكيد وإرسال للإدارة</button>
-<div class="profile-msg" id="usdtMsg"></div>
 </form>
 </div>
 
@@ -3628,6 +3631,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="instapay">50</span> جنيه</p>
 </div>
+<div class="profile-msg dep-msg-slot" id="instapayMsg"></div>
 <form class="deposit-form" id="instapayForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية إنستا باي</h3>
 <label>المبلغ (بالجنيه المصري)</label>
@@ -3643,7 +3647,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <input type="file" id="instapayScreenshot" accept="image/*" style="display:none;">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-paper-plane"></i> تأكيد وإرسال للإدارة</button>
-<div class="profile-msg" id="instapayMsg"></div>
 </form>
 </div>
 
@@ -3668,6 +3671,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <p style="color:#A855F7; font-weight:700;"><i class="fas fa-info-circle"></i> الحد الأدنى للإيداع: <span class="pm-min-label" data-pm="redot">2</span> دولار</p>
 </div>
+<div class="profile-msg dep-msg-slot" id="redotMsg"></div>
 <form class="deposit-form" id="redotForm">
 <h3><i class="fas fa-check-circle"></i> تأكيد عملية ريدوت باي</h3>
 <label>المبلغ (بالدولار الأمريكي)</label>
@@ -3683,7 +3687,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <input type="file" id="redotScreenshot" accept="image/*" style="display:none;">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-paper-plane"></i> تأكيد وإرسال للإدارة</button>
-<div class="profile-msg" id="redotMsg"></div>
 </form>
 </div>
 
@@ -9382,6 +9385,17 @@ idle = setTimeout(() => fab.classList.remove('fab-hide'), 900);
 window.addEventListener('scroll', onScroll, { passive: true });
 document.querySelectorAll('.overlay-page').forEach(p => p.addEventListener('scroll', onScroll, { passive: true }));
 })();
+// 📍 رسالة نتيجة الإيداع بقت فوق كارت التأكيد → أول ما تظهر الصفحة بتنزل/تطلع لها عشان العميل يشوفها
+['kpayMsg', 'vfaPageMsg', 'vodafoneMsg', 'binanceMsg', 'usdtMsg', 'instapayMsg', 'redotMsg'].forEach(id => {
+const el = document.getElementById(id);
+if (!el || !window.MutationObserver) return;
+let last = '';
+new MutationObserver(() => {
+const t = el.textContent.trim();
+if (t && t !== last) { try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} }
+last = t;
+}).observe(el, { childList: true, characterData: true, subtree: true });
+});
 // 🔢 الأرقام في الإشعارات من غير أصفار زيادة بعد العلامة (10.000000 → 10 | 10.50 → 10.5) — عرض بس
 function smTrimNum(t) { return String(t == null ? '' : t).replace(/(\d+)\.(\d*?)0+(?!\d)/g, (m, a, b) => b ? a + '.' + b : a); }
 window.smTrimNum = smTrimNum;

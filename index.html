@@ -4529,8 +4529,10 @@ try { history.pushState({ __sm: true, route: 'admin-login' }, '', '#admin-login'
 document.getElementById('adminLoginPage').classList.add('active');
 document.getElementById('adminPanelPage').classList.remove('active');
 };
-window.openAdminPanel = function(user) {
+window.openAdminPanel = function(user, tab) {
 if (!window.isAdminUser) return;
+// tab جاي من adminGoTab: التبويب نفسه بيحمّل بياناته → منحمّلش المستخدمين على الفاضي (كانت بتتحمل مرتين وبتعطّل الصفحة)
+var goTab = tab || 'users', loadUsers = !tab;
 if (window.__histGo) window.__histGo('admin-panel');
 window.__currentRoute = 'admin-panel';
 var mc = document.getElementById('mainContent'); if (mc) mc.style.display = 'none';
@@ -4539,10 +4541,11 @@ document.getElementById('adminLoginPage').classList.remove('active');
 document.getElementById('adminPanelPage').classList.add('active');
 var ue = document.getElementById('adminUserEmail');
 if (ue) ue.innerText = user && user.email ? user.email : '';
-if (window.setAdminNavActive) window.setAdminNavActive('users');
-document.querySelectorAll('.admin-main-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-admin-tab') === 'users'));
-document.querySelectorAll('.admin-section').forEach(s => s.classList.toggle('active', s.id === 'adminSectionUsers'));
-if (window.loadAdminUsers) window.loadAdminUsers();
+if (window.setAdminNavActive) window.setAdminNavActive(goTab === 'transactions' ? 'deposits' : goTab);
+document.querySelectorAll('.admin-main-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-admin-tab') === goTab));
+var secId = 'adminSection' + goTab.charAt(0).toUpperCase() + goTab.slice(1);
+document.querySelectorAll('.admin-section').forEach(s => s.classList.toggle('active', s.id === secId));
+if (loadUsers && window.loadAdminUsers) window.loadAdminUsers();
 };
 </script>
 
@@ -6857,15 +6860,21 @@ const empty = document.getElementById('adminUsersEmpty');
 loader.style.display = 'block'; table.style.display = 'none'; empty.style.display = 'none';
 try {
 // الإجمالي الحقيقي لكل العملاء + (لو الترتيب بالرصيد) القايمة مترتبة من السيرفر
-const { data: bal, error: balErr } = await supabase.rpc('smcole_admin_balances', { p_order: usersSort === 'asc' ? 'asc' : 'desc', p_limit: usersSort === 'new' ? 1 : 300 });
+// ⚡ ترتيب "الأحدث": الإجمالي والقايمة بيتحمّلوا مع بعض في نفس الوقت (مش واحد ورا التاني)
+const listQ = () => supabase.from('users')
+.select('id,username,name,email,phone,balance_egp,balance_usd,is_banned,created_at')
+.order('created_at', { ascending: false })
+.limit(50);
+const [balRes, listRes] = await Promise.all([
+supabase.rpc('smcole_admin_balances', { p_order: usersSort === 'asc' ? 'asc' : 'desc', p_limit: usersSort === 'new' ? 1 : 300 }),
+usersSort === 'new' ? listQ() : Promise.resolve(null)
+]);
+const bal = balRes.data, balErr = balRes.error;
 const balOk = !balErr && bal && bal.ok;
 let data, error;
 if (usersSort !== 'new' && balOk) { data = bal.items || []; }
 else {
-({ data, error } = await supabase.from('users')
-.select('id,username,name,email,phone,balance_egp,balance_usd,is_banned,created_at')
-.order('created_at', { ascending: false })
-.limit(50));
+({ data, error } = listRes || await listQ());
 }
 loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
@@ -7223,6 +7232,15 @@ btn.innerHTML = '<i class="fas fa-save"></i> تغيير';
 // ==================== ORDERS ====================
 let allOrdersData = [];
 let ordersSearchTerm = '';
+// 📊 عدد كل الطلبات من أول الشهر الحالي (عدّ من السيرفر — من غير ما نحمّل الصفوف نفسها)
+async function adminMonthCount(table, elId, fallback) {
+try {
+const now = new Date();
+const { count, error } = await supabase.from(table).select('id', { count: 'exact', head: true }).gte('created_at', new Date(now.getFullYear(), now.getMonth(), 1).toISOString());
+const el = document.getElementById(elId);
+if (el) el.innerText = (!error && typeof count === 'number') ? count.toLocaleString('en-US') : fallback;
+} catch (e) { const el = document.getElementById(elId); if (el) el.innerText = fallback; }
+}
 async function loadAdminOrders() {
 const loader = document.getElementById('adminOrdersLoader');
 const table = document.getElementById('adminOrdersTable');
@@ -7240,7 +7258,7 @@ const { data, error } = res;
 loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 allOrdersData = data || [];
-document.getElementById('adminTotalOrders').innerText = allOrdersData.length;
+adminMonthCount('orders', 'adminTotalOrders', allOrdersData.length); // العدد الحقيقي لطلبات الشهر ده (مش بس الـ 300 اللي ظاهرين)
 document.getElementById('adminPendingOrders').innerText = allOrdersData.filter(o => o.status === 'pending').length;
 document.getElementById('adminProcessingOrders').innerText = allOrdersData.filter(o => o.status === 'processing').length;
 document.getElementById('adminCompletedOrders').innerText = allOrdersData.filter(o => o.status === 'completed').length;
@@ -7654,7 +7672,7 @@ const { data: usersData } = await supabase.from('users').select('id,username,nam
 (usersData || []).forEach(u => usersMap[u.id] = u);
 }
 allDepositsData.forEach(d => { d._user = usersMap[d.user_id] || null; });
-document.getElementById('adminTotalDeposits').innerText = allDepositsData.length;
+adminMonthCount('deposit_requests', 'adminTotalDeposits', allDepositsData.length); // العدد الحقيقي لطلبات الإيداع الشهر ده (مش بس الـ 50 اللي ظاهرين)
 document.getElementById('adminPendingDeposits').innerText = allDepositsData.filter(d => d.status === 'pending').length;
 document.getElementById('adminApprovedDeposits').innerText = allDepositsData.filter(d => d.status === 'approved').length;
 
@@ -9174,7 +9192,7 @@ setAdminNavActive('home');
 return;
 }
 if (!document.getElementById('adminPanelPage').classList.contains('active')) {
-window.openAdminPanel(currentUser || { email: ADMIN_EMAIL });
+window.openAdminPanel(currentUser || { email: ADMIN_EMAIL }, tab);
 }
 const tabBtn = document.querySelector('.admin-main-tab[data-admin-tab="' + tab + '"]');
 if (tabBtn) tabBtn.click();
@@ -10843,9 +10861,10 @@ if (window.__smShowCachedUser) window.__smShowCachedUser();
 await refreshUserUI();
 const origOpenPanel = window.openAdminPanel;
 if (typeof origOpenPanel === 'function') {
-window.openAdminPanel = function(user) {
-origOpenPanel(user);
-setTimeout(() => { if (window.loadAdminUsers) window.loadAdminUsers(); }, 300);
+window.openAdminPanel = function(user, tab) {
+origOpenPanel(user, tab);
+// فتح على تبويب معيّن → التبويب بيحمّل بياناته لوحده (من غير تحميل المستخدمين تاني)
+if (!tab) setTimeout(() => { if (window.loadAdminUsers) window.loadAdminUsers(); }, 300);
 };
 }
 window.__userSystemReady = true;

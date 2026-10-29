@@ -2527,19 +2527,22 @@ flushRows(); flushTxt();
 const icon = kind === 'alert' ? 'fa-circle-info' : danger ? 'fa-triangle-exclamation' : 'fa-circle-check';
 return { title, blocks, danger, icon };
 }
-function show(msg, kind) {
+// o (اختياري): { okText, cancelText, icon, tone: 'alert' } — لتخصيص الأزرار والأيقونة واللون
+function show(msg, kind, o) {
+o = o || {};
 return new Promise((resolve) => {
 if (open) { resolve(kind === 'alert' ? undefined : false); return; }
 open = true;
 const d = build(msg, kind);
+if (o.tone) d.danger = false;
 const bg = document.createElement('div');
-bg.className = 'smd-bg' + (d.danger ? ' smd-danger' : '') + (kind === 'alert' ? ' smd-alert' : '');
+bg.className = 'smd-bg' + (d.danger ? ' smd-danger' : '') + (kind === 'alert' || o.tone === 'alert' ? ' smd-alert' : '');
 bg.setAttribute('role', 'dialog'); bg.setAttribute('aria-modal', 'true');
-bg.innerHTML = '<div class="smd-card"><div class="smd-ico"><i class="fas ' + d.icon + '"></i></div>' +
+bg.innerHTML = '<div class="smd-card"><div class="smd-ico"><i class="fas ' + (o.icon || d.icon) + '"></i></div>' +
 '<div class="smd-title">' + esc(d.title) + '</div>' +
 d.blocks.join('') +
-'<div class="smd-btns">' + (kind === 'alert' ? '<button type="button" class="smd-ok">تمام</button>'
-: '<button type="button" class="smd-ok">' + (d.danger ? 'أيوه، كمّل' : 'تأكيد') + '</button><button type="button" class="smd-cancel">إلغاء</button>') + '</div></div>';
+'<div class="smd-btns">' + (kind === 'alert' ? '<button type="button" class="smd-ok">' + esc(o.okText || 'تمام') + '</button>'
+: '<button type="button" class="smd-ok">' + esc(o.okText || (d.danger ? 'أيوه، كمّل' : 'تأكيد')) + '</button><button type="button" class="smd-cancel">' + esc(o.cancelText || 'إلغاء') + '</button>') + '</div></div>';
 document.body.appendChild(bg);
 requestAnimationFrame(() => bg.classList.add('show'));
 const prevFocus = document.activeElement;
@@ -2561,8 +2564,8 @@ bg.addEventListener('click', (e) => { if (e.target === bg) done(false); });
 setTimeout(() => { try { bg.querySelector('.smd-ok').focus({ preventScroll: true }); } catch (e) {} }, 30);
 });
 }
-window.smConfirm = (msg) => show(msg, 'confirm');
-window.smAlert = (msg) => show(msg, 'alert');
+window.smConfirm = (msg, o) => show(msg, 'confirm', o);
+window.smAlert = (msg, o) => show(msg, 'alert', o);
 })();
 
 // 🔗 تنضيف الرابط: العميل ساعات بيلصق الرابط ومعاه كلام زيادة (زي "السعر الإجمالي... شراء الآن")
@@ -10289,6 +10292,34 @@ window.__navigateTo('orders', document.getElementById('myOrdersPage'), true);
 await loadMyOrders();
 }
 window.openMyOrdersPage = openMyOrdersPage;
+
+// ⏳ تنبيه "فيه طلب شغال على نفس الرابط": رقم الطلب + الخدمة + الحالة + زرار يفتح الطلب نفسه
+window.__showActiveOrderNotice = async function (res) {
+const id = res && res.order_id;
+if (!id) { await smAlert(res && res.message ? res.message : 'فيه طلب شغال على نفس الرابط ده — استنى لما يكتمل', { icon: 'fa-hourglass-half' }); return; }
+let o = null;
+try { const r = await getSupabase().from('orders').select('id,service_name,status,quantity,remains').eq('id', id).maybeSingle(); o = r.data; } catch (e) {}
+const ST = { pending: '⏳ قيد الانتظار', processing: '🔄 جاري التنفيذ', in_progress: '🔄 جاري التنفيذ' };
+const svc = String((o && o.service_name) || '').split('|')[0].trim();
+const lines = ['عندك طلب شغال على نفس الرابط', '', 'مينفعش تعمل طلبين على نفس الرابط في نفس الوقت.', 'رقم الطلب: #' + id];
+if (svc) lines.push('الخدمة: ' + (svc.length > 34 ? svc.slice(0, 34) + '…' : svc));
+lines.push('الحالة: ' + ((o && ST[o.status]) || '⏳ لسه شغال'));
+if (o && o.quantity && o.remains != null && Number(o.remains) >= 0 && Number(o.remains) < Number(o.quantity)) {
+lines.push('اتنفذ: ' + (Number(o.quantity) - Number(o.remains)).toLocaleString('en-US') + ' من ' + Number(o.quantity).toLocaleString('en-US'));
+}
+lines.push('أول ما الطلب يكتمل تقدر تطلب تاني براحتك — وتقدر تطلب على أي رابط تاني عادي.');
+const go = await smConfirm(lines.join('\n'), { okText: '📦 حالة الطلب', cancelText: 'تمام', icon: 'fa-hourglass-half', tone: 'alert' });
+if (!go) return;
+await openMyOrdersPage();
+// نوصل لكارت الطلب ونبيّنه لحظة
+setTimeout(() => {
+const card = document.querySelector('#myOrdersPage .oc3d[data-oid="' + id + '"]');
+if (!card) return;
+try { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+card.style.transition = 'box-shadow .3s'; card.style.boxShadow = '0 0 0 3px #22D3EE, 0 0 28px rgba(34,211,238,.45)';
+setTimeout(() => { card.style.boxShadow = ''; }, 2600);
+}, 350);
+};
 document.getElementById('myOrdersLink').addEventListener('click', (e) => {
 e.preventDefault();
 document.getElementById('dropdownMenu').classList.remove('show-dropdown');
@@ -10911,9 +10942,9 @@ await refreshUserUI();
 const f = currentCurrency === 'USD' ? (1 / (serverRes.fx || exchangeRate)) : 1;
 showInsufficientModal((serverRes.available || 0) * f, (serverRes.needed || 0) * f);
 } else if (serverRes && serverRes.error === 'active_order') {
-// ⏳ فيه طلب شغال على نفس الرابط — رسالة واضحة في نافذة الموقع (من غير أي خصم)
+// ⏳ فيه طلب شغال على نفس الرابط — نافذة منظمة (رقم الطلب + الخدمة + حالته) وزرار يفتح الطلب نفسه (من غير أي خصم)
 try { window.smSound && window.smSound.error && window.smSound.error(); } catch (e) {}
-if (window.smAlert) await window.smAlert(serverRes.message); else userToast(serverRes.message, 'warn');
+await window.__showActiveOrderNotice(serverRes);
 } else {
 userToast('❌ ' + ((serverRes && serverRes.message) || 'تعذر إرسال الطلب، حاول مرة أخرى'), 'err');
 }

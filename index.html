@@ -5896,6 +5896,20 @@ if (window.__cfMake) window.__cfMake(searchSection);
 };
 window.loadServicesFromDB = async function() {
 try {
+// ⚡ بصمة الخدمات من السيرفر (سطر صغير): لو زي المحفوظة على الجهاز → منحمّلش القايمة كلها تاني (توفير في الاستهلاك)
+// أي تعديل من الأدمن (سعر / خدمة جديدة / إخفاء) بيغيّر البصمة على طول → القايمة الجديدة بتتحمّل
+let ssig = null;
+try { const { data: sg, error: sgErr } = await supabase.rpc('smcole_services_sig'); if (!sgErr && sg) ssig = String(sg); } catch (e) {}
+if (ssig) {
+try {
+const c = JSON.parse(localStorage.getItem('smcole_svc_cache_v1') || 'null');
+if (c && c.ssig === ssig && Array.isArray(c.data) && c.data.length) {
+if (c.sig === window.__svcSig && window.__svcAll && window.__svcAll.length) return 'same';
+window.__processServices(c.data); window.__svcSig = c.sig;
+return true;
+}
+} catch (e) {}
+}
 // تحميل كل الخدمات على دفعات (Supabase بيرجّع 1000 بالكتير في المرة)
 // من غير الوصف الطويل (بيتحمّل لما العميل يضغط "تفاصيل الخدمة") → التحميل أسرع بكتير
 const COLS = 'id,platform,type,name,unit,price_per_thousand,price_base,guarantee,icon,min_limit,max_limit,step_value,is_comment,is_hidden,is_api,api_type,sort_order,category,category_sort';
@@ -5923,10 +5937,11 @@ for (const r of rest) { if (r.error) return false; data = data.concat(r.data || 
 }
 // نفس البيانات اللي متحفظة؟ → مفيش داعي نعيد بناء الصفحة
 const sig = data.length + ':' + svcHash(JSON.stringify(data));
-if (sig === window.__svcSig && window.__svcAll && window.__svcAll.length) return 'same';
+const save = () => { try { localStorage.setItem('smcole_svc_cache_v1', JSON.stringify({ sig: sig, ssig: ssig, at: Date.now(), data: data })); } catch (e) {} };
+if (sig === window.__svcSig && window.__svcAll && window.__svcAll.length) { save(); return 'same'; }
 window.__processServices(data);
 window.__svcSig = sig;
-try { localStorage.setItem('smcole_svc_cache_v1', JSON.stringify({ sig: sig, at: Date.now(), data: data })); } catch (e) {}
+save();
 return true;
 } catch(e) { console.warn('services load:', e); return false; }
 };
@@ -10445,7 +10460,8 @@ if (!dataURL) return null;
 try {
 const blob = await dataURLtoBlob(dataURL);
 const name = (prefix || 'img') + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.jpg';
-const r = await withTimeout(sb.storage.from('screenshots').upload(name, blob, { contentType: blob.type || 'image/jpeg', upsert: true }), 12000);
+// cacheControl سنة: اسم كل صورة مختلف → بتتحفظ عند اللي بيشوفها ومبتتحمّلش تاني (توفير في الاستهلاك)
+const r = await withTimeout(sb.storage.from('screenshots').upload(name, blob, { contentType: blob.type || 'image/jpeg', upsert: true, cacheControl: '31536000' }), 12000);
 if (r && !r.error) {
 const pub = sb.storage.from('screenshots').getPublicUrl(name);
 if (pub && pub.data && pub.data.publicUrl) return pub.data.publicUrl;
@@ -10470,7 +10486,7 @@ const ext = (blob.type && blob.type.split('/')[1]) ? blob.type.split('/')[1].rep
 const fileName = method + '_' + Date.now() + '_' + Math.random().toString(36).slice(2,8) + '.' + ext;
 
 try {
-const uploadPromise = sb.storage.from('screenshots').upload(fileName, blob, { contentType: blob.type || 'image/jpeg', upsert: true });
+const uploadPromise = sb.storage.from('screenshots').upload(fileName, blob, { contentType: blob.type || 'image/jpeg', upsert: true, cacheControl: '31536000' });
 const result = await withTimeout(uploadPromise, 10000);
 if (result && !result.error) {
 const pubResult = sb.storage.from('screenshots').getPublicUrl(fileName);

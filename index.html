@@ -10910,6 +10910,10 @@ await refreshUserUI();
 } else if (serverRes && serverRes.error === 'insufficient') {
 const f = currentCurrency === 'USD' ? (1 / (serverRes.fx || exchangeRate)) : 1;
 showInsufficientModal((serverRes.available || 0) * f, (serverRes.needed || 0) * f);
+} else if (serverRes && serverRes.error === 'active_order') {
+// ⏳ فيه طلب شغال على نفس الرابط — رسالة واضحة في نافذة الموقع (من غير أي خصم)
+try { window.smSound && window.smSound.error && window.smSound.error(); } catch (e) {}
+if (window.smAlert) await window.smAlert(serverRes.message); else userToast(serverRes.message, 'warn');
 } else {
 userToast('❌ ' + ((serverRes && serverRes.message) || 'تعذر إرسال الطلب، حاول مرة أخرى'), 'err');
 }

@@ -4862,6 +4862,18 @@ siteSettings.maintenance_message = data.maintenance_message || '';
 window.applyMaintenance();
 } catch (e) {}
 };
+// 💳 طرق الدفع: بنجيب حالتها الحالية من السيرفر (سطر صغير) كل ما صفحة الدفع تتفتح
+// عشان تظهر للكل زي ما الأدمن مفعّلها — حتى لو الجهاز عنده نسخة قديمة من الإعدادات أو التحميل الأول فشل
+window.__refreshPaymentMethods = async function () {
+try {
+const { data } = await getSupabase().from('site_settings').select('payment_methods, payment_min').eq('id', 1).maybeSingle();
+if (!data) return;
+siteSettings.payment_methods = (data.payment_methods && typeof data.payment_methods === 'object') ? data.payment_methods : {};
+siteSettings.payment_min = (data.payment_min && typeof data.payment_min === 'object') ? data.payment_min : {};
+if (window.applyPaymentMethods) window.applyPaymentMethods();
+try { const c = JSON.parse(localStorage.getItem('smcole_settings_cache') || 'null'); if (c) { c.payment_methods = siteSettings.payment_methods; c.payment_min = siteSettings.payment_min; localStorage.setItem('smcole_settings_cache', JSON.stringify(c)); } } catch (e) {}
+} catch (e) {}
+};
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') window.__recheckMaintenance(); });
 window.addEventListener('online', () => window.__recheckMaintenance());
 setInterval(() => { if (siteSettings.maintenance === true && document.visibilityState === 'visible') window.__recheckMaintenance(); }, 15000);
@@ -4872,7 +4884,7 @@ window.loadSiteSettings = async function() {
 try {
 const sb = getSupabase();
 const { data, error } = await sb.from('site_settings').select(window.SETTINGS_COLS).eq('id', 1).single();
-if (error) { console.warn('Settings load error:', error.message); return false; }
+if (error) { console.warn('Settings load error:', error.message); setTimeout(() => { if (window.__refreshPaymentMethods) window.__refreshPaymentMethods(); }, 3000); return false; }
 if (!data) return false;
 window.__fillSiteSettings(data);
 try { localStorage.setItem('smcole_settings_cache', JSON.stringify(data)); } catch (e) {}
@@ -4961,7 +4973,13 @@ if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' 
 // ⚡ فودافون كاش تلقائي: مقفول افتراضياً — بيظهر بس لما الأدمن يفتحه
 const vfa = document.getElementById('vfaCard');
 if (vfa) vfa.style.display = pm.vfcash_auto === true ? '' : 'none';
-document.querySelectorAll('.pm-min-label[data-pm]').forEach(s => { const d = Number(s.dataset.def || s.textContent) || 0; if (!s.dataset.def) s.dataset.def = d; s.textContent = Number(window.pmMin(s.dataset.pm, d)).toLocaleString('en-US'); });
+document.querySelectorAll('.pm-min-label[data-pm]').forEach(s => {
+const d = Number(s.dataset.def || s.textContent) || 0; if (!s.dataset.def) s.dataset.def = d;
+const v = Number(window.pmMin(s.dataset.pm, d)) || 0;
+s.textContent = v.toLocaleString('en-US');
+// الحد الأدنى صفر → سطر "الحد الأدنى للإيداع" ميظهرش خالص | أكبر من صفر → بيظهر عادي
+const line = s.closest('p'); if (line) line.style.display = v > 0 ? '' : 'none';
+});
 };
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -5184,6 +5202,7 @@ else if (routeName === 'terms') setPageVisibility(termsPage);
 else if (routeName === 'affiliate') { setPageVisibility(affiliatePage); if (window.__onAffiliateOpen) window.__onAffiliateOpen(); }
 else if (routeName === 'payment') {
 setPageVisibility(paymentPage);
+if (window.__refreshPaymentMethods) window.__refreshPaymentMethods();
 const txBox = document.getElementById('payTxLog');
 if (txBox) txBox.style.display = window.currentProfile ? '' : 'none';
 if (window.currentProfile && window.loadUserTransactions) window.loadUserTransactions();
@@ -11299,9 +11318,10 @@ try { localStorage.setItem('smcole_kashier', JSON.stringify({ enabled: true, min
 kcfg = d; window.__kashierEnabled = true; if (window.applyPaymentMethods) window.applyPaymentMethods(); else card.style.display = '';
 $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min;
 $('kpayMinNote').innerHTML = 'أقل مبلغ للشحن بالكارت <b>' + Number(d.min).toLocaleString('en-US') + ' جنيه</b>';
+$('kpayMinNote').style.display = d.min > 0 ? '' : 'none'; // الحد الأدنى صفر → السطر ميظهرش
 // زراير المبالغ السريعة: اللي أقل من الحد الأدنى بتختفي
 document.querySelectorAll('#depositKashierView .kpay-chips [data-amt]').forEach(b => { b.style.display = Number(b.dataset.amt) < d.min ? 'none' : ''; });
-if (!(d.min > 0)) { $('kpayAmount').placeholder = 'اكتب المبلغ'; $('kpayMinNote').innerHTML = 'أي مبلغ بالجنيه — بدون حد أدنى'; }
+if (!(d.min > 0)) { $('kpayAmount').placeholder = 'اكتب المبلغ'; }
 }
 }).catch(() => {}), 400);
 const show = (mode) => { modal.classList.add('show'); $('kpayForm').style.display = mode === 'form' ? '' : 'none'; $('kpayState').style.display = mode === 'form' ? 'none' : ''; };

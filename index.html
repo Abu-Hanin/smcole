@@ -428,6 +428,14 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .profile-save-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124, 58, 237,0.3); }
 .profile-msg { color:#7C3AED; font-size:0.85rem; margin-top:0.5rem; min-height:18px; }
 .profile-msg.err { color:#e83e5c; }
+/* زرار صغير (سياسة الاسترجاع في طرق الدفع / اشحن رصيدك في الخدمات) */
+.sm-mini-btn { display:inline-flex; align-items:center; gap:6px; padding:6px 13px; margin:2px 4px; border-radius:999px; font-size:.78rem; font-weight:800; text-decoration:none; color:#E9D5FF; background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); vertical-align:middle; transition:transform .15s, background .2s; white-space:nowrap; }
+.sm-mini-btn:hover { background:rgba(168,85,247,.22); transform:translateY(-1px); }
+.sm-mini-btn i { font-size:.8rem; }
+.sm-mini-pay { color:#fff; border:none; background:linear-gradient(135deg,#7C3AED,#A855F7,#EC4899); box-shadow:0 6px 16px rgba(124,58,237,.35); }
+#payRefundPolicyBtn { margin:0 0 14px; }
+/* الدعم الفني اتشال من القائمة الجانبية (لسه متاح من زرار الدعم العائم) */
+#dropdownMenu #supportDropdownLink { display:none !important; }
 /* رسالة نتيجة الإيداع: بين كارت الشرح وكارت التأكيد — ومخفية وهي فاضية (الصفحة زي ما هي) */
 #kpayMsg, #vfaPageMsg, #vodafoneMsg, #binanceMsg, #usdtMsg, #instapayMsg, #redotMsg { margin: 0 0 1rem; min-height: 0; }
 #kpayMsg:empty, #vfaPageMsg:empty, #vodafoneMsg:empty, #binanceMsg:empty, #usdtMsg:empty, #instapayMsg:empty, #redotMsg:empty { display: none; }
@@ -2723,7 +2731,9 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <a href="#" id="favoritesLink"><span class="dl-ico"><i class="fas fa-heart"></i></span><span class="dl-txt">المفضلة<small>خدماتك المحفوظة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="affiliateLink" class="drawer-aff-link user-only"><span class="dl-ico"><i class="fas fa-handshake"></i></span><span class="dl-txt">التسويق بالعمولة<small>اربح 10% من كل إيداع</small></span><b class="dl-new">جديد</b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="apiMenuLink"><span class="dl-ico"><i class="fas fa-plug"></i></span><span class="dl-txt">الـ API — اربط خدماتنا بموقعك<small>مفتاح الـ API والربط بلوحتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
-<a href="#" id="supportDropdownLink"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="/refund-policy.html" id="refundMenuLink"><span class="dl-ico"><i class="fas fa-shield-halved"></i></span><span class="dl-txt">سياسة استرجاع الأموال<small>اقرأها قبل أي إيداع</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<!-- الدعم الفني اتشال من القائمة (لسه متاح من زرار الدعم العائم) — العنصر موجود مخفي عشان الكود اللي مربوط بيه -->
+<a href="#" id="supportDropdownLink" style="display:none" aria-hidden="true" tabindex="-1"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="notifMenuLink" class="user-only" hidden><span class="dl-ico"><i class="fas fa-bell"></i></span><span class="dl-txt">الإشعارات<small>تحديثات طلباتك وإيداعاتك</small></span><b class="dl-badge" id="drawerNotifBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="termsLink" hidden><span class="dl-ico"><i class="fas fa-file-alt"></i></span><span class="dl-txt">شروط الخدمة<small>السياسات والأحكام</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="profileMenuLink"><span class="dl-ico"><i class="fas fa-user-circle"></i></span><span class="dl-txt">الملف الشخصي<small>بياناتك ورصيدك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
@@ -2954,6 +2964,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="overlay-container">
 <h1><i class="fas fa-wallet"></i> طرق الدفع المتاحة</h1>
 <p>نوفر في <span data-site-name>SMCOLE</span> مجموعة متنوعة من وسائل الدفع الآمنة والمرنة لتسهيل إتمام طلباتك بكل سرعة وراحة. اختر وسيلة الدفع المناسبة:</p>
+<a href="/refund-policy.html" class="sm-mini-btn" id="payRefundPolicyBtn"><i class="fas fa-shield-halved"></i> سياسة استرجاع الأموال</a>
 
 <div class="payment-selector-grid">
 <div class="payment-selector-card" data-method="vodafone">
@@ -3252,7 +3263,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="svc-brand"><span class="page-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
 <span class="sec-kicker svc-kicker"><i class="fas fa-rocket"></i> الخدمات</span>
 <h2>اختر <span class="grad">خدمتك</span> واطلب الآن</h2>
-<p>⭐ اختر الخدمات ذات الضمان — <b>ضمان 30 يوم</b> و <b>ضمان 365 يوم</b></p>
+<p>⭐ اختر الخدمات ذات الضمان — <b>ضمان 30 يوم</b> و <b>ضمان 365 يوم</b> <a href="#payment" class="sm-mini-btn sm-mini-pay" id="svcAddFundsBtn"><i class="fas fa-wallet"></i> اشحن رصيدك</a></p>
 </div>
 <div class="promo-section">
 <div class="platform-icons">
@@ -11000,6 +11011,12 @@ document.getElementById('dropdownMenu').classList.remove('show-dropdown');
 window.__navigateTo('payment', document.getElementById('paymentPage'), true);
 });
 if (dBtn) dBtn.addEventListener('click', () => {
+window.__navigateTo('payment', document.getElementById('paymentPage'), true);
+});
+// 💳 زرار "اشحن رصيدك" في صفحة الخدمات → صفحة طرق الدفع
+const sBtn = document.getElementById('svcAddFundsBtn');
+if (sBtn) sBtn.addEventListener('click', (e) => {
+e.preventDefault();
 window.__navigateTo('payment', document.getElementById('paymentPage'), true);
 });
 }, 500);

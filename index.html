@@ -437,8 +437,8 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 /* الدعم الفني اتشال من القائمة الجانبية (لسه متاح من زرار الدعم العائم) */
 #dropdownMenu #supportDropdownLink { display:none !important; }
 /* رسالة نتيجة الإيداع: بين كارت الشرح وكارت التأكيد — ومخفية وهي فاضية (الصفحة زي ما هي) */
-#kpayMsg, #vfaPageMsg, #vodafoneMsg, #binanceMsg, #usdtMsg, #instapayMsg, #redotMsg { margin: 0 0 1rem; min-height: 0; }
-#kpayMsg:empty, #vfaPageMsg:empty, #vodafoneMsg:empty, #binanceMsg:empty, #usdtMsg:empty, #instapayMsg:empty, #redotMsg:empty { display: none; }
+#kpayMsg, #vfaPageMsg, #ipaPageMsg, #vodafoneMsg, #binanceMsg, #usdtMsg, #instapayMsg, #redotMsg { margin: 0 0 1rem; min-height: 0; }
+#kpayMsg:empty, #vfaPageMsg:empty, #ipaPageMsg:empty, #vodafoneMsg:empty, #binanceMsg:empty, #usdtMsg:empty, #instapayMsg:empty, #redotMsg:empty { display: none; }
 /* 🔌 الـ API في صفحة حسابي */
 .api-section { scroll-margin-top: 90px; transition: box-shadow .4s, border-color .4s; }
 .api-section.api-focus { border-color: #A855F7 !important; box-shadow: 0 0 0 3px rgba(168,85,247,.35), 0 14px 40px rgba(124,58,237,.35) !important; }
@@ -2983,6 +2983,13 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
+<!-- ⚡ إنستاباي التلقائي (جديدة — بتظهر بس لما الأدمن يفتحها من الإعدادات) -->
+<div class="payment-selector-card" id="ipaCard" data-pay="ipauto" style="display:none;">
+<div class="psc-logo instapay"><span class="psc-logo-text">IP</span></div>
+<div class="psc-info"><h3>إنستا باي <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>حوّل من أي بنك عن طريق إنستاباي — والرصيد بيوصلك في ثواني</p></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
 <div class="payment-selector-card" data-method="instapay">
 <div class="psc-logo instapay" id="pscLogoInstapay">
 <img id="pscLogoInstapayImg" style="display:none;" alt="InstaPay">
@@ -3497,6 +3504,37 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <input type="tel" id="vfaPagePhone" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="مثال: 01012345678" dir="ltr">
 <label for="vfaPageAmount">المبلغ اللي حوّلته بالظبط (بالجنيه)</label>
 <input type="text" id="vfaPageAmount" inputmode="decimal" placeholder="مثال: 150" dir="ltr">
+<button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
+</form>
+</div>
+
+<!-- ⚡ إنستاباي التلقائي (بوابة جديدة) -->
+<div id="depositIpautoView" style="display:none;">
+<div class="deposit-info">
+<div class="deposit-brand-header">
+<div class="deposit-brand-logo instapay">IP</div>
+<div class="deposit-brand-title"><h2>إنستا باي <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>من أي بنك عن طريق تطبيق إنستاباي — والرصيد بيوصلك في ثواني</p></div>
+</div>
+<p>حوّل أي مبلغ بالجنيه المصري على عنوان إنستاباي ده:</p>
+<div class="deposit-number-row">
+<div class="deposit-number" id="ipaAddress" dir="ltr">walidsalama111@instapay</div>
+<button class="deposit-copy-btn" type="button" id="ipaCopyBtn" data-copy="walidsalama111@instapay"><i class="fas fa-copy"></i> نسخ</button>
+</div>
+<div class="deposit-steps">
+<div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق إنستاباي واختار "إرسال أموال"</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اكتب العنوان: <b dir="ltr">walidsalama111@instapay</b></span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب أي مبلغ بالجنيه وأكد التحويل</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">ارجع هنا واكتب <b>اسم المستخدم بتاعك في إنستاباي</b> و<b>المبلغ بالظبط</b></span></div>
+<div class="step-item"><span class="step-num">5</span><span class="step-text">اضغط تأكيد — والرصيد يتضاف لحسابك على طول ⚡</span></div>
+</div>
+</div>
+<div class="profile-msg dep-msg-slot" id="ipaPageMsg"></div>
+<form class="deposit-form" id="ipaPageForm" novalidate>
+<h3><i class="fas fa-bolt"></i> تأكيد الإيداع تلقائياً</h3>
+<label for="ipaPageKey">اسم المستخدم بتاعك في إنستاباي (أو رقم العملية)</label>
+<input type="text" id="ipaPageKey" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="60" placeholder="مثال: name@instapay" dir="ltr">
+<label for="ipaPageAmount">المبلغ اللي حوّلته بالظبط (بالجنيه)</label>
+<input type="text" id="ipaPageAmount" inputmode="decimal" placeholder="مثال: 150" dir="ltr">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
 </form>
 </div>
@@ -4234,6 +4272,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="admin-hint" style="margin-bottom:.7rem;">💡 زرار الإظهار/الإخفاء بيتطبق فوراً عند كل العملاء، والحد الأدنى بيتحفظ مع "حفظ الإعدادات" تحت. الاتنين بيتقفلوا على السيرفر كمان — محدش يقدر يتحايل عليهم.</div>
 <div class="pm-toggles" id="pmToggles">
 <div class="pm-toggle" data-pm="vodafone" data-def="50"><span class="pmt-name"><i class="fas fa-mobile-screen"></i> محافظ الكاش</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
+<div class="pm-toggle" data-pm="instapay_auto" data-def="1" data-defoff="1"><span class="pmt-name"><i class="fas fa-bolt"></i> إنستا باي ⚡ تلقائي</span><div class="pmt-min" style="display:none"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="1"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox"><span class="pmt-switch"></span></label></div>
 <div class="pm-toggle" data-pm="vfcash_auto" data-def="1" data-defoff="1"><span class="pmt-name"><i class="fas fa-bolt"></i> فودافون كاش ⚡ تلقائي — بدون حد أدنى</span><div class="pmt-min" style="display:none"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="1"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox"><span class="pmt-switch"></span></label></div>
 <div class="pm-toggle" data-pm="instapay" data-def="50"><span class="pmt-name"><i class="fas fa-building-columns"></i> إنستا باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="50"><em>جنيه</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
 <div class="pm-toggle" data-pm="binance" data-def="2"><span class="pmt-name"><i class="fab fa-bitcoin"></i> باينانس باي</span><div class="pmt-min"><span>أقل مبلغ</span><input type="number" min="0" step="any" dir="ltr" placeholder="2"><em>دولار</em></div><label class="pmt-sw"><input type="checkbox" checked><span class="pmt-switch"></span></label></div>
@@ -4984,6 +5023,9 @@ if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' 
 // ⚡ فودافون كاش تلقائي: مقفول افتراضياً — بيظهر بس لما الأدمن يفتحه
 const vfa = document.getElementById('vfaCard');
 if (vfa) vfa.style.display = pm.vfcash_auto === true ? '' : 'none';
+// ⚡ إنستاباي تلقائي: مقفول افتراضياً — بيظهر بس لما الأدمن يفتحه
+const ipa = document.getElementById('ipaCard');
+if (ipa) ipa.style.display = pm.instapay_auto === true ? '' : 'none';
 document.querySelectorAll('.pm-min-label[data-pm]').forEach(s => {
 const d = Number(s.dataset.def || s.textContent) || 0; if (!s.dataset.def) s.dataset.def = d;
 const v = Number(window.pmMin(s.dataset.pm, d)) || 0;
@@ -5108,7 +5150,7 @@ window.__routeChain = function (r) {
 if (r === 'home') return ['home'];
 if (r === 'services') return ['home', 'services'];
 if (r === 'admin-panel') return ['home', 'admin-panel'];
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|kashier)$/.test(r)) return ['home', 'services', 'payment', r];
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier)$/.test(r)) return ['home', 'services', 'payment', r];
 if (/^(terms|affiliate|payment|favorites|support|profile|orders)$/.test(r)) return ['home', 'services', r];
 return null;
 };
@@ -5180,6 +5222,8 @@ const iView = document.getElementById('depositInstapayView');
 const rView = document.getElementById('depositRedotView');
 const aView = document.getElementById('depositVfautoView');
 if (aView) aView.style.display = method === 'vfauto' ? 'block' : 'none';
+const ipView = document.getElementById('depositIpautoView');
+if (ipView) ipView.style.display = method === 'ipauto' ? 'block' : 'none';
 const kView = document.getElementById('depositKashierView');
 if (kView) kView.style.display = method === 'kashier' ? 'block' : 'none';
 if (vView) vView.style.display = 'none';
@@ -5229,6 +5273,7 @@ else if (routeName === 'deposit-usdt' && window.__loggedIn()) { setPageVisibilit
 else if (routeName === 'deposit-instapay' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-kashier' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('kashier'); }
 else if (routeName === 'deposit-vfauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('vfauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
+else if (routeName === 'deposit-ipauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('ipauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-redot' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('redot'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'orders' && window.__loggedIn()) { setPageVisibility(myOrdersPage); if (window.loadMyOrders) window.loadMyOrders(); }
 else if (routeName === 'admin-login') {
@@ -7826,6 +7871,7 @@ else if (d.method === 'usdt') methodLabel = '💎 عملات رقمية USDT';
 else if (d.method === 'instapay') methodLabel = '🏦 إنستا باي';
 else if (d.method === 'redot') methodLabel = '💳 ريدوت باي';
 else if (d.method === 'vfcash_auto') methodLabel = '⚡ فودافون كاش تلقائي';
+else if (d.method === 'instapay_auto') methodLabel = '⚡ إنستاباي تلقائي';
 const cur = d.currency === 'USD' ? 'دولار' : 'جنيه';
 const stMap = { pending: ['status-pending','⏳ قيد المراجعة'], approved: ['status-completed','✅ تم التأكيد'], rejected: ['status-cancelled','❌ مرفوض'] };
 const st = stMap[d.status] || ['status-pending','—'];
@@ -8582,7 +8628,8 @@ instapay: 'إنستا باي',
 redot: 'ريدوت باي',
 admin_manual: 'الإدارة',
 order_refund: 'استرجاع طلب',
-vfcash_auto: 'فودافون كاش (تلقائي)'
+vfcash_auto: 'فودافون كاش (تلقائي)',
+instapay_auto: 'إنستاباي (تلقائي)'
 };
 
 function userToast(msg, type) {
@@ -9019,7 +9066,7 @@ hideAuthModal();
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'profile') { setTimeout(() => openProfilePage(), 150); return; }
 if (hash === 'orders') { setTimeout(() => openMyOrdersPage(), 150); return; }
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|kashier)$/.test(hash)) {
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier)$/.test(hash)) {
 setTimeout(() => { window.__navigateTo(hash, document.getElementById('depositPage'), true); }, 150);
 return;
 }
@@ -9440,7 +9487,7 @@ window.addEventListener('scroll', onScroll, { passive: true });
 document.querySelectorAll('.overlay-page').forEach(p => p.addEventListener('scroll', onScroll, { passive: true }));
 })();
 // 📍 رسالة نتيجة الإيداع بقت فوق كارت التأكيد → أول ما تظهر الصفحة بتنزل/تطلع لها عشان العميل يشوفها
-['kpayMsg', 'vfaPageMsg', 'vodafoneMsg', 'binanceMsg', 'usdtMsg', 'instapayMsg', 'redotMsg'].forEach(id => {
+['kpayMsg', 'vfaPageMsg', 'ipaPageMsg', 'vodafoneMsg', 'binanceMsg', 'usdtMsg', 'instapayMsg', 'redotMsg'].forEach(id => {
 const el = document.getElementById(id);
 if (!el || !window.MutationObserver) return;
 let last = '';
@@ -11045,7 +11092,7 @@ if (window.__routeRestored) return;
 const fallback = mode === true;
 const h = window.__initialHash || '';
 const nav = (r, id) => window.__navigateTo(r, document.getElementById(id), false);
-const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|kashier)$/.test(h);
+const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier)$/.test(h);
 const USER_PAGES = { 'admin-panel': null, affiliate: 'affiliatePage', support: 'supportPage', profile: 'profilePage', orders: 'myOrdersPage' };
 const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, h);
 const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
@@ -11257,6 +11304,52 @@ document.getElementById('acResultSub').textContent = 'يعني في السنة �
 }
 ['acFriends', 'acDep'].forEach(id => document.getElementById(id).addEventListener('input', updateAffCalc));
 updateAffCalc();
+
+// ===================== ⚡ إنستاباي تلقائي (بوابة جديدة) =====================
+// العميل يكتب اسم المستخدم بتاعه في إنستاباي (أو رقم العملية) + المبلغ → السيرفر بيدوّر على تحويل اتأكد من البنك + تطبيق إنستاباي → يضيف مرة واحدة بس
+(function () {
+const card = document.getElementById('ipaCard'), form = document.getElementById('ipaPageForm');
+if (!card || !form) return;
+card.addEventListener('click', async () => {
+if (!window.currentProfile && !(await window.__needProfile())) return;
+window.__navigateTo('deposit-ipauto', document.getElementById('depositPage'), true);
+});
+const toLatin = (s) => String(s || '').replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0));
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+if (!window.currentProfile && !(await window.__needProfile())) return;
+const msg = document.getElementById('ipaPageMsg'), btn = form.querySelector('.deposit-submit-btn');
+const key = toLatin(document.getElementById('ipaPageKey').value).trim().toLowerCase().replace(/\s+/g, '');
+const amount = toLatin(document.getElementById('ipaPageAmount').value).replace(/[٫,]/g, '.').replace(/\s/g, '');
+msg.className = 'profile-msg'; msg.textContent = '';
+if (!/^[a-z0-9._\-]{3,60}(@instapay)?$/.test(key)) { msg.className = 'profile-msg err'; msg.textContent = '⚠️ اكتب اسم المستخدم بتاعك في إنستاباي (زي name@instapay) أو رقم العملية'; return; }
+// مفيش حد أدنى — أي مبلغ بالجنيه، بس لازم يكون بالظبط زي التحويل
+if (!/^\d{1,9}(\.\d{1,2})?$/.test(amount) || !(Number(amount) > 0)) { msg.className = 'profile-msg err'; msg.textContent = '⚠️ اكتب المبلغ بالظبط (زي 150 أو 150.50)'; return; }
+if (btn.disabled) return;
+const old = btn.innerHTML;
+btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> بنتأكد من التحويل...';
+let r = null;
+try {
+const { data, error } = await getSupabase().functions.invoke('sms-gateway', { body: { action: 'ipn_claim', key: key, amount: amount } });
+r = data;
+if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { r = null; } }
+} catch (er) { r = null; }
+btn.disabled = false; btn.innerHTML = old;
+const safe = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+if (r && r.ok) {
+document.getElementById('ipaPageKey').value = ''; document.getElementById('ipaPageAmount').value = '';
+msg.className = 'profile-msg'; msg.innerHTML = '<div class="bn-ok"><i class="fas fa-circle-check"></i><div><b>' + safe(r.message || '✅ تم') + '</b><span>رصيدك اتحدّث — تقدر تطلب على طول</span></div></div>';
+try { window.smSound && window.smSound.payment(); } catch (er) {}
+userToast(r.message || '✅ تم', 'ok');
+if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
+if (window.loadUserTransactions) window.loadUserTransactions();
+} else if (r && r.error === 'review') {
+msg.className = 'profile-msg'; msg.textContent = r.message || '⏳ التحويل وصل وبيتراجع من الإدارة';
+} else {
+msg.className = 'profile-msg err'; msg.textContent = (r && r.message) || '❌ حصل خطأ — جرّب تاني';
+}
+});
+})();
 
 // ===================== ⚡ فودافون كاش تلقائي (بوابة جديدة) =====================
 // الكارت بيفتح صفحة بنفس شكل محافظ الكاش → العميل يكتب رقمه والمبلغ → السيرفر (sms-gateway) بيدوّر على رسالة VF-Cash مؤكدة مطابقة → يضيف مرة واحدة بس

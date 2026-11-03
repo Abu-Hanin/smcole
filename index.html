@@ -432,6 +432,9 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .sm-mini-btn { display:inline-flex; align-items:center; gap:6px; padding:6px 13px; margin:2px 4px; border-radius:999px; font-size:.78rem; font-weight:800; text-decoration:none; color:#E9D5FF; background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); vertical-align:middle; transition:transform .15s, background .2s; white-space:nowrap; }
 .sm-mini-btn:hover { background:rgba(168,85,247,.22); transform:translateY(-1px); }
 .sm-mini-btn i { font-size:.8rem; }
+/* شعار إنستاباي الرسمي (بوابة إنستاباي التلقائي) */
+.ipa-logo { background:#fff !important; padding:2px; overflow:hidden; }
+.ipa-logo img { width:100%; height:100%; object-fit:contain; display:block; }
 .sm-mini-pay { color:#fff; border:none; background:linear-gradient(135deg,#7C3AED,#A855F7,#EC4899); box-shadow:0 6px 16px rgba(124,58,237,.35); }
 #payRefundPolicyBtn { margin:0 0 14px; }
 /* الدعم الفني اتشال من القائمة الجانبية (لسه متاح من زرار الدعم العائم) */
@@ -2985,7 +2988,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 
 <!-- ⚡ إنستاباي التلقائي (جديدة — بتظهر بس لما الأدمن يفتحها من الإعدادات) -->
 <div class="payment-selector-card" id="ipaCard" data-pay="ipauto" style="display:none;">
-<div class="psc-logo instapay"><span class="psc-logo-text">IP</span></div>
+<div class="psc-logo ipa-logo"><img src="/instapay-logo.png" alt="InstaPay" width="56" height="56" loading="lazy"></div>
 <div class="psc-info"><h3>إنستا باي <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>حوّل من أي بنك عن طريق إنستاباي — والرصيد بيوصلك في ثواني</p></div>
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
@@ -3512,17 +3515,17 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div id="depositIpautoView" style="display:none;">
 <div class="deposit-info">
 <div class="deposit-brand-header">
-<div class="deposit-brand-logo instapay">IP</div>
+<div class="deposit-brand-logo ipa-logo"><img src="/instapay-logo.png" alt="InstaPay" width="64" height="64" loading="lazy"></div>
 <div class="deposit-brand-title"><h2>إنستا باي <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>من أي بنك عن طريق تطبيق إنستاباي — والرصيد بيوصلك في ثواني</p></div>
 </div>
-<p>حوّل أي مبلغ بالجنيه المصري على عنوان إنستاباي ده:</p>
+<p>حوّل أي مبلغ بالجنيه المصري عن طريق إنستاباي على رقم الموبايل ده:</p>
 <div class="deposit-number-row">
-<div class="deposit-number" id="ipaAddress" dir="ltr">walidsalama111@instapay</div>
-<button class="deposit-copy-btn" type="button" id="ipaCopyBtn" data-copy="walidsalama111@instapay"><i class="fas fa-copy"></i> نسخ</button>
+<div class="deposit-number" id="ipaAddress" dir="ltr">01154846407</div>
+<button class="deposit-copy-btn" type="button" id="ipaCopyBtn" data-copy="01154846407"><i class="fas fa-copy"></i> نسخ</button>
 </div>
 <div class="deposit-steps">
 <div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق إنستاباي واختار "إرسال أموال"</span></div>
-<div class="step-item"><span class="step-num">2</span><span class="step-text">اكتب العنوان: <b dir="ltr">walidsalama111@instapay</b></span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اختار "رقم الموبايل" واكتب الرقم: <b dir="ltr">01154846407</b></span></div>
 <div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب أي مبلغ بالجنيه وأكد التحويل</span></div>
 <div class="step-item"><span class="step-num">4</span><span class="step-text">ارجع هنا واكتب <b>اسم المستخدم بتاعك في إنستاباي</b> و<b>المبلغ بالظبط</b></span></div>
 <div class="step-item"><span class="step-num">5</span><span class="step-text">اضغط تأكيد — والرصيد يتضاف لحسابك على طول ⚡</span></div>

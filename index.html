@@ -439,6 +439,13 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 #payRefundPolicyBtn { margin:0 0 14px; }
 /* الدعم الفني اتشال من القائمة الجانبية (لسه متاح من زرار الدعم العائم) */
 #dropdownMenu #supportDropdownLink { display:none !important; }
+/* ✕ مسح البحث في لوحة الأدمن (المستخدمين / الخدمات / الطلبات / الإيداع) */
+.srch-wrap { position: relative; display: block; margin-bottom: 1rem; }
+.au-toolbar .srch-wrap { flex: 1 1 260px; margin-bottom: 0; }
+.srch-wrap > .user-search-input { margin-bottom: 0 !important; padding-left: 44px; }
+.srch-x { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(168,85,247,.22); color: #fff; font-size: .85rem; cursor: pointer; display: none; align-items: center; justify-content: center; padding: 0; }
+.srch-x:hover { background: rgba(168,85,247,.4); }
+.srch-wrap.has-val .srch-x { display: flex; }
 /* رسالة نتيجة الإيداع: بين كارت الشرح وكارت التأكيد — ومخفية وهي فاضية (الصفحة زي ما هي) */
 #kpayMsg, #vfaPageMsg, #ipaPageMsg, #vodafoneMsg, #binanceMsg, #usdtMsg, #instapayMsg, #redotMsg { margin: 0 0 1rem; min-height: 0; }
 #kpayMsg:empty, #vfaPageMsg:empty, #ipaPageMsg:empty, #vodafoneMsg:empty, #binanceMsg:empty, #usdtMsg:empty, #instapayMsg:empty, #redotMsg:empty { display: none; }
@@ -1380,7 +1387,7 @@ body.is-admin .sm-home { padding-bottom: 90px; }
 .pfx-bar span { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #22c55e, #4ADE80); }
 @media (max-width: 640px) { .pfx-sum, .pfx-vals { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .pf-summary { grid-template-columns: 1fr 1fr; } .pf-summary div:last-child { grid-column: 1 / -1; } }
-.admin-toast { z-index: 99990 !important; bottom: 100px !important; }
+.admin-toast { z-index: 99990 !important; bottom: 100px !important; pointer-events: none; } /* مخفي = مبيمسكش الضغطات (كان بيغطي زراير الشريط السفلي) */
 .admin-bottom-nav { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%) translateY(140%); width: min(640px, calc(100% - 20px)); display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 8px; border-radius: 24px; background: rgba(18,12,34,0.88); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); border: 1px solid rgba(168,85,247,0.4); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03) inset; z-index: 1600; transition: transform .5s cubic-bezier(.2,.9,.2,1); }
 body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
 .abn-item { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 2px; border-radius: 16px; color: var(--muted); font-weight: 700; font-size: .68rem; transition: .25s; }
@@ -3857,7 +3864,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="admin-table-wrap">
 <div id="adminUsersLoader" class="admin-loader" style="display:none;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
 <table class="admin-table" id="adminUsersTable" style="display:none;">
-<thead><tr><th>#</th><th>اليوزر</th><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th id="auBalHead">الرصيد (جنيه)</th><th>إجمالي الإيداع</th><th>الحالة</th><th>الرسائل</th><th>إجراءات</th></tr></thead>
+<thead><tr><th>#</th><th>اليوزر</th><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th>تاريخ التسجيل</th><th id="auBalHead">الرصيد (جنيه)</th><th>إجمالي الإيداع</th><th>الحالة</th><th>الرسائل</th><th>إجراءات</th></tr></thead>
 <tbody id="adminUsersBody"></tbody>
 </table>
 <div id="adminUsersEmpty" class="admin-empty" style="display:none;"><i class="fas fa-users" style="font-size:2.5rem; color:#A855F7; margin-bottom:1rem;"></i><p>لا يوجد مستخدمون بعد.</p></div>
@@ -7092,6 +7099,14 @@ function auBal(u) {
 const fx = auFx(), usd = (parseFloat(u.balance_usd) || 0) + (parseFloat(u.balance_egp) || 0) / fx;
 return { usd: usd, egp: usd * fx };
 }
+// 🗓️ تاريخ ووقت تسجيل الحساب (التاريخ فوق والوقت تحته)
+function auRegHtml(iso) {
+if (!iso) return '-';
+const d = new Date(iso); if (isNaN(d)) return '-';
+const date = d.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' });
+const time = d.toLocaleTimeString('ar-EG', { hour: 'numeric', minute: '2-digit' });
+return '<div style="white-space:nowrap;font-size:.78rem;line-height:1.5"><b style="color:#E9D5FF;font-weight:700">' + date + '</b><br><span style="color:#A59CC9">' + time + '</span></div>';
+}
 function renderUsersTable() {
 const table = document.getElementById('adminUsersTable');
 const empty = document.getElementById('adminUsersEmpty');
@@ -7123,6 +7138,7 @@ tr.innerHTML = '<td>' + (usersSort !== 'new' && !term ? '<span class="au-rank' +
 '<td>' + uEsc(u.name || '-') + '</td>' +
 '<td style="font-size:0.75rem;">' + uEsc(u.email || '-') + '</td>' +
 '<td>' + uEsc(u.phone || '-') + '</td>' +
+'<td class="au-reg">' + auRegHtml(u.created_at) + '</td>' +
 '<td style="color:#4ADE80; font-weight:800; direction:ltr;">' + (window.__auCur === 'USD' ? '$' + auBal(u).usd.toFixed(2) : auBal(u).egp.toFixed(2) + ' ج') + '</td>' +
 '<td class="user-dep-total" data-uid="' + u.id + '">' + depTotalHtml(dep) + '</td>' +
 '<td>' + statusBadge + '</td>' +
@@ -7385,10 +7401,13 @@ btn.innerHTML = '<i class="fas fa-save"></i> تغيير';
 let allOrdersData = [];
 let ordersSearchTerm = '';
 // 📊 عدد كل الطلبات من أول الشهر الحالي (عدّ من السيرفر — من غير ما نحمّل الصفوف نفسها)
-async function adminMonthCount(table, elId, fallback) {
+// status (اختياري): نفس العدّ بس لحالة معيّنة — كل العدادات بتبدأ من صفر أول يوم في الشهر
+async function adminMonthCount(table, elId, fallback, status) {
 try {
 const now = new Date();
-const { count, error } = await supabase.from(table).select('id', { count: 'exact', head: true }).gte('created_at', new Date(now.getFullYear(), now.getMonth(), 1).toISOString());
+let q = supabase.from(table).select('id', { count: 'exact', head: true }).gte('created_at', new Date(now.getFullYear(), now.getMonth(), 1).toISOString());
+if (status) q = q.eq('status', status);
+const { count, error } = await q;
 const el = document.getElementById(elId);
 if (el) el.innerText = (!error && typeof count === 'number') ? count.toLocaleString('en-US') : fallback;
 } catch (e) { const el = document.getElementById(elId); if (el) el.innerText = fallback; }
@@ -7411,10 +7430,10 @@ loader.style.display = 'none';
 if (error) { toast('خطأ: ' + error.message, true); return; }
 allOrdersData = data || [];
 adminMonthCount('orders', 'adminTotalOrders', allOrdersData.length); // العدد الحقيقي لطلبات الشهر ده (مش بس الـ 300 اللي ظاهرين)
-document.getElementById('adminPendingOrders').innerText = allOrdersData.filter(o => o.status === 'pending').length;
-document.getElementById('adminProcessingOrders').innerText = allOrdersData.filter(o => o.status === 'processing').length;
-document.getElementById('adminCompletedOrders').innerText = allOrdersData.filter(o => o.status === 'completed').length;
-document.getElementById('adminCancelledOrders').innerText = allOrdersData.filter(o => o.status === 'cancelled').length;
+adminMonthCount('orders', 'adminPendingOrders', allOrdersData.filter(o => o.status === 'pending').length, 'pending'); // 📅 من أول الشهر
+adminMonthCount('orders', 'adminProcessingOrders', allOrdersData.filter(o => o.status === 'processing').length, 'processing');
+adminMonthCount('orders', 'adminCompletedOrders', allOrdersData.filter(o => o.status === 'completed').length, 'completed');
+adminMonthCount('orders', 'adminCancelledOrders', allOrdersData.filter(o => o.status === 'cancelled').length, 'cancelled');
 renderOrdersTable();
 loadProfitStats();
 } catch(e) {
@@ -7514,7 +7533,7 @@ document.getElementById('pidCopyAll').addEventListener('click', async (e) => {
 e.stopPropagation();
 const ids = Array.from(document.querySelectorAll('#adminOrdersBody .pid-copy')).map(b => b.dataset.copy).filter(Boolean);
 if (!ids.length) { toast('مفيش معرفات مزود في الطلبات الظاهرة', true); return; }
-const v = ids.join('\n');
+const v = ids.join(','); // ورا بعض بفاصلة: 2622194,2622190,2622130
 try { await navigator.clipboard.writeText(v); } catch (er) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
 toast('📋 تم نسخ ' + ids.length + ' معرف طلب للمزود');
 });
@@ -7825,8 +7844,8 @@ const { data: usersData } = await supabase.from('users').select('id,username,nam
 }
 allDepositsData.forEach(d => { d._user = usersMap[d.user_id] || null; });
 adminMonthCount('deposit_requests', 'adminTotalDeposits', allDepositsData.length); // العدد الحقيقي لطلبات الإيداع الشهر ده (مش بس الـ 50 اللي ظاهرين)
-document.getElementById('adminPendingDeposits').innerText = allDepositsData.filter(d => d.status === 'pending').length;
-document.getElementById('adminApprovedDeposits').innerText = allDepositsData.filter(d => d.status === 'approved').length;
+adminMonthCount('deposit_requests', 'adminPendingDeposits', allDepositsData.filter(d => d.status === 'pending').length, 'pending'); // 📅 من أول الشهر
+adminMonthCount('deposit_requests', 'adminApprovedDeposits', allDepositsData.filter(d => d.status === 'approved').length, 'approved');
 
 const now = new Date();
 const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -8027,9 +8046,15 @@ const os = document.getElementById('adminSectionOrders');
 if (os && os.classList.contains('active') && document.visibilityState === 'visible') { clearTimeout(t2); t2 = setTimeout(() => renderOrdersTable(), 800); }
 return;
 }
-const sec = document.getElementById('adminSectionOrders');
-if (!sec || !sec.classList.contains('active') || document.visibilityState !== 'visible') { window.__adminOrdersDirty = true; return; }
-clearTimeout(t2); t2 = setTimeout(() => loadAdminOrders(), 800);
+// 💾 حالة الطلب اتغيرت: الصف بييجي كامل مع التحديث → بنحدّثه في مكانه بدل ما نحمّل الـ 300 طلب من الأول (توفير في الاستهلاك)
+if (old) {
+Object.assign(old, n);
+clearTimeout(window.__ordCntT); window.__ordCntT = setTimeout(() => { ['pending', 'processing', 'completed', 'cancelled'].forEach(st => adminMonthCount('orders', 'admin' + st.charAt(0).toUpperCase() + st.slice(1) + 'Orders', '', st)); }, 1500);
+const os2 = document.getElementById('adminSectionOrders');
+if (os2 && os2.classList.contains('active') && document.visibilityState === 'visible') { clearTimeout(t2); t2 = setTimeout(() => renderOrdersTable(), 800); }
+return;
+}
+// طلب مش ظاهر في الجدول (أقدم من آخر 300) → مفيش داعي نحمّل حاجة
 })
 .subscribe();
 }
@@ -9366,6 +9391,20 @@ window.scrollTo(0, 0);
 document.getElementById('adminPanelPage').scrollTop = 0;
 }
 window.adminGoTab = adminGoTab;
+// ✕ زرار مسح البحث: بيظهر لما يكون فيه كلام — بيمسح الخانة مرة واحدة ويرجّع القايمة كلها
+['adminUserSearch', 'adminSvcSearch', 'adminOrderSearch', 'adminDepositSearch'].forEach(id => {
+const inp = document.getElementById(id);
+if (!inp || inp.parentElement.classList.contains('srch-wrap')) return;
+const wrap = document.createElement('span'); wrap.className = 'srch-wrap';
+inp.parentNode.insertBefore(wrap, inp); wrap.appendChild(inp);
+const x = document.createElement('button'); x.type = 'button'; x.className = 'srch-x'; x.title = 'مسح البحث'; x.setAttribute('aria-label', 'مسح البحث');
+x.innerHTML = '<i class="fas fa-xmark"></i>';
+wrap.appendChild(x);
+const sync = () => wrap.classList.toggle('has-val', inp.value.length > 0);
+inp.addEventListener('input', sync);
+x.addEventListener('click', () => { inp.value = ''; sync(); inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus(); });
+sync();
+});
 function setAdminNavActive(tab) {
 document.querySelectorAll('.abn-item').forEach(b => b.classList.toggle('active', b.getAttribute('data-abn') === tab));
 }

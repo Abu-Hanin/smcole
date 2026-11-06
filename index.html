@@ -4535,16 +4535,11 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
-window.SMCOLE_BOT = {
-  admin_chat_id: '6242313550',
-  admin_username: 'walidsalama'
-};
-
 const APP_VERSION = '2026.10.10.1';
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
-const ADMIN_EMAIL = 'swlyd3393@gmail.com';
+const ADMIN_HASH = '16b08bd9aad77d1afa634fc2ce6d9b1e3202eb782e6fe02721d9ab53b129a971';
 let _supabaseClient = null;
 function getSupabase() {
 if (!_supabaseClient) {
@@ -5361,7 +5356,7 @@ return;
 setTimeout(() => {
 if (hash === 'services') window.__navigateTo('services', servicesPage, true);
 else if (hash === 'support' && window.currentProfile) window.__navigateTo('support', supportPage, true);
-else if (hash === 'admin-panel' && window.isAdminUser && window.openAdminPanel) window.openAdminPanel({ email: ADMIN_EMAIL });
+else if (hash === 'admin-panel' && window.isAdminUser && window.openAdminPanel) window.openAdminPanel({ email: window.__meEmail || '' });
 else if (hash === 'terms') window.__navigateTo('terms', termsPage, true);
 else if (hash === 'payment') window.__navigateTo('payment', paymentPage, true);
 else if (hash === 'favorites') window.__navigateTo('favorites', favoritesPage, true);
@@ -8735,8 +8730,9 @@ e.preventDefault();
 showAuthModal(b.getAttribute('data-auth-open'));
 }));
 
+function __sha256(s){var b=Array.from(new TextEncoder().encode(s)),l=b.length*8,K=[],H=[],p=0,c=2;while(p<64){var o=1;for(var d=2;d*d<=c;d++)if(c%d===0){o=0;break}if(o){if(p<8)H[p]=(Math.pow(c,.5)%1)*4294967296>>>0;K[p++]=(Math.pow(c,1/3)%1)*4294967296>>>0}c++}b.push(128);while(b.length%64!==56)b.push(0);b.push(0,0,0,0,l>>>24&255,l>>>16&255,l>>>8&255,l&255);var r=function(x,n){return x>>>n|x<<32-n};for(var i=0;i<b.length;i+=64){var w=[];for(var t=0;t<64;t++){if(t<16)w[t]=(b[i+4*t]<<24|b[i+4*t+1]<<16|b[i+4*t+2]<<8|b[i+4*t+3])>>>0;else{var a0=w[t-15],a1=w[t-2];w[t]=w[t-16]+(r(a0,7)^r(a0,18)^a0>>>3)+w[t-7]+(r(a1,17)^r(a1,19)^a1>>>10)>>>0}}var h=H.slice();for(t=0;t<64;t++){var T1=h[7]+(r(h[4],6)^r(h[4],11)^r(h[4],25))+(h[4]&h[5]^~h[4]&h[6])+K[t]+w[t]>>>0,T2=(r(h[0],2)^r(h[0],13)^r(h[0],22))+(h[0]&h[1]^h[0]&h[2]^h[1]&h[2])>>>0;h=[T1+T2>>>0,h[0],h[1],h[2],h[3]+T1>>>0,h[4],h[5],h[6]]}for(t=0;t<8;t++)H[t]=H[t]+h[t]>>>0}return H.map(function(v){return("00000000"+v.toString(16)).slice(-8)}).join("")}
 function isAdminEmail(email) {
-return !!email && String(email).trim().toLowerCase() === String(ADMIN_EMAIL).toLowerCase();
+return !!email && __sha256('smc:' + String(email).trim().toLowerCase()) === ADMIN_HASH;
 }
 
 // تحديث واجهة الأدمن / المستخدم (القائمة الجانبية + الشريط السفلي)
@@ -8786,25 +8782,7 @@ window.applyRoleUI = applyRoleUI;
 // ============================================================
 // sendToTelegram — يستقبل photo_base64 لإرسال الصورة منفصلة
 // ============================================================
-async function sendToTelegram(text, meta) {
-try {
-const body = { text: text };
-if (meta && typeof meta === 'object') {
-if (meta.order_id) body.order_id = meta.order_id;
-if (meta.deposit_id) body.deposit_id = meta.deposit_id;
-if (meta.type) body.type = meta.type;
-if (meta.photo_base64) body.photo_base64 = meta.photo_base64;
-}
-const { data, error } = await sb.functions.invoke('send-to-telegram', { body: body });
-if (error) { console.warn('Telegram function error:', error); return false; }
-if (data && data.ok) {
-console.log('✅ Sent to Telegram:', data.message_id, 'photo:', data.photo_sent);
-return true;
-}
-console.warn('Telegram function failed:', data);
-return false;
-} catch(e) { console.warn('Telegram call failed:', e); return false; }
-}
+async function sendToTelegram() { return false; } // 🔒 الدالة القديمة اتقفلت — الإرسال كله من support-chat
 window.__sendToTelegram = sendToTelegram;
 
 function round2(n) {
@@ -8908,7 +8886,7 @@ return;
 }
 window.__noSessTries = 0;
 currentUser = session.user;
-window.isAdminUser = isAdminEmail(session.user.email);
+window.isAdminUser = isAdminEmail(session.user.email); if (window.isAdminUser) window.__meEmail = session.user.email;
 // علامة على الجهاز (شكل بس — البيانات نفسها محمية في قاعدة البيانات): بعد الريفريش لوحة الأدمن تظهر على طول
 try { if (window.isAdminUser) localStorage.setItem('smcole_last_admin', '1'); else localStorage.removeItem('smcole_last_admin'); } catch (e) {}
 const { data: profile, error } = await sb.from('users').select('*').eq('auth_id', session.user.id).maybeSingle();
@@ -9381,7 +9359,7 @@ setAdminNavActive('home');
 return;
 }
 if (!document.getElementById('adminPanelPage').classList.contains('active')) {
-window.openAdminPanel(currentUser || { email: ADMIN_EMAIL }, tab);
+window.openAdminPanel(currentUser || { email: window.__meEmail || '' }, tab);
 }
 const tabBtn = document.querySelector('.admin-main-tab[data-admin-tab="' + tab + '"]');
 if (tabBtn) tabBtn.click();

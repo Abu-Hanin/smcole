@@ -480,6 +480,11 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .kpay-amount span { padding:0 14px; color:#7DD3FC; font-weight:800; }
 .kpay-min { font-size:.78rem; color:#7DD3FC; margin-top:6px; }
 .kpay-min b { color:#fff; }
+.kpay-fee { background:rgba(56,189,248,.06); border:1px solid rgba(56,189,248,.3); border-radius:12px; padding:10px 12px; margin:0 0 .9rem; font-size:.85rem; color:#E0F2FE; }
+.kpay-fee div { display:flex; justify-content:space-between; gap:8px; padding:3px 0; }
+.kpay-fee div b { color:#fff; direction:ltr; }
+.kpay-fee .tot { border-top:1px dashed rgba(56,189,248,.35); margin-top:4px; padding-top:7px; font-weight:800; }
+.kpay-fee .tot b { color:#7DD3FC; font-size:1rem; }
 .kpay-chips { display:flex; gap:6px; flex-wrap:wrap; margin:.7rem 0 1rem; }
 .kpay-chips button { flex:1; min-width:60px; padding:8px 6px; border-radius:10px; border:1px solid rgba(56,189,248,.35); background:rgba(56,189,248,.08); color:#E0F2FE; font-family:inherit; font-weight:700; cursor:pointer; }
 .kpay-chips button:hover { background:rgba(56,189,248,.2); }
@@ -3476,6 +3481,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="1000" step="1" placeholder="أقل مبلغ 1000"><span>جنيه</span></div>
 <div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>1,000 جنيه</b></div>
 <div class="kpay-chips"><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="3000">3000</button><button type="button" data-amt="5000">5000</button></div>
+<div class="kpay-fee" id="kpayFeeBox" style="display:none;"></div>
 <button type="button" class="deposit-submit-btn" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
 <div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
 </div>
@@ -8498,7 +8504,22 @@ if (!window.currentProfile && !(await window.__needProfile())) return;
 $('kpayMsg').textContent = '';
 window.__navigateTo('deposit-kashier', document.getElementById('depositPage'), true);
 });
-document.querySelectorAll('#depositKashierView .kpay-chips [data-amt]').forEach(b => b.addEventListener('click', () => { $('kpayAmount').value = b.dataset.amt; }));
+// 💸 رسوم كاشير على العميل (نفس حساب السيرفر بالظبط — السيرفر هو اللي بيحدد المبلغ النهائي)
+const kR2 = (n) => Math.round(n * 100) / 100;
+const kFee = () => (kcfg.fee && kcfg.fee.pct >= 0) ? Object.assign({ payout: 0 }, kcfg.fee) : { pct: 2.5, fixed: 2, vat: 14, payout: 5 };
+const kNetOf = (g, f) => { const fee = kR2(kR2(g * f.pct / 100) + f.fixed); return kR2(g - fee - kR2(fee * f.vat / 100) - f.payout); };
+const kGross = (net) => { const f = kFee(), k = 1 - (f.pct / 100) * (1 + f.vat / 100); let g = Math.ceil(((net + f.fixed * (1 + f.vat / 100) + f.payout) / k) * 100 - 1e-6) / 100; for (let i = 0; i < 100 && kNetOf(g, f) < net; i++) g = kR2(g + 0.01); return kR2(g); };
+const kMoney = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const kFeeShow = () => {
+const box = $('kpayFeeBox'); if (!box) return;
+const a = Math.round(parseFloat($('kpayAmount').value) * 100) / 100;
+if (!(a > 0)) { box.style.display = 'none'; return; }
+const g = kGross(a);
+box.innerHTML = '<div><span>هيتضاف لرصيدك</span><b>' + kMoney(a) + ' جنيه</b></div><div><span>رسوم الدفع بالكارت</span><b>' + kMoney(kR2(g - a)) + ' جنيه</b></div><div class="tot"><span>الإجمالي اللي هتدفعه</span><b>' + kMoney(g) + ' جنيه</b></div>';
+box.style.display = '';
+};
+$('kpayAmount').addEventListener('input', kFeeShow);
+document.querySelectorAll('#depositKashierView .kpay-chips [data-amt]').forEach(b => b.addEventListener('click', () => { $('kpayAmount').value = b.dataset.amt; kFeeShow(); }));
 $('kpayGo').addEventListener('click', async () => {
 const btn = $('kpayGo'), msg = $('kpayMsg');
 const amount = Math.round(parseFloat($('kpayAmount').value) * 100) / 100;

@@ -492,6 +492,10 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .kpay-frame:empty { display:none; }
 .kpay-frame iframe { width:100%; height:100%; border:0; display:block; }
 .kpay-frame .ld { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:8px; color:#334155; font-weight:700; font-size:.9rem; background:#fff; }
+.kpay-trust { margin-top:.7rem; text-align:center; }
+.kpay-trust-row { display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
+.kpay-trust-row span { font-size:.68rem; font-weight:800; color:#BBF7D0; background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.25); padding:3px 8px; border-radius:7px; display:inline-flex; align-items:center; gap:4px; }
+.kpay-trust p { margin:.5rem 0 0; font-size:.7rem; line-height:1.7; color:var(--muted); }
 .kpay-alt { text-align:center; margin-top:.5rem; font-size:.78rem; }
 .kpay-alt a { color:#7DD3FC; text-decoration:underline; }
 .kpay-fee { background:rgba(56,189,248,.06); border:1px solid rgba(56,189,248,.3); border-radius:12px; padding:10px 12px; margin:0 0 .9rem; font-size:.85rem; color:#E0F2FE; }
@@ -3392,8 +3396,11 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <div class="kpay-head-badges"><span><i class="fab fa-cc-visa"></i> Visa</span><span><i class="fab fa-cc-mastercard"></i> Mastercard</span><span><i class="fas fa-credit-card"></i> Meeza</span><span><i class="fas fa-shield-halved"></i> 3D Secure</span></div>
 <div class="kpay-frame" id="kpayFrameWrap"></div>
-<div class="kpay-secure"><i class="fas fa-shield-halved"></i> بيانات الكارت بتتكتب في نموذج كاشير المشفّر مباشرة — مش بتعدي على موقعنا</div>
-<div class="kpay-alt"><a href="#" id="kpayAltLink">النموذج مش ظاهر؟ افتح صفحة الدفع الآمنة كاملة</a></div>
+<div class="kpay-trust">
+<div class="kpay-trust-row"><span><i class="fas fa-lock"></i> تشفير SSL 256-bit</span><span><i class="fas fa-shield-halved"></i> PCI DSS</span><span><i class="fas fa-fingerprint"></i> 3D Secure</span></div>
+<p>تتم معالجة عملية الدفع بالكامل عبر بوابة Kashier المرخّصة والمعتمدة بمعيار أمان PCI DSS. بيانات بطاقتك مشفّرة ولا يتم تخزينها أو الاطلاع عليها من قِبل <span data-site-name>SMCOLE</span>.</p>
+</div>
+<div class="kpay-alt"><a href="#" id="kpayAltLink">فتح صفحة الدفع الآمنة في نافذة كاملة</a></div>
 </div>
 <div id="kpayState" class="kpay-state" style="display:none;"></div>
 </div>

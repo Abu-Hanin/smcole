@@ -480,6 +480,20 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .kpay-amount span { padding:0 14px; color:#7DD3FC; font-weight:800; }
 .kpay-min { font-size:.78rem; color:#7DD3FC; margin-top:6px; }
 .kpay-min b { color:#fff; }
+.kpay-box.wide { max-width:520px; padding:1rem; }
+.kpay-head { display:flex; align-items:center; gap:10px; padding-left:40px; }
+.kpay-head .sm-brand-mark { flex:0 0 auto; }
+.kpay-head h3 { margin:0; font-size:1.15rem; }
+.kpay-head-sub { margin:.15rem 0 0; font-size:.78rem; color:#7DD3FC; line-height:1.6; }
+.kpay-head-sub b { color:#fff; }
+.kpay-head-badges { display:flex; gap:6px; flex-wrap:wrap; margin-top:.7rem; }
+.kpay-head-badges span { font-size:.68rem; font-weight:800; padding:3px 8px; border-radius:7px; background:rgba(255,255,255,.07); color:#E0F2FE; display:inline-flex; align-items:center; gap:4px; }
+.kpay-frame { position:relative; width:100%; height:min(640px, 70vh); border-radius:14px; overflow:hidden; background:#fff; margin-top:.7rem; }
+.kpay-frame:empty { display:none; }
+.kpay-frame iframe { width:100%; height:100%; border:0; display:block; }
+.kpay-frame .ld { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:8px; color:#334155; font-weight:700; font-size:.9rem; background:#fff; }
+.kpay-alt { text-align:center; margin-top:.5rem; font-size:.78rem; }
+.kpay-alt a { color:#7DD3FC; text-decoration:underline; }
 .kpay-fee { background:rgba(56,189,248,.06); border:1px solid rgba(56,189,248,.3); border-radius:12px; padding:10px 12px; margin:0 0 .9rem; font-size:.85rem; color:#E0F2FE; }
 .kpay-fee div { display:flex; justify-content:space-between; gap:8px; padding:3px 0; }
 .kpay-fee div b { color:#fff; direction:ltr; }
@@ -3370,7 +3384,17 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="kpay-bg" id="kpayModal" role="dialog" aria-modal="true" aria-labelledby="kpayTitle">
 <div class="kpay-box">
 <button type="button" class="kpay-close" id="kpayClose" aria-label="إغلاق"><i class="fas fa-times"></i></button>
-<div id="kpayForm" style="display:none;"><h3 id="kpayTitle"><i class="fas fa-credit-card"></i> الدفع بالكارت</h3></div>
+<div id="kpayForm" style="display:none;">
+<div class="kpay-head">
+<span class="sm-brand-mark site-logo"><img src="/app-icon-192.png" alt="SMCOLE" width="38" height="38"></span>
+<div><h3 id="kpayTitle"><span data-site-name>SMCOLE</span></h3>
+<p class="kpay-head-sub"><i class="fas fa-lock"></i> الدفع آمن ومشفّر عن طريق منصة كاشير <b>Kashier</b></p></div>
+</div>
+<div class="kpay-head-badges"><span><i class="fab fa-cc-visa"></i> Visa</span><span><i class="fab fa-cc-mastercard"></i> Mastercard</span><span><i class="fas fa-credit-card"></i> Meeza</span><span><i class="fas fa-shield-halved"></i> 3D Secure</span></div>
+<div class="kpay-frame" id="kpayFrameWrap"></div>
+<div class="kpay-secure"><i class="fas fa-shield-halved"></i> بيانات الكارت بتتكتب في نموذج كاشير المشفّر مباشرة — مش بتعدي على موقعنا</div>
+<div class="kpay-alt"><a href="#" id="kpayAltLink">النموذج مش ظاهر؟ افتح صفحة الدفع الآمنة كاملة</a></div>
+</div>
 <div id="kpayState" class="kpay-state" style="display:none;"></div>
 </div>
 </div>
@@ -3469,9 +3493,9 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <div class="deposit-steps">
 <div class="step-item"><span class="step-num">1</span><span class="step-text">اكتب المبلغ اللي عايز تشحنه تحت</span></div>
-<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع الآن</b> — هتفتح صفحة كاشير الآمنة</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع الآن</b> — هيظهر نموذج الدفع الآمن من كاشير</span></div>
 <div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب بيانات الكارت وأكد بكود البنك (OTP)</span></div>
-<div class="step-item"><span class="step-num">4</span><span class="step-text">هترجع للموقع لوحدك — والرصيد يتضاف تلقائياً ⚡</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">أول ما الدفع يتم — الرصيد يتضاف تلقائياً ⚡</span></div>
 </div>
 </div>
 <div class="profile-msg dep-msg-slot err" id="kpayMsg"></div>
@@ -8459,6 +8483,10 @@ msg.className = 'profile-msg err'; msg.textContent = (r && r.message) || '❌ ح
 // ===================== 💳 الدفع بالفيزا — كاشير =====================
 // الرصيد مبيتضافش من هنا أبداً: السيرفر هو اللي بيسأل كاشير ويتأكد إن الفلوس اتدفعت فعلاً
 (function kashierUI() {
+// لو كاشير رجّع العميل لموقعنا جوه نموذج الدفع نفسه → نفتح الرجوع في الصفحة الأساسية (نفس الموقع) والتحقق يكمل عادي
+if (window.self !== window.top && /[?&]kpay=/.test(location.search)) {
+try { if (window.top.location.origin === location.origin) { window.top.location.replace(location.href); return; } } catch (e) {}
+}
 const card = document.getElementById('kashierCard'), modal = document.getElementById('kpayModal');
 if (!card || !modal) return;
 document.body.appendChild(modal); // فوق كل الصفحات
@@ -8494,10 +8522,56 @@ if (!(d.min > 0)) { $('kpayAmount').placeholder = 'اكتب المبلغ'; }
 }
 }).catch(() => {}), 400);
 const show = (mode) => { modal.classList.add('show'); $('kpayForm').style.display = mode === 'form' ? '' : 'none'; $('kpayState').style.display = mode === 'form' ? 'none' : ''; };
-const hide = () => modal.classList.remove('show');
+const hide = () => {
+modal.classList.remove('show');
+// العميل قفل نموذج الدفع → نشيله، ولو كان دفع فعلاً نتأكد من السيرفر (والمتابعة التلقائية كل 5 دقايق بتغطي أي حالة)
+if (embedRef) { const r = embedRef; closeEmbed(); invoke({ action: 'kashier_check', ref: r }).then(d => { if (d && d.state === 'paid') runVerify(r); }).catch(() => {}); }
+};
 const state = (icon, title, text) => { $('kpayState').innerHTML = '<div class="big">' + icon + '</div><h4>' + title + '</h4><p>' + text + '</p>'; show('state'); };
 $('kpayClose').addEventListener('click', hide);
-modal.addEventListener('click', (e) => { if (e.target === modal) hide(); });
+modal.addEventListener('click', (e) => { if (e.target === modal && !embedRef) hide(); }); // أثناء الدفع الضغط برا النموذج ميقفلوش بالغلط
+
+// 💳 نموذج كاشير جوه الموقع (iframe من payments.kashier.io) — بيانات الكارت بتتكتب عند كاشير مباشرة ومش بتعدي على موقعنا
+// الرسايل اللي جاية من النموذج مجرد إشارة إننا نسأل السيرفر — الرصيد بيتضاف بس بعد ما السيرفر يتأكد من كاشير بنفسه
+let embedRef = '', embedUrl = '';
+const kOrigin = (o) => /^https:\/\/([a-z0-9-]+\.)*kashier\.io$/i.test(o);
+const closeEmbed = () => { embedRef = ''; $('kpayFrameWrap').innerHTML = ''; modal.querySelector('.kpay-box').classList.remove('wide'); };
+const finishEmbed = () => { const r = embedRef; if (!r) return; closeEmbed(); try { sessionStorage.setItem('smcole_kpay_pending', r); } catch (e) {} runVerify(r); };
+const openEmbed = (url, ref) => {
+embedRef = ref; embedUrl = url;
+const wrap = $('kpayFrameWrap');
+wrap.innerHTML = '<div class="ld"><i class="fas fa-spinner fa-spin"></i> جاري تحميل نموذج الدفع الآمن...</div>';
+const f = document.createElement('iframe');
+f.title = 'نموذج الدفع الآمن — كاشير'; f.allow = 'payment'; f.referrerPolicy = 'origin';
+f.addEventListener('load', () => { const l = wrap.querySelector('.ld'); if (l) l.remove(); });
+f.src = url;
+wrap.appendChild(f);
+modal.querySelector('.kpay-box').classList.add('wide');
+show('form');
+};
+window.addEventListener('message', (e) => {
+if (!embedRef) return;
+const f = $('kpayFrameWrap').querySelector('iframe');
+if (!f || e.source !== f.contentWindow || !kOrigin(e.origin)) return; // أي رسالة من أي مكان تاني بتتجاهل
+const d = (e.data && typeof e.data === 'object') ? e.data : { message: e.data };
+const m = String(d.message || '');
+if (m === 'contentLoaded' || m === 'iframeLoaded') { const l = $('kpayFrameWrap').querySelector('.ld'); if (l) l.remove(); }
+else if (m === 'paymentSuccess' || m === 'success') finishEmbed();
+else if (m === 'urlRedirection') {
+const p = (d.params && typeof d.params === 'object') ? d.params : d;
+const u = String(p.redirectUrl || '');
+if (!u || u.indexOf(location.origin + '/') === 0) finishEmbed(); // الرجوع لموقعنا = خلص الدفع → نتحقق من السيرفر
+else if (/^https:\/\/([a-z0-9-]+\.)*kashier\.io\//i.test(u)) { try { sessionStorage.setItem('smcole_kpay', embedRef); } catch (err) {} location.href = u; }
+else finishEmbed();
+}
+else if (m === 'closeIframe' || m === 'iframeHide') hide();
+});
+$('kpayAltLink').addEventListener('click', (e) => {
+e.preventDefault();
+if (!embedUrl || !/^https:\/\/([a-z0-9-]+\.)*kashier\.io\//i.test(embedUrl)) return;
+try { sessionStorage.setItem('smcole_kpay', embedRef || ''); } catch (err) {}
+location.href = embedUrl; // نفس جلسة الدفع بالظبط في صفحة كاشير الكاملة (الطريقة القديمة)
+});
 // الكارت بيفتح صفحة بنفس شكل محافظ الكاش (مش شباك صغير)
 card.addEventListener('click', async () => {
 if (!window.currentProfile && !(await window.__needProfile())) return;
@@ -8527,12 +8601,13 @@ if (!(amount > 0)) { msg.textContent = 'اكتب المبلغ اللي عايز 
 if (!(amount >= kcfg.min)) { msg.textContent = 'أقل مبلغ للشحن ' + kcfg.min + ' جنيه'; return; }
 if (amount > kcfg.max) { msg.textContent = 'أقصى مبلغ في المرة ' + kcfg.max + ' جنيه'; return; }
 if (btn.disabled) return;
-btn.disabled = true; btn.querySelector('span').textContent = 'جاري فتح صفحة الدفع...'; msg.textContent = '';
+btn.disabled = true; btn.querySelector('span').textContent = 'جاري تجهيز الدفع...'; msg.textContent = '';
 try {
 const d = await invoke({ action: 'kashier_init', amount, origin: location.origin });
-if (d && d.ok && d.url && /^https:\/\/([a-z0-9-]+\.)*kashier\.io\//i.test(d.url)) {
+if (d && d.ok && d.url && /^https:\/\/([a-z0-9-]+\.)*kashier\.io\//i.test(d.url) && /^SMC\d+-[A-Z0-9a-f]+$/.test(String(d.ref || ''))) {
 try { sessionStorage.setItem('smcole_kpay', d.ref); } catch (e) {}
-location.href = d.url;
+openEmbed(d.url, d.ref);
+btn.disabled = false; btn.querySelector('span').textContent = 'ادفع الآن';
 return;
 }
 msg.textContent = (d && d.message) || 'تعذر فتح صفحة الدفع — حاول تاني';
@@ -8550,7 +8625,8 @@ else ref = sessionStorage.getItem('smcole_kpay_pending') || '';
 } catch (e) {}
 if (!/^SMC\d+-[A-Z0-9a-f]+$/.test(ref)) return;
 try { sessionStorage.setItem('smcole_kpay_pending', ref); } catch (e) {}
-(async () => {
+runVerify(ref);
+async function runVerify(ref) {
 // نستنى بيانات الحساب تتحمل
 for (let i = 0; i < 40 && !window.currentProfile; i++) await new Promise(r => setTimeout(r, 250));
 if (!window.currentProfile) return;
@@ -8578,7 +8654,7 @@ state('⚠️', 'محتاجين نراجع العملية', 'تواصل مع ا�
 } else {
 state('⏳', 'الدفع لسه بيتأكد', 'أول ما كاشير يأكد الدفع الرصيد هيتضاف لحسابك تلقائياً ويوصلك إشعار — مش محتاج تعمل حاجة.');
 }
-})();
+}
 })();
 
 // ===================== 🔌 مفتاح الـ API (صفحة حسابي) =====================

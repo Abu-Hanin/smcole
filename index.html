@@ -465,6 +465,8 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .api-docs-btn { display:inline-flex; align-items:center; gap:8px; padding:12px 18px; margin-top:.5rem; border-radius:14px; border:1px solid rgba(168,85,247,.4); color:#E9D5FF; text-decoration:none; font-weight:700; font-size:.9rem; }
 /* 💳 كاشير */
 .psc-logo.kashier { background:linear-gradient(135deg,#0EA5E9 0%,#1D4ED8 100%); color:#fff; font-size:1.05rem; }
+.psc-logo.cm-logo, .deposit-brand-logo.cm-logo { background:#0B0B0F !important; color:#fff !important; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.12); }
+.psc-logo.cm-logo svg { width:58%; height:58%; } .deposit-brand-logo.cm-logo svg { width:56%; height:56%; }
 .payment-selector-card.kashier-card { border-color:rgba(56,189,248,.45); background:linear-gradient(135deg,#0B1830,#0E0919); }
 .kashier-badges { display:flex; gap:5px; flex-wrap:wrap; margin-top:6px; }
 .kashier-badges span { font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:6px; background:rgba(255,255,255,.08); color:#E0F2FE; letter-spacing:.02em; }
@@ -3043,6 +3045,13 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
+<!-- 🪙 العملات الرقمية عن طريق Cryptomus (بتظهر بس لما الأدمن يفتحها والمفاتيح موجودة) -->
+<div class="payment-selector-card" id="cmCard" data-pay="cryptomus" style="display:none;">
+<div class="psc-logo cm-logo"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6 54 18.5v27L32 58 10 45.5v-27z" fill="#fff"/><path d="M32 30.5 54 18.5M32 30.5v27.5M32 30.5 10 18.5" stroke="#0B0B0F" stroke-width="4.5" stroke-linejoin="round" fill="none"/></svg></div>
+<div class="psc-info"><h3>العملات الرقمية <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h3><p>ادفع بـ USDT أو بيتكوين أو أي عملة رقمية — والرصيد بيتضاف تلقائي</p></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
 <div class="payment-selector-card" data-method="usdt">
 <div class="psc-logo usdt" id="pscLogoUsdt">
 <img id="pscLogoUsdtImg" style="display:none;" alt="USDT">
@@ -3510,6 +3519,32 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 </div>
 
+<!-- 🪙 العملات الرقمية (Cryptomus) -->
+<div id="depositCryptomusView" style="display:none;">
+<div class="deposit-info">
+<div class="deposit-brand-header">
+<div class="deposit-brand-logo cm-logo"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6 54 18.5v27L32 58 10 45.5v-27z" fill="#fff"/><path d="M32 30.5 54 18.5M32 30.5v27.5M32 30.5 10 18.5" stroke="#0B0B0F" stroke-width="4.5" stroke-linejoin="round" fill="none"/></svg></div>
+<div class="deposit-brand-title"><h2>العملات الرقمية <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>ادفع بـ USDT أو بيتكوين أو أي عملة رقمية — والرصيد بيتضاف تلقائي</p></div>
+</div>
+<div class="deposit-steps">
+<div class="step-item"><span class="step-num">1</span><span class="step-text">اكتب المبلغ اللي عايز تشحنه بالدولار تحت</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع الآن</b> — هيتم تحويلك لصفحة الدفع الآمنة من Cryptomus</span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">اختار العملة والشبكة وحوّل المبلغ اللي ظاهر قدامك بالظبط</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">أول ما التحويل يتأكد على الشبكة — الرصيد يتضاف تلقائياً ⚡</span></div>
+</div>
+</div>
+<div class="profile-msg dep-msg-slot err" id="cmpMsg"></div>
+<div class="deposit-form kpay-page-form">
+<h3><i class="fas fa-lock"></i> شحن الرصيد بالعملات الرقمية</h3>
+<label for="cmpAmount">المبلغ (بالدولار)</label>
+<div class="kpay-amount"><input type="number" id="cmpAmount" inputmode="decimal" min="1" max="1000" step="0.01" placeholder="أقل مبلغ 1"><span>دولار</span></div>
+<div class="kpay-min" id="cmpMinNote">أقل مبلغ للشحن <b>1 دولار</b> — وأقصى مبلغ في المرة <b>1,000 دولار</b></div>
+<div class="kpay-chips" id="cmpChips"><button type="button" data-amt="5">5</button><button type="button" data-amt="10">10</button><button type="button" data-amt="25">25</button><button type="button" data-amt="50">50</button></div>
+<button type="button" class="deposit-submit-btn" id="cmpGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
+<div class="kpay-secure"><i class="fas fa-shield-halved"></i> رسوم الشبكة بتظهر في صفحة الدفع — والرصيد بيتضاف بالمبلغ اللي كتبته بالظبط</div>
+</div>
+</div>
+
 <!-- ⚡ فودافون كاش تلقائي (بوابة جديدة) -->
 <div id="depositVfautoView" style="display:none;">
 <div class="deposit-info">
@@ -3924,7 +3959,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '1', ADMIN_BUNDLE_SHA = '1d4dae92ecb04d54378cf66045db03f25b977d42698d6fcc96e97ed1ce9ca790';
+const ADMIN_BUNDLE_V = '2', ADMIN_BUNDLE_SHA = 'a25154a10ceee9fa6538fd49a2caef5955082c103d7e899040fb758631823ef5';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -4460,6 +4495,9 @@ const pm = siteSettings.payment_methods || {};
 document.querySelectorAll('.payment-selector-card[data-method]').forEach(c => { c.style.display = pm[c.dataset.method] === false ? 'none' : ''; });
 const k = document.getElementById('kashierCard');
 if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' : 'none';
+// 🪙 Cryptomus: مقفولة افتراضياً — بتظهر بس لما الأدمن يفتحها والسيرفر يأكد إن المفاتيح موجودة
+const cmc = document.getElementById('cmCard');
+if (cmc) cmc.style.display = (pm.cryptomus === true && window.__cryptomusEnabled) ? '' : 'none';
 // ⚡ فودافون كاش تلقائي: مقفول افتراضياً — بيظهر بس لما الأدمن يفتحه
 const vfa = document.getElementById('vfaCard');
 if (vfa) vfa.style.display = pm.vfcash_auto === true ? '' : 'none';
@@ -4590,7 +4628,7 @@ window.__routeChain = function (r) {
 if (r === 'home') return ['home'];
 if (r === 'services') return ['home', 'services'];
 if (r === 'admin-panel') return ['home', 'admin-panel'];
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier)$/.test(r)) return ['home', 'services', 'payment', r];
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus)$/.test(r)) return ['home', 'services', 'payment', r];
 if (/^(terms|affiliate|payment|favorites|support|profile|orders)$/.test(r)) return ['home', 'services', r];
 return null;
 };
@@ -4666,6 +4704,8 @@ const ipView = document.getElementById('depositIpautoView');
 if (ipView) ipView.style.display = method === 'ipauto' ? 'block' : 'none';
 const kView = document.getElementById('depositKashierView');
 if (kView) kView.style.display = method === 'kashier' ? 'block' : 'none';
+const cmView = document.getElementById('depositCryptomusView');
+if (cmView) cmView.style.display = method === 'cryptomus' ? 'block' : 'none';
 if (vView) vView.style.display = 'none';
 if (bView) bView.style.display = 'none';
 if (uView) uView.style.display = 'none';
@@ -4712,6 +4752,7 @@ else if (routeName === 'deposit-binance' && window.__loggedIn()) { setPageVisibi
 else if (routeName === 'deposit-usdt' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('usdt'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-instapay' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-kashier' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('kashier'); }
+else if (routeName === 'deposit-cryptomus' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('cryptomus'); }
 else if (routeName === 'deposit-vfauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('vfauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-ipauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('ipauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-redot' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('redot'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
@@ -5710,7 +5751,8 @@ redot: 'ريدوت باي',
 admin_manual: 'الإدارة',
 order_refund: 'استرجاع طلب',
 vfcash_auto: 'فودافون كاش (تلقائي)',
-instapay_auto: 'إنستاباي (تلقائي)'
+instapay_auto: 'إنستاباي (تلقائي)',
+cryptomus: 'العملات الرقمية (تلقائي)'
 };
 
 function userToast(msg, type) {
@@ -6130,7 +6172,7 @@ hideAuthModal();
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'profile') { setTimeout(() => openProfilePage(), 150); return; }
 if (hash === 'orders') { setTimeout(() => openMyOrdersPage(), 150); return; }
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier)$/.test(hash)) {
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus)$/.test(hash)) {
 setTimeout(() => { window.__navigateTo(hash, document.getElementById('depositPage'), true); }, 150);
 return;
 }
@@ -8174,7 +8216,7 @@ if (window.__routeRestored) return;
 const fallback = mode === true;
 const h = window.__initialHash || '';
 const nav = (r, id) => window.__navigateTo(r, document.getElementById(id), false);
-const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier)$/.test(h);
+const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus)$/.test(h);
 const USER_PAGES = { 'admin-panel': null, affiliate: 'affiliatePage', support: 'supportPage', profile: 'profilePage', orders: 'myOrdersPage' };
 const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, h);
 const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
@@ -8655,6 +8697,105 @@ state('⚠️', 'محتاجين نراجع العملية', 'تواصل مع ا�
 state('⏳', 'الدفع لسه بيتأكد', 'أول ما كاشير يأكد الدفع الرصيد هيتضاف لحسابك تلقائياً ويوصلك إشعار — مش محتاج تعمل حاجة.');
 }
 }
+})();
+
+// ===================== 🪙 العملات الرقمية (Cryptomus) — تلقائي =====================
+// الرصيد بيتضاف بس لما السيرفر يسأل Cryptomus بنفسه ويتأكد إن الفاتورة اتدفعت بنفس المبلغ — الموقع مجرد واجهة
+(function cryptomusUI() {
+const $ = (id) => document.getElementById(id);
+const card = $('cmCard'), modal = $('kpayModal');
+if (!card || !$('cmpGo')) return;
+let cfg = { enabled: false, min: 1, max: 1000 };
+const invoke = async (body) => {
+const r = await sb.functions.invoke('smm-api', { body });
+let d = r.data;
+if (r.error) { try { d = await r.error.context.json(); } catch (e) { d = null; } }
+return d || {};
+};
+const apply = () => { if (window.applyPaymentMethods) window.applyPaymentMethods(); };
+const setCfg = (d) => {
+cfg = { enabled: true, min: Number(d.min) || 1, max: Number(d.max) || 1000 };
+window.__cryptomusEnabled = true; apply();
+$('cmpAmount').min = cfg.min; $('cmpAmount').max = cfg.max; $('cmpAmount').placeholder = 'أقل مبلغ ' + cfg.min;
+$('cmpMinNote').innerHTML = 'أقل مبلغ للشحن <b>' + cfg.min.toLocaleString('en-US') + ' دولار</b> — وأقصى مبلغ في المرة <b>' + cfg.max.toLocaleString('en-US') + ' دولار</b>';
+document.querySelectorAll('#cmpChips [data-amt]').forEach(b => { b.style.display = (Number(b.dataset.amt) < cfg.min || Number(b.dataset.amt) > cfg.max) ? 'none' : ''; });
+};
+try { const c = JSON.parse(localStorage.getItem('smcole_cryptomus') || 'null'); if (c && c.enabled) setCfg(c); } catch (e) {}
+setTimeout(() => invoke({ action: 'cryptomus_status' }).then(d => {
+if (d && d.ok && d.enabled) { try { localStorage.setItem('smcole_cryptomus', JSON.stringify({ enabled: true, min: d.min, max: d.max })); } catch (e) {} setCfg(d); }
+else if (d && d.ok !== undefined) { try { localStorage.removeItem('smcole_cryptomus'); } catch (e) {} window.__cryptomusEnabled = false; apply(); }
+}).catch(() => {}), 450);
+card.addEventListener('click', async () => {
+if (!window.currentProfile && !(await window.__needProfile())) return;
+$('cmpMsg').textContent = '';
+window.__navigateTo('deposit-cryptomus', document.getElementById('depositPage'), true);
+});
+document.querySelectorAll('#cmpChips [data-amt]').forEach(b => b.addEventListener('click', () => { $('cmpAmount').value = b.dataset.amt; }));
+$('cmpGo').addEventListener('click', async () => {
+const btn = $('cmpGo'), msg = $('cmpMsg');
+const amount = Math.round(parseFloat($('cmpAmount').value) * 100) / 100;
+if (!(amount > 0)) { msg.textContent = 'اكتب المبلغ اللي عايز تشحنه'; return; }
+if (!(amount >= cfg.min)) { msg.textContent = 'أقل مبلغ للشحن ' + cfg.min + ' دولار'; return; }
+if (amount > cfg.max) { msg.textContent = 'أقصى مبلغ في المرة ' + cfg.max + ' دولار'; return; }
+if (btn.disabled) return;
+btn.disabled = true; btn.querySelector('span').textContent = 'جاري تجهيز الدفع...'; msg.textContent = '';
+try {
+const d = await invoke({ action: 'cryptomus_init', amount, origin: location.origin });
+if (d && d.ok && /^https:\/\/([a-z0-9-]+\.)*cryptomus\.com\//i.test(String(d.url || '')) && /^CMS\d+-[A-Z0-9a-f]+$/.test(String(d.ref || ''))) {
+try { sessionStorage.setItem('smcole_cpay', d.ref); } catch (e) {}
+btn.querySelector('span').textContent = 'جاري تحويلك لصفحة الدفع...';
+location.href = d.url; // صفحة الدفع الخارجية الخاصة بـ Cryptomus
+return;
+}
+msg.textContent = (d && d.message) || 'تعذر فتح صفحة الدفع — حاول تاني';
+} catch (e) { msg.textContent = 'تعذر الاتصال — حاول تاني'; }
+btn.disabled = false; btn.querySelector('span').textContent = 'ادفع الآن';
+});
+
+// العميل رجع من صفحة الدفع → نتحقق من السيرفر (اللي بيتحقق من Cryptomus)
+let ref = '', fromReturn = false;
+try {
+const q = new URLSearchParams(location.search);
+ref = q.get('cpay') || '';
+if (ref) { fromReturn = true; history.replaceState({ __sm: true, route: 'home', d: 0 }, '', location.pathname); }
+else ref = sessionStorage.getItem('smcole_cpay') || '';
+} catch (e) {}
+if (!/^CMS\d+-[A-Z0-9a-f]+$/.test(ref) || !modal) return;
+const state = (icon, title, text) => {
+document.body.appendChild(modal);
+$('kpayState').innerHTML = '<div class="big">' + icon + '</div><h4>' + title + '</h4><p>' + text + '</p>';
+$('kpayForm').style.display = 'none'; $('kpayState').style.display = ''; modal.classList.add('show');
+};
+(async function () {
+for (let i = 0; i < 40 && !window.currentProfile; i++) await new Promise(r => setTimeout(r, 250));
+if (!window.currentProfile) return;
+let d = null;
+const tries = fromReturn ? 6 : 1; // من غير رجوع من صفحة الدفع → فحص واحد بس في الخلفية من غير ما نزعج العميل
+for (let i = 0; i < tries; i++) {
+try { d = await invoke({ action: 'cryptomus_check', ref }); } catch (e) { d = null; }
+if (d && (d.state === 'paid' || d.state === 'failed' || d.state === 'not_found' || d.state === 'mismatch')) break;
+if (i === 0 && tries > 1) state('⏳', 'بنتحقق من الدفع...', 'ثواني وهنتأكد من Cryptomus إن التحويل وصل.');
+if (i < tries - 1) await new Promise(r => setTimeout(r, 4000));
+}
+const done = () => { try { sessionStorage.removeItem('smcole_cpay'); } catch (e) {} };
+if (d && d.state === 'paid') {
+done();
+try { window.smSound && window.smSound.payment(); } catch (e) {}
+state('✅', 'تم شحن رصيدك بنجاح', 'اتضاف <b>' + Number(d.amount || 0).toLocaleString('en-US') + ' دولار</b> لرصيدك — تقدر تطلب خدماتك دلوقتي 🚀');
+if (window.__refreshProfileFromDB) window.__refreshProfileFromDB();
+if (window.loadUserTransactions) window.loadUserTransactions();
+} else if (!fromReturn) {
+if (d && (d.state === 'failed' || d.state === 'not_found' || d.state === 'mismatch')) done();
+} else if (d && d.state === 'failed') {
+done();
+state('❌', 'الدفع ما تمش', 'الفاتورة اتلغت أو انتهى وقتها ومفيش رصيد اتضاف. لو حوّلت فلوس فعلاً تواصل مع الدعم الفني ومعاك رقم العملية: <b dir="ltr">' + ref + '</b>');
+} else if (d && (d.state === 'not_found' || d.state === 'mismatch')) {
+done();
+state('⚠️', 'محتاجين نراجع العملية', 'تواصل مع الدعم الفني وابعتلنا رقم العملية: <b dir="ltr">' + ref + '</b>');
+} else {
+state('⏳', 'الدفع لسه بيتأكد', 'التحويلات الرقمية بتاخد شوية دقايق لحد ما الشبكة تأكدها — أول ما تتأكد الرصيد هيتضاف لحسابك تلقائياً. مش محتاج تعمل حاجة.');
+}
+})();
 })();
 
 // ===================== 🔌 مفتاح الـ API (صفحة حسابي) =====================

@@ -1,9 +1,10 @@
-﻿const CACHE_NAME = 'smcole-v81'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+﻿const CACHE_NAME = 'smcole-v82'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
   '/app-icon-192.png',
-  '/app-icon-512.png'
+  '/app-icon-512.png',
+  '/instapay-logo.png'
 ];
 const ICON = '/app-icon-192.png';
 
@@ -40,6 +41,17 @@ self.addEventListener('fetch', event => {
   let sameOrigin = false;
   try { sameOrigin = new URL(req.url).origin === self.location.origin; } catch (e) {}
   if (!sameOrigin) return; // طلبات السيرفر (Supabase) والخطوط بتعدي عادي من غير كاش
+  // 🖼️ الصور الثابتة (زي لوجو إنستاباي): من الجهاز على طول لو متحفظة — مبتختفيش ولا بتتحمّل من الأول كل مرة
+  // (أي إصدار جديد للموقع بيغيّر CACHE_NAME فبيمسح القديمة ويحمّل الجديدة)
+  if (/\.(png|jpe?g|webp|svg|gif|ico)$/i.test(new URL(req.url).pathname)) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache => cache.match(req).then(hit => hit || fetch(req).then(response => {
+        if (response && response.status === 200 && response.type === 'basic') cache.put(req, response.clone());
+        return response;
+      })))
+    );
+    return;
+  }
   event.respondWith(
     fetch(req)
       .then(response => {

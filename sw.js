@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'smcole-v80'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+﻿const CACHE_NAME = 'smcole-v81'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',

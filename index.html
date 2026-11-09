@@ -4061,6 +4061,7 @@ document.getElementById('adminPanelPage').classList.remove('active');
 };
 window.openAdminPanel = function(user, tab) {
 if (!window.isAdminUser) return;
+if (window.__loadSiteAssets) window.__loadSiteAssets(); // الأدمن محتاج كل الصور (إعدادات اللوجوهات والـ QR)
 if (!window.__adminBundleReady) { window.__loadAdminBundle().then(function() { window.openAdminPanel(user, tab); }).catch(function(e) { console.warn('admin bundle:', e.message); }); return; }
 // tab جاي من adminGoTab: التبويب نفسه بيحمّل بياناته → منحمّلش المستخدمين على الفاضي (كانت بتتحمل مرتين وبتعطّل الصفحة)
 var goTab = tab || 'users', loadUsers = !tab;
@@ -4413,7 +4414,8 @@ if (error) { console.warn('Settings load error:', error.message); setTimeout(() 
 if (!data) return false;
 window.__fillSiteSettings(data);
 try { localStorage.setItem('smcole_settings_cache', JSON.stringify(data)); } catch (e) {}
-window.__loadSiteAssets();
+// 📉 الصور (~350KB) مبقتش بتتحمّل مع كل زيارة — QR باينانس بس لما صفحة باينانس تتفتح (توفير في استهلاك Supabase)
+if (document.body.getAttribute('data-route') === 'deposit-binance') window.__loadSiteAssets(['binance_qr']);
 return true;
 } catch(e) { console.warn('Settings load failed:', e); return false; }
 };
@@ -4424,10 +4426,18 @@ const c = JSON.parse(localStorage.getItem('smcole_assets_cache') || 'null');
 if (c) window.ASSET_KEYS.forEach(k => { if (c[k] && c[k].d) siteSettings[k] = c[k].d; });
 } catch (e) {}
 };
-window.__loadSiteAssets = async function () {
+// أنهي صور محتاجينها: اللوجوهات بقت مرسومة جوه الموقع (PAY_MARK) فمش محتاجين نحمّلها للعملاء خالص
+// الصورة الوحيدة اللي بتظهر للعميل هي QR باينانس — وبتتحمّل بس لما يفتح صفحة باينانس
+window.__assetKeysFor = function (route) { return route === 'deposit-binance' ? ['binance_qr'] : []; };
+window.__assetsAsked = {};
+window.__loadSiteAssets = async function (want) {
+// كل صورة بتتطلب مرة واحدة بس في الزيارة (حتى لو الدالة اتنادت أكتر من مرة)
+want = (Array.isArray(want) ? want : window.ASSET_KEYS).filter(k => !window.__assetsAsked[k]);
+if (!want.length) return;
+want.forEach(k => { window.__assetsAsked[k] = true; });
 try {
 const sb = getSupabase();
-const { data: list, error } = await sb.from('site_assets').select('key,updated_at');
+const { data: list, error } = await sb.from('site_assets').select('key,updated_at').in('key', want);
 if (error) {
 // الجدول لسه مش موجود → الصور من الإعدادات زي الأول
 window.__assetsTable = false;
@@ -4441,12 +4451,12 @@ const live = {}; (list || []).forEach(r => { live[r.key] = r.updated_at; });
 const need = Object.keys(live).filter(k => !c[k] || c[k].u !== live[k]);
 if (need.length) {
 const { data: rows, error: e2 } = await sb.from('site_assets').select('key,data,updated_at').in('key', need);
-if (e2) return;
+if (e2) { want.forEach(k => { delete window.__assetsAsked[k]; }); return; }
 (rows || []).forEach(r => { c[r.key] = { d: r.data || null, u: r.updated_at }; });
 }
-Object.keys(c).forEach(k => { if (!live[k]) delete c[k]; });
+want.forEach(k => { if (!live[k]) delete c[k]; });
 let changed = need.length > 0;
-window.ASSET_KEYS.forEach(k => { const v = (c[k] && c[k].d) || null; if ((siteSettings[k] || null) !== v) { siteSettings[k] = v; changed = true; } });
+want.forEach(k => { const v = (c[k] && c[k].d) || null; if ((siteSettings[k] || null) !== v) { siteSettings[k] = v; changed = true; } });
 try { localStorage.setItem('smcole_assets_cache', JSON.stringify(c)); } catch (e) {}
 if (changed && window.applySiteSettings) window.applySiteSettings();
 } catch (e) {}
@@ -4721,6 +4731,8 @@ window.__currentDepositMethod = method;
 
 function routeToPage(routeName) {
 document.body.setAttribute('data-route', routeName);
+// 🖼️ QR باينانس بيتحمّل أول ما العميل يفتح صفحة باينانس بس
+if (routeName === 'deposit-binance' && window.__loadSiteAssets) window.__loadSiteAssets(window.__assetKeysFor(routeName));
 // آخر صفحة في التاب ده (الرئيسية مالهاش # في الرابط — فبنفتكرها هنا عشان الريفريش يفضّلك عليها)
 try { sessionStorage.setItem('smcole_route', routeName); } catch (e) {}
 if (window.__btUpdate) setTimeout(window.__btUpdate, 60);

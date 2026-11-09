@@ -3492,7 +3492,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <div class="deposit-steps">
 <div class="step-item"><span class="step-num">1</span><span class="step-text">اكتب المبلغ اللي عايز تشحنه تحت</span></div>
-<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع الآن</b> — هيظهر نموذج الدفع الآمن من كاشير</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع الآن</b> — هيتم تحويلك لصفحة الدفع الآمنة من كاشير</span></div>
 <div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب بيانات الكارت وأكد بكود البنك (OTP)</span></div>
 <div class="step-item"><span class="step-num">4</span><span class="step-text">أول ما الدفع يتم — الرصيد يتضاف تلقائياً ⚡</span></div>
 </div>
@@ -3501,9 +3501,9 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="deposit-form kpay-page-form">
 <h3><i class="fas fa-lock"></i> شحن الرصيد بالكارت</h3>
 <label for="kpayAmount">المبلغ (بالجنيه المصري)</label>
-<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="1000" step="1" placeholder="أقل مبلغ 1000"><span>جنيه</span></div>
-<div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>1,000 جنيه</b></div>
-<div class="kpay-chips"><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="3000">3000</button><button type="button" data-amt="5000">5000</button></div>
+<div class="kpay-amount"><input type="number" id="kpayAmount" inputmode="decimal" min="500" max="1000" step="1" placeholder="أقل مبلغ 500"><span>جنيه</span></div>
+<div class="kpay-min" id="kpayMinNote">أقل مبلغ للشحن بالكارت <b>500 جنيه</b> — وأقصى مبلغ في المرة <b>1,000 جنيه</b></div>
+<div class="kpay-chips"><button type="button" data-amt="500">500</button><button type="button" data-amt="700">700</button><button type="button" data-amt="800">800</button><button type="button" data-amt="1000">1000</button></div>
 <div class="kpay-fee" id="kpayFeeBox" style="display:none;"></div>
 <button type="button" class="deposit-submit-btn" id="kpayGo"><i class="fas fa-lock"></i> <span>ادفع الآن</span></button>
 <div class="kpay-secure"><i class="fas fa-shield-halved"></i> دفع مشفّر وآمن عن طريق Kashier — بيانات الكارت مش بتوصلنا</div>
@@ -8490,7 +8490,7 @@ const card = document.getElementById('kashierCard'), modal = document.getElement
 if (!card || !modal) return;
 document.body.appendChild(modal); // فوق كل الصفحات
 const $ = (id) => document.getElementById(id);
-let kcfg = { enabled: false, min: 1000, max: 50000 };
+let kcfg = { enabled: false, min: 500, max: 1000 };
 const invoke = async (body) => {
 const r = await sb.functions.invoke('smm-api', { body });
 let d = r.data;
@@ -8513,10 +8513,11 @@ if (d && d.enabled) {
 try { localStorage.setItem('smcole_kashier', JSON.stringify({ enabled: true, min: d.min, max: d.max })); } catch (e) {}
 kcfg = d; window.__kashierEnabled = true; if (window.applyPaymentMethods) window.applyPaymentMethods(); else card.style.display = '';
 $('kpayAmount').min = d.min; $('kpayAmount').placeholder = 'أقل مبلغ ' + d.min;
-$('kpayMinNote').innerHTML = 'أقل مبلغ للشحن بالكارت <b>' + Number(d.min).toLocaleString('en-US') + ' جنيه</b>';
+$('kpayMinNote').innerHTML = 'أقل مبلغ للشحن بالكارت <b>' + Number(d.min).toLocaleString('en-US') + ' جنيه</b>' + (d.max > 0 ? ' — وأقصى مبلغ في المرة <b>' + Number(d.max).toLocaleString('en-US') + ' جنيه</b>' : '');
+$('kpayAmount').max = d.max || '';
 $('kpayMinNote').style.display = d.min > 0 ? '' : 'none'; // الحد الأدنى صفر → السطر ميظهرش
 // زراير المبالغ السريعة: اللي أقل من الحد الأدنى بتختفي
-document.querySelectorAll('#depositKashierView .kpay-chips [data-amt]').forEach(b => { b.style.display = Number(b.dataset.amt) < d.min ? 'none' : ''; });
+document.querySelectorAll('#depositKashierView .kpay-chips [data-amt]').forEach(b => { b.style.display = (Number(b.dataset.amt) < d.min || (d.max > 0 && Number(b.dataset.amt) > d.max)) ? 'none' : ''; });
 if (!(d.min > 0)) { $('kpayAmount').placeholder = 'اكتب المبلغ'; }
 }
 }).catch(() => {}), 400);
@@ -8605,8 +8606,8 @@ try {
 const d = await invoke({ action: 'kashier_init', amount, origin: location.origin });
 if (d && d.ok && d.url && /^https:\/\/([a-z0-9-]+\.)*kashier\.io\//i.test(d.url) && /^SMC\d+-[A-Z0-9a-f]+$/.test(String(d.ref || ''))) {
 try { sessionStorage.setItem('smcole_kpay', d.ref); } catch (e) {}
-openEmbed(d.url, d.ref);
-btn.disabled = false; btn.querySelector('span').textContent = 'ادفع الآن';
+btn.querySelector('span').textContent = 'جاري تحويلك لصفحة الدفع...';
+location.href = d.url; // صفحة الدفع الخارجية الخاصة بكاشير (زي الأول)
 return;
 }
 msg.textContent = (d && d.message) || 'تعذر فتح صفحة الدفع — حاول تاني';

@@ -3045,6 +3045,13 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
+<!-- 💳 فيزا / ماستركارد (رابط دفع يدوي من الدعم) -->
+<div class="payment-selector-card kashier-card" id="visaCard" data-pay="visa">
+<div class="psc-logo kashier"><i class="fas fa-credit-card"></i></div>
+<div class="psc-info"><h3>فيزا / ماستركارد</h3><p>اكتب المبلغ وهيوصلك رابط دفع آمن في رسائل الدعم</p><div class="kashier-badges"><span>فيزا</span><span>ماستركارد</span></div></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
 <!-- 🪙 العملات الرقمية عن طريق Cryptomus (بتظهر بس لما الأدمن يفتحها والمفاتيح موجودة) -->
 <div class="payment-selector-card" id="cmCard" data-pay="cryptomus" style="display:none;">
 <div class="psc-logo cm-logo"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6 54 18.5v27L32 58 10 45.5v-27z" fill="#fff"/><path d="M32 30.5 54 18.5M32 30.5v27.5M32 30.5 10 18.5" stroke="#0B0B0F" stroke-width="4.5" stroke-linejoin="round" fill="none"/></svg></div>
@@ -3519,6 +3526,32 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 </div>
 
+<!-- 💳 فيزا / ماستركارد (رابط دفع يدوي) -->
+<div id="depositVisaView" style="display:none;">
+<div class="deposit-info">
+<div class="deposit-brand-header">
+<div class="deposit-brand-logo kashier-logo"><i class="fas fa-credit-card"></i></div>
+<div class="deposit-brand-title"><h2>فيزا / ماستركارد</h2><p>اكتب المبلغ وهيوصلك رابط دفع آمن في رسائل الدعم</p></div>
+</div>
+<div class="deposit-steps">
+<div class="step-item"><span class="step-num">1</span><span class="step-text">اكتب المبلغ اللي عايز تشحنه تحت (أقل مبلغ 500 جنيه)</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع</b> — طلبك هيوصل للدعم الفني على طول</span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">هيوصلك <b>رابط الدفع بالكارت</b> في رسائل الدعم</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">أول ما تدفع وتتأكد العملية — الرصيد يتضاف لحسابك</span></div>
+</div>
+</div>
+<div class="profile-msg dep-msg-slot err" id="visaMsg"></div>
+<div class="deposit-form kpay-page-form">
+<h3><i class="fas fa-credit-card"></i> شحن الرصيد بالفيزا / ماستركارد</h3>
+<label for="visaAmount">المبلغ (بالجنيه المصري)</label>
+<div class="kpay-amount"><input type="number" id="visaAmount" inputmode="decimal" min="500" step="1" placeholder="أقل مبلغ 500"><span>جنيه</span></div>
+<div class="kpay-min">أقل مبلغ للشحن <b>500 جنيه</b></div>
+<div class="kpay-chips" id="visaChips"><button type="button" data-amt="500">500</button><button type="button" data-amt="1000">1000</button><button type="button" data-amt="2000">2000</button><button type="button" data-amt="5000">5000</button></div>
+<button type="button" class="deposit-submit-btn" id="visaGo"><i class="fas fa-paper-plane"></i> <span>ادفع</span></button>
+<div class="kpay-secure"><i class="fas fa-headset"></i> رابط الدفع هيوصلك في رسائل الدعم — والرصيد بيتضاف بعد تأكيد الدفع</div>
+</div>
+</div>
+
 <!-- 🪙 العملات الرقمية (Cryptomus) -->
 <div id="depositCryptomusView" style="display:none;">
 <div class="deposit-info">
@@ -3959,7 +3992,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '2', ADMIN_BUNDLE_SHA = 'a25154a10ceee9fa6538fd49a2caef5955082c103d7e899040fb758631823ef5';
+const ADMIN_BUNDLE_V = '3', ADMIN_BUNDLE_SHA = '2ca817ea998a9110e9d799f385ffb5564465f9c5468aa31e374bccdb38ed3215';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -4506,6 +4539,8 @@ document.querySelectorAll('.payment-selector-card[data-method]').forEach(c => { 
 const k = document.getElementById('kashierCard');
 if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' : 'none';
 // 🪙 Cryptomus: مقفولة افتراضياً — بتظهر بس لما الأدمن يفتحها والسيرفر يأكد إن المفاتيح موجودة
+const vsc = document.getElementById('visaCard');
+if (vsc) vsc.style.display = pm.visa === false ? 'none' : '';
 const cmc = document.getElementById('cmCard');
 if (cmc) cmc.style.display = (pm.cryptomus === true && window.__cryptomusEnabled) ? '' : 'none';
 // ⚡ فودافون كاش تلقائي: مقفول افتراضياً — بيظهر بس لما الأدمن يفتحه
@@ -4638,7 +4673,7 @@ window.__routeChain = function (r) {
 if (r === 'home') return ['home'];
 if (r === 'services') return ['home', 'services'];
 if (r === 'admin-panel') return ['home', 'admin-panel'];
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus)$/.test(r)) return ['home', 'services', 'payment', r];
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(r)) return ['home', 'services', 'payment', r];
 if (/^(terms|affiliate|payment|favorites|support|profile|orders)$/.test(r)) return ['home', 'services', r];
 return null;
 };
@@ -4714,6 +4749,8 @@ const ipView = document.getElementById('depositIpautoView');
 if (ipView) ipView.style.display = method === 'ipauto' ? 'block' : 'none';
 const kView = document.getElementById('depositKashierView');
 if (kView) kView.style.display = method === 'kashier' ? 'block' : 'none';
+const vsView = document.getElementById('depositVisaView');
+if (vsView) vsView.style.display = method === 'visa' ? 'block' : 'none';
 const cmView = document.getElementById('depositCryptomusView');
 if (cmView) cmView.style.display = method === 'cryptomus' ? 'block' : 'none';
 if (vView) vView.style.display = 'none';
@@ -4765,6 +4802,7 @@ else if (routeName === 'deposit-usdt' && window.__loggedIn()) { setPageVisibilit
 else if (routeName === 'deposit-instapay' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('instapay'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-kashier' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('kashier'); }
 else if (routeName === 'deposit-cryptomus' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('cryptomus'); }
+else if (routeName === 'deposit-visa' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('visa'); }
 else if (routeName === 'deposit-vfauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('vfauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-ipauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('ipauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-redot' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('redot'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
@@ -5171,6 +5209,15 @@ input.dispatchEvent(new Event('input', { bubbles: true }));
 });
 calcDiv.insertBefore(cLabel, urlLabel);
 calcDiv.insertBefore(cArea, urlLabel);
+}
+// 💬 إعجابات تعليقات تيك توك: خانة اسم صاحب التعليق (المزود محتاجها مع رابط الفيديو) — نفس شرط السيرفر
+if (String(service.apiType || '').toLowerCase() !== 'custom comments' && /(إعجاب|اعجاب|لايك|like)/i.test(service.name || '') && /(تعليق|comment)/i.test(service.name || '') && /(تيك|tik\s*tok)/i.test(service.name || '')) {
+const uLabel = document.createElement('span'); uLabel.className = 'quantity-label'; uLabel.style.marginTop = '8px';
+uLabel.innerHTML = '<i class="fas fa-user"></i> اسم صاحب التعليق (اليوزر)';
+const uInput = document.createElement('input'); uInput.type = 'text'; uInput.className = 'url-input comment-user-input'; uInput.dir = 'ltr';
+uInput.placeholder = 'مثال: username'; uInput.autocomplete = 'off'; uInput.spellcheck = false;
+calcDiv.insertBefore(uLabel, totalRow);
+calcDiv.insertBefore(uInput, totalRow);
 }
 function updateTotal() {
 let raw = input.value.trim();
@@ -5764,7 +5811,8 @@ admin_manual: 'الإدارة',
 order_refund: 'استرجاع طلب',
 vfcash_auto: 'فودافون كاش (تلقائي)',
 instapay_auto: 'إنستاباي (تلقائي)',
-cryptomus: 'العملات الرقمية (تلقائي)'
+cryptomus: 'العملات الرقمية (تلقائي)',
+visa: 'فيزا / ماستركارد'
 };
 
 function userToast(msg, type) {
@@ -6184,7 +6232,7 @@ hideAuthModal();
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'profile') { setTimeout(() => openProfilePage(), 150); return; }
 if (hash === 'orders') { setTimeout(() => openMyOrdersPage(), 150); return; }
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus)$/.test(hash)) {
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(hash)) {
 setTimeout(() => { window.__navigateTo(hash, document.getElementById('depositPage'), true); }, 150);
 return;
 }
@@ -8146,11 +8194,18 @@ const dbId = card.getAttribute('data-db-id');
 const isApiSvc = card.getAttribute('data-api') === '1';
 if (dbId) {
 const commentsEl = card.querySelector('.comments-input');
+const cUserEl = card.querySelector('.comment-user-input');
+if (cUserEl && !/^@?[A-Za-z0-9._]{2,60}$/.test(cUserEl.value.trim())) {
+buyBtn.innerHTML = oldHTML; buyBtn.disabled = false; buyBtn.dataset.processing = '0';
+userToast('⚠️ اكتب اسم المستخدم (اليوزر) بتاع صاحب التعليق اللي عايز تزوّدله اللايكات', 'err');
+cUserEl.focus(); return;
+}
 let serverRes = null, fnMissing = false;
 try {
 const { data, error } = await sb.functions.invoke('smm-api', { body: {
 action: 'order', service_id: dbId, service_number: serviceNumber, link: link, quantity: quantity,
-comments: commentsEl ? commentsEl.value : undefined
+comments: commentsEl ? commentsEl.value : undefined,
+comment_username: cUserEl ? cUserEl.value.trim().replace(/^@+/, '') : undefined
 } });
 if (error) {
 // رسالة الخطأ الحقيقية من السيرفر
@@ -8228,7 +8283,7 @@ if (window.__routeRestored) return;
 const fallback = mode === true;
 const h = window.__initialHash || '';
 const nav = (r, id) => window.__navigateTo(r, document.getElementById(id), false);
-const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus)$/.test(h);
+const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(h);
 const USER_PAGES = { 'admin-panel': null, affiliate: 'affiliatePage', support: 'supportPage', profile: 'profilePage', orders: 'myOrdersPage' };
 const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, h);
 const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
@@ -8808,6 +8863,48 @@ state('⚠️', 'محتاجين نراجع العملية', 'تواصل مع ا�
 state('⏳', 'الدفع لسه بيتأكد', 'التحويلات الرقمية بتاخد شوية دقايق لحد ما الشبكة تأكدها — أول ما تتأكد الرصيد هيتضاف لحسابك تلقائياً. مش محتاج تعمل حاجة.');
 }
 })();
+})();
+
+// ===================== 💳 فيزا / ماستركارد (رابط دفع يدوي من الدعم) =====================
+// العميل بيكتب المبلغ → السيرفر بيسجل طلب إيداع "قيد المراجعة" ويبعت رسالة في شات الدعم + التليجرام
+// الرصيد مبيتضافش غير لما الأدمن يأكد الدفع من التليجرام أو لوحة الأدمن
+(function visaUI() {
+const $ = (id) => document.getElementById(id);
+const card = $('visaCard');
+if (!card || !$('visaGo')) return;
+card.addEventListener('click', async () => {
+if (!window.currentProfile && !(await window.__needProfile())) return;
+$('visaMsg').textContent = '';
+window.__navigateTo('deposit-visa', document.getElementById('depositPage'), true);
+});
+document.querySelectorAll('#visaChips [data-amt]').forEach(b => b.addEventListener('click', () => { $('visaAmount').value = b.dataset.amt; }));
+$('visaGo').addEventListener('click', async () => {
+const btn = $('visaGo'), msg = $('visaMsg');
+const amount = Math.round(parseFloat($('visaAmount').value) * 100) / 100;
+msg.className = 'profile-msg dep-msg-slot err';
+if (!(amount > 0)) { msg.textContent = 'اكتب المبلغ اللي عايز تشحنه'; return; }
+if (amount < 500) { msg.textContent = 'أقل مبلغ للشحن بالفيزا 500 جنيه'; return; }
+if (btn.disabled) return;
+btn.disabled = true; btn.querySelector('span').textContent = 'جاري الإرسال...'; msg.textContent = '';
+let d = null;
+try {
+const r = await getSupabase().functions.invoke('support-chat', { body: { action: 'visa_request', amount } });
+d = r.data;
+if (r.error) { try { d = await r.error.context.json(); } catch (e) { d = null; } }
+} catch (e) { d = null; }
+btn.disabled = false; btn.querySelector('span').textContent = 'ادفع';
+if (d && d.ok) {
+$('visaAmount').value = '';
+msg.className = 'profile-msg dep-msg-slot';
+msg.innerHTML = '<div class="bn-ok"><i class="fas fa-circle-check"></i><div><b>✅ تم إرسال طلبك للدعم الفني</b><span>رابط الدفع بالكارت هيوصلك في رسائل الدعم خلال دقايق — وأول ما تدفع الرصيد هيتضاف لحسابك</span><span><a href="#" id="visaOpenSupport">افتح رسائل الدعم</a></span></div></div>';
+const a = $('visaOpenSupport');
+if (a) a.addEventListener('click', (e) => { e.preventDefault(); window.__navigateTo('support', document.getElementById('supportPage'), true); });
+userToast('✅ تم إرسال طلبك — رابط الدفع هيوصلك في رسائل الدعم', 'ok');
+if (window.loadUserTransactions) window.loadUserTransactions();
+} else {
+msg.textContent = (d && d.message) || 'تعذر إرسال الطلب — حاول تاني';
+}
+});
 })();
 
 // ===================== 🔌 مفتاح الـ API (صفحة حسابي) =====================

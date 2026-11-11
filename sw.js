@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'smcole-v83'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+﻿const CACHE_NAME = 'smcole-v84'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
@@ -13,7 +13,8 @@ self.addEventListener('install', event => {
   self.skipWaiting(); // إجبار التحديث الجديد على العمل فوراً
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+      // نسخة جديدة من السيرفر نفسه (مش من كاش المتصفح) عشان الإصدار الجديد يتحفظ صح
+      .then(cache => cache.addAll(urlsToCache.map(u => new Request(u, { cache: 'reload' }))))
       .catch(() => {})
   );
 });
@@ -50,6 +51,24 @@ self.addEventListener('fetch', event => {
         return response;
       })))
     );
+    return;
+  }
+  // ⚡ الصفحة الرئيسية (الموقع والأبلكيشن): بتفتح على طول من النسخة المحفوظة على الجهاز — حتى لو النت بطيء
+  //    وفي نفس الوقت بنجيب النسخة الجديدة من النت في الخلفية ونحفظها (بتظهر من الفتحة الجاية)
+  //    أول زيارة خالص (مفيش نسخة محفوظة) → من النت عادي
+  const path = new URL(req.url).pathname;
+  if (req.mode === 'navigate' && (path === '/' || path === '/index.html')) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const cached = await cache.match('/');
+      const fresh = fetch('/', { cache: 'no-cache', credentials: 'same-origin' }).then(response => {
+        if (response && response.status === 200 && response.type === 'basic') cache.put('/', response.clone());
+        return response;
+      }).catch(() => null);
+      if (cached) { event.waitUntil(fresh); return cached; }
+      const net = await fresh;
+      return net || (await caches.match('/index.html')) || fetch(req);
+    })());
     return;
   }
   event.respondWith(

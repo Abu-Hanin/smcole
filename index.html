@@ -107,10 +107,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
 <!-- 🌍 المكتبات من على الموقع نفسه (عشان يشتغل في كل الدول حتى لو مواقع الـ CDN محجوبة) + احتياطي من الـ CDN -->
-<script src="/lib-three.min.js"></script>
-<script>window.THREE || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');</script>
-<script src="/lib-CSS3DRenderer.js"></script>
-<script>(window.THREE && window.THREE.CSS3DRenderer) || document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"><\/script>');</script>
+<!-- ⚡ مكتبة الـ 3D بتتحمّل في الخلفية من غير ما توقف ظهور الصفحة — والتأثيرات بتشتغل أول ما تخلص -->
+<script>
+window.__threeReady = new Promise(function (done) {
+function load(src, cb) { var s = document.createElement('script'); s.src = src; s.async = false; s.onload = function () { cb(true); }; s.onerror = function () { cb(false); }; document.head.appendChild(s); }
+function three(cb) { load('/lib-three.min.js', function (ok) { if (ok && window.THREE) return cb(); load('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', function () { cb(); }); }); }
+function css3d(cb) { if (!window.THREE) return cb(); load('/lib-CSS3DRenderer.js', function (ok) { if (ok && window.THREE.CSS3DRenderer) return cb(); load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js', function () { cb(); }); }); }
+three(function () { css3d(function () { done(); }); });
+});
+</script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 body { background-color: #07040F; font-family: 'Cairo', sans-serif; color: #EAECEF; line-height: 1.5; overflow-x: hidden; position: relative; }
@@ -8978,7 +8983,7 @@ refreshUserUI();
      وبتتنقل بالسحب / الأسهم / النقط — ونظام الشراء زي ما هو
      ============================================================ -->
 <script>
-(function () {
+window.__threeReady.then(function () {
 'use strict';
 const FORM_SEL = 'input, textarea, select, button, a, label';
 let all = [];
@@ -9241,14 +9246,14 @@ all.forEach(cf => { if (resetPos) cf.target = 0; cf.w = 0; cf.layout(true); });
 window.addEventListener('resize', () => { clearTimeout(window.__cfRT); window.__cfRT = setTimeout(() => window.__cfRefreshAll(), 150); });
 // لو الأقسام اتبنت قبل تحميل السكربت ده
 if (document.querySelector('#sectionsContainer .cards-slider')) window.__initCoverflows();
-})();
+});
 </script>
 
 <!-- ============================================================
      الصفحة الرئيسية: Three.js (هيرو + بطاقات 3D + تايم لاين 3D)
      ============================================================ -->
 <script>
-(function () {
+window.__threeReady.then(function () {
 'use strict';
 const isMobile = window.matchMedia('(max-width: 760px)').matches;
 const reduceMotion = false; // البطايق بتلف لوحدها على كل الأجهزة
@@ -9931,7 +9936,7 @@ s.renderer.render(s.scene, s.camera);
 }
 }
 requestAnimationFrame(loop);
-})();
+});
 </script>
 </body>
 </html>

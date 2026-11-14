@@ -312,6 +312,16 @@ button { background: none; border: none; font-family: inherit; cursor: pointer; 
 .admin-platform-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 0.9rem 0.8rem 1rem; margin-bottom: 1.2rem; background: #120C22; border-radius: 20px; border: 1px solid rgba(168, 85, 247,0.2); scrollbar-width: thin; }
 .admin-platform-tabs::-webkit-scrollbar { height: 5px; }
 .admin-platform-tabs::-webkit-scrollbar-thumb { background: #A855F7; border-radius: 10px; }
+.platform-tab.motion-tab { border-color: rgba(236,72,153,.5); background: linear-gradient(135deg, rgba(124,58,237,.18), rgba(236,72,153,.14)); }
+.platform-tab.motion-tab.active { background: linear-gradient(135deg, #7C3AED, #EC4899); color: #fff; } .platform-tab.motion-tab.active i { color: #fff; }
+.motion-admin-panel { margin: 0 0 14px; padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(236,72,153,.08)); border: 1px solid rgba(236,72,153,.35); }
+.motion-admin-panel .map-row + .map-row { margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,.1); }
+.motion-admin-panel label { display: block; color: #F3E8FF; font-weight: 700; font-size: .85rem; margin-bottom: 8px; }
+.motion-admin-panel label i { color: #FF4D4D; }
+.motion-admin-panel .map-inline { display: flex; gap: 8px; flex-wrap: wrap; }
+.motion-admin-panel .map-inline input { flex: 1 1 260px; min-width: 0; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(168,85,247,.35); background: #07040F; color: #fff; font-family: inherit; }
+.motion-admin-panel .map-pk { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; color: #D8CCF5; font-size: .82rem; }
+.ord-age { margin-top: 3px; color: #C4B5FD; font-weight: 700; font-size: .66rem; white-space: nowrap; }
 .platform-tab { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0.7rem 1rem; background: #07040F; border: 1px solid rgba(168, 85, 247,0.25); border-radius: 16px; cursor: pointer; transition: 0.2s; min-width: 82px; color: #EAECEF; font-family: 'Cairo', sans-serif; }
 .platform-tab:hover { border-color: #A855F7; transform: translateY(-2px); }
 .platform-tab.active { background: linear-gradient(135deg, #7C3AED, #6D28D9); border-color: #7C3AED; color: #07040F; font-weight: 700; box-shadow: 0 6px 14px rgba(124, 58, 237,0.3); }
@@ -1999,13 +2009,23 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 /* ================= 🎬 صفحة الموشن جرافيك ================= */
 #motionPage { padding: 1.2rem 1rem 6rem; }
 .mg-wrap { max-width: 1100px; margin: 0 auto; }
-.mg-hero { position: relative; display: grid; grid-template-columns: 1.25fr 1fr; gap: 2rem; align-items: center; padding: 2.2rem 1.6rem; border-radius: 28px; overflow: hidden; background: radial-gradient(120% 140% at 100% 0%, rgba(168,85,247,.28), transparent 55%), radial-gradient(120% 140% at 0% 100%, rgba(236,72,153,.18), transparent 55%), #0E0820; border: 1px solid rgba(168,85,247,.28); box-shadow: 0 30px 80px rgba(124,58,237,.18); }
+.mg-hero { position: relative; display: grid; grid-template-columns: 1.15fr 1fr; gap: 2.4rem; align-items: center; padding: 3rem 2.2rem; border-radius: 32px; overflow: hidden; isolation: isolate;
+background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 34px 34px, linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 34px 34px, radial-gradient(80% 120% at 100% 0%, rgba(168,85,247,.32), transparent 60%), radial-gradient(70% 110% at 0% 100%, rgba(236,72,153,.22), transparent 60%), #0B0618;
+border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06); }
+.mg-hero::after { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, rgba(168,85,247,.7), transparent 40%, transparent 60%, rgba(236,72,153,.7)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: -1; }
+.mg-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-size: .78rem; font-weight: 800; color: #F5D0FE; background: rgba(236,72,153,.12); border: 1px solid rgba(236,72,153,.35); }
+.mg-eyebrow i { color: #F472B6; }
+.mg-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 1.4rem 0 1.1rem; }
+.mg-from { color: #D8CCF5; font-size: .9rem; font-weight: 700; } .mg-from b { color: #fff; font-size: 1.25rem; font-weight: 900; }
+.mg-trust { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.mg-trust span { display: inline-flex; align-items: center; gap: 7px; color: #CBC3E3; font-size: .82rem; font-weight: 700; }
+.mg-trust i { width: 24px; height: 24px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: .72rem; color: #fff; background: linear-gradient(135deg,#7C3AED,#EC4899); }
 .mg-orb { position: absolute; border-radius: 50%; filter: blur(50px); opacity: .55; pointer-events: none; }
 .mg-orb.a { width: 260px; height: 260px; background: #7C3AED; top: -90px; left: -60px; animation: mgOrb 9s ease-in-out infinite; }
 .mg-orb.b { width: 220px; height: 220px; background: #EC4899; bottom: -100px; right: 30%; animation: mgOrb 11s ease-in-out infinite reverse; }
 @keyframes mgOrb { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px,25px); } }
 .mg-hero-txt { position: relative; z-index: 1; }
-.mg-hero-txt h1 { font-size: clamp(1.7rem, 4.2vw, 2.8rem); font-weight: 900; line-height: 1.25; margin: .6rem 0 .8rem; color: #fff; }
+.mg-hero-txt h1 { font-size: clamp(1.65rem, 3.8vw, 2.6rem); font-weight: 900; line-height: 1.35; margin: .9rem 0 .8rem; color: #fff; letter-spacing: -.3px; }
 .mg-hero-txt p { color: #CBC3E3; font-size: 1rem; line-height: 1.9; max-width: 560px; }
 .mg-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 1.1rem 0 1.4rem; }
 .mg-badges span { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: #F3E8FF; font-size: .8rem; font-weight: 700; }
@@ -2075,7 +2095,11 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 .mg-vid .pl { position: absolute; z-index: 1; top: 50%; left: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; background: var(--grad, linear-gradient(135deg,#7C3AED,#EC4899)); box-shadow: 0 0 0 8px rgba(255,255,255,.12), 0 10px 25px rgba(0,0,0,.4); }
 .mg-vid .tt { position: absolute; z-index: 1; bottom: 8px; right: 10px; left: 10px; color: #fff; font-size: .78rem; font-weight: 700; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .mg-vid-empty { grid-column: 1 / -1; text-align: center; color: #A89BC9; padding: 1.6rem; border: 1px dashed rgba(168,85,247,.3); border-radius: 16px; }
-.mg-offers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; max-width: 820px; margin: 0 auto; }
+.mg-offers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; max-width: 1040px; margin: 0 auto; align-items: stretch; }
+.mg-offer { display: flex; flex-direction: column; } .mg-offer ul { flex: 1; } .mg-offer.best { border-color: rgba(236,72,153,.7); box-shadow: 0 20px 50px rgba(236,72,153,.22); }
+.mg-included { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; max-width: 900px; margin: -.2rem auto 1.4rem; }
+.mg-included span { display: inline-flex; align-items: center; gap: 6px; color: #E9D5FF; font-size: .82rem; font-weight: 700; }
+.mg-included i { color: #4ADE80; }
 .mg-offer { position: relative; padding: 1.6rem 1.4rem; border-radius: 24px; background: linear-gradient(160deg, rgba(124,58,237,.18), rgba(18,12,34,.95) 55%); border: 1px solid rgba(168,85,247,.32); text-align: center; transition: transform .25s, box-shadow .25s, border-color .25s; }
 .mg-offer:hover { transform: translateY(-6px) rotateX(3deg); box-shadow: 0 24px 50px rgba(124,58,237,.3); border-color: rgba(236,72,153,.6); }
 .mg-offer.best::before { content: 'الأكثر طلباً'; position: absolute; top: 14px; left: 14px; padding: 4px 10px; border-radius: 999px; font-size: .7rem; font-weight: 800; color: #fff; background: linear-gradient(135deg,#EC4899,#F59E0B); }
@@ -2147,8 +2171,8 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 @keyframes mgHover { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes mgDot { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.75); opacity: .6; } }
 @media (max-width: 760px) {
-.mg-hero { grid-template-columns: 1fr; padding: 1.6rem 1.1rem; text-align: center; }
-.mg-hero-txt p { margin: 0 auto; } .mg-badges { justify-content: center; }
+.mg-hero { grid-template-columns: 1fr; padding: 1.8rem 1.1rem; text-align: center; gap: 1.2rem; }
+.mg-hero-txt p { margin: 0 auto; } .mg-badges, .mg-actions, .mg-trust { justify-content: center; }
 .mg-hero-art { min-height: 0; order: -1; padding: 10px 6px 18px; }
 .mg-screen { transform: none; }
 .mg-chip { font-size: .68rem; padding: 5px 9px; } .mg-chip.c2 { display: none; }
@@ -3489,7 +3513,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <h2>اختر <span class="grad">خدمتك</span> واطلب الآن</h2>
 <p>⭐ اختر الخدمات ذات الضمان — <b>ضمان 30 يوم</b> و <b>ضمان 365 يوم</b> <a href="#payment" class="sm-mini-btn sm-mini-pay" id="svcAddFundsBtn"><i class="fas fa-wallet"></i> اشحن رصيدك</a></p>
 </div>
-<div class="plat-pick-hint"><i class="fas fa-hand-pointer"></i> اختار المنصة اللي عايزها — اضغط على أي لوجو وهتظهرلك كل خدماتها</div>
+<div class="plat-pick-hint"><i class="fas fa-hand-point-down"></i> اختار المنصة اللي عايزها — اضغط على أي لوجو وهتظهرلك كل خدماتها <i class="fas fa-hand-point-down"></i></div>
 <div class="promo-section">
 <div class="platform-icons has-active">
 <div class="icon-circle active" data-target="facebook"><i class="fab fa-facebook-f"></i></div>
@@ -3517,11 +3541,14 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <section class="mg-hero">
 <div class="mg-orb a"></div><div class="mg-orb b"></div>
 <div class="mg-hero-txt">
-<span class="sec-kicker"><i class="fas fa-film"></i> خدمة جديدة</span>
-<h1>فيديوهات <span class="grad">موشن جرافيك</span> احترافية</h1>
-<p>لإعلانك، شركتك، صفحتك، أو أي محتوى عندك — اكتب فكرتك أو السكريبت بتاعك، واحنا نحوّلها لفيديو موشن جرافيك يشد الناس ويوصّل رسالتك.</p>
-<div class="mg-badges"><span><i class="fas fa-wand-magic-sparkles"></i> تصميم احترافي</span><span><i class="fas fa-pen-nib"></i> نكتبلك السكريبت لو مش معاك</span><span><i class="fas fa-bolt"></i> تسليم سريع</span></div>
+<span class="mg-eyebrow"><i class="fas fa-clapperboard"></i> خدمة جديدة · موشن جرافيك إعلاني</span>
+<h1>حوّل فكرتك لـ<span class="grad">إعلان موشن جرافيك</span> يشد جمهورك ويبيع</h1>
+<p>فيديوهات موشن جرافيك بأسلوب الإعلانات الاحترافية — لمشروعك، شركتك، صفحتك أو أي منتج. اكتب فكرتك أو السكريبت، واحنا نحوّلها لفيديو بحركة وانتقالات وألوان تخلي رسالتك توصل في ثواني.</p>
+<div class="mg-actions">
 <a href="#mgOffers" class="mg-cta" id="mgHeroCta"><i class="fas fa-play"></i> اطلب فيديوك دلوقتي</a>
+<span class="mg-from">يبدأ من <b id="mgFromPrice">500</b> جنيه بس</span>
+</div>
+<div class="mg-trust"><span><i class="fas fa-bolt"></i> تسليم سريع</span><span><i class="fas fa-pen-nib"></i> سكريبت تسويقي لو مش معاك</span><span><i class="fas fa-mobile-screen"></i> جاهز لكل منصات السوشيال</span></div>
 </div>
 <div class="mg-hero-art" aria-hidden="true">
 <div class="mg-screen">
@@ -3561,7 +3588,8 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </section>
 
 <section class="mg-sec" id="mgOffers">
-<div class="sec-head"><span class="sec-kicker"><i class="fas fa-tags"></i> العروض</span><h2>اختار <span class="grad">مدة الفيديو</span></h2></div>
+<div class="sec-head"><span class="sec-kicker"><i class="fas fa-tags"></i> العروض</span><h2>اختار <span class="grad">مدة الفيديو</span></h2><p>جودة إعلانات الشركات الكبيرة — بسعر رمزي يناسب أي مشروع</p></div>
+<div class="mg-included"><span><i class="fas fa-circle-check"></i> موشن جرافيك بأسلوب إعلاني احترافي</span><span><i class="fas fa-circle-check"></i> سكريبت تسويقي مقنع لو مش معاك</span><span><i class="fas fa-circle-check"></i> جودة عالية جاهزة للنشر</span><span><i class="fas fa-circle-check"></i> مناسب للإعلانات الممولة</span></div>
 <div class="mg-offers" id="mgOfferCards"><div class="mg-vid-empty"><i class="fas fa-spinner fa-spin"></i> جاري تحميل العروض...</div></div>
 </section>
 
@@ -4249,7 +4277,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '4', ADMIN_BUNDLE_SHA = '7ba85f81fe1885c7e9de50e089b1e34b0eee2ee31a72186ddd58ea43e5a55e17';
+const ADMIN_BUNDLE_V = '5', ADMIN_BUNDLE_SHA = 'b58bc0ec1426e9d1311cdc2576f5a02a1ac22b160063644bba2b2785e9f9bc97';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -9257,12 +9285,14 @@ let offers = null, videos = null, chosen = null, skipScript = false;
 fab.addEventListener('click', () => window.__navigateTo('motion', page, true));
 const egp = (n) => (Math.round(Number(n) * 100) / 100).toLocaleString('en-US') + ' جنيه';
 const offerPrice = (o) => (Number(o.price_per_thousand) || 0) / (Number(o.price_base) || 1);
-function descLines(d) { return String(d || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean).slice(0, 6); }
+function descLines(d) { return String(d || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean).slice(0, 8); }
 function renderOffers() {
 const box = $('mgOfferCards');
 if (!offers) return;
 if (!offers.length) { box.innerHTML = '<div class="mg-vid-empty"><i class="fas fa-clock"></i> العروض هتكون متاحة قريب</div>'; return; }
-box.innerHTML = offers.map((o, i) => '<div class="mg-offer' + (i === offers.length - 1 && offers.length > 1 ? ' best' : '') + '">' +
+const fromEl = $('mgFromPrice'); if (fromEl) fromEl.textContent = Math.round(Math.min.apply(null, offers.map(offerPrice))).toLocaleString('en-US');
+const bestIdx = offers.length >= 3 ? 1 : offers.length - 1; // الباقة اللي في النص = الأكثر طلباً
+box.innerHTML = offers.map((o, i) => '<div class="mg-offer' + (i === bestIdx && offers.length > 1 ? ' best' : '') + '">' +
 '<div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.2h18v8.3a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5z" fill="#fff"/><path d="M2.75 9.3 2.2 7.1a1.5 1.5 0 0 1 1.1-1.82L16.2 2.06a1.5 1.5 0 0 1 1.82 1.1l.55 2.2z" fill="#fff"/><path d="M5.6 4.6 8.3 7.9M9.4 3.65l2.7 3.3M13.2 2.7l2.7 3.3" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/><path d="M10.2 13.2v4.6l3.9-2.3z" fill="#EC4899"/></svg></div><h3>' + esc(o.name) + '</h3>' +
 '<div class="pr">' + egp(offerPrice(o)).replace(' جنيه', '') + ' <small>جنيه</small></div><div class="pr-sub">للفيديو الواحد</div>' +
 '<ul>' + descLines(o.description).map(l => '<li><i class="fas fa-circle-check"></i> ' + esc(l.replace(/^[^\p{L}\p{N}]+/u, '')) + '</li>').join('') + '</ul>' +

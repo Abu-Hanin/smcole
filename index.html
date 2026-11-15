@@ -4277,7 +4277,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '5', ADMIN_BUNDLE_SHA = 'b58bc0ec1426e9d1311cdc2576f5a02a1ac22b160063644bba2b2785e9f9bc97';
+const ADMIN_BUNDLE_V = '6', ADMIN_BUNDLE_SHA = '38d48a0fdfdf0a90cd63144e4f1b4d47532fe13d119deec4b36964204aa42705';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -4818,8 +4818,13 @@ if (window.applyPaymentMethods) window.applyPaymentMethods();
 // الحد الأدنى لكل وسيلة دفع (صفر = مفيش حد أدنى — أي مبلغ أكبر من صفر)
 window.pmMin = function (m, def) { const raw = ((window.siteSettings || {}).payment_min || {})[m]; if (raw === undefined || raw === null || raw === '') return def; const v = Number(raw); return isFinite(v) && v >= 0 ? v : def; };
 // 💳 إظهار/إخفاء وسائل الدفع حسب اختيار الأدمن
+// 🎬 صفحة الفيديو الإعلاني: الأدمن يقدر يقفلها ويخفي زرارها من الإعدادات
+window.__motionOff = function () { try { return ((window.siteSettings || siteSettings || {}).payment_methods || {}).motion === false; } catch (e) { return false; } };
 window.applyPaymentMethods = function () {
 const pm = siteSettings.payment_methods || {};
+const mgf = document.getElementById('mgFab');
+if (mgf) mgf.style.display = pm.motion === false ? 'none' : '';
+if (pm.motion === false && location.hash === '#motion' && window.routeToPage) window.routeToPage('motion');
 document.querySelectorAll('.payment-selector-card[data-method]').forEach(c => { c.style.display = pm[c.dataset.method] === false ? 'none' : ''; });
 const k = document.getElementById('kashierCard');
 if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' : 'none';
@@ -4959,7 +4964,7 @@ window.__routeChain = function (r) {
 if (r === 'home') return ['home'];
 if (r === 'services') return ['home', 'services'];
 if (r === 'admin-panel') return ['home', 'admin-panel'];
-if (r === 'motion') return ['home', 'motion'];
+if (r === 'motion') return ['home', 'services', 'motion'];
 if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(r)) return ['home', 'services', 'payment', r];
 if (/^(terms|affiliate|payment|favorites|support|profile|orders)$/.test(r)) return ['home', 'services', r];
 return null;
@@ -5071,6 +5076,7 @@ else if (routeName === 'services') { setPageVisibility(servicesPage); if (window
 else if (routeName === 'support' && window.__loggedIn()) { setPageVisibility(supportPage); if (window.__onSupportOpen) window.__onSupportOpen(); }
 else if (routeName === 'terms') setPageVisibility(termsPage);
 else if (routeName === 'affiliate') { setPageVisibility(affiliatePage); if (window.__onAffiliateOpen) window.__onAffiliateOpen(); }
+else if (routeName === 'motion' && window.__motionOff()) { setPageVisibility(servicesPage); try { sessionStorage.setItem('smcole_route', 'services'); history.replaceState({ __sm: true, route: 'services', d: 1 }, '', '#services'); } catch (e) {} } // الصفحة مقفولة من الأدمن → الخدمات
 else if (routeName === 'motion') { setPageVisibility(motionPage); if (window.__onMotionOpen) window.__onMotionOpen(); }
 else if (routeName === 'payment') {
 setPageVisibility(paymentPage);

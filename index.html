@@ -2161,6 +2161,107 @@ border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45)
 .mg-top-ic svg { width: 21px; height: 21px; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
 .mg-top-btn:hover .mg-top-ic svg { animation: mgClap .5s ease; }
 @keyframes mgClap { 0%,100% { transform: rotate(0); } 40% { transform: rotate(-8deg); } }
+/* ⭐ زرار آراء العملاء: نفس شكل زرار الفيديو الإعلاني بس على الشمال وبلون دهبي */
+.rv-top-btn { right: auto; left: 0; border-color: rgba(251,191,36,.5); background: linear-gradient(135deg, rgba(245,158,11,.18), rgba(124,58,237,.2)); box-shadow: 0 10px 28px rgba(245,158,11,.2), inset 0 1px 0 rgba(255,255,255,.12); animation-delay: -2s; }
+.rv-top-btn:hover { border-color: rgba(252,211,77,.9); box-shadow: 0 14px 36px rgba(245,158,11,.32), inset 0 1px 0 rgba(255,255,255,.18); }
+.rv-top-ic { background: linear-gradient(135deg, #F59E0B, #EC4899); box-shadow: 0 6px 16px rgba(245,158,11,.45); }
+.rv-top-btn > em { color: #1A1030; background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+.rv-top-btn:hover .mg-top-ic svg { animation: rvTwinkle .6s ease; }
+@keyframes rvTwinkle { 0%,100% { transform: scale(1) rotate(0); } 45% { transform: scale(1.15) rotate(12deg); } }
+@media (min-width: 1001px) { .rv-top-btn { right: auto; left: -60px; } }
+@media (min-width: 1200px) { .rv-top-btn { right: auto; left: -120px; } }
+@media (max-width: 1000px) { .rv-top-btn { right: auto; left: 0; } }
+/* ================= ⭐ صفحة آراء العملاء ================= */
+#reviewsPage { padding: 1.2rem 1rem 6rem; }
+.rv-wrap { max-width: 1100px; margin: 0 auto; }
+.rv-hero { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; padding: 2.6rem 2.2rem; border-radius: 32px; overflow: hidden; isolation: isolate;
+background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 34px 34px, linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 34px 34px, radial-gradient(80% 120% at 100% 0%, rgba(245,158,11,.22), transparent 60%), radial-gradient(70% 110% at 0% 100%, rgba(168,85,247,.3), transparent 60%), #0B0618;
+border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06); }
+.rv-hero-txt { position: relative; z-index: 1; }
+.rv-hero-txt h1 { font-size: clamp(1.55rem, 3.6vw, 2.4rem); font-weight: 900; line-height: 1.4; margin: .9rem 0 .7rem; color: #fff; }
+.rv-hero-txt p { color: #CBC3E3; line-height: 1.9; margin-bottom: 1.1rem; max-width: 560px; }
+.rv-hero-txt p b { color: #fff; }
+.rv-eyebrow { color: #FDE68A; background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.4); } .rv-eyebrow i { color: #FBBF24; }
+.rv-score { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; padding: 1.4rem; border-radius: 24px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); }
+.rv-score-big { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.rv-score-big > b { font-size: 3.4rem; font-weight: 900; line-height: 1; color: #fff; background: linear-gradient(135deg, #FDE68A, #F59E0B); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.rv-score-big small { color: #A59CC9; font-weight: 700; font-size: .85rem; }
+.rv-stars { display: inline-flex; gap: 2px; color: #FBBF24; font-size: .9rem; direction: ltr; }
+.rv-stars .off { color: rgba(255,255,255,.18); }
+.rv-stars.lg { font-size: 1.3rem; gap: 4px; filter: drop-shadow(0 2px 8px rgba(245,158,11,.35)); }
+.rv-bars { display: flex; flex-direction: column; gap: 7px; }
+.rv-bar { display: grid; grid-template-columns: 34px 1fr 30px; align-items: center; gap: 8px; font-size: .78rem; font-weight: 800; color: #D8CCF5; }
+.rv-bar i { color: #FBBF24; font-size: .7rem; margin-inline-start: 3px; }
+.rv-bar .tr { height: 8px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+.rv-bar .tr span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #F59E0B, #FBBF24); transition: width .8s ease; }
+.rv-bar em { font-style: normal; color: #A59CC9; text-align: left; }
+.rv-form-card { margin: 1.4rem 0 1.8rem; padding: 1.4rem; border-radius: 24px; background: linear-gradient(160deg, rgba(30,18,64,.7), rgba(11,6,25,.9)); border: 1px solid rgba(168,85,247,.25); box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+.rv-form-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+.rv-form-head h3 { color: #fff; font-size: 1.1rem; font-weight: 900; } .rv-form-head p { color: #A59CC9; font-size: .85rem; }
+.rv-form-ic { width: 44px; height: 44px; flex: 0 0 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(135deg, #F59E0B, #EC4899); box-shadow: 0 8px 20px rgba(245,158,11,.35); }
+.rv-guest { text-align: center; padding: .6rem 0; } .rv-guest p { color: #D8CCF5; font-weight: 700; margin-bottom: .8rem; }
+.rv-pick { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: .9rem; direction: ltr; justify-content: flex-end; }
+.rv-pick button { width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); color: rgba(255,255,255,.22); font-size: 1.35rem; cursor: pointer; transition: transform .15s, color .15s, background .15s; }
+.rv-pick button:hover { transform: translateY(-2px) scale(1.06); }
+.rv-pick button.on { color: #FBBF24; background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.45); text-shadow: 0 2px 10px rgba(245,158,11,.5); }
+.rv-pick em { font-style: normal; font-weight: 800; font-size: .85rem; color: #FDE68A; margin: 0 8px; direction: rtl; }
+.rv-ta { position: relative; }
+.rv-ta textarea { width: 100%; min-height: 96px; resize: vertical; padding: 12px 14px 26px; border-radius: 16px; border: 1px solid rgba(168,85,247,.3); background: rgba(7,4,15,.6); color: #fff; font-family: inherit; font-size: .95rem; line-height: 1.8; outline: none; transition: border-color .2s; }
+.rv-ta textarea:focus { border-color: #A855F7; }
+.rv-ta span { position: absolute; left: 12px; bottom: 8px; font-size: .7rem; color: #8E85B5; direction: ltr; }
+.rv-form-foot { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: .9rem; }
+.rv-msg { font-size: .88rem; font-weight: 700; color: #FCA5A5; margin: 0; } .rv-msg.ok { color: #86EFAC; }
+.rv-list-head h3 { color: #fff; font-size: 1.15rem; font-weight: 900; margin-bottom: .9rem; } .rv-list-head i { color: #C084FC; }
+.rv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.rv-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 1.15rem 1.2rem; border-radius: 22px; background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.09); box-shadow: 0 14px 34px rgba(0,0,0,.25); transition: transform .2s, border-color .2s; overflow: hidden; }
+.rv-card:hover { transform: translateY(-3px); border-color: rgba(245,158,11,.35); }
+.rv-card::after { content: '\201D'; position: absolute; left: 14px; top: -14px; font-size: 5rem; font-family: Georgia, serif; color: rgba(245,158,11,.1); pointer-events: none; }
+.rv-card-top { display: flex; align-items: center; gap: 10px; }
+.rv-av { width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.05rem; color: #fff; background: linear-gradient(135deg, var(--a1, #7C3AED), var(--a2, #EC4899)); box-shadow: 0 6px 14px rgba(0,0,0,.3); }
+.rv-who { display: flex; flex-direction: column; min-width: 0; }
+.rv-who b { color: #fff; font-size: .95rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rv-who small { display: inline-flex; align-items: center; gap: 5px; color: #86EFAC; font-size: .7rem; font-weight: 800; }
+.rv-when { margin-inline-start: auto; color: #8E85B5; font-size: .72rem; font-weight: 700; white-space: nowrap; }
+.rv-card p { color: #E4DDF8; line-height: 1.85; font-size: .92rem; word-break: break-word; }
+.rv-del { position: absolute; left: 10px; bottom: 10px; border: none; cursor: pointer; width: 28px; height: 28px; border-radius: 8px; color: #FCA5A5; background: rgba(239,68,68,.12); }
+.rv-empty { text-align: center; padding: 2rem 1rem; color: #A59CC9; } .rv-empty i { font-size: 2rem; color: #FBBF24; margin-bottom: .5rem; }
+.rv-home-more { display: flex; justify-content: center; margin-top: 1.2rem; }
+.rv-home-sum { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; color: #D8CCF5; font-weight: 800; margin-top: .4rem; }
+.rv-home-sum b { color: #FBBF24; font-size: 1.15rem; }
+/* زرار "اكتب رأيك" فوق + قايمة التقييمات تحت بعض (كروت صغيرة عشان تبان تقييمات كتير) */
+.rv-write { display: flex; align-items: center; gap: 12px; margin: 1.1rem 0; padding: .8rem 1rem; border-radius: 18px; background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(124,58,237,.14)); border: 1px solid rgba(245,158,11,.35); }
+.rv-write .rv-form-ic { width: 38px; height: 38px; flex-basis: 38px; border-radius: 12px; }
+.rv-write-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.rv-write-txt b { color: #fff; font-size: .95rem; font-weight: 900; }
+.rv-write-txt span { color: #CBC3E3; font-size: .78rem; line-height: 1.6; }
+.rv-write .rv-write-btn { width: auto; flex: 0 0 auto; margin: 0; padding: 10px 18px; font-size: .9rem; border-radius: 13px; white-space: nowrap; }
+.rv-form-card { margin-top: 0; }
+/* رأس الصفحة الصغير: العنوان + التقييم العام + زرار اكتب تقييمك */
+.rv-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem; padding: 1rem 1.2rem; border-radius: 20px; background: linear-gradient(135deg, rgba(245,158,11,.1), rgba(124,58,237,.14)); border: 1px solid rgba(245,158,11,.3); }
+.rv-top-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rv-top h1 { margin: 0; font-size: 1.3rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 8px; }
+.rv-top h1 i { color: #FBBF24; }
+.rv-sum { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rv-sum b { font-size: 1.15rem; font-weight: 900; color: #FBBF24; }
+.rv-sum small { color: #A59CC9; font-size: .8rem; font-weight: 700; }
+.rv-top p { margin: 0; color: #CBC3E3; font-size: .82rem; }
+.rv-top .rv-write-btn { width: auto; flex: 0 0 auto; margin: 0; padding: 10px 18px; font-size: .9rem; border-radius: 13px; white-space: nowrap; }
+@media (max-width: 520px) { .rv-top .rv-write-btn { width: 100%; } }
+/* الكمبيوتر: كروت جنب بعض — الموبايل: تحت بعض وأصغر */
+.rv-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+@media (max-width: 700px) {
+.rv-list { display: flex; flex-direction: column; gap: 8px; }
+.rv-list .rv-card { gap: 5px; padding: .7rem .95rem; border-radius: 16px; box-shadow: none; }
+.rv-list .rv-card:hover { transform: none; }
+.rv-list .rv-card::after { display: none; }
+.rv-list .rv-av { width: 34px; height: 34px; flex-basis: 34px; font-size: .9rem; }
+.rv-list .rv-who b { font-size: .88rem; }
+.rv-list .rv-card p { font-size: .86rem; line-height: 1.7; }
+.rv-list .rv-stars { font-size: .78rem; }
+.rv-list .rv-del { left: 8px; bottom: 8px; width: 24px; height: 24px; font-size: .7rem; }
+}
+@media (max-width: 860px) { .rv-hero { grid-template-columns: 1fr; padding: 1.4rem 1.1rem; gap: 1rem; } .rv-hero-txt h1 { font-size: 1.4rem; } .rv-hero-txt p { font-size: .88rem; margin-bottom: .6rem; } .rv-score { padding: 1rem; gap: 10px; } .rv-score-big > b { font-size: 2.6rem; } .rv-form-card { padding: 1.1rem; } .rv-pick button { width: 40px; height: 40px; } }
+@media (max-width: 520px) { .rv-write { flex-wrap: wrap; } .rv-write .rv-write-btn { width: 100%; } }
 /* نجمة صغيرة بتلمع (إحساس الموشن) */
 .mg-spark { position: absolute; top: -5px; left: -5px; width: 12px; height: 12px; background: #FDE68A; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); animation: mgSpark 2.4s ease-in-out infinite; }
 @keyframes mgSpark { 0%,100% { transform: scale(.6) rotate(0); opacity: .5; } 50% { transform: scale(1.1) rotate(90deg); opacity: 1; } }
@@ -2953,6 +3054,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <a href="#" id="favoritesLink"><span class="dl-ico"><i class="fas fa-heart"></i></span><span class="dl-txt">المفضلة<small>خدماتك المحفوظة</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="affiliateLink" class="drawer-aff-link user-only"><span class="dl-ico"><i class="fas fa-handshake"></i></span><span class="dl-txt">التسويق بالعمولة<small>اربح 10% من كل إيداع</small></span><b class="dl-new">جديد</b><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="#" id="apiMenuLink"><span class="dl-ico"><i class="fas fa-plug"></i></span><span class="dl-txt">الـ API — اربط خدماتنا بموقعك<small>مفتاح الـ API والربط بلوحتك</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
+<a href="#reviews" id="reviewsMenuLink"><span class="dl-ico"><i class="fas fa-star"></i></span><span class="dl-txt">آراء العملاء<small>تقييمات حقيقية من عملائنا</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <a href="/refund-policy.html" id="refundMenuLink"><span class="dl-ico"><i class="fas fa-shield-halved"></i></span><span class="dl-txt">سياسة استرجاع الأموال<small>اقرأها قبل أي إيداع</small></span><i class="fas fa-chevron-left dl-arrow"></i></a>
 <!-- الدعم الفني اتشال من القائمة (لسه متاح من زرار الدعم العائم) — العنصر موجود مخفي عشان الكود اللي مربوط بيه -->
 <a href="#" id="supportDropdownLink" style="display:none" aria-hidden="true" tabindex="-1"><span class="dl-ico"><i class="fas fa-headset"></i></span><span class="dl-txt">الدعم الفني<small>شات مباشر مع الإدارة</small></span><b class="dl-badge" id="drawerSupportBadge"></b><i class="fas fa-chevron-left dl-arrow"></i></a>
@@ -3172,7 +3274,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <h2>الخدمات</h2><ul><li>يجب استخدام الموقع وفقًا لشروط وأحكام منصات التواصل الاجتماعي.</li><li>نحتفظ بحق إلغاء أي طلب يخالف القوانين أو الآداب العامة.</li><li>لا نضمن تسليمًا فوريًا، وقد تتأخر بعض الطلبات بناءً على حجم الطلب أو ضغط التنفيذ أو ظروف خارجية.</li><li>لا نتحمّل أي مسؤولية عن المشاكل الناتجة عن تحديثات أو تغييرات منصات التواصل الاجتماعي.</li><li>الأسعار قابلة للتغيير في أي وقت دون إشعار مسبق.</li><li>نحتفظ بحق تعديل أو إيقاف أي خدمة أو بند في الشروط دون إشعار مسبق.</li><li>يُمنع إساءة استخدام الموقع، وسنتخذ الإجراءات المناسبة ضد أي مخالفة.</li><li>في حال إنشاء طلبات متعددة لنفس الرابط، تتحمل أنت المسؤولية الكاملة عن أي مشكلة قد تنتج.</li><li>نحن غير مسؤولين عن أي خسائر أو أضرار ناتجة عن تأخير في تنفيذ الطلبات.</li><li>لن يتم إعادة تعبئة الطلب إذا كان رقم البداية غير مطابق عند بدء التنفيذ.</li><li>يتحمّل العميل مسؤولية التأكد من صحة الرابط أو اسم المستخدم قبل إرسال الطلب.</li></ul>
 <h2>آلية الطلب والدفع</h2><ul><li>يعتمد موقع <span data-site-name>SMCOLE</span> على نظام عرض الخدمات وإنشاء الطلبات بشكل مباشر عبر الموقع، ثم التواصل مع مسؤول الطلبات أو فريق المبيعات عبر واتساب لإتمام عملية الدفع وتأكيد الطلب.</li><li>يبدأ تنفيذ الطلب فقط بعد تأكيد عملية الدفع بشكل كامل.</li><li>بمجرد تأكيد الدفع وبدء تجهيز الطلب، لا يمكن إلغاء الطلب أو تعديل البيانات الخاصة به.</li><li>يتحمّل العميل مسؤولية أي خطأ في البيانات أو الروابط التي تم إرسالها أثناء إنشاء الطلب.</li></ul>
 <h2>التزامات المستخدم</h2><ul><li>يجب استخدام الموقع فقط للأغراض المخصصة له، وعدم استغلاله في أي أنشطة غير مشروعة أو مخالفة للقوانين.</li><li>يُمنع استخدام الموقع للإضرار بالغير أو انتهاك سياسات منصات التواصل الاجتماعي.</li><li>يتحمّل المستخدم المسؤولية الكاملة عن جميع الطلبات والروابط والبيانات التي يقوم بإرسالها عبر الموقع.</li></ul>
-<h2>سياسة الاسترجاع</h2><ul><li>جميع المدفوعات التي تتم بعد التواصل مع مسؤول الطلبات عبر واتساب تعتبر نهائية وغير قابلة للاسترداد.</li><li>بمجرد تأكيد الدفع وتحويل الطلب للتنفيذ، لا يمكن استرجاع المبلغ المدفوع لأي سبب.</li><li>في حال حدوث تأخير بسبب ضغط الطلبات أو تحديثات المنصات، سيتم متابعة الطلب حتى اكتماله دون استرداد مالي.</li><li>لا يتحمّل موقع <span data-site-name>SMCOLE</span> مسؤولية أي خسائر ناتجة عن الاستخدام الخاطئ للخدمات أو سوء إدخال البيانات.</li></ul>
+<h2>سياسة الاسترجاع</h2><ul><li><b>رصيدك محمي:</b> أي طلب بيتلغي أو ما بيتنفذش، المبلغ كله بيرجع لرصيدك في الموقع تلقائياً وفوراً — من غير ما تطلب أو تستنى.</li><li>لو الطلب اتنفذ جزء منه، قيمة الجزء اللي ما اتنفذش بترجع لرصيدك تلقائياً.</li><li>الرصيد المشحون بيفضل في حسابك تستخدمه في أي خدمة في أي وقت، لكنه مش بيتحوّل لفلوس كاش.</li><li>في حال حدوث تأخير بسبب ضغط الطلبات أو تحديثات المنصات، بنتابع الطلب لحد ما يكتمل.</li><li>لا يتحمّل موقع <span data-site-name>SMCOLE</span> مسؤولية أي خسائر ناتجة عن الاستخدام الخاطئ للخدمات أو سوء إدخال البيانات.</li></ul>
 <h2>النشاط الاحتيالي</h2><ul><li>نأخذ مكافحة الاحتيال على محمل الجد. سيتم رفض أي طلب أو حظر أي مستخدم يشتبه في استخدامه وسائل دفع احتيالية أو بيانات غير صحيحة دون إشعار مسبق.</li><li>كما نؤكد أننا غير مسؤولين عن أي عمليات دفع تتم من خلال وسائل أو أرقام لا تعود ملكيتها للعميل، وأي مسؤولية قانونية تقع على عاتق المستخدم بالكامل.</li></ul>
 <h2>خدمة العملاء</h2><ul><li>نؤمن بأهمية الاحترام المتبادل. أي إساءة أو تهديد لفريق الدعم أو مسؤولي الطلبات تُعد مخالفة صريحة قد تؤدي إلى منع المستخدم من الاستفادة من خدمات الموقع، مع احتفاظنا بحق اتخاذ الإجراءات المناسبة لحماية فريقنا.</li></ul>
 <h2>حقوق الملكية الفكرية</h2><ul><li>جميع الحقوق محفوظة لفريق <span data-site-name>SMCOLE</span>. يُمنع نسخ أو استخدام أي جزء من محتوى الموقع أو تطبيقاته لأي غرض دون موافقة خطية مسبقة منا.</li></ul>
@@ -3272,7 +3374,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <h2><i class="fas fa-shopping-cart"></i> طريقة الدفع</h2>
 <div class="step-list"><div class="step-card"><div class="step-number">1</div> اختر الوسيلة المناسبة</div><div class="step-card"><div class="step-number">2</div> حوّل المبلغ على الرقم/العنوان</div><div class="step-card"><div class="step-number">3</div> احتفظ بلقطة شاشة للتحويل</div><div class="step-card"><div class="step-number">4</div> املأ البيانات واضغط تأكيد</div><div class="step-card"><div class="step-number">5</div> سيتم مراجعة طلبك خلال 24 ساعة</div></div>
 <h2><i class="fas fa-info-circle"></i> ملاحظات مهمة</h2>
-<div class="note-box"><ul style="margin:0"><li>جميع المدفوعات تتم بشكل آمن.</li><li>يبدأ تنفيذ الطلب بعد تأكيد الدفع فقط.</li><li>يُرجى التأكد من صحة بيانات الطلب قبل الدفع.</li><li>جميع المدفوعات بعد التأكيد تعتبر نهائية وغير قابلة للاسترداد.</li></ul></div>
+<div class="note-box"><ul style="margin:0"><li>جميع المدفوعات تتم بشكل آمن.</li><li>يبدأ تنفيذ الطلب بعد تأكيد الدفع فقط.</li><li>يُرجى التأكد من صحة بيانات الطلب قبل الدفع.</li><li>الرصيد المشحون بيفضل في حسابك لأي خدمة (مش بيتحوّل لكاش)، وأي طلب بيتلغي بيرجع مبلغه لرصيدك تلقائياً.</li></ul></div>
 <!-- سجل كل الإيداعات (كل طرق الدفع في مكان واحد) — للعميل المسجل بس -->
 <div class="tx-log-section" id="payTxLog" style="display:none;">
 <h3><i class="fas fa-history"></i> سجل معاملات الإيداع</h3>
@@ -3448,6 +3550,17 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 </section>
 
+<!-- ⭐ أحدث 3 آراء عملاء حقيقية (بتظهر بس لما يكون فيه تقييمات) -->
+<section class="home-section rv-home" id="rvHome" hidden>
+<div class="sec-head">
+<span class="sec-kicker"><i class="fas fa-star"></i> آراء العملاء</span>
+<h2>عملاؤنا <span class="grad">بيقولوا</span> إيه؟</h2>
+<p class="rv-home-sum" id="rvHomeSum"></p>
+</div>
+<div class="rv-grid" id="rvHomeList"></div>
+<div class="rv-home-more"><button type="button" class="btn-ghost" id="rvHomeMore"><i class="fas fa-comments"></i> شوف كل التقييمات واكتب رأيك</button></div>
+</section>
+
 <!-- CTA -->
 <section class="home-cta">
 <div class="promo-text" id="promoTextDisplay">عايز تكبر على السوشيال ميديا وتوصل للشهرة؟<br>خدماتنا تساعدك على تحقيق نمو حقيقي وزيادة التفاعل بطريقة <span>احترافية وآمنة!</span></div>
@@ -3507,6 +3620,11 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <button type="button" class="mg-top-btn" id="mgFab" aria-label="فيديو إعلاني موشن جرافيك">
 <span class="mg-top-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.2h18v8.3a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5z" fill="#fff"/><path d="M2.75 9.3 2.2 7.1a1.5 1.5 0 0 1 1.1-1.82L16.2 2.06a1.5 1.5 0 0 1 1.82 1.1l.55 2.2z" fill="#fff"/><path d="M5.6 4.6 8.3 7.9M9.4 3.65l2.7 3.3M13.2 2.7l2.7 3.3" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/><path d="M10.2 13.2v4.6l3.9-2.3z" fill="#EC4899"/></svg><i class="mg-spark" aria-hidden="true"></i></span>
 <b>فيديو إعلاني</b><em>جديد</em>
+</button>
+<!-- ⭐ زرار آراء العملاء (على الشمال بنفس شكل زرار الفيديو الإعلاني) -->
+<button type="button" class="mg-top-btn rv-top-btn" id="rvFab" aria-label="آراء العملاء">
+<span class="mg-top-ic rv-top-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.84 5.76 6.36.92-4.6 4.48 1.09 6.33L12 17.1l-5.69 2.99 1.09-6.33-4.6-4.48 6.36-.92z" fill="#fff"/><path d="M9.3 11.9l1.9 1.9 3.6-3.7" fill="none" stroke="#D97706" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><i class="mg-spark" aria-hidden="true"></i></span>
+<b>آراء العملاء</b><em id="rvFabAvg" hidden></em>
 </button>
 <div class="svc-brand"><span class="page-brand" data-site-name data-text="SMCOLE">SMCOLE</span></div>
 <span class="sec-kicker svc-kicker"><i class="fas fa-rocket"></i> الخدمات</span>
@@ -3696,6 +3814,37 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="kpay-alt"><a href="#" id="kpayAltLink">فتح صفحة الدفع الآمنة في نافذة كاملة</a></div>
 </div>
 <div id="kpayState" class="kpay-state" style="display:none;"></div>
+</div>
+</div>
+
+<!-- ============ ⭐ REVIEWS PAGE (آراء العملاء) ============ -->
+<div id="reviewsPage" class="overlay-page">
+<div class="rv-wrap">
+<section class="rv-top">
+<div class="rv-top-txt">
+<h1><i class="fas fa-star"></i> آراء العملاء</h1>
+<div class="rv-sum"><b id="rvAvg">—</b><span class="rv-stars" id="rvAvgStars"></span><small id="rvCount"></small></div>
+<p id="rvWriteTitle">جربت خدماتنا؟ قولنا رأيك بصراحة 💜</p>
+</div>
+<button type="button" class="mg-submit rv-write-btn" id="rvWriteBtn"><i class="fas fa-pen"></i> <span>اكتب تقييمك</span></button>
+<div id="rvBars" hidden></div>
+</section>
+<section class="rv-form-card" id="rvFormCard" hidden>
+<div class="rv-form-head"><h3 id="rvFormTitle">قيّم تجربتك معانا</h3></div>
+<div id="rvFormBody">
+<div class="rv-pick" id="rvPick" role="radiogroup" aria-label="عدد النجوم">
+<button type="button" data-v="1" aria-label="نجمة واحدة"><i class="fas fa-star"></i></button><button type="button" data-v="2" aria-label="نجمتين"><i class="fas fa-star"></i></button><button type="button" data-v="3" aria-label="3 نجوم"><i class="fas fa-star"></i></button><button type="button" data-v="4" aria-label="4 نجوم"><i class="fas fa-star"></i></button><button type="button" data-v="5" aria-label="5 نجوم"><i class="fas fa-star"></i></button>
+<em id="rvPickLbl">اختار عدد النجوم</em>
+</div>
+<div class="rv-ta"><textarea id="rvText" maxlength="500" rows="3" placeholder="اكتب رأيك في الخدمة… السرعة، الجودة، الدعم الفني"></textarea><span id="rvLen">0 / 500</span></div>
+<div class="rv-form-foot"><button type="button" class="mg-submit" id="rvSend"><i class="fas fa-paper-plane"></i> <span>إرسال التقييم</span></button><p class="rv-msg" id="rvMsg"></p></div>
+</div>
+</section>
+
+<div class="rv-list-head"><h3><i class="fas fa-comments"></i> كل التقييمات</h3></div>
+<div class="rv-list" id="rvList"></div>
+<div class="rv-empty" id="rvEmpty" hidden><i class="far fa-star"></i><p>لسه مفيش تقييمات منشورة — كن أول واحد يقيّم تجربته</p></div>
+<div class="rv-home-more"><button type="button" class="btn-ghost" id="rvLoadMore" hidden><i class="fas fa-chevron-down"></i> عرض تقييمات أكتر</button></div>
 </div>
 </div>
 
@@ -4277,7 +4426,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '7', ADMIN_BUNDLE_SHA = '32be3ed140dd57d55542277fd4425922e66f15ce5e12480e414cf90cea0a6569';
+const ADMIN_BUNDLE_V = '8', ADMIN_BUNDLE_SHA = '756a8203352ae1f5f5f780a1079455d613e66badcdfaad392e005cab5248b921';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -4949,8 +5098,9 @@ const servicesPage = document.getElementById('servicesPage');
 const supportPage = document.getElementById('supportPage');
 const affiliatePage = document.getElementById('affiliatePage');
 const motionPage = document.getElementById('motionPage');
+const reviewsPage = document.getElementById('reviewsPage');
 const mainContent = document.getElementById('mainContent');
-const ALL_PAGES = () => [termsPage, paymentPage, favoritesPage, profilePage, depositPage, myOrdersPage, servicesPage, supportPage, affiliatePage, motionPage];
+const ALL_PAGES = () => [termsPage, paymentPage, favoritesPage, profilePage, depositPage, myOrdersPage, servicesPage, supportPage, affiliatePage, motionPage, reviewsPage];
 const termsLink = document.getElementById('termsLink');
 const supportDropdownLink = document.getElementById('supportDropdownLink');
 const paymentMethodBtn = document.getElementById('paymentMethodBtn');
@@ -4965,6 +5115,7 @@ if (r === 'home') return ['home'];
 if (r === 'services') return ['home', 'services'];
 if (r === 'admin-panel') return ['home', 'admin-panel'];
 if (r === 'motion') return ['home', 'services', 'motion'];
+if (r === 'reviews') return ['home', 'services', 'reviews'];
 if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(r)) return ['home', 'services', 'payment', r];
 if (/^(terms|affiliate|payment|favorites|support|profile|orders)$/.test(r)) return ['home', 'services', r];
 return null;
@@ -5078,6 +5229,7 @@ else if (routeName === 'terms') setPageVisibility(termsPage);
 else if (routeName === 'affiliate') { setPageVisibility(affiliatePage); if (window.__onAffiliateOpen) window.__onAffiliateOpen(); }
 else if (routeName === 'motion' && window.__motionOff()) { setPageVisibility(servicesPage); try { sessionStorage.setItem('smcole_route', 'services'); history.replaceState({ __sm: true, route: 'services', d: 1 }, '', '#services'); } catch (e) {} } // الصفحة مقفولة من الأدمن → الخدمات
 else if (routeName === 'motion') { setPageVisibility(motionPage); if (window.__onMotionOpen) window.__onMotionOpen(); }
+else if (routeName === 'reviews') { setPageVisibility(reviewsPage); if (window.__onReviewsOpen) window.__onReviewsOpen(); }
 else if (routeName === 'payment') {
 setPageVisibility(paymentPage);
 if (window.__refreshPaymentMethods) window.__refreshPaymentMethods();
@@ -8737,6 +8889,7 @@ else if (h === 'terms') nav('terms', 'termsPage');
 else if (h === 'payment') nav('payment', 'paymentPage');
 else if (h === 'favorites') nav('favorites', 'favoritesPage');
 else if (h === 'motion') nav('motion', 'motionPage');
+else if (h === 'reviews') nav('reviews', 'reviewsPage');
 } catch (e) { console.warn('restore route:', e); }
 document.body.classList.remove('route-restoring');
 return;
@@ -8760,6 +8913,7 @@ else if (h === 'payment') nav('payment', 'paymentPage');
 else if (h === 'favorites') nav('favorites', 'favoritesPage');
 else if (h === 'support' && ok) nav('support', 'supportPage');
 else if (h === 'motion') nav('motion', 'motionPage');
+else if (h === 'reviews') nav('reviews', 'reviewsPage');
 else if (h === 'profile' && ok) openProfilePage();
 else if (h === 'orders' && ok) openMyOrdersPage();
 else if (isDeposit && ok) nav(h, 'depositPage');
@@ -9277,6 +9431,189 @@ state('⚠️', 'محتاجين نراجع العملية', 'تواصل مع ا�
 state('⏳', 'الدفع لسه بيتأكد', 'التحويلات الرقمية بتاخد شوية دقايق لحد ما الشبكة تأكدها — أول ما تتأكد الرصيد هيتضاف لحسابك تلقائياً. مش محتاج تعمل حاجة.');
 }
 })();
+})();
+
+// ===================== ⭐ آراء العملاء (تقييمات حقيقية) =====================
+// القراءة: التقييمات اللي الأدمن وافق عليها بس — الكتابة: من السيرفر (support-chat) اللي بيبعتها للأدمن على التليجرام للموافقة
+// الاستهلاك: طلب صغير لأحدث 3 تقييمات + الإحصائيات (كام كيلوبايت) — ومحفوظين في المتصفح عشان الرئيسية تظهر على طول
+(function reviewsUI() {
+const $ = (id) => document.getElementById(id);
+const page = $('reviewsPage'), fab = $('rvFab');
+if (!page) return;
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const db = () => getSupabase();
+const COLS = 'id,display_name,rating,comment,created_at';
+const PAGE = 24;
+let list = [], loadedAll = false, stats = null, myRating = 0, busy = false;
+const AV = [['#7C3AED', '#EC4899'], ['#2563EB', '#7C3AED'], ['#059669', '#10B981'], ['#F59E0B', '#EC4899'], ['#DB2777', '#9333EA'], ['#0891B2', '#2563EB']];
+const LBL = ['', 'سيئة 😞', 'مقبولة 😐', 'كويسة 🙂', 'ممتازة 😃', 'رائعة جداً 🤩'];
+function stars(v, lg) {
+let h = '';
+for (let i = 1; i <= 5; i++) h += v >= i ? '<i class="fas fa-star"></i>' : v >= i - .5 ? '<i class="fas fa-star-half-stroke"></i>' : '<i class="fas fa-star off"></i>';
+return h;
+}
+function ago(ts) {
+const sec = Math.max(0, Math.floor((Date.now() - new Date(ts).getTime()) / 1000));
+const m = Math.floor(sec / 60);
+if (sec < 10) return 'منذ ثواني';
+if (sec < 60) return 'منذ ' + sec + ' ثانية';
+if (m < 60) return 'منذ ' + (m === 1 ? 'دقيقة' : m === 2 ? 'دقيقتين' : m + (m <= 10 ? ' دقايق' : ' دقيقة'));
+const h = Math.floor(m / 60); if (h < 24) return 'منذ ' + (h === 1 ? 'ساعة' : h === 2 ? 'ساعتين' : h + (h <= 10 ? ' ساعات' : ' ساعة'));
+const d = Math.floor(h / 24); if (d < 30) return 'منذ ' + (d === 1 ? 'يوم' : d === 2 ? 'يومين' : d + (d <= 10 ? ' أيام' : ' يوم'));
+const mo = Math.floor(d / 30.44); if (mo < 12) return 'منذ ' + (mo === 1 ? 'شهر' : mo === 2 ? 'شهرين' : mo + (mo <= 10 ? ' شهور' : ' شهر'));
+const y = Math.floor(mo / 12); return 'منذ ' + (y === 1 ? 'سنة' : y === 2 ? 'سنتين' : y + ' سنين');
+}
+function card(r) {
+const nm = String(r.display_name || 'عميل');
+const ch = (nm.trim()[0] || '★').toUpperCase();
+const col = AV[(Number(r.id) || 0) % AV.length];
+return '<article class="rv-card" data-id="' + esc(r.id) + '">' +
+'<div class="rv-card-top"><span class="rv-av" style="--a1:' + col[0] + ';--a2:' + col[1] + '">' + esc(ch) + '</span>' +
+'<div class="rv-who"><b>' + esc(nm) + '</b><small><i class="fas fa-circle-check"></i> عميل موثّق</small></div>' +
+'<span class="rv-when">' + esc(ago(r.created_at)) + '</span></div>' +
+'<span class="rv-stars">' + stars(Number(r.rating) || 0) + '</span>' +
+'<p>' + esc(r.comment) + '</p>' +
+(window.isAdminUser ? '<button type="button" class="rv-del" data-del="' + esc(r.id) + '" title="مسح التقييم (للأدمن)"><i class="fas fa-trash"></i></button>' : '') +
+'</article>';
+}
+function fmtCount(n) { return Number(n || 0).toLocaleString('en-US'); }
+function renderStats() {
+const s = stats || { count: 0, avg: 0, dist: [0, 0, 0, 0, 0] };
+const avg = Number(s.avg) || 0, cnt = Number(s.count) || 0;
+$('rvAvg').textContent = cnt ? avg.toFixed(1) : '—';
+$('rvAvgStars').innerHTML = stars(avg, true);
+$('rvCount').textContent = cnt ? 'من ' + fmtCount(cnt) + ' تقييم حقيقي' : 'لسه مفيش تقييمات منشورة';
+const dist = Array.isArray(s.dist) ? s.dist : [0, 0, 0, 0, 0];
+let bars = '';
+for (let v = 5; v >= 1; v--) { const c = Number(dist[v - 1]) || 0; const pc = cnt ? Math.round(c / cnt * 100) : 0; bars += '<div class="rv-bar"><span>' + v + '<i class="fas fa-star"></i></span><div class="tr"><span style="width:' + pc + '%"></span></div><em>' + fmtCount(c) + '</em></div>'; }
+$('rvBars').innerHTML = bars;
+const fa = $('rvFabAvg');
+if (fa) { if (cnt) { fa.textContent = '★ ' + avg.toFixed(1); fa.hidden = false; } else fa.hidden = true; }
+}
+// 🏠 الرئيسية: أحدث 3 تقييمات
+function renderHome(rows) {
+const sec = $('rvHome');
+if (!sec) return;
+rows = (rows || []).slice(0, 3);
+if (!rows.length) { sec.hidden = true; return; }
+$('rvHomeList').innerHTML = rows.map(card).join('');
+const s = stats;
+$('rvHomeSum').innerHTML = s && Number(s.count) ? '<span class="rv-stars">' + stars(Number(s.avg) || 0) + '</span> <b>' + (Number(s.avg) || 0).toFixed(1) + '</b> من 5 — بناءً على ' + fmtCount(s.count) + ' تقييم حقيقي' : '';
+sec.hidden = false;
+}
+async function loadStats() {
+try { const { data, error } = await db().rpc('smcole_reviews_stats'); if (!error && data) stats = data; } catch (e) {}
+renderStats();
+}
+async function loadHome() {
+try { const c = JSON.parse(localStorage.getItem('smcole_rv_home') || 'null'); if (c && c.rows) { stats = c.stats || stats; renderHome(c.rows); renderStats(); } } catch (e) {}
+try {
+const [{ data, error }] = await Promise.all([db().from('site_reviews').select(COLS).order('created_at', { ascending: false }).limit(3), loadStats()]);
+if (error) return;
+renderHome(data || []);
+try { localStorage.setItem('smcole_rv_home', JSON.stringify({ rows: data || [], stats })); } catch (e) {}
+} catch (e) {}
+}
+async function loadList(more) {
+if (busy) return; busy = true;
+const btn = $('rvLoadMore');
+try {
+const from = more ? list.length : 0;
+const { data, error } = await db().from('site_reviews').select(COLS).order('created_at', { ascending: false }).range(from, from + PAGE - 1);
+if (error) throw error;
+list = more ? list.concat(data || []) : (data || []);
+loadedAll = (data || []).length < PAGE;
+$('rvList').innerHTML = list.map(card).join('');
+$('rvEmpty').hidden = list.length > 0;
+btn.hidden = loadedAll;
+} catch (e) { if (!list.length) $('rvEmpty').hidden = false; }
+busy = false;
+}
+// ✍️ الفورم
+function setPick(v) {
+myRating = v;
+page.querySelectorAll('#rvPick button').forEach(b => b.classList.toggle('on', Number(b.dataset.v) <= v));
+$('rvPickLbl').textContent = v ? LBL[v] : 'اختار عدد النجوم';
+}
+page.querySelectorAll('#rvPick button').forEach(b => {
+b.addEventListener('click', () => setPick(Number(b.dataset.v)));
+b.addEventListener('mouseenter', () => page.querySelectorAll('#rvPick button').forEach(x => x.classList.toggle('on', Number(x.dataset.v) <= Number(b.dataset.v))));
+});
+$('rvPick').addEventListener('mouseleave', () => setPick(myRating));
+$('rvText').addEventListener('input', () => { $('rvLen').textContent = $('rvText').value.length + ' / 500'; });
+// ✍️ زرار "اكتب رأيك": لو مسجل → الفورم بيفتح تحته على طول — لو مش مسجل → شاشة الدخول
+$('rvWriteBtn').addEventListener('click', () => {
+if (!window.currentProfile) {
+const a = document.querySelector('[data-auth-open="login"]');
+if (typeof window.showAuthModal === 'function') window.showAuthModal('login'); else if (a) a.click();
+return;
+}
+const f = $('rvFormCard');
+f.hidden = !f.hidden;
+if (!f.hidden) { f.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => $('rvText').focus({ preventScroll: true }), 350); }
+});
+async function prepareForm() {
+if (!window.currentProfile) return;
+try {
+const { data } = await db().rpc('smcole_my_review');
+if (data && data.rating) {
+setPick(Number(data.rating)); $('rvText').value = data.comment || ''; $('rvLen').textContent = $('rvText').value.length + ' / 500';
+$('rvFormTitle').textContent = 'تقييمك';
+$('rvWriteBtn').querySelector('span').textContent = 'عدّل رأيك';
+$('rvWriteTitle').textContent = 'شكراً إنك شاركتنا رأيك 💜';
+$('rvSend').querySelector('span').textContent = 'تحديث تقييمي';
+const m = $('rvMsg');
+m.className = 'rv-msg ok';
+m.textContent = data.status === 'approved' ? '✅ تقييمك منشور — شكراً ليك' : data.status === 'pending' ? '⏳ تقييمك بيتراجع وهيظهر بعد الموافقة' : '';
+}
+} catch (e) {}
+}
+$('rvSend').addEventListener('click', async () => {
+const m = $('rvMsg'), btn = $('rvSend');
+m.className = 'rv-msg';
+if (!window.currentProfile) { m.textContent = 'سجّل دخولك الأول'; return; }
+if (!myRating) { m.textContent = 'اختار عدد النجوم الأول ⭐'; return; }
+const comment = $('rvText').value.trim();
+if (comment.length < 5) { m.textContent = 'اكتب رأيك في كلمتين على الأقل'; return; }
+if (btn.disabled) return;
+btn.disabled = true; m.textContent = '';
+let d = null;
+try {
+const r = await db().functions.invoke('support-chat', { body: { action: 'review_submit', rating: myRating, comment } });
+d = r.data;
+if (r.error) { try { d = await r.error.context.json(); } catch (e) { d = null; } }
+} catch (e) { d = null; }
+btn.disabled = false;
+if (d && d.ok) {
+m.className = 'rv-msg ok';
+m.textContent = '✅ شكراً ليك! تقييمك وصل وهيظهر للناس بعد المراجعة';
+$('rvFormTitle').textContent = 'تقييمك';
+btn.querySelector('span').textContent = 'تحديث تقييمي';
+} else m.textContent = (d && d.message) || 'تعذر إرسال التقييم — حاول تاني';
+});
+$('rvLoadMore').addEventListener('click', () => loadList(true));
+// 🗑️ مسح تقييم (للأدمن بس — والسيرفر بيتأكد إنه أدمن)
+$('rvList').addEventListener('click', async (e) => {
+const b = e.target.closest('[data-del]');
+if (!b || !window.isAdminUser) return;
+const ok = window.smConfirm ? await window.smConfirm('مسح التقييم ده نهائياً؟') : confirm('مسح التقييم ده نهائياً؟');
+if (!ok) return;
+const { error } = await db().from('site_reviews').delete().eq('id', b.dataset.del);
+if (error) { alert('خطأ: ' + error.message); return; }
+list = list.filter(r => String(r.id) !== String(b.dataset.del));
+$('rvList').innerHTML = list.map(card).join('');
+try { localStorage.removeItem('smcole_rv_home'); } catch (x) {}
+loadStats(); loadHome();
+});
+// فتح الصفحة
+const open = () => window.__navigateTo('reviews', page, true);
+if (fab) fab.addEventListener('click', open);
+const ml = $('reviewsMenuLink'); if (ml) ml.addEventListener('click', (e) => { e.preventDefault(); open(); });
+const hm = $('rvHomeMore'); if (hm) hm.addEventListener('click', open);
+window.__onReviewsOpen = function () { loadStats(); loadList(false); prepareForm(); };
+// الرئيسية: بعد ما الصفحة تحمل (من غير ما تأخر أي حاجة)
+const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1200));
+idle(() => loadHome());
 })();
 
 // ===================== 🎬 فيديوهات موشن جرافيك (خدمة يدوية) =====================

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smcole-v91'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
+const CACHE_NAME = 'smcole-v92'; // تم تغيير الإصدار لمسح الكاش القديم من أجهزة المستخدمين
 const urlsToCache = [
   '/',
   '/index.html',
@@ -11,12 +11,15 @@ const ICON = '/app-icon-192.png';
 // 1. التثبيت: تحميل الملفات الأساسية للتطبيق وتخطي الانتظار
 self.addEventListener('install', event => {
   self.skipWaiting(); // إجبار التحديث الجديد على العمل فوراً
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      // نسخة جديدة من السيرفر نفسه (مش من كاش المتصفح) عشان الإصدار الجديد يتحفظ صح
-      .then(cache => cache.addAll(urlsToCache.map(u => new Request(u, { cache: 'reload' }))))
-      .catch(() => {})
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    // الصفحة الرئيسية: من السيرفر نفسه برابط فريد (مش من كاش Cloudflare ولا المتصفح) عشان الإصدار الجديد يتحفظ صح
+    try {
+      const r = await fetch('/?sw=' + Date.now(), { cache: 'reload', credentials: 'same-origin' });
+      if (r && r.ok) { await cache.put('/', r.clone()); await cache.put('/index.html', r); }
+    } catch (e) {}
+    try { await cache.addAll(urlsToCache.filter(u => u !== '/' && u !== '/index.html').map(u => new Request(u, { cache: 'reload' }))); } catch (e) {}
+  })());
 });
 
 // 2. التفعيل: أخذ السيطرة فوراً ومسح أي كاش قديم (مثل v1)
@@ -42,6 +45,9 @@ self.addEventListener('fetch', event => {
   let sameOrigin = false;
   try { sameOrigin = new URL(req.url).origin === self.location.origin; } catch (e) {}
   if (!sameOrigin) return; // طلبات السيرفر (Supabase) والخطوط بتعدي عادي من غير كاش
+  // فحص التحديثات (version.json) وجلب النسخة الجديدة من الصفحة: من النت على طول ومن غير ما تتحفظ هنا
+  const p0 = new URL(req.url).pathname;
+  if (p0 === '/version.json' || (req.mode !== 'navigate' && (p0 === '/' || p0 === '/index.html'))) return;
   // 🖼️ الصور الثابتة (زي لوجو إنستاباي): من الجهاز على طول لو متحفظة — مبتختفيش ولا بتتحمّل من الأول كل مرة
   // (أي إصدار جديد للموقع بيغيّر CACHE_NAME فبيمسح القديمة ويحمّل الجديدة)
   if (/\.(png|jpe?g|webp|svg|gif|ico)$/i.test(new URL(req.url).pathname)) {
@@ -61,7 +67,8 @@ self.addEventListener('fetch', event => {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
       const cached = await cache.match('/');
-      const fresh = fetch('/', { cache: 'no-cache', credentials: 'same-origin' }).then(response => {
+      // النسخة الجديدة في الخلفية: برابط فريد عشان تيجي من السيرفر نفسه (مش نسخة قديمة محفوظة في Cloudflare)
+      const fresh = fetch('/?swr=' + Date.now(), { cache: 'no-store', credentials: 'same-origin' }).then(response => {
         if (response && response.status === 200 && response.type === 'basic') cache.put('/', response.clone());
         return response;
       }).catch(() => null);

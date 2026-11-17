@@ -4424,6 +4424,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
+const SITE_BUILD = '92'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -6335,6 +6336,54 @@ setInterval(() => { try { reg.update(); } catch(e) {} }, 30 * 60 * 1000);
 })
 .catch(err => {});
 }
+// 🔄 التحديثات توصل لكل الناس على طول:
+//   الموقع بيسأل ملف صغير (version.json) "فيه نسخة أحدث؟" — لو فيه، بيجيب الصفحة الجديدة من السيرفر نفسه
+//   (مش النسخة القديمة المحفوظة في Cloudflare أو المتصفح) ويحفظها مكان القديمة، وبعدين بيحدّث الصفحة
+//   في وقت آمن بس: لو العميل لسه مالمسش حاجة (أول ثواني من الفتح أو الصفحة في الخلفية) — عشان مايضيعش طلب بيكتبه
+//   ولو كان بيستخدم الموقع → النسخة الجديدة بتظهر أول ما يفتحه تاني
+(function siteUpdateCheck() {
+const loadedAt = Date.now();
+let touched = false, pending = null;
+['pointerdown', 'keydown', 'input', 'touchstart'].forEach(ev => window.addEventListener(ev, () => { touched = true; }, { passive: true, capture: true }));
+async function getFresh(v) {
+const r = await fetch('/?v=' + encodeURIComponent(v) + '&t=' + Date.now(), { cache: 'no-store', credentials: 'same-origin' });
+if (!r.ok) return false;
+const html = await r.text();
+if (html.indexOf("SITE_BUILD = '" + v + "'") === -1) return false; // لسه مش متاحة كاملة → نستنى الفحص الجاي
+try {
+if (window.caches) for (const k of await caches.keys()) {
+if (!/^smcole-/.test(k)) continue;
+const c = await caches.open(k);
+const resp = () => new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+await c.put('/', resp()); await c.put('/index.html', resp());
+}
+} catch (e) {}
+return true;
+}
+function apply() {
+const v = pending; if (!v) return;
+try { if (sessionStorage.getItem('smcole_upd') === v) return; sessionStorage.setItem('smcole_upd', v); } catch (e) {}
+if (navigator.serviceWorker && navigator.serviceWorker.controller) location.reload();
+else location.replace('/?v=' + encodeURIComponent(v) + location.hash);
+}
+const safe = () => !touched && (document.hidden || Date.now() - loadedAt < 15000);
+async function check() {
+if (pending) { if (safe()) apply(); return; }
+try {
+const r = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' });
+if (!r.ok) return;
+const j = await r.json();
+const v = String((j && j.v) || '');
+if (!v || v === SITE_BUILD) return;
+if (!(await getFresh(v))) return;
+pending = v;
+if (safe()) apply();
+} catch (e) {}
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (pending && !touched) apply(); } else check(); });
+setTimeout(check, 2500);
+setInterval(check, 10 * 60 * 1000);
+})();
 
 (function() {
 function setupPaymentSelectorCards() {

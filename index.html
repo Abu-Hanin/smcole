@@ -4139,7 +4139,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="deposit-brand-logo binance">₿</div>
 <div class="deposit-brand-title"><h2>Binance Pay <span class="bn-auto-pill"><i class="fas fa-bolt"></i> تلقائي</span></h2><p>الرصيد بيتضاف لحسابك فوراً بعد التحويل — من غير مراجعة</p></div>
 </div>
-<p>حوّل المبلغ <b>USDT</b> عن طريق Binance Pay — امسح الكود أو اكتب المعرف:</p>
+<p>حوّل المبلغ <b>USDT</b> عن طريق Binance Pay — اكتب المعرف:</p>
 <div class="bn-qr" id="binanceQrBox" hidden>
 <div class="bn-qr-frame"><img id="binanceQrImg" alt="Binance Pay QR"></div>
 <small><i class="fas fa-qrcode"></i> امسح الكود من تطبيق Binance ← Pay ← Scan</small>
@@ -4150,7 +4150,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <div class="deposit-steps">
 <div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق Binance → اختر "Pay"</span></div>
-<div class="step-item"><span class="step-num">2</span><span class="step-text">امسح الكود أو اختر "Send" واكتب المعرف: <b id="binanceIdStep2">746211155</b></span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اختر "Send" واكتب المعرف: <b id="binanceIdStep2">746211155</b></span></div>
 <div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب المبلغ <b>USDT</b> وأكد التحويل</span></div>
 <div class="step-item"><span class="step-num">4</span><span class="step-text">افتح تفاصيل التحويل وانسخ <b>رقم الطلب (Order ID)</b></span></div>
 <div class="step-item"><span class="step-num">5</span><span class="step-text">اكتب المبلغ ورقم الطلب هنا تحت — والرصيد يتضاف فوراً ⚡</span></div>
@@ -4422,7 +4422,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '94'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '95'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -4433,7 +4433,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '8', ADMIN_BUNDLE_SHA = '756a8203352ae1f5f5f780a1079455d613e66badcdfaad392e005cab5248b921';
+const ADMIN_BUNDLE_V = '9', ADMIN_BUNDLE_SHA = 'b203a230f3b2e5181404159e3ced30eeaa5f70930da7856697e3aa8e47a27c77';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -4535,7 +4535,7 @@ document.getElementById('adminPanelPage').classList.remove('active');
 };
 window.openAdminPanel = function(user, tab) {
 if (!window.isAdminUser) return;
-if (window.__loadSiteAssets) window.__loadSiteAssets(); // الأدمن محتاج كل الصور (إعدادات اللوجوهات والـ QR)
+
 if (!window.__adminBundleReady) { window.__loadAdminBundle().then(function() { window.openAdminPanel(user, tab); }).catch(function(e) { console.warn('admin bundle:', e.message); }); return; }
 // tab جاي من adminGoTab: التبويب نفسه بيحمّل بياناته → منحمّلش المستخدمين على الفاضي (كانت بتتحمل مرتين وبتعطّل الصفحة)
 var goTab = tab || 'users', loadUsers = !tab;
@@ -4804,7 +4804,7 @@ const bStep2 = document.getElementById('binanceIdStep2');
 // QR كود Binance Pay (الأدمن بيرفعه من الإعدادات)
 const bQrBox = document.getElementById('binanceQrBox'), bQrImg = document.getElementById('binanceQrImg');
 if (bQrBox && bQrImg) {
-const okQr = typeof siteSettings.binance_qr === 'string' && /^(data:image\/|https:\/\/)/.test(siteSettings.binance_qr);
+const okQr = false; // QR باينانس اتشال (كان صورة بتتحمّل من السيرفر)
 if (okQr) { if (bQrImg.getAttribute('src') !== siteSettings.binance_qr) bQrImg.src = siteSettings.binance_qr; bQrBox.hidden = false; }
 else bQrBox.hidden = true;
 }
@@ -4879,7 +4879,8 @@ window.addEventListener('online', () => window.__recheckMaintenance());
 setInterval(() => { if (siteSettings.maintenance === true && document.visibilityState === 'visible') window.__recheckMaintenance(); }, 15000);
 // ⚡ الإعدادات من غير الصور (اللوجوهات والـ QR كانوا مخليين الصف ~360KB وبياخد ثواني) — الصور بتيجي لوحدها في الخلفية
 window.SETTINGS_COLS = 'id,site_name,site_description,support_phone,purchase_phone,promo_text,updated_at,active_users_override,completed_orders_override,site_url,vodafone_number,binance_id,usdt_wallet,usdt_network,usdt_address,exchange_rate,instapay_number,redot_number,theme,profit_percent,last_price_sync,last_fx,maintenance,maintenance_message,payment_methods,payment_min';
-window.ASSET_KEYS = ['logo_vodafone', 'logo_binance', 'logo_usdt', 'logo_instapay', 'logo_redot', 'binance_qr'];
+window.ASSET_KEYS = []; // 🖼️ مفيش صور بتتحمّل من السيرفر (اللوجوهات مرسومة بالكود — وQR باينانس اتشال)
+try { localStorage.removeItem('smcole_assets_cache'); } catch (e) {}
 window.loadSiteSettings = async function() {
 try {
 const sb = getSupabase();
@@ -4889,7 +4890,7 @@ if (!data) return false;
 window.__fillSiteSettings(data);
 try { localStorage.setItem('smcole_settings_cache', JSON.stringify(data)); } catch (e) {}
 // 📉 الصور (~350KB) مبقتش بتتحمّل مع كل زيارة — QR باينانس بس لما صفحة باينانس تتفتح (توفير في استهلاك Supabase)
-if (document.body.getAttribute('data-route') === 'deposit-binance') window.__loadSiteAssets(['binance_qr']);
+
 return true;
 } catch(e) { console.warn('Settings load failed:', e); return false; }
 };
@@ -5219,7 +5220,7 @@ window.__currentDepositMethod = method;
 function routeToPage(routeName) {
 document.body.setAttribute('data-route', routeName);
 // 🖼️ QR باينانس بيتحمّل أول ما العميل يفتح صفحة باينانس بس
-if (routeName === 'deposit-binance' && window.__loadSiteAssets) window.__loadSiteAssets(window.__assetKeysFor(routeName));
+
 // آخر صفحة في التاب ده (الرئيسية مالهاش # في الرابط — فبنفتكرها هنا عشان الريفريش يفضّلك عليها)
 try { sessionStorage.setItem('smcole_route', routeName); } catch (e) {}
 if (window.__btUpdate) setTimeout(window.__btUpdate, 60);

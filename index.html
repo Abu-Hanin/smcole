@@ -4424,7 +4424,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '92'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '93'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -6329,7 +6329,7 @@ window.__maybeShowAppPrompt();
 if ('serviceWorker' in navigator) {
 // ⚠️ مفيش Refresh تلقائي لما يتنزل تحديث جديد (كان بيعمل ريفرش وسط الاستخدام ويظهر "صلوا على النبي")
 // التحديث بيتطبق بهدوء أول ما العميل يفتح الموقع المرة الجاية (الملفات بتتحمل من النت الأول)
-navigator.serviceWorker.register('/sw.js?v=' + APP_VERSION, { updateViaCache: 'none' })
+navigator.serviceWorker.register('/sw.js?v=' + SITE_BUILD, { updateViaCache: 'none' }) // رابط جديد مع كل تحديث → مايتاخدش من نسخة Cloudflare القديمة
 .then(reg => {
 try { reg.update(); } catch(e) {}
 setInterval(() => { try { reg.update(); } catch(e) {} }, 30 * 60 * 1000);

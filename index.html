@@ -1465,6 +1465,14 @@ body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
 .svc-speed.mid { color: #FBBF24; background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.35); }
 .svc-speed.slow { color: #F87171; background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.35); }
 .svc-speed[hidden] { display: none !important; }
+/* 🌍 تحويل من الدول العربية */
+.ar-countries { display: flex; flex-direction: column; gap: 8px; margin: 1rem 0; }
+.ar-c { display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(168,85,247,.18); }
+.ar-f { width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .9rem; background: linear-gradient(135deg, #7C3AED, #EC4899); }
+.ar-c b { display: block; color: #fff; font-size: .92rem; margin-bottom: 2px; }
+.ar-c small { display: block; color: #CBC3E3; font-size: .78rem; line-height: 1.7; }
+.ar-note { margin: 4px 0 0; padding: 10px 12px; border-radius: 12px; font-size: .8rem; line-height: 1.8; color: #FDE68A; background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.3); }
+.ar-pick button.on { background: var(--grad, linear-gradient(135deg,#7C3AED,#EC4899)); color: #fff; border-color: transparent; }
 .comments-input { width: 100%; margin-top: 4px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); color: #fff; font-family: inherit; font-size: .85rem; resize: vertical; min-height: 90px; outline: none; }
 .comments-input:focus { border-color: var(--pc, #A855F7); }
 .svc-modal-bg { position: fixed; inset: 0; z-index: 3200; background: rgba(4,2,10,0.72); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .25s; }
@@ -3353,6 +3361,13 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
 </div>
 
+<!-- 🌍 تحويل من الدول العربية على فودافون كاش (يدوي من الدعم) -->
+<div class="payment-selector-card kashier-card" id="arabCard" data-pay="arab">
+<div class="psc-logo kashier"><i class="fas fa-earth-africa"></i></div>
+<div class="psc-info"><h3>تحويل من الدول العربية</h3><p>حوّل على فودافون كاش من بلدك — اكتب المبلغ وكمّل مع الدعم الفني</p><div class="kashier-badges"><span>السعودية</span><span>الكويت</span><span>قطر</span><span>البحرين</span><span>عمان</span><span>الأردن</span></div></div>
+<div class="psc-arrow"><i class="fas fa-chevron-left"></i></div>
+</div>
+
 <!-- 🪙 العملات الرقمية عن طريق Cryptomus (بتظهر بس لما الأدمن يفتحها والمفاتيح موجودة) -->
 <div class="payment-selector-card" id="cmCard" data-pay="cryptomus" style="display:none;">
 <div class="psc-logo cm-logo"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6 54 18.5v27L32 58 10 45.5v-27z" fill="#fff"/><path d="M32 30.5 54 18.5M32 30.5v27.5M32 30.5 10 18.5" stroke="#0B0B0F" stroke-width="4.5" stroke-linejoin="round" fill="none"/></svg></div>
@@ -3966,6 +3981,47 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 </div>
 
+<!-- 🌍 تحويل من الدول العربية على فودافون كاش (يدوي) -->
+<div id="depositArabView" style="display:none;">
+<div class="deposit-info">
+<div class="deposit-brand-header">
+<div class="deposit-brand-logo kashier-logo"><i class="fas fa-earth-africa"></i></div>
+<div class="deposit-brand-title"><h2>تحويل من الدول العربية</h2><p>حوّل من بلدك على محفظة فودافون كاش في مصر</p></div>
+</div>
+<p>رقم محفظة فودافون كاش اللي هتحوّل عليه:</p>
+<div class="deposit-number-row">
+<div class="deposit-number" id="arabNumber">01001606298</div>
+<button class="deposit-copy-btn" type="button" id="arabCopyBtn" data-copy="01001606298"><i class="fas fa-copy"></i> نسخ</button>
+</div>
+<div class="ar-countries">
+<div class="ar-c"><span class="ar-f"><i class="fas fa-location-dot"></i></span><div><b>السعودية</b><small>عن طريق تطبيقات وشركات التحويل الدولي زي تحويل الراجحي و urpay و STC Bank — اختار التحويل لمحفظة فودافون كاش في مصر</small></div></div>
+<div class="ar-c"><span class="ar-f"><i class="fas fa-location-dot"></i></span><div><b>الكويت</b><small>عن طريق شركات الصرافة وتطبيقات التحويل زي LuLu Money و Taptap Send — اختار التحويل لمحفظة فودافون كاش</small></div></div>
+<div class="ar-c"><span class="ar-f"><i class="fas fa-location-dot"></i></span><div><b>قطر</b><small>عن طريق شركات الصرافة وتطبيقات التحويل الدولي اللي بتحوّل على فودافون كاش مصر</small></div></div>
+<div class="ar-c"><span class="ar-f"><i class="fas fa-location-dot"></i></span><div><b>البحرين</b><small>عن طريق شركات الصرافة وتطبيقات التحويل الدولي اللي بتحوّل لمصر</small></div></div>
+<div class="ar-c"><span class="ar-f"><i class="fas fa-location-dot"></i></span><div><b>سلطنة عمان</b><small>عن طريق شركات الصرافة وتطبيقات التحويل الدولي اللي بتحوّل لمصر</small></div></div>
+<div class="ar-c"><span class="ar-f"><i class="fas fa-location-dot"></i></span><div><b>الأردن</b><small>عن طريق شركات الصرافة وتطبيقات التحويل الدولي اللي بتحوّل على فودافون كاش مصر</small></div></div>
+<p class="ar-note"><i class="fas fa-circle-info"></i> الخدمات المتاحة بتختلف من تطبيق للتاني — لو مش متأكد من الطريقة، اكتب المبلغ واضغط <b>ادفع الآن</b> والدعم الفني هيساعدك خطوة بخطوة</p>
+</div>
+<div class="deposit-steps">
+<div class="step-item"><span class="step-num">1</span><span class="step-text">اختار بلدك واكتب المبلغ اللي عايز تشحنه <b>بالجنيه المصري</b> تحت</span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اضغط <b>ادفع الآن</b> — طلبك هيوصل للدعم الفني على طول</span></div>
+<div class="step-item"><span class="step-num">3</span><span class="step-text">الدعم هيبعتلك في رسائل الدعم <b>الاسم وباقي البيانات</b> اللي تطبيق التحويل محتاجها</span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">أول ما التحويل يوصل فودافون كاش — الرصيد يتضاف لحسابك</span></div>
+</div>
+</div>
+<div class="profile-msg dep-msg-slot err" id="arabMsg"></div>
+<div class="deposit-form kpay-page-form">
+<h3><i class="fas fa-earth-africa"></i> الشحن بتحويل من الدول العربية</h3>
+<label>بلدك</label>
+<div class="kpay-chips ar-pick" id="arabCountries"><button type="button" data-c="السعودية">السعودية</button><button type="button" data-c="الكويت">الكويت</button><button type="button" data-c="قطر">قطر</button><button type="button" data-c="البحرين">البحرين</button><button type="button" data-c="سلطنة عمان">عمان</button><button type="button" data-c="الأردن">الأردن</button></div>
+<label for="arabAmount">المبلغ (بالجنيه المصري)</label>
+<div class="kpay-amount"><input type="number" id="arabAmount" inputmode="decimal" min="100" step="1" placeholder="أقل مبلغ 100"><span>جنيه</span></div>
+<div class="kpay-min">أقل مبلغ للشحن <b id="arabMinLbl">100 جنيه</b></div>
+<button type="button" class="deposit-submit-btn" id="arabGo"><i class="fas fa-paper-plane"></i> <span>ادفع الآن</span></button>
+<div class="kpay-secure"><i class="fas fa-headset"></i> بيانات التحويل هتوصلك في رسائل الدعم — والرصيد بيتضاف بعد ما التحويل يوصل</div>
+</div>
+</div>
+
 <!-- 💳 فيزا / ماستركارد (رابط دفع يدوي) -->
 <div id="depositVisaView" style="display:none;">
 <div class="deposit-info">
@@ -4422,7 +4478,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '95'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '96'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -4433,7 +4489,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '9', ADMIN_BUNDLE_SHA = 'b203a230f3b2e5181404159e3ced30eeaa5f70930da7856697e3aa8e47a27c77';
+const ADMIN_BUNDLE_V = '10', ADMIN_BUNDLE_SHA = 'f0f8357e8dd0b7ae2c593dabbf0c17bce1b52cfb4e4702fa5351de9008244d7f';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -4986,6 +5042,8 @@ document.querySelectorAll('.payment-selector-card[data-method]').forEach(c => { 
 const k = document.getElementById('kashierCard');
 if (k) k.style.display = (pm.kashier !== false && window.__kashierEnabled) ? '' : 'none';
 // 🪙 Cryptomus: مقفولة افتراضياً — بتظهر بس لما الأدمن يفتحها والسيرفر يأكد إن المفاتيح موجودة
+const arc = document.getElementById('arabCard');
+if (arc) arc.style.display = pm.arab === false ? 'none' : '';
 const vsc = document.getElementById('visaCard');
 if (vsc) vsc.style.display = pm.visa === false ? 'none' : '';
 const cmc = document.getElementById('cmCard');
@@ -5124,7 +5182,7 @@ if (r === 'services') return ['home', 'services'];
 if (r === 'admin-panel') return ['home', 'admin-panel'];
 if (r === 'motion') return ['home', 'services', 'motion'];
 if (r === 'reviews') return ['home', 'services', 'reviews'];
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(r)) return ['home', 'services', 'payment', r];
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa|arab)$/.test(r)) return ['home', 'services', 'payment', r];
 if (/^(terms|affiliate|payment|favorites|support|profile|orders)$/.test(r)) return ['home', 'services', r];
 return null;
 };
@@ -5202,6 +5260,8 @@ const kView = document.getElementById('depositKashierView');
 if (kView) kView.style.display = method === 'kashier' ? 'block' : 'none';
 const vsView = document.getElementById('depositVisaView');
 if (vsView) vsView.style.display = method === 'visa' ? 'block' : 'none';
+const arView = document.getElementById('depositArabView');
+if (arView) arView.style.display = method === 'arab' ? 'block' : 'none';
 const cmView = document.getElementById('depositCryptomusView');
 if (cmView) cmView.style.display = method === 'cryptomus' ? 'block' : 'none';
 if (vView) vView.style.display = 'none';
@@ -5257,6 +5317,7 @@ else if (routeName === 'deposit-instapay' && window.__loggedIn()) { setPageVisib
 else if (routeName === 'deposit-kashier' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('kashier'); }
 else if (routeName === 'deposit-cryptomus' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('cryptomus'); }
 else if (routeName === 'deposit-visa' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('visa'); }
+else if (routeName === 'deposit-arab' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('arab'); }
 else if (routeName === 'deposit-vfauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('vfauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-ipauto' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('ipauto'); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
 else if (routeName === 'deposit-redot' && window.__loggedIn()) { setPageVisibility(depositPage); window.__showDepositView('redot'); if (window.loadUserTransactions) window.loadUserTransactions(); if (window.__refreshProfileFromDB) window.__refreshProfileFromDB(); }
@@ -6433,7 +6494,8 @@ order_refund: 'استرجاع طلب',
 vfcash_auto: 'فودافون كاش (تلقائي)',
 instapay_auto: 'إنستاباي (تلقائي)',
 cryptomus: 'العملات الرقمية (تلقائي)',
-visa: 'فيزا / ماستركارد'
+visa: 'فيزا / ماستركارد',
+arab: 'تحويل من الدول العربية'
 };
 
 function userToast(msg, type) {
@@ -6853,7 +6915,7 @@ hideAuthModal();
 const hash = (window.location.hash || '').replace('#','');
 if (hash === 'profile') { setTimeout(() => openProfilePage(), 150); return; }
 if (hash === 'orders') { setTimeout(() => openMyOrdersPage(), 150); return; }
-if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(hash)) {
+if (/^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa|arab)$/.test(hash)) {
 setTimeout(() => { window.__navigateTo(hash, document.getElementById('depositPage'), true); }, 150);
 return;
 }
@@ -8882,7 +8944,7 @@ if (window.__routeRestored) return;
 const fallback = mode === true;
 const h = window.__initialHash || '';
 const nav = (r, id) => window.__navigateTo(r, document.getElementById(id), false);
-const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa)$/.test(h);
+const isDeposit = /^deposit-(vodafone|binance|usdt|instapay|redot|vfauto|ipauto|kashier|cryptomus|visa|arab)$/.test(h);
 const USER_PAGES = { 'admin-panel': null, affiliate: 'affiliatePage', support: 'supportPage', profile: 'profilePage', orders: 'myOrdersPage' };
 const needsUser = isDeposit || Object.prototype.hasOwnProperty.call(USER_PAGES, h);
 const hasToken = !window.__authGaveUp && !!(window.__smHasToken && window.__smHasToken());
@@ -9473,9 +9535,12 @@ state('⏳', 'الدفع لسه بيتأكد', 'التحويلات الرقمي�
 (function svcSpeedUI() {
 let map = null;
 function fmt(m) {
-m = Math.max(0, Math.round(Number(m) || 0));
-if (m < 1) return 'أقل من دقيقة';
+const raw = Math.max(0, Number(m) || 0);
+if (raw < 1) return 'أقل من دقيقة';
 const n = (v, one, two, many, many11) => v === 1 ? one : v === 2 ? two : v + ' ' + (v <= 10 ? many : many11);
+// أقل من 10 دقايق: لأقرب نص دقيقة بالأرقام (2.5 دقيقة)
+if (raw < 10) { const h = Math.round(raw * 2) / 2; return h % 1 ? h + ' دقيقة' : n(h, 'دقيقة', 'دقيقتين', 'دقايق', 'دقيقة'); }
+m = Math.round(raw);
 if (m < 60) return n(m, 'دقيقة', 'دقيقتين', 'دقايق', 'دقيقة');
 const h = Math.floor(m / 60), rm = m % 60;
 if (h < 24) return n(h, 'ساعة', 'ساعتين', 'ساعات', 'ساعة') + (rm ? ' و' + n(rm, 'دقيقة', 'دقيقتين', 'دقايق', 'دقيقة') : '');
@@ -9493,13 +9558,13 @@ el.hidden = false;
 }
 window.__fillSvcSpeed = fill;
 const fillAll = () => document.querySelectorAll('.svc-speed[data-sn]').forEach(fill);
-try { const c = JSON.parse(localStorage.getItem('smcole_svc_speed') || 'null'); if (c && c.m) { map = c.m; fillAll(); if (Date.now() - c.t < 10 * 60 * 1000) return; } } catch (e) {}
+try { const c = JSON.parse(localStorage.getItem('smcole_svc_speed5') || 'null'); if (c && c.m) { map = c.m; fillAll(); if (Date.now() - c.t < 10 * 60 * 1000) return; } } catch (e) {}
 setTimeout(async () => {
 try {
 const { data, error } = await getSupabase().rpc('smcole_service_speed');
 if (error || !data || typeof data !== 'object') return;
 map = data; fillAll();
-try { localStorage.setItem('smcole_svc_speed', JSON.stringify({ t: Date.now(), m: data })); } catch (e) {}
+try { localStorage.setItem('smcole_svc_speed5', JSON.stringify({ t: Date.now(), m: data })); } catch (e) {}
 } catch (e) {}
 }, 600);
 })();
@@ -9830,6 +9895,62 @@ msg.innerHTML = '<div class="bn-ok"><i class="fas fa-circle-check"></i><div><b>�
 const a = $('visaOpenSupport');
 if (a) a.addEventListener('click', (e) => { e.preventDefault(); window.__navigateTo('support', document.getElementById('supportPage'), true); });
 userToast('✅ تم إرسال طلبك — رابط الدفع هيوصلك في رسائل الدعم', 'ok');
+if (window.loadUserTransactions) window.loadUserTransactions();
+} else {
+msg.textContent = (d && d.message) || 'تعذر إرسال الطلب — حاول تاني';
+}
+});
+})();
+
+// ===================== 🌍 تحويل من الدول العربية (فودافون كاش — يدوي من الدعم) =====================
+// العميل بيختار بلده ويكتب المبلغ → السيرفر بيسجل طلب إيداع "قيد المراجعة" ويبعت رسالة في شات الدعم + التليجرام
+// الرصيد مبيتضافش غير لما الأدمن يأكد إن التحويل وصل (من التليجرام أو لوحة الأدمن)
+(function arabUI() {
+const $ = (id) => document.getElementById(id);
+const card = $('arabCard');
+if (!card || !$('arabGo')) return;
+let country = '';
+const minAmt = () => (window.pmMin ? window.pmMin('arab', 100) : 100) || 100;
+card.addEventListener('click', async () => {
+if (!window.currentProfile && !(await window.__needProfile())) return;
+$('arabMsg').textContent = '';
+const mn = minAmt(); $('arabMinLbl').textContent = mn + ' جنيه'; $('arabAmount').placeholder = 'أقل مبلغ ' + mn; $('arabAmount').min = mn;
+window.__navigateTo('deposit-arab', document.getElementById('depositPage'), true);
+});
+document.querySelectorAll('#arabCountries [data-c]').forEach(b => b.addEventListener('click', () => {
+country = b.dataset.c;
+document.querySelectorAll('#arabCountries [data-c]').forEach(x => x.classList.toggle('on', x === b));
+}));
+$('arabCopyBtn').addEventListener('click', async () => {
+const v = $('arabCopyBtn').dataset.copy;
+try { await navigator.clipboard.writeText(v); }
+catch (e) { const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} ta.remove(); }
+userToast('📋 تم نسخ الرقم: ' + v, 'ok');
+});
+$('arabGo').addEventListener('click', async () => {
+const btn = $('arabGo'), msg = $('arabMsg');
+const amount = Math.round(parseFloat($('arabAmount').value) * 100) / 100;
+const mn = minAmt();
+msg.className = 'profile-msg dep-msg-slot err';
+if (!country) { msg.textContent = 'اختار بلدك الأول'; return; }
+if (!(amount > 0)) { msg.textContent = 'اكتب المبلغ اللي عايز تشحنه'; return; }
+if (amount < mn) { msg.textContent = 'أقل مبلغ للشحن ' + mn + ' جنيه'; return; }
+if (btn.disabled) return;
+btn.disabled = true; btn.querySelector('span').textContent = 'جاري الإرسال...'; msg.textContent = '';
+let d = null;
+try {
+const r = await getSupabase().functions.invoke('support-chat', { body: { action: 'arab_request', amount, country } });
+d = r.data;
+if (r.error) { try { d = await r.error.context.json(); } catch (e) { d = null; } }
+} catch (e) { d = null; }
+btn.disabled = false; btn.querySelector('span').textContent = 'ادفع الآن';
+if (d && d.ok) {
+$('arabAmount').value = '';
+msg.className = 'profile-msg dep-msg-slot';
+msg.innerHTML = '<div class="bn-ok"><i class="fas fa-circle-check"></i><div><b>✅ تم إرسال طلبك للدعم الفني</b><span>بيانات التحويل هتوصلك في رسائل الدعم خلال دقايق — وأول ما التحويل يوصل الرصيد هيتضاف لحسابك</span><span><a href="#" id="arabOpenSupport">افتح رسائل الدعم</a></span></div></div>';
+const a = $('arabOpenSupport');
+if (a) a.addEventListener('click', (e) => { e.preventDefault(); window.__navigateTo('support', document.getElementById('supportPage'), true); });
+userToast('✅ تم إرسال طلبك — بيانات التحويل هتوصلك في رسائل الدعم', 'ok');
 if (window.loadUserTransactions) window.loadUserTransactions();
 } else {
 msg.textContent = (d && d.message) || 'تعذر إرسال الطلب — حاول تاني';

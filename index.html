@@ -1458,6 +1458,13 @@ body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
 /* ---------- ℹ️ تفاصيل الخدمة + التعليقات ---------- */
 .svc-info-btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 2px; padding: 6px 12px; border-radius: 10px; font-size: .76rem; font-weight: 800; color: #E9D5FF; background: rgba(255,255,255,0.05); border: 1px solid color-mix(in srgb, var(--pc, #A855F7) 45%, transparent); transition: .2s; }
 .svc-info-btn:hover { background: color-mix(in srgb, var(--pc, #A855F7) 25%, transparent); color: #fff; }
+/* ⚡ وقت تنفيذ آخر طلب للخدمة — جنب زرار التفاصيل */
+.svc-info-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin: 4px 0 2px; }
+.svc-info-row .svc-info-btn { margin: 0; }
+.svc-speed { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 10px; font-size: .72rem; font-weight: 800; line-height: 1.3; white-space: nowrap; color: #4ADE80; background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.35); }
+.svc-speed.mid { color: #FBBF24; background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.35); }
+.svc-speed.slow { color: #F87171; background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.35); }
+.svc-speed[hidden] { display: none !important; }
 .comments-input { width: 100%; margin-top: 4px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); color: #fff; font-family: inherit; font-size: .85rem; resize: vertical; min-height: 90px; outline: none; }
 .comments-input:focus { border-color: var(--pc, #A855F7); }
 .svc-modal-bg { position: fixed; inset: 0; z-index: 3200; background: rgba(4,2,10,0.72); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .25s; }
@@ -5606,7 +5613,12 @@ infoBtn.type = 'button';
 infoBtn.className = 'svc-info-btn';
 infoBtn.innerHTML = '<i class="fas fa-circle-info"></i> تفاصيل الخدمة';
 infoBtn.addEventListener('click', (e) => { e.stopPropagation(); if (window.openServiceDetails) window.openServiceDetails(service, serviceNumber, minLimit, maxLimit); });
-card.appendChild(infoBtn);
+// ⚡ آخر طلب للخدمة دي اتنفذ في قد إيه (بيظهر بس لو حد طلبها واتنفذت)
+const infoRow = document.createElement('div'); infoRow.className = 'svc-info-row';
+const speedEl = document.createElement('span'); speedEl.className = 'svc-speed'; speedEl.hidden = true; speedEl.dataset.sn = String(serviceNumber);
+infoRow.appendChild(infoBtn); infoRow.appendChild(speedEl);
+if (window.__fillSvcSpeed) window.__fillSvcSpeed(speedEl);
+card.appendChild(infoRow);
 const priceContainer = document.createElement('div'); priceContainer.className = 'price-container';
 const priceValueSpan = document.createElement('span'); priceValueSpan.className = 'price-value';
 priceValueSpan.setAttribute('data-original-price', service.pricePerThousand);
@@ -9432,6 +9444,42 @@ state('⚠️', 'محتاجين نراجع العملية', 'تواصل مع ا�
 state('⏳', 'الدفع لسه بيتأكد', 'التحويلات الرقمية بتاخد شوية دقايق لحد ما الشبكة تأكدها — أول ما تتأكد الرصيد هيتضاف لحسابك تلقائياً. مش محتاج تعمل حاجة.');
 }
 })();
+})();
+
+// ===================== ⚡ وقت تنفيذ آخر طلب لكل خدمة =====================
+// من السيرفر: {رقم الخدمة: دقايق} لآخر طلب اتنفذ بالكامل — طلب واحد صغير ومحفوظ في المتصفح 10 دقايق (استهلاك قليل جداً)
+(function svcSpeedUI() {
+let map = null;
+function fmt(m) {
+m = Math.max(0, Math.round(Number(m) || 0));
+if (m < 1) return 'أقل من دقيقة';
+const n = (v, one, two, many, many11) => v === 1 ? one : v === 2 ? two : v + ' ' + (v <= 10 ? many : many11);
+if (m < 60) return n(m, 'دقيقة', 'دقيقتين', 'دقايق', 'دقيقة');
+const h = Math.floor(m / 60), rm = m % 60;
+if (h < 24) return n(h, 'ساعة', 'ساعتين', 'ساعات', 'ساعة') + (rm ? ' و' + n(rm, 'دقيقة', 'دقيقتين', 'دقايق', 'دقيقة') : '');
+const d = Math.floor(h / 24), rh = h % 24;
+return n(d, 'يوم', 'يومين', 'أيام', 'يوم') + (rh ? ' و' + n(rh, 'ساعة', 'ساعتين', 'ساعات', 'ساعة') : '');
+}
+function fill(el) {
+if (!map || !el) return;
+const m = map[el.dataset.sn];
+if (m === undefined || m === null) { el.hidden = true; return; }
+el.className = 'svc-speed';
+el.innerHTML = '<i class="fas fa-bolt"></i> آخر طلب اتنفذ في ' + fmt(m);
+el.title = 'وقت تنفيذ آخر طلب للخدمة دي على الموقع';
+el.hidden = false;
+}
+window.__fillSvcSpeed = fill;
+const fillAll = () => document.querySelectorAll('.svc-speed[data-sn]').forEach(fill);
+try { const c = JSON.parse(localStorage.getItem('smcole_svc_speed') || 'null'); if (c && c.m) { map = c.m; fillAll(); if (Date.now() - c.t < 10 * 60 * 1000) return; } } catch (e) {}
+setTimeout(async () => {
+try {
+const { data, error } = await getSupabase().rpc('smcole_service_speed');
+if (error || !data || typeof data !== 'object') return;
+map = data; fillAll();
+try { localStorage.setItem('smcole_svc_speed', JSON.stringify({ t: Date.now(), m: data })); } catch (e) {}
+} catch (e) {}
+}, 600);
 })();
 
 // ===================== ⭐ آراء العملاء (تقييمات حقيقية) =====================

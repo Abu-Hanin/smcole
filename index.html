@@ -2251,7 +2251,25 @@ border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45)
 .rv-write-txt span { color: #CBC3E3; font-size: .78rem; line-height: 1.6; }
 .rv-write .rv-write-btn { width: auto; flex: 0 0 auto; margin: 0; padding: 10px 18px; font-size: .9rem; border-radius: 13px; white-space: nowrap; }
 .rv-form-card { margin-top: 0; }
-#rvLoadMore[hidden], #rvHome[hidden], #rvFormCard[hidden], #rvEmpty[hidden], #rvFabAvg[hidden] { display: none !important; }
+#rvLoadMore[hidden], #rvHome[hidden], #rvFormCard[hidden], #rvEmpty[hidden], #rvFabAvg[hidden], #rvAdmin[hidden] { display: none !important; }
+/* 🛡️ صندوق موافقة التقييمات (للأدمن بس) */
+.rv-admin { margin-bottom: 1rem; padding: 1rem; border-radius: 20px; background: rgba(245,158,11,.06); border: 1.5px dashed rgba(245,158,11,.5); }
+.rv-admin-head h3 { margin: 0; color: #FDE68A; font-size: 1rem; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+.rv-admin-head h3 b { min-width: 24px; height: 24px; padding: 0 7px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; color: #1A1030; background: #FBBF24; }
+.rv-admin-head small { display: block; color: #CBC3E3; font-size: .76rem; margin: 3px 0 10px; }
+.rv-admin-list { display: flex; flex-direction: column; gap: 8px; }
+.rv-adm { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: .75rem .9rem; border-radius: 14px; background: rgba(7,4,15,.6); border: 1px solid rgba(255,255,255,.08); }
+.rv-adm-body { flex: 1; min-width: 200px; }
+.rv-adm-body b { color: #fff; font-size: .88rem; }
+.rv-adm-body .rv-stars { margin-inline-start: 8px; font-size: .75rem; }
+.rv-adm-body p { margin: 4px 0 0; color: #E4DDF8; font-size: .85rem; line-height: 1.7; word-break: break-word; }
+.rv-adm-body small { color: #8E85B5; font-size: .7rem; }
+.rv-adm-btns { display: flex; gap: 6px; }
+.rv-adm-btns button { border: none; cursor: pointer; font-family: inherit; font-weight: 800; font-size: .8rem; padding: 8px 14px; border-radius: 10px; color: #fff; }
+.rv-adm-btns .ok { background: linear-gradient(135deg, #16A34A, #22C55E); }
+.rv-adm-btns .del { background: rgba(239,68,68,.15); color: #FCA5A5; border: 1px solid rgba(239,68,68,.4); }
+.rv-adm-btns button:disabled { opacity: .5; cursor: wait; }
+.rv-adm-empty { color: #A59CC9; font-size: .85rem; padding: 6px 2px; }
 /* رأس الصفحة الصغير: العنوان + التقييم العام + زرار اكتب تقييمك */
 .rv-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem; padding: 1rem 1.2rem; border-radius: 20px; background: linear-gradient(135deg, rgba(245,158,11,.1), rgba(124,58,237,.14)); border: 1px solid rgba(245,158,11,.3); }
 .rv-top-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
@@ -3852,6 +3870,12 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <button type="button" class="mg-submit rv-write-btn" id="rvWriteBtn"><i class="fas fa-pen"></i> <span>اكتب تقييمك</span></button>
 <div id="rvBars" hidden></div>
 </section>
+
+<!-- 🛡️ للأدمن بس: التقييمات اللي مستنية الموافقة (نشر / حذف) -->
+<section class="rv-admin" id="rvAdmin" hidden>
+<div class="rv-admin-head"><h3><i class="fas fa-user-shield"></i> تقييمات مستنية موافقتك <b id="rvAdminCount">0</b></h3><small>بيظهرلك انت بس — اللي تنشره بيظهر للناس، واللي تحذفه بيتمسح نهائياً</small></div>
+<div class="rv-admin-list" id="rvAdminList"></div>
+</section>
 <section class="rv-form-card" id="rvFormCard" hidden>
 <div class="rv-form-head"><h3 id="rvFormTitle">قيّم تجربتك معانا</h3></div>
 <div id="rvFormBody">
@@ -4478,7 +4502,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '96'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '97'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -9746,7 +9770,41 @@ const open = () => window.__navigateTo('reviews', page, true);
 if (fab) fab.addEventListener('click', open);
 const ml = $('reviewsMenuLink'); if (ml) ml.addEventListener('click', (e) => { e.preventDefault(); open(); });
 const hm = $('rvHomeMore'); if (hm) hm.addEventListener('click', open);
-window.__onReviewsOpen = function () { loadStats(); loadList(false); prepareForm(); };
+// 🛡️ للأدمن بس: التقييمات المستنية (نشر = بيظهر للناس / حذف = بيتمسح نهائياً) — مرة واحدة لكل تقييم
+async function loadPending() {
+const box = $('rvAdmin');
+if (!box) return;
+if (!window.isAdminUser) { box.hidden = true; return; }
+box.hidden = false;
+try {
+const { data, error } = await db().from('site_reviews').select(COLS + ',status').eq('status', 'pending').order('created_at', { ascending: false }).limit(50);
+if (error) throw error;
+const rows = data || [];
+$('rvAdminCount').textContent = rows.length;
+$('rvAdminList').innerHTML = rows.length ? rows.map(r =>
+'<div class="rv-adm" data-id="' + esc(r.id) + '"><div class="rv-adm-body"><b>' + esc(r.display_name) + '</b><span class="rv-stars">' + stars(Number(r.rating) || 0) + '</span> <small>' + esc(ago(r.created_at)) + '</small><p>' + esc(r.comment) + '</p></div>' +
+'<div class="rv-adm-btns"><button type="button" class="ok" data-act="ok"><i class="fas fa-check"></i> نشر</button><button type="button" class="del" data-act="del"><i class="fas fa-trash"></i> حذف</button></div></div>').join('')
+: '<div class="rv-adm-empty">✅ مفيش تقييمات مستنية — كله اتراجع</div>';
+} catch (e) { $('rvAdminList').innerHTML = '<div class="rv-adm-empty">تعذر تحميل التقييمات المستنية</div>'; }
+}
+$('rvAdminList').addEventListener('click', async (e) => {
+const b = e.target.closest('[data-act]');
+if (!b || !window.isAdminUser) return;
+const row = b.closest('.rv-adm'), id = row && row.dataset.id;
+if (!id) return;
+const del = b.dataset.act === 'del';
+if (del) { const ok = window.smConfirm ? await window.smConfirm('حذف التقييم ده نهائياً؟') : confirm('حذف التقييم ده نهائياً؟'); if (!ok) return; }
+row.querySelectorAll('button').forEach(x => { x.disabled = true; });
+let err = null;
+try {
+if (del) { const { error } = await db().from('site_reviews').delete().eq('id', id); err = error; }
+else { const { data, error } = await db().rpc('smcole_review_set', { p_id: Number(id), p_approve: true }); err = error || (data && data.ok === false ? { message: 'التقييم ده اتراجع قبل كده' } : null); }
+} catch (x) { err = x; }
+if (err) { alert('خطأ: ' + (err.message || err)); }
+try { localStorage.removeItem('smcole_rv_home'); } catch (x) {}
+loadPending(); loadStats(); loadList(false); loadHome();
+});
+window.__onReviewsOpen = function () { loadStats(); loadList(false); prepareForm(); loadPending(); };
 // الرئيسية: بعد ما الصفحة تحمل (من غير ما تأخر أي حاجة)
 const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1200));
 idle(() => loadHome());

@@ -3862,8 +3862,6 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <div class="profile-hero">
 <div class="profile-avatar-wrap">
 <div class="profile-avatar" id="profileAvatar">؟</div>
-<button class="avatar-upload-btn" id="avatarUploadBtn" type="button" title="تغيير الصورة"><i class="fas fa-camera"></i></button>
-<input type="file" id="avatarFileInput" accept="image/*" style="display:none;">
 </div>
 <div class="profile-name" id="profileDisplayName">مستخدم</div>
 <div class="profile-username" id="profileDisplayUsername">@username</div>
@@ -4424,7 +4422,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '93'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '94'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -6533,7 +6531,7 @@ if (currentProfile) {
 if (nameEl) nameEl.innerText = currentProfile.name || currentProfile.username || 'مستخدم';
 if (subEl) subEl.innerText = '@' + (currentProfile.username || '');
 if (avEl) {
-if (currentProfile.avatar) avEl.innerHTML = '<img src="' + String(currentProfile.avatar).replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" alt="">';
+if (false && currentProfile.avatar) avEl.innerHTML = '<img src="' + String(currentProfile.avatar).replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" alt="">';
 else avEl.innerText = (currentProfile.name || currentProfile.username || '?').trim().charAt(0).toUpperCase();
 }
 } else if (currentUser) {
@@ -7015,7 +7013,7 @@ const usernameEl = document.getElementById('profileDisplayUsername');
 if (nameEl) nameEl.innerText = currentProfile.name || 'مستخدم';
 if (usernameEl) usernameEl.innerText = '@' + (currentProfile.username || 'user');
 if (avatarEl) {
-if (currentProfile.avatar) {
+if (false && currentProfile.avatar) {
 avatarEl.innerHTML = '<img src="' + String(currentProfile.avatar).replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" alt="avatar">';
 } else {
 avatarEl.innerHTML = (currentProfile.name || currentProfile.username || '?').trim().charAt(0).toUpperCase();
@@ -7024,33 +7022,7 @@ avatarEl.innerHTML = (currentProfile.name || currentProfile.username || '?').tri
 }
 window.__updateProfileAvatarUI = updateProfileAvatarUI;
 
-document.getElementById('avatarUploadBtn').addEventListener('click', () => {
-document.getElementById('avatarFileInput').click();
-});
-document.getElementById('avatarFileInput').addEventListener('change', (e) => {
-const file = e.target.files && e.target.files[0];
-if (!file) return;
-if (file.size > 2 * 1024 * 1024) {
-userToast('⚠️ حجم الصورة يجب أن يكون أقل من 2 ميجا', 'warn');
-e.target.value = '';
-return;
-}
-const reader = new FileReader();
-reader.onload = async (ev) => {
-const base64 = ev.target.result;
-try {
-const { error } = await sb.from('users').update({ avatar: base64 }).eq('id', currentProfile.id);
-if (error) throw error;
-currentProfile.avatar = base64;
-window.currentProfile = currentProfile;
-updateProfileAvatarUI();
-userToast('✅ تم تغيير الصورة بنجاح', 'ok');
-} catch(err) {
-userToast('❌ فشل رفع الصورة: ' + (err.message || ''), 'err');
-}
-};
-reader.readAsDataURL(file);
-});
+// 🖼️ رفع صور البروفايل اتلغى (الصور كانت بتتحمّل مع بيانات الحساب وبتستهلك من Supabase كتير) — كل حساب بيظهر بأول حرف من اسمه
 
 document.getElementById('profileSaveBtn').addEventListener('click', async () => {
 if (!currentProfile) return;
@@ -7670,7 +7642,7 @@ if (m.sender === 'user' && !m.is_read) byUser[k].unread++;
 adminConvs = Object.values(byUser);
 const ids = adminConvs.map(c => c.user_id);
 if (ids.length) {
-const { data: us } = await sb.from('users').select('id,name,username,phone,avatar').in('id', ids);
+const { data: us } = await sb.from('users').select('id,name,username,phone').in('id', ids);
 (us || []).forEach(u => adminUsersMap[String(u.id)] = u);
 }
 renderAdminConvs();
@@ -7686,7 +7658,7 @@ adminConvs.sort((a, b) => new Date(b.last.created_at) - new Date(a.last.created_
 listEl.innerHTML = adminConvs.map(c => {
 const u = adminUsersMap[String(c.user_id)] || {};
 const name = u.name || u.username || ('عميل #' + c.user_id);
-const av = u.avatar ? '<img src="' + escHtml(u.avatar) + '" alt="">' : escHtml(name.trim().charAt(0).toUpperCase());
+const av = false ? '<img src="' + escHtml(u.avatar) + '" alt="">' : escHtml(name.trim().charAt(0).toUpperCase());
 const prev = (c.last.sender === 'admin' ? 'أنت: ' : '') + (c.last.body ? c.last.body.slice(0, 60) : '📷 صورة');
 return '<button type="button" class="as-conv' + (String(adminThreadUser) === String(c.user_id) ? ' active' : '') + (c.unread ? ' unread' : '') + '" data-uid="' + escHtml(c.user_id) + '">' +
 '<span class="as-av">' + av + '</span><span class="as-info"><b>' + escHtml(name) + '</b>' + (u.username ? '<span class="as-copy" role="button" tabindex="0" data-copy="' + escHtml(u.username) + '" title="اضغط لنسخ اسم المستخدم"><i class="far fa-copy"></i> ' + escHtml(u.username) + '</span>' : '') + '<small>' + escHtml(prev) + '</small></span>' +

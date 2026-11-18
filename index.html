@@ -4534,7 +4534,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '100'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '101'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -4545,7 +4545,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '10', ADMIN_BUNDLE_SHA = 'f0f8357e8dd0b7ae2c593dabbf0c17bce1b52cfb4e4702fa5351de9008244d7f';
+const ADMIN_BUNDLE_V = '11', ADMIN_BUNDLE_SHA = 'd49ac2045e40eccaf55d9d29a01f53a8c45b76d7c11f9d51aedaa66ea202f1c2';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -9707,7 +9707,7 @@ if (!map || !el) return;
 const m = map[el.dataset.sn];
 if (m === undefined || m === null) { el.hidden = true; return; }
 el.className = 'svc-speed';
-el.innerHTML = '<i class="fas fa-bolt"></i> آخر طلب اتنفذ في ' + fmt(m);
+el.innerHTML = '<i class="fas fa-bolt"></i> وقت التنفيذ في ' + fmt(m);
 el.title = 'وقت تنفيذ آخر طلب للخدمة دي على الموقع';
 el.hidden = false;
 }

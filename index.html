@@ -1471,6 +1471,24 @@ body.is-admin .admin-bottom-nav { transform: translateX(-50%) translateY(0); }
 .svc-speed.mid { color: #FBBF24; background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.35); }
 .svc-speed.slow { color: #F87171; background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.35); }
 .svc-speed[hidden] { display: none !important; }
+/* ⭐ كارت طلب التقييم جوه شات الدعم */
+.bubble.rvq { min-width: min(300px, 78vw); background: linear-gradient(160deg, rgba(245,158,11,.14), rgba(124,58,237,.18)) !important; border: 1px solid rgba(245,158,11,.4) !important; }
+.rvq-title { color: #fff; font-weight: 900; font-size: .98rem; margin-top: 2px; }
+.rvq-sub { color: #E9D5FF; font-size: .82rem; margin-bottom: 8px; }
+.rvq-stars { display: flex; gap: 4px; direction: ltr; justify-content: center; margin: 4px 0 8px; }
+.rvq-stars button { width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); color: rgba(255,255,255,.25); font-size: 1.15rem; cursor: pointer; transition: transform .15s, color .15s; }
+.rvq-stars button.on { color: #FBBF24; background: rgba(245,158,11,.14); border-color: rgba(245,158,11,.45); }
+.rvq-stars button:active { transform: scale(.92); }
+.rvq-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.rvq-chips button { border: 1px solid rgba(168,85,247,.35); background: rgba(255,255,255,.05); color: #E9D5FF; font-family: inherit; font-size: .74rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; cursor: pointer; }
+.rvq-chips button.on { background: linear-gradient(135deg, #7C3AED, #EC4899); color: #fff; border-color: transparent; }
+.rvq-text { width: 100%; min-height: 56px; resize: vertical; padding: 8px 10px; border-radius: 12px; border: 1px solid rgba(168,85,247,.3); background: rgba(7,4,15,.55); color: #fff; font-family: inherit; font-size: .85rem; line-height: 1.7; outline: none; }
+.rvq-text:focus { border-color: #A855F7; }
+.rvq-send { width: 100%; margin-top: 8px; padding: 10px; border: none; border-radius: 12px; cursor: pointer; font-family: inherit; font-weight: 800; font-size: .88rem; color: #fff; background: linear-gradient(135deg, #7C3AED, #EC4899); }
+.rvq-send:disabled { opacity: .6; cursor: wait; }
+.rvq-msg { font-size: .78rem; font-weight: 700; margin-top: 6px; color: #FCA5A5; }
+.rvq-done { color: #86EFAC; font-weight: 800; font-size: .9rem; display: flex; align-items: center; gap: 8px; }
+.rvq-sent { color: #FDE68A; font-weight: 700; }
 /* 🌍 تحويل من الدول العربية */
 .ar-countries { display: flex; flex-direction: column; gap: 8px; margin: 1rem 0; }
 .ar-c { display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(168,85,247,.18); }
@@ -4483,6 +4501,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <form class="chat-composer" id="adminChatForm" autocomplete="off" style="display:none;">
 <button type="button" class="chat-attach" id="adminChatAttachBtn" aria-label="إرفاق صورة"><i class="fas fa-image"></i></button>
 <input type="file" id="adminChatFileInput" accept="image/*" style="display:none;">
+<button type="button" class="chat-attach" id="adminChatReviewBtn" aria-label="اطلب تقييم من العميل" title="⭐ اطلب تقييم من العميل"><i class="fas fa-star" style="color:#FBBF24"></i></button>
 <textarea id="adminChatInput" rows="1" placeholder="اكتب ردك للعميل..." maxlength="2000"></textarea>
 <button type="submit" class="chat-send" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button>
 </form>
@@ -4508,7 +4527,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '98'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '99'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -7275,6 +7294,65 @@ return 'منذ ' + Math.floor(s / 86400) + ' يوم';
 }
 function setBadge(id, n) { const el = document.getElementById(id); if (el) el.innerText = n > 0 ? (n > 99 ? '99+' : n) : ''; }
 
+// ⭐ طلب تقييم من الدعم (نفس النص اللي في زرار التليجرام بالظبط)
+window.SM_REVIEW_ASK = '💜 سعداء إننا ساعدناك! قيّم تجربتك مع SMCOLE ⭐';
+const RV_CHIPS = ['سريع جداً 🚀', 'خدمة ممتازة 👌', 'الدعم محترم 💜', 'جودة عالية ✨', 'أسعار حلوة 💰', 'هتعامل تاني أكيد 🔁'];
+function rvAskDone(id) { try { return localStorage.getItem('smcole_rvask_' + id) === '1'; } catch (e) { return false; } }
+function reviewAskCard(m, viewer) {
+const meta = '<div class="msg-meta">' + fmtTime(m.created_at) + '</div>';
+if (viewer !== 'user') {
+return '<div class="msg mine" data-id="' + m.id + '"><div class="bubble rvq-sent"><i class="fas fa-star"></i> طلب تقييم اتبعت للعميل' + meta + '</div></div>';
+}
+if (rvAskDone(m.id)) {
+return '<div class="msg theirs" data-id="' + m.id + '"><div class="bubble rvq"><div class="rvq-done"><i class="fas fa-circle-check"></i> شكراً ليك 💜 تقييمك وصل وهيظهر بعد المراجعة</div>' + meta + '</div></div>';
+}
+return '<div class="msg theirs" data-id="' + m.id + '"><div class="bubble rvq" data-rvq="' + m.id + '">' +
+'<div class="msg-who"><i class="fas fa-headset"></i> الدعم الفني</div>' +
+'<div class="rvq-title">💜 سعداء إننا ساعدناك!</div><div class="rvq-sub">قيّم تجربتك مع SMCOLE</div>' +
+'<div class="rvq-stars">' + [1, 2, 3, 4, 5].map(v => '<button type="button" data-rvs="' + v + '" aria-label="' + v + ' نجوم"><i class="fas fa-star"></i></button>').join('') + '</div>' +
+'<div class="rvq-chips">' + RV_CHIPS.map(c => '<button type="button" data-rvc="' + escHtml(c) + '">' + escHtml(c) + '</button>').join('') + '</div>' +
+'<textarea class="rvq-text" maxlength="500" rows="2" placeholder="اكتب رأيك بكلامك… (أو اختار من الجمل اللي فوق)"></textarea>' +
+'<button type="button" class="rvq-send" data-rvsend="1"><i class="fas fa-paper-plane"></i> <span>إرسال التقييم</span></button>' +
+'<div class="rvq-msg"></div>' + meta + '</div></div>';
+}
+// تفاعل كارت التقييم (النجوم / الجمل الجاهزة / الإرسال)
+document.addEventListener('click', async (e) => {
+const box = e.target.closest && e.target.closest('[data-rvq]');
+if (!box) return;
+const star = e.target.closest('[data-rvs]'), chip = e.target.closest('[data-rvc]'), send = e.target.closest('[data-rvsend]');
+const ta = box.querySelector('.rvq-text'), msg = box.querySelector('.rvq-msg');
+if (star) {
+const v = Number(star.dataset.rvs); box.dataset.rating = v;
+box.querySelectorAll('[data-rvs]').forEach(b => b.classList.toggle('on', Number(b.dataset.rvs) <= v));
+msg.textContent = ''; return;
+}
+if (chip) {
+const c = chip.dataset.rvc; chip.classList.toggle('on');
+const parts = ta.value.split(' — ').map(x => x.trim()).filter(Boolean);
+const i = parts.indexOf(c);
+if (i >= 0) parts.splice(i, 1); else parts.push(c);
+ta.value = parts.join(' — ').slice(0, 500); return;
+}
+if (send) {
+const rating = Number(box.dataset.rating || 0), comment = ta.value.trim();
+msg.className = 'rvq-msg err';
+if (!rating) { msg.textContent = 'اختار عدد النجوم الأول ⭐'; return; }
+if (comment.length < 5) { msg.textContent = 'اكتب رأيك أو اختار جملة من اللي فوق'; return; }
+if (send.disabled) return;
+send.disabled = true; send.querySelector('span').textContent = 'جاري الإرسال...';
+let d = null;
+try {
+const r = await sb.functions.invoke('support-chat', { body: { action: 'review_submit', rating, comment } });
+d = r.data; if (r.error) { try { d = await r.error.context.json(); } catch (x) { d = null; } }
+} catch (x) { d = null; }
+send.disabled = false; send.querySelector('span').textContent = 'إرسال التقييم';
+if (d && d.ok) {
+try { localStorage.setItem('smcole_rvask_' + box.dataset.rvq, '1'); } catch (x) {}
+box.innerHTML = '<div class="rvq-done"><i class="fas fa-circle-check"></i> شكراً ليك 💜 تقييمك وصل وهيظهر بعد المراجعة</div>';
+} else msg.textContent = (d && d.message) || 'تعذر إرسال التقييم — حاول تاني';
+}
+});
+
 // رسم الرسائل (viewer = مين اللي بيشوف: user أو admin)
 function renderMessages(list, container, viewer) {
 let html = '', lastDay = '';
@@ -7284,6 +7362,8 @@ if (day !== lastDay) { html += '<div class="msg-day"><span>' + day + '</span></d
 const mine = m.sender === viewer;
 const ticks = mine ? ' <i class="fas ' + (m.is_read ? 'fa-check-double seen' : 'fa-check') + '"></i>' : '';
 const who = (!mine && viewer === 'user') ? '<div class="msg-who"><i class="fas fa-headset"></i> الدعم الفني</div>' : '';
+// ⭐ رسالة "طلب تقييم" من الدعم → كارت تفاعلي (العميل يقيّم ويكتب رأيه من جوه الشات)
+if (m.sender === 'admin' && m.body === window.SM_REVIEW_ASK) { html += reviewAskCard(m, viewer); return; }
 html += '<div class="msg ' + (mine ? 'mine' : 'theirs') + (m._pending ? ' pending' : '') + '" data-id="' + m.id + '"><div class="bubble">' + who +
 (m.image_url ? '<img class="msg-img" src="' + escHtml(m.image_url) + '" loading="lazy" alt="صورة">' : '') +
 (m.body ? '<div class="msg-text">' + linkify(m.body) + '</div>' : '') +
@@ -7824,6 +7904,24 @@ input.value = ''; autoGrow(input);
 adminImageData = null; document.getElementById('adminChatPreview').style.display = 'none';
 const conv = adminConvs.find(c => String(c.user_id) === String(adminThreadUser));
 if (conv) { conv.last = row; renderAdminConvs(); }
+} catch (err) {
+if (window.__adminToast) window.__adminToast('❌ ' + (err.message || 'فشل الإرسال'), true);
+} finally { btn.disabled = false; }
+});
+// ⭐ زرار "اطلب تقييم": بيبعت للعميل كارت تقييم تفاعلي في الشات (نفس زرار التليجرام)
+document.getElementById('adminChatReviewBtn').addEventListener('click', async () => {
+if (!adminThreadUser || !window.isAdminUser) return;
+const btn = document.getElementById('adminChatReviewBtn');
+if (btn.disabled) return;
+btn.disabled = true;
+try {
+const { data: row, error } = await sb.from('support_messages').insert({ user_id: adminThreadUser, sender: 'admin', body: window.SM_REVIEW_ASK }).select().single();
+if (error) throw error;
+if (!adminThreadMsgs.some(m => m.id === row.id)) adminThreadMsgs.push(row);
+renderAdminThread();
+const conv = adminConvs.find(c => String(c.user_id) === String(adminThreadUser));
+if (conv) { conv.last = row; renderAdminConvs(); }
+if (window.__adminToast) window.__adminToast('⭐ طلب التقييم اتبعت للعميل');
 } catch (err) {
 if (window.__adminToast) window.__adminToast('❌ ' + (err.message || 'فشل الإرسال'), true);
 } finally { btn.disabled = false; }
@@ -9608,7 +9706,7 @@ const page = $('reviewsPage'), fab = $('rvFab');
 if (!page) return;
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const db = () => getSupabase();
-const COLS = 'id,display_name,rating,comment,created_at';
+const COLS = 'id,display_name,rating,comment,created_at,orders_count';
 const PAGE = 24;
 let list = [], loadedAll = false, stats = null, myRating = 0, busy = false;
 const AV = [['#7C3AED', '#EC4899'], ['#2563EB', '#7C3AED'], ['#059669', '#10B981'], ['#F59E0B', '#EC4899'], ['#DB2777', '#9333EA'], ['#0891B2', '#2563EB']];
@@ -9635,7 +9733,7 @@ const ch = (nm.trim()[0] || '★').toUpperCase();
 const col = AV[(Number(r.id) || 0) % AV.length];
 return '<article class="rv-card" data-id="' + esc(r.id) + '">' +
 '<div class="rv-card-top"><span class="rv-av" style="--a1:' + col[0] + ';--a2:' + col[1] + '">' + esc(ch) + '</span>' +
-'<div class="rv-who"><b>' + esc(nm) + '</b><small><i class="fas fa-circle-check"></i> عميل موثّق</small></div>' +
+'<div class="rv-who"><b>' + esc(nm) + '</b><small><i class="fas fa-circle-check"></i> عميل موثّق' + (Number(r.orders_count) > 0 ? ' • ' + Number(r.orders_count).toLocaleString('en-US') + ' طلب' : '') + '</small></div>' +
 '<span class="rv-when">' + esc(ago(r.created_at)) + '</span></div>' +
 '<span class="rv-stars">' + stars(Number(r.rating) || 0) + '</span>' +
 '<p>' + esc(r.comment) + '</p>' +
@@ -9718,22 +9816,8 @@ const f = $('rvFormCard');
 f.hidden = !f.hidden;
 if (!f.hidden) { f.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => $('rvText').focus({ preventScroll: true }), 350); }
 });
-async function prepareForm() {
-if (!window.currentProfile) return;
-try {
-const { data } = await db().rpc('smcole_my_review');
-if (data && data.rating) {
-setPick(Number(data.rating)); $('rvText').value = data.comment || ''; $('rvLen').textContent = $('rvText').value.length + ' / 500';
-$('rvFormTitle').textContent = 'تقييمك';
-$('rvWriteBtn').querySelector('span').textContent = 'عدّل رأيك';
-$('rvWriteTitle').textContent = 'شكراً إنك شاركتنا رأيك 💜';
-$('rvSend').querySelector('span').textContent = 'تحديث تقييمي';
-const m = $('rvMsg');
-m.className = 'rv-msg ok';
-m.textContent = data.status === 'approved' ? '✅ تقييمك منشور — شكراً ليك' : data.status === 'pending' ? '⏳ تقييمك بيتراجع وهيظهر بعد الموافقة' : '';
-}
-} catch (e) {}
-}
+// العميل يقدر يكتب أكتر من تقييم — الفورم بيبدأ فاضي كل مرة (كل تقييم جديد بيتراجع لوحده)
+async function prepareForm() {}
 $('rvSend').addEventListener('click', async () => {
 const m = $('rvMsg'), btn = $('rvSend');
 m.className = 'rv-msg';
@@ -9753,8 +9837,7 @@ btn.disabled = false;
 if (d && d.ok) {
 m.className = 'rv-msg ok';
 m.textContent = '✅ شكراً ليك! تقييمك وصل وهيظهر للناس بعد المراجعة';
-$('rvFormTitle').textContent = 'تقييمك';
-btn.querySelector('span').textContent = 'تحديث تقييمي';
+setPick(0); $('rvText').value = ''; $('rvLen').textContent = '0 / 500';
 } else m.textContent = (d && d.message) || 'تعذر إرسال التقييم — حاول تاني';
 });
 $('rvLoadMore').addEventListener('click', () => loadList(true));

@@ -2018,6 +2018,13 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 .cat-info em { font-style: normal; color: #4ADE80; font-weight: 800; direction: ltr; unicode-bidi: isolate; }
 .cat-arrow { color: #D8B4FE; transition: transform .3s; flex-shrink: 0; }
 .cat-folder.open .cat-arrow { transform: rotate(180deg); }
+/* ⚡ قسم "خدمات سريعة" — نفس شكل الأقسام بس أخضر */
+/* الأخضر على عنوان القسم بس — ولما يتفتح الكروت بتظهر بالشكل العادي زي باقي الأقسام */
+.cat-folder.cat-fast:not(.open) { border-color: rgba(34,197,94,.55); box-shadow: 0 10px 28px rgba(34,197,94,.12); }
+.cat-folder.cat-fast > .cat-head { background: linear-gradient(160deg, rgba(22,101,52,.6), rgba(6,28,16,.85)); }
+.cat-folder.cat-fast .cat-ico { background: linear-gradient(135deg, #16A34A, #22C55E) !important; color: #fff !important; }
+.cat-folder.cat-fast .cat-info b { color: #BBF7D0; }
+.cat-folder.cat-fast .cat-info small { color: #86EFAC; }
 .cat-body:empty { display: none; }
 .cat-body { padding: 0 6px 6px; border-top: 1px dashed rgba(168,85,247,0.25); }
 .cat-body .platform-header { margin: .8rem 0 .3rem !important; justify-content: center !important; }
@@ -4527,7 +4534,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '99'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '100'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -5911,7 +5918,7 @@ const CAT_PAGE = 60; // الأقسام الكبيرة بتتعرض 60 خدمة �
 function openCategory(key, page) {
 if (openCatKey === key && page === undefined) { closeOpenCategory(); return; }
 closeOpenCategory();
-const cat = (window.__svcCats || []).find(c => c.key === key);
+const cat = (window.__svcCats || []).find(c => c.key === key) || (window.__fastCat && window.__fastCat.key === key ? window.__fastCat : null);
 const f = document.querySelector('.cat-folder[data-key="' + CSS.escape(key) + '"]');
 if (!cat || !f) return;
 openCatKey = key;
@@ -5945,6 +5952,26 @@ const sumEl = document.getElementById('catSummary');
 if (sumEl && svcPlatformFilter) sumEl.innerHTML = '<i class="' + (PLATFORM_FA[svcPlatformFilter] || 'fas fa-layer-group') + '"></i> ' + (PLATFORM_LABEL[svcPlatformFilter] || '') + ': ' + cats.length + ' قسم · ' + cats.reduce((n, c) => n + c.items.length, 0) + ' خدمة — افتح أي قسم عشان تشوف خدماته';
 if (!cats.length) { list.innerHTML = '<div class="no-services small"><i class="fas fa-folder-open"></i><p>مفيش أقسام للمنصة دي حالياً</p></div>'; return; }
 let html = '', lastPlat = null;
+// ⚡ قسم "خدمات سريعة" (أخضر) أول قسم في المنصة: الخدمات اللي اتنفذت فعلاً في يوم أو أقل — من الأسرع للأبطأ
+window.__fastCat = null;
+const spd = window.__svcSpeedMap;
+if (svcPlatformFilter && spd) {
+const seen = new Set(), fast = [];
+cats.forEach(c => c.items.forEach(s => {
+const m = spd[String(s.number)];
+if (m === undefined || m === null || !(Number(m) <= 1440) || seen.has(String(s.number))) return;
+seen.add(String(s.number)); fast.push({ s, m: Number(m) });
+}));
+fast.sort((a, b) => a.m - b.m);
+if (fast.length) {
+const items = fast.map(x => x.s);
+window.__fastCat = { key: 'fast:' + svcPlatformFilter, name: 'خدمات سريعة', platform: svcPlatformFilter, items, minPrice: Math.min.apply(null, items.map(s => Number(s.pricePerThousand) || 0)) };
+html += '<div class="cat-folder cat-fast' + (openCatKey === window.__fastCat.key ? ' open' : '') + '" data-key="' + escT(window.__fastCat.key) + '" style="--pc:' + (PLATFORM_BRAND[svcPlatformFilter] || '#A855F7') + '">' +
+'<button type="button" class="cat-head"><span class="cat-ico"><i class="fas fa-bolt"></i></span>' +
+'<span class="cat-info"><b>⚡ خدمات سريعة — ' + escT(PLATFORM_LABEL[svcPlatformFilter] || '') + '</b><small>' + items.length + ' خدمة اتنفذت في يوم أو أقل · من الأسرع للأبطأ</small></span>' +
+'<i class="fas fa-chevron-down cat-arrow"></i></button><div class="cat-body"></div></div>';
+}
+}
 cats.forEach(c => {
 if (!svcPlatformFilter && c.platform !== lastPlat) {
 html += '<div class="cat-plat-head" style="--pc:' + (PLATFORM_BRAND[c.platform] || '#A855F7') + '"><i class="' + PLATFORM_FA[c.platform] + '"></i> ' + PLATFORM_LABEL[c.platform] + '</div>';
@@ -5958,7 +5985,7 @@ html += '<div class="cat-folder' + (openCatKey === c.key ? ' open' : '') + '" da
 list.innerHTML = html;
 list.querySelectorAll('.cat-folder').forEach(f => f.querySelector('.cat-head').addEventListener('click', () => openCategory(f.getAttribute('data-key'))));
 // لو كان فيه قسم مفتوح نرجع نفتحه
-if (openCatKey) { const k = openCatKey; openCatKey = null; if (cats.some(c => c.key === k)) openCategory(k); }
+if (openCatKey) { const k = openCatKey; openCatKey = null; if (cats.some(c => c.key === k) || (window.__fastCat && window.__fastCat.key === k)) openCategory(k); }
 }
 window.renderCategoryList = renderCategoryList;
 window.__applyPlatformFilter = function (p) {
@@ -9685,7 +9712,12 @@ el.title = 'وقت تنفيذ آخر طلب للخدمة دي على الموق�
 el.hidden = false;
 }
 window.__fillSvcSpeed = fill;
-const fillAll = () => document.querySelectorAll('.svc-speed[data-sn]').forEach(fill);
+// ⚡ قسم "خدمات سريعة" بيتبني من نفس الأوقات دي (من غير أي طلب زيادة للسيرفر)
+const fillAll = () => {
+document.querySelectorAll('.svc-speed[data-sn]').forEach(fill);
+const had = !!window.__svcSpeedMap; window.__svcSpeedMap = map;
+if (!had && window.renderCategoryList && document.getElementById('catList') && !document.querySelector('.cat-folder.open')) window.renderCategoryList();
+};
 try { const c = JSON.parse(localStorage.getItem('smcole_svc_speed5') || 'null'); if (c && c.m) { map = c.m; fillAll(); if (Date.now() - c.t < 10 * 60 * 1000) return; } } catch (e) {}
 setTimeout(async () => {
 try {

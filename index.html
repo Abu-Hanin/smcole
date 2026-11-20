@@ -2022,7 +2022,10 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 /* الأخضر على عنوان القسم بس — ولما يتفتح الكروت بتظهر بالشكل العادي زي باقي الأقسام */
 .cat-folder.cat-fast:not(.open) { border-color: rgba(34,197,94,.55); box-shadow: 0 10px 28px rgba(34,197,94,.12); }
 .cat-folder.cat-fast > .cat-head { background: linear-gradient(160deg, rgba(22,101,52,.6), rgba(6,28,16,.85)); }
-.cat-folder.cat-fast .cat-ico { background: linear-gradient(135deg, #16A34A, #22C55E) !important; color: #fff !important; }
+.cat-fast-tag { flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px; margin-inline-start: auto; padding: 4px 10px; border-radius: 999px; background: linear-gradient(135deg, #16A34A, #22C55E); color: #fff; font-size: .7rem; font-weight: 900; white-space: nowrap; box-shadow: 0 0 0 0 rgba(34,197,94,.55); animation: catFastPulse 2s ease-out infinite; }
+.cat-fast-tag i { animation: catFastBolt 1.2s ease-in-out infinite; }
+@keyframes catFastPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,.55); } 70%, 100% { box-shadow: 0 0 0 9px rgba(34,197,94,0); } }
+@keyframes catFastBolt { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
 .cat-folder.cat-fast .cat-info b { color: #BBF7D0; }
 .cat-folder.cat-fast .cat-info small { color: #86EFAC; }
 .cat-body:empty { display: none; }
@@ -2272,6 +2275,12 @@ border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45)
 .rv-del { position: absolute; left: 10px; bottom: 10px; border: none; cursor: pointer; width: 28px; height: 28px; border-radius: 8px; color: #FCA5A5; background: rgba(239,68,68,.12); }
 .rv-empty { text-align: center; padding: 2rem 1rem; color: #A59CC9; } .rv-empty i { font-size: 2rem; color: #FBBF24; margin-bottom: .5rem; }
 .rv-home-more { display: flex; justify-content: center; margin-top: 1.2rem; }
+#rvHomeList { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; max-width: 1040px; margin: 0 auto; transition: opacity .45s ease, transform .45s ease; }
+#rvHomeList > .rv-card { flex: 0 1 320px; min-width: 0; }
+#rvHomeList.rv-swap { opacity: 0; transform: translateY(10px); }
+.rv-home-dots { display: flex; justify-content: center; gap: 6px; margin-top: .9rem; }
+.rv-home-dots span { width: 7px; height: 7px; border-radius: 999px; background: rgba(255,255,255,.22); transition: width .3s, background .3s; }
+.rv-home-dots span.on { width: 20px; background: #FBBF24; }
 .rv-home-sum { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; color: #D8CCF5; font-weight: 800; margin-top: .4rem; }
 .rv-home-sum b { color: #FBBF24; font-size: 1.15rem; }
 /* زرار "اكتب رأيك" فوق + قايمة التقييمات تحت بعض (كروت صغيرة عشان تبان تقييمات كتير) */
@@ -2359,7 +2368,6 @@ border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45)
 @keyframes pfShine { 0%, 60% { background-position: 130% 0, 0 0; } 100% { background-position: -40% 0, 0 0; } }
 #servicesPage .icon-circle:focus, #servicesPage .icon-circle:focus-visible { outline: none !important; }
 /* المنصة المختارة: بتتنطط لقدام وتنوّر بلونها + خط تحت الاسم — والباقي بيبهت سنة (من غير إطار) */
-#servicesPage .platform-icons.has-active .icon-circle:not(.active) { filter: saturate(0.55) brightness(0.72); opacity: .75; }
 #servicesPage .icon-circle.active { background: linear-gradient(145deg, var(--b1), var(--b2)) !important; animation: none; transform: translateY(-6px) scale(1.12) !important; filter: brightness(1.12) !important;
   box-shadow: 0 16px 34px color-mix(in srgb, var(--b1) 70%, transparent), 0 0 26px color-mix(in srgb, var(--b1) 55%, transparent), 0 5px 0 color-mix(in srgb, var(--b2) 75%, #000), inset 0 1px 0 rgba(255,255,255,0.5) !important; }
 #servicesPage .icon-circle.active::after { color: #fff; font-weight: 900; padding-bottom: 3px; background: linear-gradient(var(--b1), var(--b1)) no-repeat center bottom / 70% 3px; border-radius: 2px; }
@@ -3630,6 +3638,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <p class="rv-home-sum" id="rvHomeSum"></p>
 </div>
 <div class="rv-grid" id="rvHomeList"></div>
+<div class="rv-home-dots" id="rvHomeDots"></div>
 <div class="rv-home-more"><button type="button" class="btn-ghost" id="rvHomeMore"><i class="fas fa-comments"></i> شوف كل التقييمات واكتب رأيك</button></div>
 </section>
 
@@ -4534,7 +4543,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '102'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '103'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -4545,7 +4554,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '12', ADMIN_BUNDLE_SHA = 'e162be6cbec930fca7ec83a2430be12f19ade9f05b2f822706e96bf8e9bcfb52';
+const ADMIN_BUNDLE_V = '13', ADMIN_BUNDLE_SHA = '36b1f0867479d00e2360ccf23e9a5f493920317d3f025ac9b5f6fb1d60555d0e';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {
@@ -5967,8 +5976,9 @@ if (fast.length) {
 const items = fast.map(x => x.s);
 window.__fastCat = { key: 'fast:' + svcPlatformFilter, name: 'خدمات سريعة', platform: svcPlatformFilter, items, minPrice: Math.min.apply(null, items.map(s => Number(s.pricePerThousand) || 0)) };
 html += '<div class="cat-folder cat-fast' + (openCatKey === window.__fastCat.key ? ' open' : '') + '" data-key="' + escT(window.__fastCat.key) + '" style="--pc:' + (PLATFORM_BRAND[svcPlatformFilter] || '#A855F7') + '">' +
-'<button type="button" class="cat-head"><span class="cat-ico"><i class="fas fa-bolt"></i></span>' +
+'<button type="button" class="cat-head"><span class="cat-ico"><i class="' + (PLATFORM_FA[svcPlatformFilter] || 'fas fa-bolt') + '"></i></span>' +
 '<span class="cat-info"><b>⚡ خدمات سريعة — ' + escT(PLATFORM_LABEL[svcPlatformFilter] || '') + '</b><small>' + items.length + ' خدمة اتنفذت في يوم أو أقل · من الأسرع للأبطأ</small></span>' +
+'<span class="cat-fast-tag"><i class="fas fa-bolt"></i> سريعة</span>' +
 '<i class="fas fa-chevron-down cat-arrow"></i></button><div class="cat-body"></div></div>';
 }
 }
@@ -8208,7 +8218,9 @@ const refunded = parseFloat(o.refunded || 0);
 const safeLink = /^https?:\/\//i.test(o.link || '') ? o.link : '';
 // ♻️ إعادة التعبئة: بتظهر بس لو خدمة المزود عليها إعادة تعبئة والطلب مكتمل
 let refillHtml = '';
-if (o.refill_allowed && o.provider_order_id && (st.key === 'completed' || st.key === 'partial')) {
+// ⏳ الزرار بيظهر بعد 24 ساعة من تنفيذ الطلب (قبلها المزود مبيعوّضش النقص)
+const doneAt = new Date(o.completed_at || o.created_at || 0).getTime();
+if (o.refill_allowed && o.provider_order_id && (st.key === 'completed' || st.key === 'partial') && doneAt && Date.now() - doneAt >= 24 * 3600000) {
 const waitH = o.last_refill_at ? Math.ceil((new Date(o.last_refill_at).getTime() + 24 * 3600000 - Date.now()) / 3600000) : 0;
 refillHtml = waitH > 0
 ? '<div class="oc-refill-row"><button type="button" class="oc-refill" disabled><i class="fas fa-recycle"></i> اتبعت طلب إعادة تعبئة — متاحة تاني بعد ' + waitH + ' ساعة</button></div>'
@@ -8271,6 +8283,8 @@ const { data, error } = await sb.functions.invoke('smm-api', { body: { action: '
 r = data;
 if (error) { try { r = error.context && typeof error.context.json === 'function' ? await error.context.json() : null; } catch (er) { r = null; } }
 } catch (e) { r = null; }
+// المزود بيقول مفيش نقص (العدد الحالي أعلى من المطلوب) → رسالة واضحة بدل "رفض"
+if (r && !r.ok && r.error === 'no_need') { userToast(r.message, 'ok'); btn.disabled = false; btn.innerHTML = old; return; }
 userToast(r && r.message ? r.message : '❌ حصل خطأ — حاول تاني', r && r.ok ? 'ok' : 'err');
 if (r && r.ok) { const o = myOrdersData.find(x => x.id === id); if (o) { o.last_refill_at = new Date().toISOString(); o.refill_count = (o.refill_count || 0) + 1; } renderMyOrders(); }
 else { btn.disabled = false; btn.innerHTML = old; if (r && r.error === 'no_refill') { const o = myOrdersData.find(x => x.id === id); if (o) { o.refill_allowed = false; renderMyOrders(); } } }
@@ -9786,13 +9800,34 @@ $('rvBars').innerHTML = bars;
 const fa = $('rvFabAvg');
 if (fa) { if (cnt) { fa.textContent = '★ ' + avg.toFixed(1); fa.hidden = false; } else fa.hidden = true; }
 }
-// 🏠 الرئيسية: أحدث 3 تقييمات
+// 🏠 الرئيسية: 3 تقييمات في النص — وبتتقلب لوحدها كل كام ثانية على أحدث 12 تقييم
+const RV_HOME_N = 3, RV_HOME_MAX = 12;
+let homeRows = [], homePage = 0, homeT = null, homeHover = false;
+function homePages() { return Math.max(1, Math.ceil(homeRows.length / RV_HOME_N)); }
+function homeShow() {
+const el = $('rvHomeList'); if (!el) return;
+el.innerHTML = homeRows.slice(homePage * RV_HOME_N, homePage * RV_HOME_N + RV_HOME_N).map(card).join('');
+const d = $('rvHomeDots'), n = homePages();
+if (d) d.innerHTML = n > 1 ? Array.from({ length: n }, (_, i) => '<span' + (i === homePage ? ' class="on"' : '') + '></span>').join('') : '';
+}
+function homeTick() {
+const el = $('rvHomeList');
+if (!el || homePages() < 2 || homeHover || document.visibilityState !== 'visible') return;
+const r = el.getBoundingClientRect();
+if (r.bottom < 0 || r.top > window.innerHeight) return; // مش ظاهرة على الشاشة → منقلبش
+el.classList.add('rv-swap');
+setTimeout(() => { homePage = (homePage + 1) % homePages(); homeShow(); el.classList.remove('rv-swap'); }, 450);
+}
 function renderHome(rows) {
 const sec = $('rvHome');
 if (!sec) return;
-rows = (rows || []).slice(0, 3);
+rows = (rows || []).slice(0, RV_HOME_MAX);
 if (!rows.length) { sec.hidden = true; return; }
-$('rvHomeList').innerHTML = rows.map(card).join('');
+homeRows = rows; if (homePage >= homePages()) homePage = 0;
+homeShow();
+const hl = $('rvHomeList');
+if (hl && !hl.__rvHov) { hl.__rvHov = true; hl.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') homeHover = true; }); hl.addEventListener('pointerleave', () => { homeHover = false; }); }
+clearInterval(homeT); homeT = setInterval(homeTick, 6000);
 const s = stats;
 $('rvHomeSum').innerHTML = s && Number(s.count) ? '<span class="rv-stars">' + stars(Number(s.avg) || 0) + '</span> <b>' + (Number(s.avg) || 0).toFixed(1) + '</b> من 5 — بناءً على ' + fmtCount(s.count) + ' تقييم حقيقي' : '';
 sec.hidden = false;
@@ -9804,7 +9839,7 @@ renderStats();
 async function loadHome() {
 try { const c = JSON.parse(localStorage.getItem('smcole_rv_home') || 'null'); if (c && c.rows) { stats = c.stats || stats; renderHome(c.rows); renderStats(); } } catch (e) {}
 try {
-const [{ data, error }] = await Promise.all([db().from('site_reviews').select(COLS).order('created_at', { ascending: false }).limit(3), loadStats()]);
+const [{ data, error }] = await Promise.all([db().from('site_reviews').select(COLS).order('created_at', { ascending: false }).limit(12), loadStats()]);
 if (error) return;
 renderHome(data || []);
 try { localStorage.setItem('smcole_rv_home', JSON.stringify({ rows: data || [], stats })); } catch (e) {}

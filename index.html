@@ -4184,22 +4184,22 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 </div>
 <p>حوّل أي مبلغ بالجنيه المصري عن طريق إنستاباي على رقم الموبايل ده:</p>
 <div class="deposit-number-row">
-<div class="deposit-number" id="ipaAddress" dir="ltr">01154846407</div>
-<button class="deposit-copy-btn" type="button" id="ipaCopyBtn" data-copy="01154846407"><i class="fas fa-copy"></i> نسخ</button>
+<div class="deposit-number" id="ipaAddress" dir="ltr">01001606298</div>
+<button class="deposit-copy-btn" type="button" id="ipaCopyBtn" data-copy="01001606298"><i class="fas fa-copy"></i> نسخ</button>
 </div>
 <div class="deposit-steps">
 <div class="step-item"><span class="step-num">1</span><span class="step-text">افتح تطبيق إنستاباي واختار "إرسال أموال"</span></div>
-<div class="step-item"><span class="step-num">2</span><span class="step-text">اختار "رقم الموبايل" واكتب الرقم: <b dir="ltr">01154846407</b></span></div>
+<div class="step-item"><span class="step-num">2</span><span class="step-text">اختار "رقم الموبايل" واكتب الرقم: <b dir="ltr">01001606298</b></span></div>
 <div class="step-item"><span class="step-num">3</span><span class="step-text">اكتب أي مبلغ بالجنيه وأكد التحويل</span></div>
-<div class="step-item"><span class="step-num">4</span><span class="step-text">ارجع هنا واكتب <b>اسم المستخدم بتاعك في إنستاباي</b> و<b>المبلغ بالظبط</b></span></div>
+<div class="step-item"><span class="step-num">4</span><span class="step-text">ارجع هنا واكتب <b>الرقم المرجعي</b> للمعاملة أو <b>اسم المستخدم بتاعك في إنستاباي</b> و<b>المبلغ بالظبط</b><br><small style="opacity:.85;line-height:1.7">📌 الرقم المرجعي: افتح تطبيق إنستاباي ← سجل المعاملات ← اضغط على التحويل اللي بعته، هتلاقي رقم من 12 خانة باسم "المرجع" أو Reference — انسخه زي ما هو من غير مسافات</small></span></div>
 <div class="step-item"><span class="step-num">5</span><span class="step-text">اضغط تأكيد — والرصيد يتضاف لحسابك على طول ⚡</span></div>
 </div>
 </div>
 <div class="profile-msg dep-msg-slot" id="ipaPageMsg"></div>
 <form class="deposit-form" id="ipaPageForm" novalidate>
 <h3><i class="fas fa-bolt"></i> تأكيد الإيداع تلقائياً</h3>
-<label for="ipaPageKey">اسم المستخدم بتاعك في إنستاباي (أو رقم العملية)</label>
-<input type="text" id="ipaPageKey" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="60" placeholder="مثال: name@instapay" dir="ltr">
+<label for="ipaPageKey">الرقم المرجعي للمعاملة أو اسم المستخدم بتاعك في إنستاباي</label>
+<input type="text" id="ipaPageKey" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="60" placeholder="مثال: 491002803293 أو name@instapay" dir="ltr">
 <label for="ipaPageAmount">المبلغ اللي حوّلته بالظبط (بالجنيه)</label>
 <input type="text" id="ipaPageAmount" inputmode="decimal" placeholder="مثال: 150" dir="ltr">
 <button type="submit" class="deposit-submit-btn"><i class="fas fa-bolt"></i> تأكيد وإضافة الرصيد</button>
@@ -4543,7 +4543,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '103'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '104'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -9347,7 +9347,7 @@ const msg = document.getElementById('ipaPageMsg'), btn = form.querySelector('.de
 const key = toLatin(document.getElementById('ipaPageKey').value).trim().toLowerCase().replace(/\s+/g, '');
 const amount = toLatin(document.getElementById('ipaPageAmount').value).replace(/[٫,]/g, '.').replace(/\s/g, '');
 msg.className = 'profile-msg'; msg.textContent = '';
-if (!/^[a-z0-9._\-]{3,60}(@instapay)?$/.test(key)) { msg.className = 'profile-msg err'; msg.textContent = '⚠️ اكتب اسم المستخدم بتاعك في إنستاباي (زي name@instapay) أو رقم العملية'; return; }
+if (!/^[a-z0-9._\-]{3,60}(@instapay)?$/.test(key)) { msg.className = 'profile-msg err'; msg.textContent = '⚠️ اكتب الرقم المرجعي (12 رقم) أو اسم المستخدم بتاعك في إنستاباي (زي name@instapay)'; return; }
 // مفيش حد أدنى — أي مبلغ بالجنيه، بس لازم يكون بالظبط زي التحويل
 if (!/^\d{1,9}(\.\d{1,2})?$/.test(amount) || !(Number(amount) > 0)) { msg.className = 'profile-msg err'; msg.textContent = '⚠️ اكتب المبلغ بالظبط (زي 150 أو 150.50)'; return; }
 if (btn.disabled) return;

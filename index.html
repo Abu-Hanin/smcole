@@ -2020,14 +2020,10 @@ body.maintenance .buy-btn i::before { content: '\f7d9'; }
 .cat-folder.open .cat-arrow { transform: rotate(180deg); }
 /* ⚡ قسم "خدمات سريعة" — نفس شكل الأقسام بس أخضر */
 /* الأخضر على عنوان القسم بس — ولما يتفتح الكروت بتظهر بالشكل العادي زي باقي الأقسام */
-.cat-folder.cat-fast:not(.open) { border-color: rgba(34,197,94,.55); box-shadow: 0 10px 28px rgba(34,197,94,.12); }
-.cat-folder.cat-fast > .cat-head { background: linear-gradient(160deg, rgba(22,101,52,.6), rgba(6,28,16,.85)); }
 .cat-fast-tag { flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px; margin-inline-start: auto; padding: 4px 10px; border-radius: 999px; background: linear-gradient(135deg, #16A34A, #22C55E); color: #fff; font-size: .7rem; font-weight: 900; white-space: nowrap; box-shadow: 0 0 0 0 rgba(34,197,94,.55); animation: catFastPulse 2s ease-out infinite; }
 .cat-fast-tag i { animation: catFastBolt 1.2s ease-in-out infinite; }
 @keyframes catFastPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,.55); } 70%, 100% { box-shadow: 0 0 0 9px rgba(34,197,94,0); } }
 @keyframes catFastBolt { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
-.cat-folder.cat-fast .cat-info b { color: #BBF7D0; }
-.cat-folder.cat-fast .cat-info small { color: #86EFAC; }
 .cat-body:empty { display: none; }
 .cat-body { padding: 0 6px 6px; border-top: 1px dashed rgba(168,85,247,0.25); }
 .cat-body .platform-header { margin: .8rem 0 .3rem !important; justify-content: center !important; }
@@ -2275,9 +2271,14 @@ border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45)
 .rv-del { position: absolute; left: 10px; bottom: 10px; border: none; cursor: pointer; width: 28px; height: 28px; border-radius: 8px; color: #FCA5A5; background: rgba(239,68,68,.12); }
 .rv-empty { text-align: center; padding: 2rem 1rem; color: #A59CC9; } .rv-empty i { font-size: 2rem; color: #FBBF24; margin-bottom: .5rem; }
 .rv-home-more { display: flex; justify-content: center; margin-top: 1.2rem; }
-#rvHomeList { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; max-width: 1040px; margin: 0 auto; transition: opacity .45s ease, transform .45s ease; }
-#rvHomeList > .rv-card { flex: 0 1 320px; min-width: 0; }
-#rvHomeList.rv-swap { opacity: 0; transform: translateY(10px); }
+#rvHomeList { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; max-width: 1040px; margin: 0 auto; perspective: 1200px; }
+#rvHomeList > .rv-card { flex: 0 1 320px; min-width: 0; backface-visibility: hidden; transform-origin: 50% 50%; }
+/* 🔄 تقليب 3D (CSS بس — من غير أي تحميل زيادة): الكروت بتلف وتختفي واحد ورا التاني والجديدة بتلف وتظهر */
+#rvHomeList > .rv-card.rv-out { animation: rvFlipOut .5s cubic-bezier(.55,0,.75,.2) both; pointer-events: none; }
+#rvHomeList > .rv-card.rv-in { animation: rvFlipIn .75s cubic-bezier(.2,.85,.25,1) both; }
+@keyframes rvFlipOut { from { transform: none; opacity: 1; } to { transform: rotateY(90deg) translateZ(-80px) scale(.9); opacity: 0; } }
+@keyframes rvFlipIn { from { transform: rotateY(-90deg) translateZ(-80px) scale(.9); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #rvHomeList > .rv-card.rv-out, #rvHomeList > .rv-card.rv-in { animation-duration: .01s; } }
 .rv-home-dots { display: flex; justify-content: center; gap: 6px; margin-top: .9rem; }
 .rv-home-dots span { width: 7px; height: 7px; border-radius: 999px; background: rgba(255,255,255,.22); transition: width .3s, background .3s; }
 .rv-home-dots span.on { width: 20px; background: #FBBF24; }
@@ -3023,7 +3024,7 @@ tone(523.25, 0.2, 0.45, 0.13); tone(659.25, 0.28, 0.45, 0.13); tone(783.99, 0.36
 let fileOk = null, speaking = false;
 async function hasFile() {
 if (fileOk !== null) return fileOk;
-try { const r = await fetch('/salawat.wav', { method: 'HEAD', cache: 'no-store' }); fileOk = r.ok && /audio/.test(r.headers.get('content-type') || 'audio'); } catch (e) { fileOk = false; }
+try { const r = await fetch('/salawat.wav', { method: 'HEAD', cache: 'no-store' }); fileOk = r.ok && /audio/.test(r.headers.get('content-type') || 'audio'); } catch (e) { return false; } // النت ضعيف → مفيش صوت المرة دي (ويتجرب تاني بعدين)
 return fileOk;
 }
 function speakTTS() {
@@ -3049,7 +3050,7 @@ if (await hasFile()) {
 const a = new Audio('/salawat.wav'); a.volume = 0.55; // الملف متسجل عالي — 55% بتخليه متوسط
 await a.play(); return true;
 }
-return await speakTTS();
+return false; // 🔇 مفيش صوت الجهاز الاحتياطي — صوتك بس
 } catch (e) { return false; }
 finally { setTimeout(() => { speaking = false; }, 3000); }
 }
@@ -4543,7 +4544,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '105'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '106'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -6334,6 +6335,8 @@ const PLAT_ORDER = ['facebook', 'instagram', 'tiktok', 'youtube', 'telegram', 't
 const cats = Array.from(catsMap.values());
 // ترتيب: المنصات بترتيب ثابت، وجوه كل منصة الأقسام بنفس ترتيب المزود
 cats.sort((a, b) => (PLAT_ORDER.indexOf(a.platform) - PLAT_ORDER.indexOf(b.platform)) || (a.sort - b.sort) || (a.first - b.first));
+// 💰 جوه كل قسم: الخدمات من الأرخص للأغلى (الأسعار نفسها زي ما هي — الترتيب بس)
+cats.forEach(c => c.items.sort((a, b) => (Number(a.pricePerThousand) || 0) - (Number(b.pricePerThousand) || 0)));
 window.__svcAll = allSvc;
 window.__svcCats = cats;
 try { if (!performance.getEntriesByName('smcole-svc-ready').length) performance.mark('smcole-svc-ready'); } catch (e) {}
@@ -9804,9 +9807,10 @@ if (fa) { if (cnt) { fa.textContent = '★ ' + avg.toFixed(1); fa.hidden = false
 const RV_HOME_N = 3, RV_HOME_MAX = 12;
 let homeRows = [], homePage = 0, homeT = null, homeHover = false;
 function homePages() { return Math.max(1, Math.ceil(homeRows.length / RV_HOME_N)); }
-function homeShow() {
+function homeShow(anim) {
 const el = $('rvHomeList'); if (!el) return;
 el.innerHTML = homeRows.slice(homePage * RV_HOME_N, homePage * RV_HOME_N + RV_HOME_N).map(card).join('');
+if (anim) [...el.children].forEach((c, i) => { c.style.animationDelay = (i * 110) + 'ms'; c.classList.add('rv-in'); c.addEventListener('animationend', () => { c.classList.remove('rv-in'); c.style.animationDelay = ''; }, { once: true }); });
 const d = $('rvHomeDots'), n = homePages();
 if (d) d.innerHTML = n > 1 ? Array.from({ length: n }, (_, i) => '<span' + (i === homePage ? ' class="on"' : '') + '></span>').join('') : '';
 }
@@ -9815,8 +9819,9 @@ const el = $('rvHomeList');
 if (!el || homePages() < 2 || homeHover || document.visibilityState !== 'visible') return;
 const r = el.getBoundingClientRect();
 if (r.bottom < 0 || r.top > window.innerHeight) return; // مش ظاهرة على الشاشة → منقلبش
-el.classList.add('rv-swap');
-setTimeout(() => { homePage = (homePage + 1) % homePages(); homeShow(); el.classList.remove('rv-swap'); }, 450);
+const cs = [...el.children];
+cs.forEach((c, i) => { c.style.animationDelay = (i * 110) + 'ms'; c.classList.add('rv-out'); });
+setTimeout(() => { homePage = (homePage + 1) % homePages(); homeShow(true); }, 500 + (cs.length - 1) * 110);
 }
 function renderHome(rows) {
 const sec = $('rvHome');
@@ -9839,7 +9844,7 @@ renderStats();
 async function loadHome() {
 try { const c = JSON.parse(localStorage.getItem('smcole_rv_home') || 'null'); if (c && c.rows) { stats = c.stats || stats; renderHome(c.rows); renderStats(); } } catch (e) {}
 try {
-const [{ data, error }] = await Promise.all([db().from('site_reviews').select(COLS).order('created_at', { ascending: false }).limit(12), loadStats()]);
+const [{ data, error }] = await Promise.all([db().from('site_reviews').select(COLS).eq('status', 'approved').order('created_at', { ascending: false }).limit(12), loadStats()]);
 if (error) return;
 renderHome(data || []);
 try { localStorage.setItem('smcole_rv_home', JSON.stringify({ rows: data || [], stats })); } catch (e) {}
@@ -9850,7 +9855,7 @@ if (busy) return; busy = true;
 const btn = $('rvLoadMore');
 try {
 const from = more ? list.length : 0;
-const { data, error } = await db().from('site_reviews').select(COLS).order('created_at', { ascending: false }).range(from, from + PAGE - 1);
+const { data, error } = await db().from('site_reviews').select(COLS).eq('status', 'approved').order('created_at', { ascending: false }).range(from, from + PAGE - 1);
 if (error) throw error;
 list = more ? list.concat(data || []) : (data || []);
 loadedAll = (data || []).length < PAGE;

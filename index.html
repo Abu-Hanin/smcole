@@ -2271,14 +2271,12 @@ border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45)
 .rv-del { position: absolute; left: 10px; bottom: 10px; border: none; cursor: pointer; width: 28px; height: 28px; border-radius: 8px; color: #FCA5A5; background: rgba(239,68,68,.12); }
 .rv-empty { text-align: center; padding: 2rem 1rem; color: #A59CC9; } .rv-empty i { font-size: 2rem; color: #FBBF24; margin-bottom: .5rem; }
 .rv-home-more { display: flex; justify-content: center; margin-top: 1.2rem; }
-#rvHomeList { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; max-width: 1040px; margin: 0 auto; perspective: 1200px; }
-#rvHomeList > .rv-card { flex: 0 1 320px; min-width: 0; backface-visibility: hidden; transform-origin: 50% 50%; }
-/* 🔄 تقليب 3D (CSS بس — من غير أي تحميل زيادة): الكروت بتلف وتختفي واحد ورا التاني والجديدة بتلف وتظهر */
-#rvHomeList > .rv-card.rv-out { animation: rvFlipOut .5s cubic-bezier(.55,0,.75,.2) both; pointer-events: none; }
-#rvHomeList > .rv-card.rv-in { animation: rvFlipIn .75s cubic-bezier(.2,.85,.25,1) both; }
-@keyframes rvFlipOut { from { transform: none; opacity: 1; } to { transform: rotateY(90deg) translateZ(-80px) scale(.9); opacity: 0; } }
-@keyframes rvFlipIn { from { transform: rotateY(-90deg) translateZ(-80px) scale(.9); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { #rvHomeList > .rv-card.rv-out, #rvHomeList > .rv-card.rv-in { animation-duration: .01s; } }
+/* المجموعات فوق بعض في نفس المكان → الارتفاع ثابت على أطول مجموعة، والتبديل اختفاء وظهور تدريجي */
+#rvHomeList { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; max-width: 1040px; margin: 0 auto; }
+#rvHomeList > .rv-page { grid-area: 1 / 1; display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 14px; opacity: 0; visibility: hidden; transition: opacity .7s ease, visibility 0s linear .7s; }
+#rvHomeList > .rv-page.on { opacity: 1; visibility: visible; transition: opacity .8s ease .55s, visibility 0s linear .55s; }
+#rvHomeList .rv-page > .rv-card { flex: 0 1 320px; min-width: 0; }
+@media (prefers-reduced-motion: reduce) { #rvHomeList > .rv-page, #rvHomeList > .rv-page.on { transition-duration: .01s; transition-delay: 0s; } }
 .rv-home-dots { display: flex; justify-content: center; gap: 6px; margin-top: .9rem; }
 .rv-home-dots span { width: 7px; height: 7px; border-radius: 999px; background: rgba(255,255,255,.22); transition: width .3s, background .3s; }
 .rv-home-dots span.on { width: 20px; background: #FBBF24; }
@@ -4548,7 +4546,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '107'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '108'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -9811,10 +9809,16 @@ if (fa) { if (cnt) { fa.textContent = '★ ' + avg.toFixed(1); fa.hidden = false
 const RV_HOME_N = 3, RV_HOME_MAX = 12;
 let homeRows = [], homePage = 0, homeT = null, homeHover = false;
 function homePages() { return Math.max(1, Math.ceil(homeRows.length / RV_HOME_N)); }
-function homeShow(anim) {
+// كل المجموعات متحطوطة فوق بعض في نفس المكان → المساحة ثابتة على أطول مجموعة (مفيش طلوع ونزول)
+// والتبديل اختفاء تدريجي للمجموعة الحالية وبعده ظهور تدريجي للي بعدها
+function homeShow() {
 const el = $('rvHomeList'); if (!el) return;
-el.innerHTML = homeRows.slice(homePage * RV_HOME_N, homePage * RV_HOME_N + RV_HOME_N).map(card).join('');
-if (anim) [...el.children].forEach((c, i) => { c.style.animationDelay = (i * 110) + 'ms'; c.classList.add('rv-in'); c.addEventListener('animationend', () => { c.classList.remove('rv-in'); c.style.animationDelay = ''; }, { once: true }); });
+let html = '';
+for (let p = 0; p < homePages(); p++) html += '<div class="rv-page' + (p === homePage ? ' on' : '') + '"' + (p === homePage ? '' : ' aria-hidden="true"') + '>' + homeRows.slice(p * RV_HOME_N, p * RV_HOME_N + RV_HOME_N).map(card).join('') + '</div>';
+el.innerHTML = html;
+homeDots();
+}
+function homeDots() {
 const d = $('rvHomeDots'), n = homePages();
 if (d) d.innerHTML = n > 1 ? Array.from({ length: n }, (_, i) => '<span' + (i === homePage ? ' class="on"' : '') + '></span>').join('') : '';
 }
@@ -9823,9 +9827,12 @@ const el = $('rvHomeList');
 if (!el || homePages() < 2 || homeHover || document.visibilityState !== 'visible') return;
 const r = el.getBoundingClientRect();
 if (r.bottom < 0 || r.top > window.innerHeight) return; // مش ظاهرة على الشاشة → منقلبش
-const cs = [...el.children];
-cs.forEach((c, i) => { c.style.animationDelay = (i * 110) + 'ms'; c.classList.add('rv-out'); });
-setTimeout(() => { homePage = (homePage + 1) % homePages(); homeShow(true); }, 500 + (cs.length - 1) * 110);
+const ps = el.querySelectorAll('.rv-page');
+if (ps.length !== homePages()) { homeShow(); return; }
+ps[homePage].classList.remove('on'); ps[homePage].setAttribute('aria-hidden', 'true');
+homePage = (homePage + 1) % homePages();
+ps[homePage].classList.add('on'); ps[homePage].removeAttribute('aria-hidden');
+homeDots();
 }
 function renderHome(rows) {
 const sec = $('rvHome');

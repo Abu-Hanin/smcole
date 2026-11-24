@@ -4546,7 +4546,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '109'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '110'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
@@ -4557,7 +4557,7 @@ const __MAIL_MASK = '••••••••@••••••';
 const __mailMemo = {};
 window.__mailView = function(e) { var k = String(e || '').trim().toLowerCase(); if (!k || k === '-') return e || ''; if (__mailMemo[k] === undefined) __mailMemo[k] = __sha256('smc:' + k) === ADMIN_HASH; return __mailMemo[k] ? __MAIL_MASK : e; };
 // 🔒 كود لوحة الأدمن مش موجود في ملفات الموقع — بيتحمّل من تخزين خاص للأدمن بس بعد تسجيل الدخول
-const ADMIN_BUNDLE_V = '13', ADMIN_BUNDLE_SHA = '36b1f0867479d00e2360ccf23e9a5f493920317d3f025ac9b5f6fb1d60555d0e';
+const ADMIN_BUNDLE_V = '14', ADMIN_BUNDLE_SHA = '36f984bdae760bb0e32adb305d00d01f96cf1d05108489f2c0ea1d3ed7b3a6a7';
 window.__esc = function(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
 window.__safeUrl = function(u) { return /^https?:\/\//i.test(String(u || '').trim()) ? window.__esc(String(u).trim()) : '#'; };
 document.addEventListener('click', function(e) {

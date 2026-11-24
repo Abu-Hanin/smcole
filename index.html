@@ -2356,7 +2356,7 @@ border: 1px solid rgba(255,255,255,.08); box-shadow: 0 40px 90px rgba(0,0,0,.45)
 .plat-pick-hint i { color: #C084FC; animation: platHintTap 1.6s ease-in-out infinite; }
 @keyframes platHintTap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
 @media (max-width: 600px) { .plat-pick-hint { font-size: .74rem; padding: 6px 11px; } }
-#servicesPage .icon-circle { transform-style: preserve-3d; outline: none !important; -webkit-tap-highlight-color: transparent;
+#servicesPage .icon-circle { transform-style: flat; outline: none !important; -webkit-tap-highlight-color: transparent;
   box-shadow: 0 10px 22px color-mix(in srgb, var(--b1) 38%, transparent), 0 4px 0 color-mix(in srgb, var(--b2) 75%, #000), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -6px 12px rgba(0,0,0,0.25) !important;
   animation: pfFloat 5s ease-in-out infinite; }
 #servicesPage .icon-circle:nth-child(2n) { animation-delay: -1.2s; } #servicesPage .icon-circle:nth-child(3n) { animation-delay: -2.4s; }
@@ -4546,7 +4546,7 @@ setSalawat: (on) => { try { localStorage.setItem('smcole_salawat', on ? 'on' : '
 <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');</script>
 <script>
 const APP_VERSION = '2026.10.10.1';
-const SITE_BUILD = '108'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
+const SITE_BUILD = '109'; // ⚠️ لازم يساوي الرقم اللي في version.json — بيتغيّروا مع بعض في كل تحديث
 
 const SUPABASE_URL = 'https://bqiryyoanqleobzlztbl.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_448IML0Iapk-ujEb9N0Vyg_QZrt8PGA';
